@@ -204,28 +204,28 @@ export default function HomePage() {
       date: "19th August, 2022",
       rating: 4,
       text: "Started our dropshipping business with Zambeel and never looked back. The product quality is exceptional and customer support is available 24/7. Amazing experience!",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      image: "/assets/avatars/mark.png",
     },
     {
       name: "Ibrahim",
       date: "15th September, 2023",
       rating: 5,
       text: "Great panel and never looked back. The team is professional and delivery is always on time.",
-      image: "https://randomuser.me/api/portraits/men/45.jpg",
+      image: "/assets/avatars/ibrahim.png",
     },
     {
       name: "Sarah Johnson",
       date: "12th January, 2021",
       rating: 5,
       text: "Zambeel 360 has transformed our business. From design to delivery, everything is handled seamlessly. Highly recommend their services!",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      image: "/assets/avatars/sarah.png",
     },
     {
       name: "أحمد حسن",
       date: "8th December, 2025",
       rating: 5,
       text: "خدمة 3PL ممتازة. شحن سريع وتتبع موثوق وخدمة عملاء رائعة. يحب عملاؤنا أوقات التسليم السريعة.",
-      image: "https://randomuser.me/api/portraits/men/89.jpg",
+      image: "/assets/avatars/ahmad.png",
     },
   ];
 

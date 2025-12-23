@@ -1,10 +1,15 @@
 import '../index.css';
-import ClientLayout from './components/ClientLayout';
+import ClientLayout from '../components/layout/ClientLayout';
 import FontAwesomeLoader from '../components/FontAwesomeLoader';
 
 export const metadata = {
   title: 'Zambeel',
   description: 'Zambeel E-commerce Solutions',
+  icons: {
+    icon: '/white_logo.png',
+    shortcut: '/white_logo.png',
+    apple: '/white_logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {
