@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display&family=Playfair+Display:wght@700;900&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --zambeel-dark: #2E3B78;
+    --zambeel-yellow: #FCD64C;
+    --zambeel-light: #E7EFFC;
+    --zambeel-pink: #FBE8E8;
+    --zambeel-red: #B91C1C;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #FBFCFE;
+    overflow-x: hidden;
+  }
+
+  .logo-font {
+    font-family: 'DM Serif Display', serif;
+    letter-spacing: -0.5px;
+  }
+
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer utilities {
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover {
+    background-color: #FCD64C !important;
+  }
+
+  .blue-gradient-bg {
+    background: linear-gradient(180deg, #3E4C85 0%, #526AD1 100%);
+  }
+}

@@ -1,0 +1,449 @@
+{
+  "common": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "getStarted": "Get Started",
+    "viewMore": "View more",
+    "viewLess": "View less",
+    "allProducts": "All Products",
+    "showLess": "Show Less",
+    "viewAllProducts": "View All Products",
+    "talkToAgent": "Talk to our agent",
+    "learnMore": "Learn more"
+  },
+    "header": {
+      "services": "Services",
+      "dropshipping": "Dropshipping",
+      "zambeel3PL": "Zambeel 3PL",
+      "zambeel360": "Zambeel 360",
+      "learnEcomm": "Learn E-comm",
+      "dropshippingProducts": "Dropshipping Products",
+      "whereCanYouSell": "Where can you sell?",
+      "whyZambeel": "Why Zambeel?",
+      "ourTeam": "Our Team",
+      "aboutUs": "About Us",
+      "joinUs": "Join Us",
+      "whatsapp": "WhatsApp",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn",
+      "becomeASupplier": "Become a supplier",
+      "selectLanguage": "Select language",
+      "toggleMenu": "Toggle menu",
+      "languageEnglish": "English",
+      "languageArabic": "العربية"
+    },
+  "footer": {
+    "tagline": "One Platform to Learn, Start, Build and Grow your E-commerce Business Profitably.",
+    "services": "Services",
+    "learnEcommerce": "Learn E-commerce",
+    "zambeelPortal": "Zambeel Portal",
+    "contactUs": "Contact Us",
+    "email": "zambeelsupport@myzambeel.com",
+    "phone": "+971 56 847 2271"
+  },
+  "homepage": {
+    "hero": {
+      "title": "One Platform,",
+      "subtitle": "your E-commerce Business Profitably.",
+      "learn": "Learn",
+      "start": "Start",
+      "build": "Build",
+      "grow": "Grow"
+    },
+    "featureCards": {
+      "learnEcommerce": {
+        "title": "Learn E-commerce with Zambeel",
+        "desc": "Learn to Start, Build & Grow your E-commerce business from scratch",
+        "cta": "Learn E-commerce",
+        "mobileTitle": "Learn E-comm"
+      },
+      "dropshipping": {
+        "title": "Start E-comm without buying inventory",
+        "desc": "Sell winning products from anywhere in the world on Cash on Delivery",
+        "cta": "Dropshipping"
+      },
+      "zambeel360": {
+        "title": "Build your private label with Zambeel 360",
+        "desc": "We handle the entire process — sourcing, customs clearance, and delivery to our warehouse",
+        "cta": "China Sourcing"
+      },
+      "zambeel3PL": {
+        "title": "Grow your E-comm with our 3PL service",
+        "desc": "Use our automated system where we take care of storage, call confirmation & last-mile delivery",
+        "cta": "Zambeel 3PL"
+      }
+    },
+    "whereToSell": {
+      "title": "Where do you want to sell?",
+      "description": {
+        "full": "Selling in {{country}} gives you full access to all our services. If you want to know more about our services and how you can benefit from them click on one of the three services to begin.",
+        "noDropshipping": "Selling in {{country}} gives you access to all our services except dropshipping. If you want to know more about our services and how you can benefit from them click on one of the three services to begin."
+      },
+      "serviceDescriptions": {
+        "3PL": "Fast, reliable and fully automated",
+        "360": "Build your private label",
+        "dropshipping": "Start selling without buying inventory"
+      }
+    },
+    "whyZambeel": {
+      "title": "Why Zambeel?",
+      "subtitle": "Start your Ecommerce business from anywhere in the world without business registration.",
+      "stats": {
+        "countriesCovered": "Countries covered",
+        "codDeliveryRatio": "COD Delivery Ratio",
+        "productCatalog": "Product Catalog",
+        "paymentsGuaranteed": "Payments Guaranteed",
+        "biggest": "Biggest",
+        "weekly": "Weekly"
+      },
+      "features": {
+        "dropshipping": {
+          "title": "Dropshipping",
+          "desc": "Start your Ecommerce business anywhere without registration."
+        },
+        "zambeel360": {
+          "title": "Zambeel 360",
+          "desc": "Scale easily with COD—no payment gateway needed."
+        },
+        "3PL": {
+          "title": "3PL Service",
+          "desc": "Use our AI tools to accelerate your work."
+        },
+        "learnEcommerce": {
+          "title": "Learn E-commerce",
+          "desc": "Use our AI tools to accelerate your work."
+        }
+      }
+    },
+    "network": {
+      "title": "Our Network, Active & Rising",
+      "ordersDelivered": "orders delivered",
+      "sellersRegistered": "Sellers Registered",
+      "countriesRepresented": "Countries Represented"
+    },
+    "reviews": {
+      "title": "What our Customers have to say",
+      "rating": "4.89",
+      "reviewCount": "(1076 reviews)",
+      "mostRecent": "Most recent reviews"
+    }
+  },
+  "about": {
+    "title": "About Zambeel",
+    "description": "Zambeel is a commerce platform that provides sellers with the tools, automation, and fulfillment options they need to build and scale their online businesses. Whether you're just starting out or looking to expand, Zambeel offers solutions that make e-commerce accessible and profitable.",
+    "mission": {
+      "title": "Our Mission",
+      "text": "To empower sellers with an accessible, intelligent, and local-first platform that makes online selling simple and genuinely profitable."
+    },
+    "whatWeDo": {
+      "title": "What We Do",
+      "smartTools": {
+        "title": "Smart Selling Tools",
+        "desc": "Our AI-powered tools help you evaluate products, understand demand, build your store, get instant support, gain insights, and automate workflows. Everything you need to sell smarter and scale faster."
+      },
+      "fulfillment": {
+        "title": "Flexible Fulfillment Options",
+        "desc": "Choose from dropshipping, 3PL, or our comprehensive 360 brand building solution. We handle storage, packaging, and delivery so you can focus on growing your business."
+      },
+      "localSolutions": {
+        "title": "Local Solutions for Local Sellers",
+        "desc": "We understand the Pakistani market and the unique challenges you face. From payment constraints to logistics reliability, we've built solutions that work for local sellers."
+      }
+    },
+    "whyZambeel": {
+      "title": "Why Zambeel?",
+      "subtitle": "Start your Ecommerce business from anywhere in the world without business registration.",
+      "metrics": {
+        "countriesCovered": "5 countries covered",
+        "deliverySuccess": "80% Delivery Success",
+        "productsListed": "10K+ Products Listed",
+        "paymentGuarantee": "5-Day Payment Guarantee"
+      },
+      "features": {
+        "dropshipping": {
+          "title": "Zambeel Dropshipping",
+          "desc": "Start your Ecommerce business from anywhere in the world without business registration."
+        },
+        "cod": {
+          "title": "Cash on Delivery",
+          "desc": "No need for payment gateway. You can start and scale your business with Cash on Delivery."
+        },
+        "ai": {
+          "title": "AI Enabled Economy",
+          "desc": "Use our AI tools to make your work easier and more efficient."
+        },
+        "support": {
+          "title": "Dedicated Support",
+          "desc": "Get dedicated expert support from day one."
+        }
+      }
+    }
+  },
+  "team": {
+    "title": "Meet the Team",
+    "subtitle": "The team behind Zambeel's mission to simplify e-commerce."
+  },
+  "dropshipping": {
+    "hero": {
+      "title": "Zambeel Dropshipping",
+      "subtitle": "Start Dropshipping in Largest COD Markets",
+      "carousel": {
+        "withoutInventory": "Without buying inventory",
+        "fromAnywhere": "From anywhere in the world",
+        "noRegistration": "No business registration required"
+      },
+      "availableIn": "Dropshipping currently available in",
+      "otherServices": "Other Zambeel services available in"
+    },
+    "trendingProducts": {
+      "title": "Trending Dropshipping Products this week"
+    },
+    "whyZambeel": {
+      "title": "Why Dropshipping with Zambeel?",
+      "description": "Start selling without inventory or business registration hassles. Launch your AI-powered store in under 3 minutes, get personalised guidance, and access 20K+ winning products to succeed in UAE & KSA with Zambeel Dropshipping.",
+      "features": {
+        "dedicatedAccountManagers": "Dedicated Account Managers",
+        "highestDeliveryRates": "Highest Delivery Rates",
+        "biggestCatalog": "Biggest Catalog of Winning Products",
+        "smartOrderConfirmation": "Smart Order Confirmation",
+        "weeklyPayments": "Weekly Payments"
+      }
+    },
+    "pricing": {
+      "title": "Clear Pricing. Great Value.",
+      "subtitle": "Click on any plan to see full details and features."
+    },
+    "deliveryCharges": {
+      "title": "Dropshipping Delivery Charges",
+      "subtitle": "Transparent pricing for all your dropshipping deliveries"
+    }
+  },
+  "zambeel360": {
+    "hero": {
+      "title": "Zambeel 360",
+      "subtitle": "Source anything from China",
+      "carousel": {
+        "allDone": "Sourcing, Custom Clearance & Delivery- All done by Zambeel",
+        "quality": "High Quality Guaranteed",
+        "allInSolution": "All in solution for your E-commerce"
+      },
+      "availableIn": "Zambeel 360 currently available in"
+    },
+    "whatIs": {
+      "title": "What is Zambeel 360?",
+      "description": "We sourced high quality products from trusted suppliers in China. Our end-to-end service includes product sourcing, quality control, shipping logistics, and customs clearance, making it easy for you to focus on growing your business.",
+      "features": {
+        "findProducts": "Find Products",
+        "qualityCheck": "Quality Check",
+        "handleCustoms": "Handle Customs",
+        "storeSafely": "Store Safely",
+        "fastDelivery": "Fast Delivery"
+      }
+    },
+    "whereToStart": {
+      "title": "Where to Start?",
+      "description": "Getting started with Zambeel's 360 service is easy. Follow these simple steps to begin your journey with Zambeel.",
+      "steps": {
+        "bookConsultation": {
+          "title": "Book Consultation",
+          "desc": "Contact us through our Whatsapp number and our senior business consultant will get in touch with you."
+        },
+        "sendInventory": {
+          "title": "Send Inventory",
+          "desc": "Our team will share the product and shipping cost with you. Once you approve, we will send you a payment link."
+        },
+        "connectStore": {
+          "title": "Connect Store",
+          "desc": "We will source your product and handle all shipping logistics to our warehouse."
+        },
+        "startSelling": {
+          "title": "Start Selling",
+          "desc": "Integrate your online store with us through Shopify, Youcan, Easyorders & Lightfunnels or use Zambeel portal manually."
+        }
+      }
+    },
+    "pricing": {
+      "title": "Our pricing is clear and transparent",
+      "subtitle": "Click on any plan to see full details and features."
+    },
+    "deliveryCharges": {
+      "title": "Zambeel 360 Delivery Charges",
+      "subtitle": "Comprehensive pricing across all supported regions"
+    }
+  },
+  "zambeel3PL": {
+    "hero": {
+      "title": "Zambeel 3PL",
+      "subtitle": "Get warehousing, inventory management & efficient fulfillment",
+      "carousel": {
+        "freeWarehousing": "FREE warehousing for first 2 months",
+        "fastDelivery": "Fast delivery and smooth business operations",
+        "scale": "Scale your business without the complexity."
+      },
+      "availableIn": "Zambeel 3PL currently available in"
+    },
+    "whyZambeel": {
+      "title": "Why 3PL with Zambeel?",
+      "description": "From warehousing to last-mile delivery, Zambeel's 3PL service ensures live tracking of your orders and inventory, faster shipping and smoother operations.",
+      "features": {
+        "warehousing": "Smart Warehousing solutions",
+        "fulfillment": "Fast Order fullfilment",
+        "inventory": "Secure Inventory management",
+        "shipping": "Global Shipping network",
+        "tracking": "Real time tracking"
+      }
+    },
+    "whereToStart": {
+      "title": "Where to Start?",
+      "description": "Getting started with Zambeel's 3PL service is easy. Follow these simple steps to begin your journey with Zambeel.",
+      "steps": {
+        "bookConsultation": {
+          "title": "Book Consultation",
+          "desc": "Contact us through our Whatsapp number and our senior business consultant will get in touch with you."
+        },
+        "sendInventory": {
+          "title": "Send Inventory",
+          "desc": "Our team will share the product and shipping cost with you. Once you approve, we will send you a payment link."
+        },
+        "connectStore": {
+          "title": "Connect Store",
+          "desc": "We will source your product and handle all shipping logistics to our warehouse."
+        },
+        "startSelling": {
+          "title": "Start Selling",
+          "desc": "Integrate your online store with us through Shopify, Youcan, Easyorders & Lightfunnels or use Zambeel portal manually."
+        }
+      }
+    },
+    "pricing": {
+      "title": "Our pricing is clear and transparent",
+      "subtitle": "Click on any plan to see full details and features."
+    },
+    "deliveryCharges": {
+      "title": "3PL Services Delivery Charges",
+      "subtitle": "Competitive pricing for all your fulfillment needs"
+    }
+  },
+  "pricing": {
+    "plans": {
+      "free": {
+        "tag": "FREE",
+        "name": "For Experts"
+      },
+      "gold": {
+        "tag": "GOLD",
+        "name": "For Beginners"
+      },
+      "diamond": {
+        "tag": "Diamond",
+        "name": "Super Saver"
+      }
+    },
+    "features": {
+      "juniorAccountManager": "Junior Account Manager",
+      "responseTime4Hours": "Response time: Within 4 hours",
+      "whatsappGroupAccess": "Whatsapp Group Access",
+      "winningCreativity": "Winning Creativity & Strategy",
+      "bumperTrendingProducts": "Bumper Trending Products",
+      "seniorBusinessConsultant": "Senior Business consultant",
+      "customisedPackaging": "Customised Packaging",
+      "productFinancing": "Product Financing",
+      "seniorAccountManager": "Senior Dedicated Manager",
+      "responseTime30Minutes": "Response time: 30 minutes",
+      "exclusiveWinningProduct": "Exclusive Winning Product",
+      "winningCreativedStrategy": "Winning Creatives & Strategy"
+    },
+    "buttons": {
+      "getStarted": "Get Started",
+      "buyGold": "Buy Gold plan",
+      "buyDiamond": "Buy Diamond plan"
+    }
+  },
+  "deliveryCharges": {
+    "breakdown": "Delivery Charges Breakdown",
+    "orderConfirmation": "Order Confirmation + Followup / Order Packing / Delivery",
+    "return": "Return",
+    "codTax": "COD Tax",
+    "deliveryTime": "Delivery Time",
+    "days": "Days",
+    "currencyAED": "AED",
+    "currencySAR": "SAR",
+    "currencyPKR": "PKR",
+    "importantInfo": "Important Info",
+    "failedDelivery": "In case of failed delivery, only 'Return' will be charged",
+    "outskirtAreas": "In some outskirt areas, delivery charges can be greater too. This happens on 3% of the orders only.",
+    "warehousingFree": "Warehousing is FREE for first 2 months, after this 1AED/item/Month will be charged on unsold inventory"
+  },
+  "whereToStart": {
+    "title": "How to Start?",
+    "description": "From AI-built stores, winning products, and personalized assistance, we provide everything you need to start selling under 30 minutes.",
+    "startDropshipping": "Start Dropshipping",
+    "steps": {
+      "createAccount": {
+        "title": "Create account",
+        "desc": "Sign up in seconds and access your Zambeel dashboard instantly."
+      },
+      "connectStore": {
+        "title": "Connect store",
+        "desc": "Link Shopify, YouCan, EasyOrders store, or upload orders manually."
+      },
+      "listProducts": {
+        "title": "List Products",
+        "desc": "Choose from 20K+ products and set your own selling price — your profit is the difference."
+      },
+      "startSelling": {
+        "title": "Start Selling",
+        "desc": "Promote your store on Facebook, Instagram, or any platform you like."
+      }
+    }
+  },
+  "countries": {
+    "UAE": "UAE",
+    "KSA": "KSA",
+    "Qatar": "Qatar",
+    "Kuwait": "Kuwait",
+    "Pakistan": "Pakistan"
+  },
+  "trendingProducts": {
+    "sold": "sold",
+    "roas": "ROAS",
+    "rank": {
+      "1st": "1st",
+      "2nd": "2nd",
+      "3rd": "3rd",
+      "4th": "4th",
+      "5th": "5th",
+      "6th": "6th"
+    },
+    "products": {
+      "nikeShoes": "NIKE Shoes",
+      "audionicHeadphones": "Audionic Headphones",
+      "rolexWatch": "Rolex Watch",
+      "selfieStick": "Selfie Stick",
+      "rgbMouse": "RGB Mouse",
+      "roninMicrophone": "Ronin Microphone"
+    }
+  },
+  "popup": {
+    "lookingFor": "Looking for",
+    "winningProducts": "Winning Products",
+    "forFree": "For FREE?",
+    "joinOur": "Join our",
+    "exclusiveWhatsApp": "Exclusive Whatsapp Channel!",
+    "joinNow": "Join Now!"
+  },
+  "learnEcommerce": {
+    "hero": {
+      "title": "Learn E-commerce with Zambeel",
+      "description": "We offer master ecommerce class every week in which we help you to understand and learn ecommerce"
+    },
+    "topics": {
+      "marketUnderstanding": "Market Understanding",
+      "productHunting": "Product Hunting",
+      "creativeHunting": "Creative Hunting",
+      "websiteLandingPages": "Website Landing Pages",
+      "pixelAndAdManager": "Pixel and Ad Manager"
+    },
+    "joinClass": "Join Our Class"
+  }
+}
