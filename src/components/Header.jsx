@@ -87,7 +87,7 @@ export default function Header({ theme = "dark" }) {
 
   return (
     <>
-      <nav className={`w-[96%] max-w-[1400px] ${navBgColor} rounded-full px-4 md:px-6 py-3 flex justify-between items-center shadow-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 mx-auto`}>
+      <nav className={`w-[96%] max-w-[1400px] ${navBgColor} rounded-full px-4 md:px-5 py-2.5 flex justify-between items-center shadow-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 mx-auto`}>
         <div className="flex items-center gap-3 pl-4">
           <Link href="/" className="mt-1">
             <Image
@@ -99,7 +99,7 @@ export default function Header({ theme = "dark" }) {
             />
           </Link>
         </div>
-        <div className={`hidden lg:flex items-center gap-10 ${textColor} text-[15px] font-medium tracking-wide`}>
+        <div className={`hidden lg:flex items-center gap-6 ${textColor} text-[15px] font-medium tracking-wide`}>
           <div
             className="relative services-dropdown"
             onMouseEnter={() => setShowServicesDropdown(true)}
@@ -196,15 +196,6 @@ export default function Header({ theme = "dark" }) {
                     <i className="fa-brands fa-facebook-f"></i>
                     {t('header.facebook')}
                   </a>
-                  <a
-                    href={getLinkedInLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full flex items-center gap-2`}
-                  >
-                    <i className="fa-brands fa-linkedin-in"></i>
-                    {t('header.linkedin')}
-                  </a>
                 </div>
               </div>
             )}
@@ -259,7 +250,7 @@ export default function Header({ theme = "dark" }) {
           )}
         </div>
 
-        <div className={`${isLightTheme ? 'bg-white' : 'bg-white'} rounded-full p-[4px] pl-6 hidden md:flex items-center gap-4 shadow-md`}>
+        <div className={`${isLightTheme ? 'bg-white' : 'bg-white'} rounded-full p-[4px] pl-6 hidden md:flex items-center gap-3 shadow-md`}>
           <a href="#" className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2D3E7E]'} font-bold text-sm`}>
             {t('common.signIn')}
           </a>
@@ -463,16 +454,6 @@ export default function Header({ theme = "dark" }) {
                   >
                     <i className="fa-brands fa-facebook-f"></i>
                     {t('header.facebook')}
-                  </a>
-                  <a
-                    href={getLinkedInLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm flex items-center gap-2`}
-                    onClick={() => setShowMobileMenu(false)}
-                  >
-                    <i className="fa-brands fa-linkedin-in"></i>
-                    {t('header.linkedin')}
                   </a>
                 </div>
               )}

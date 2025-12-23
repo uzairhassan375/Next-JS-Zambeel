@@ -6,9 +6,9 @@ export const metadata = {
   title: 'Zambeel',
   description: 'Zambeel E-commerce Solutions',
   icons: {
-    icon: '/white_logo.png',
-    shortcut: '/white_logo.png',
-    apple: '/white_logo.png',
+    icon: '/favicon.webp',
+    shortcut: '/favicon.webp',
+    apple: '/favicon.webp',
   },
 };
 
