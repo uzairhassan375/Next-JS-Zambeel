@@ -1,21 +1,16 @@
 'use client';
 
+import ComingSoon from '../../components/ComingSoon';
 import { useTranslation } from 'react-i18next';
 
 export default function Supplier() {
   const { t } = useTranslation();
   
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-[#2E3B78] mb-4">
-          {t('header.becomeASupplier') || 'Become a Supplier'}
-        </h1>
-        <p className="text-lg text-gray-600">
-          Supplier page coming soon...
-        </p>
-      </div>
-    </div>
+    <ComingSoon
+      title={t('comingSoon.supplier.title') || 'Become a Supplier'}
+      description={t('comingSoon.supplier.description') || 'Join our supplier network and grow your business with Zambeel. We are preparing something special for you!'}
+    />
   );
 }
 

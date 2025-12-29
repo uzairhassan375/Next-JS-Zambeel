@@ -203,7 +203,7 @@ export const StackedCards = () => {
             description: t('homepage.featureCards.dropshipping.desc'),
             color: "rgba(236, 72, 153, 0.8)",
             cta: t('homepage.featureCards.dropshipping.cta'),
-            link: "/dropshipping"
+            link: "/pages/dropshipping-uae-and-ksa"
         },
         {
             id: 1,
@@ -219,7 +219,7 @@ export const StackedCards = () => {
             description: t('homepage.featureCards.zambeel360.desc'),
             color: "rgba(34, 197, 94, 0.8)",
             cta: t('homepage.featureCards.zambeel360.cta'),
-            link: "/zambeel-360"
+            link: "/pages/zambeel-360"
         },
         {
             id: 4,
@@ -227,7 +227,7 @@ export const StackedCards = () => {
             description: t('homepage.featureCards.zambeel3PL.desc'),
             color: "rgba(251, 146, 60, 0.8)",
             cta: t('homepage.featureCards.zambeel3PL.cta'),
-            link: "/zambeel-3pl"
+            link: "/pages/warehousing-3pl"
         }
     ];
 

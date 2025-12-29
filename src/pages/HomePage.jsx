@@ -244,7 +244,7 @@ export default function HomePage() {
         t('homepage.featureCards.dropshipping.desc')
       ],
       cta: t('homepage.featureCards.dropshipping.cta'),
-      link: "/dropshipping",
+      link: "/pages/dropshipping-uae-and-ksa",
     },
     {
       title: t('homepage.featureCards.zambeel360.title'),
@@ -252,7 +252,7 @@ export default function HomePage() {
         t('homepage.featureCards.zambeel360.desc')
       ],
       cta: t('homepage.featureCards.zambeel360.cta'),
-      link: "/zambeel-360",
+      link: "/pages/zambeel-360",
     },
     {
       title: t('homepage.featureCards.zambeel3PL.title'),
@@ -260,7 +260,7 @@ export default function HomePage() {
         t('homepage.featureCards.zambeel3PL.desc')
       ],
       cta: t('homepage.featureCards.zambeel3PL.cta'),
-      link: "/zambeel-3pl",
+      link: "/pages/warehousing-3pl",
     },
   ];
 
@@ -271,11 +271,11 @@ export default function HomePage() {
   const getServiceRoute = (service) => {
     switch (service) {
       case "Dropshipping":
-        return "/dropshipping";
+        return "/pages/dropshipping-uae-and-ksa";
       case "360":
-        return "/zambeel-360";
+        return "/pages/zambeel-360";
       case "3PL":
-        return "/zambeel-3pl";
+        return "/pages/warehousing-3pl";
       default:
         return "#";
     }

@@ -90,6 +90,9 @@ const Wts = ({
   const handleButtonClick = () => {
     if (buttonLink) {
       window.location.href = buttonLink;
+    } else {
+      // Default: redirect to login page
+      window.location.href = 'https://portal.myzambeel.com/login';
     }
   };
 

@@ -82,9 +82,12 @@ const DropshippingPage = () => {
         </div>
         {/* Get Started Button */}
         <div className="flex justify-center mb-8">
-          <button className="bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg">
-            {t('common.getStarted')}
-          </button>
+          <a href="https://portal.myzambeel.com/login" target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg">
+            <span>{t('common.getStarted')}</span>
+            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
         </div>
         {/* UAE/KSA Box */}
         <div className="px-4 md:px-0 relative z-10">

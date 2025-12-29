@@ -264,13 +264,16 @@ const TrendingProducts = () => {
             </button>
 
             <a
-              href="https://www.myzambeel.com/pages/products"
+              href="https://portal.myzambeel.com/login"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#FCD64C] text-[#243a86] px-8 py-3 rounded-full font-bold text-base hover:bg-[#ffc933] transition-colors inline-block"
+              className="inline-flex items-center bg-[#FCD64C] text-[#243a86] px-8 py-3 rounded-full font-bold text-base hover:bg-[#ffc933] transition-colors"
               style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
             >
-              {t('common.viewAllProducts')}
+              <span>{t('common.viewAllProducts')}</span>
+              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
             </a>
 
             <button

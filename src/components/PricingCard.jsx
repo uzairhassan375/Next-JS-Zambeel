@@ -136,8 +136,11 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
                 );
               })}
             </ul>
-            <button
-              className={`w-full font-semibold py-3 rounded-xl shadow-lg hover:opacity-95 transition-all text-base mt-auto transform hover:scale-[1.02] active:scale-95 ${
+            <a
+              href="https://portal.myzambeel.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`w-full font-semibold py-3 rounded-xl shadow-lg hover:opacity-95 transition-all text-base mt-auto transform hover:scale-[1.02] active:scale-95 text-center block ${
                 isPremium
                   ? 'bg-[#ffd24c] text-[#243a86]'
                   : 'bg-[#243a86] text-white'
@@ -149,7 +152,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
               }}
             >
               {cardIndex === 0 ? t('pricing.buttons.getStarted') : cardIndex === 1 ? t('pricing.buttons.buyGold') : cardIndex === 2 ? t('pricing.buttons.buyDiamond') : t('pricing.buttons.getStarted')} →
-            </button>
+            </a>
           </div>
         </div>
       )}

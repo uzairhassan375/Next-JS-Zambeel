@@ -119,19 +119,19 @@ export default function Header({ theme = "dark" }) {
               <div className="absolute top-full left-0 pt-2 bg-transparent min-w-[200px] z-50">
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
                   <Link
-                    href="/dropshipping"
+                    href="/pages/dropshipping-uae-and-ksa"
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.dropshipping')}
                   </Link>
                   <Link
-                    href="/zambeel-360"
+                    href="/pages/zambeel-360"
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.zambeel360')}
                   </Link>
                   <Link
-                    href="/zambeel-3pl"
+                    href="/pages/warehousing-3pl"
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.zambeel3PL')}
@@ -251,12 +251,12 @@ export default function Header({ theme = "dark" }) {
         </div>
 
         <div className={`${isLightTheme ? 'bg-white' : 'bg-white'} rounded-full p-[4px] pl-6 hidden md:flex items-center gap-3 shadow-md`}>
-          <a href="#" className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2D3E7E]'} font-bold text-sm`}>
+          <a href="https://portal.myzambeel.com/login" target="_blank" rel="noopener noreferrer" className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2D3E7E]'} font-bold text-sm`}>
             {t('common.signIn')}
           </a>
-          <button className="bg-[#FCD64C] text-[#2D3E7E] px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap">
+          <a href="https://portal.myzambeel.com/register" target="_blank" rel="noopener noreferrer" className="bg-[#FCD64C] text-[#2D3E7E] px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap">
             {t('common.signUp')}
-          </button>
+          </a>
         </div>
 
         {/* Mobile Language Toggle & Menu Button Group */}
@@ -333,9 +333,9 @@ export default function Header({ theme = "dark" }) {
             </svg>
           </button>
         </div>
-        <button className="hidden md:block lg:hidden bg-[#FCD64C] text-[#2D3E7E] px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap shadow-md">
+        <a href="https://portal.myzambeel.com/register" target="_blank" rel="noopener noreferrer" className="hidden md:block lg:hidden bg-[#FCD64C] text-[#2D3E7E] px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap shadow-md">
           {t('common.signUp')}
-        </button>
+        </a>
       </nav>
 
       {/* Mobile Menu */}
@@ -367,21 +367,21 @@ export default function Header({ theme = "dark" }) {
               {showServicesDropdown && (
                 <div className="mt-2 pl-4 space-y-2">
                   <Link
-                    href="/dropshipping"
+                    href="/pages/dropshipping-uae-and-ksa"
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.dropshipping')}
                   </Link>
                   <Link
-                    href="/zambeel-360"
+                    href="/pages/zambeel-360"
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.zambeel360')}
                   </Link>
                   <Link
-                    href="/zambeel-3pl"
+                    href="/pages/warehousing-3pl"
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
@@ -469,14 +469,16 @@ export default function Header({ theme = "dark" }) {
               {/* Language Dropdown for Mobile */}
 
               <a
-                href="#"
+                href="https://portal.myzambeel.com/login"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`block ${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition`}
               >
                 {t('common.signIn')}
               </a>
-              <button className="w-full bg-[#FCD64C] text-[#2D3E7E] px-6 py-3 rounded-full text-sm font-bold mt-2">
+              <a href="https://portal.myzambeel.com/register" target="_blank" rel="noopener noreferrer" className="w-full bg-[#FCD64C] text-[#2D3E7E] px-6 py-3 rounded-full text-sm font-bold mt-2 text-center block">
                 {t('common.signUp')}
-              </button>
+              </a>
             </div>
           </div>
         </div>

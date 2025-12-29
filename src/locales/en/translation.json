@@ -445,5 +445,22 @@
       "pixelAndAdManager": "Pixel and Ad Manager"
     },
     "joinClass": "Join Our Class"
+  },
+  "comingSoon": {
+    "badge": "Coming Soon",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "emailPlaceholder": "Enter your email",
+    "notifyMe": "Notify Me",
+    "learnEcommerce": {
+      "title": "Learn E-commerce",
+      "description": "We are working hard to bring you an amazing learning experience. Stay tuned for updates!"
+    },
+    "supplier": {
+      "title": "Become a Supplier",
+      "description": "Join our supplier network and grow your business with Zambeel. We are preparing something special for you!"
+    }
   }
 }

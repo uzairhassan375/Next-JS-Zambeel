@@ -13,7 +13,7 @@ export const cardData = [
     description: "Sell winning products from anywhere in the world on Cash on Delivery.",
     color: "rgba(236, 72, 153, 0.8)",
     cta: "Dropshipping",
-    link: "/dropshipping"
+    link: "/pages/dropshipping-uae-and-ksa"
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ export const cardData = [
     description: "We handle the entire process — sourcing, customs clearance, and delivery.",
     color: "rgba(34, 197, 94, 0.8)",
     cta: "Zambeel 360",
-    link: "/zambeel-360"
+    link: "/pages/zambeel-360"
   },
   {
     id: 4,
@@ -29,7 +29,7 @@ export const cardData = [
     description: "Use our automated system for storage and order fulfillment.",
     color: "rgba(251, 146, 60, 0.8)",
     cta: "Zambeel 3PL",
-    link: "/zambeel-3pl"
+    link: "/pages/warehousing-3pl"
   }
 ];
 

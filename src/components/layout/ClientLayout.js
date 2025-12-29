@@ -11,7 +11,7 @@ import WhatsAppFloat from '../WhatsAppFloat';
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
   const shouldHavePadding = pathname === "/" || pathname === "/about" || pathname === "/team";
-  const theme = pathname === "/zambeel-360" || pathname === "/dropshipping" || pathname === "/zambeel-3pl" || pathname === "/learn-ecommerce" ? "light" : "dark";
+  const theme = pathname === "/pages/zambeel-360" || pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/pages/warehousing-3pl" || pathname === "/learn-ecommerce" ? "light" : "dark";
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });

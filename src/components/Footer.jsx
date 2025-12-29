@@ -44,17 +44,17 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/dropshipping" className="hover:text-white hover:underline">
+              <Link href="/pages/dropshipping-uae-and-ksa" className="hover:text-white hover:underline">
                 {t('header.dropshipping')}
               </Link>
             </li>
             <li>
-              <Link href="/zambeel-3pl" className="hover:text-white hover:underline">
+              <Link href="/pages/warehousing-3pl" className="hover:text-white hover:underline">
                 {t('header.zambeel3PL')}
               </Link>
             </li>
             <li>
-              <Link href="/zambeel-360" className="hover:text-white hover:underline">
+              <Link href="/pages/zambeel-360" className="hover:text-white hover:underline">
                 {t('header.zambeel360')}
               </Link>
             </li>
@@ -66,12 +66,12 @@ export default function Footer() {
           </h4>
           <ul className="space-y-3 text-sm text-blue-50 opacity-90">
             <li>
-              <a href="#" className="hover:text-white hover:underline">
+              <a href="https://portal.myzambeel.com/register" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
                 {t('common.signUp')}
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-white hover:underline">
+              <a href="https://portal.myzambeel.com/login" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
                 {t('common.signIn')}
               </a>
             </li>
