@@ -100,6 +100,11 @@ export default function Footer() {
           </ul>
         </div>
       </div>
+      <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-white/10">
+        <p className="text-sm md:text-base leading-relaxed text-blue-50 opacity-80 text-center max-w-5xl mx-auto">
+          We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow E-commerce Business in United Arab Emirates, Saudi Arabia, Kuwait, Qatar & Pakistan
+        </p>
+      </div>
     </footer>
   );
 }
