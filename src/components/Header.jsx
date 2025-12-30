@@ -23,20 +23,16 @@ export default function Header({ theme = "dark" }) {
   // Social media links based on language
   const getWhatsAppLink = () => {
     return currentLanguage === 'ar' 
-      ? 'https://wa.me/971568472271' // Arabic WhatsApp link - update as needed
-      : 'https://wa.me/971568472271'; // English WhatsApp link - update as needed
+      ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I' // Arabic WhatsApp channel link
+      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'; // English WhatsApp channel link
   };
 
   const getFacebookLink = () => {
-    return currentLanguage === 'ar' 
-      ? 'https://facebook.com' // Arabic Facebook link - update as needed
-      : 'https://facebook.com'; // English Facebook link - update as needed
+    return 'https://www.facebook.com/share/1CHT3yCtCm/'; // Facebook page link
   };
 
   const getLinkedInLink = () => {
-    return currentLanguage === 'ar' 
-      ? 'https://linkedin.com' // Arabic LinkedIn link - update as needed
-      : 'https://linkedin.com'; // English LinkedIn link - update as needed
+    return 'https://www.linkedin.com/company/myzambeel/'; // LinkedIn company page
   };
 
   const handleLanguageChange = (lang) => {

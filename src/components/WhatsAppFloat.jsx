@@ -1,11 +1,20 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 export default function WhatsAppFloat() {
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || 'en';
+
+  const getWhatsAppLink = () => {
+    return currentLanguage === 'ar' 
+      ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I' // Arabic WhatsApp channel link
+      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'; // English WhatsApp channel link
+  };
+
   const handleClick = () => {
-    // Same WhatsApp link as used in WhatsAppPopup
-    window.open('https://wa.me/971568472271', '_blank', 'noopener,noreferrer');
+    window.open(getWhatsAppLink(), '_blank', 'noopener,noreferrer');
   };
 
   return (

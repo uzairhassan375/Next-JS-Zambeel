@@ -9,7 +9,8 @@ const blue_logoImage = '/blue_logo.png';
 
 export default function WhatsAppPopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || 'en';
 
   useEffect(() => {
     // Show popup after 2.5 seconds
@@ -20,9 +21,14 @@ export default function WhatsAppPopup() {
     return () => clearTimeout(timer);
   }, []);
 
+  const getWhatsAppLink = () => {
+    return currentLanguage === 'ar' 
+      ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I' // Arabic WhatsApp channel link
+      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'; // English WhatsApp channel link
+  };
+
   const handleJoinNow = () => {
-    // Replace with actual WhatsApp channel link
-    window.open('https://wa.me/971568472271', '_blank', 'noopener,noreferrer');
+    window.open(getWhatsAppLink(), '_blank', 'noopener,noreferrer');
   };
 
   const handleInstagramClick = () => {
@@ -31,8 +37,7 @@ export default function WhatsAppPopup() {
   };
 
   const handleFacebookClick = () => {
-    // Replace with actual Facebook link
-    window.open('https://facebook.com', '_blank', 'noopener,noreferrer');
+    window.open('https://www.facebook.com/share/1CHT3yCtCm/', '_blank', 'noopener,noreferrer');
   };
 
   return (

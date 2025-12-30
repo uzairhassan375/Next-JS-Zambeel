@@ -125,7 +125,7 @@ const ComingSoon = ({ title, description }) => {
         {/* Social Links */}
         <div className="flex justify-center gap-6 pb-12 md:pb-16">
           <a
-            href="https://wa.me/971568472271"
+            href={i18n.language === 'ar' ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I' : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'}
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"
@@ -134,7 +134,7 @@ const ComingSoon = ({ title, description }) => {
             <i className="fa-brands fa-whatsapp text-white text-xl"></i>
           </a>
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/share/1CHT3yCtCm/"
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"

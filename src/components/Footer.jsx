@@ -25,10 +25,10 @@ export default function Footer() {
             <a href="#" className="opacity-80 hover:opacity-100 transition">
               <i className="fa-brands fa-twitter"></i>
             </a>
-            <a href="#" className="opacity-80 hover:opacity-100 transition">
+            <a href="https://www.facebook.com/share/1CHT3yCtCm/" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
               <i className="fa-brands fa-facebook-f"></i>
             </a>
-            <a href="#" className="opacity-80 hover:opacity-100 transition">
+            <a href="https://www.linkedin.com/company/myzambeel/" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
               <i className="fa-brands fa-linkedin-in"></i>
             </a>
           </div>
