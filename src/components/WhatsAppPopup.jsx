@@ -32,8 +32,7 @@ export default function WhatsAppPopup() {
   };
 
   const handleInstagramClick = () => {
-    // Replace with actual Instagram link
-    window.open('https://instagram.com', '_blank', 'noopener,noreferrer');
+    window.open('https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4', '_blank', 'noopener,noreferrer');
   };
 
   const handleFacebookClick = () => {

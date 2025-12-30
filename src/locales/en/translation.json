@@ -39,7 +39,8 @@
     "zambeelPortal": "Zambeel Portal",
     "contactUs": "Contact Us",
     "email": "zambeelsupport@myzambeel.com",
-    "phone": "+971 56 847 2271"
+    "phone": "+971 56 847 2271",
+    "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow E-commerce Business in United Arab Emirates, Saudi Arabia, Kuwait, Qatar & Pakistan"
   },
   "homepage": {
     "hero": {
@@ -79,6 +80,7 @@
         "full": "Selling in {{country}} gives you full access to all our services. If you want to know more about our services and how you can benefit from them click on one of the three services to begin.",
         "noDropshipping": "Selling in {{country}} gives you access to all our services except dropshipping. If you want to know more about our services and how you can benefit from them click on one of the three services to begin."
       },
+      "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow E-commerce Business in United Arab Emirates, Saudi Arabia, Kuwait, Qatar & Pakistan",
       "serviceDescriptions": {
         "3PL": "Fast, reliable and fully automated",
         "360": "Build your private label",

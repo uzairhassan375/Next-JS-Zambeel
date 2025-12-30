@@ -466,6 +466,9 @@ export default function HomePage() {
                     : t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
                 }
               </p>
+              <p className="text-[#4A5568] text-[10px] leading-relaxed mb-4 opacity-80 italic">
+                {t('homepage.whereToSell.seoDescription')}
+              </p>
               <div className="space-y-2">
                 {selectedCountryData?.services.map((service) => (
                   <Link
@@ -568,13 +571,16 @@ export default function HomePage() {
               <h3 className="text-[#B91C1C] font-bold text-sm tracking-widest uppercase mb-4">
                 {translateCountryName(selectedCountry)}
               </h3>
-              <p className="text-[#4A5568] text-sm lg:text-base leading-relaxed mb-8">
+              <p className="text-[#4A5568] text-sm lg:text-base leading-relaxed mb-4">
                 {selectedCountry === "Pakistan"
                   ? t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
                   : selectedCountry === "Qatar" || selectedCountry === "Kuwait"
                     ? t('homepage.whereToSell.description.noDropshipping', { country: translateCountryName(selectedCountry) })
                     : t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
                 }
+              </p>
+              <p className="text-[#4A5568] text-xs lg:text-sm leading-relaxed mb-8 opacity-80 italic">
+                {t('homepage.whereToSell.seoDescription')}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {selectedCountryData?.services.map((service) => (
