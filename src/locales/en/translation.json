@@ -117,6 +117,10 @@
         }
       }
     },
+    "ticker": {
+      "superclass": "Don't study Ecommerce, Launch it LIVE with Zambeel SuperClass: ",
+      "registerNow": "Register Now!"
+    },
     "network": {
       "title": "Our Network, Active & Rising",
       "ordersDelivered": "orders delivered",
@@ -463,6 +467,80 @@
     "supplier": {
       "title": "Become a Supplier",
       "description": "Join our supplier network and grow your business with Zambeel. We are preparing something special for you!"
+    }
+  },
+  "superClass": {
+    "ticker": "Starts 23 January 2026 · Live Online · 3 Seats Left",
+    "hero": {
+      "title": "Learn, Launch & Scale a Profitable E-commerce Store in Just 4 Weeks",
+      "subtitle": "Don't just study e-commerce. Launch it LIVE - Step by Step with Ecommerce Experts",
+      "duration": "4 Weeks",
+      "liveClasses": "Live Classes",
+      "buildLive": "Build Everything Live",
+      "fromProductHunt": "From Product Hunt to Scaling"
+    },
+    "cta": {
+      "join": "Join the Super Class",
+      "joinZambeel": "Join the Zambeel Super Class"
+    },
+    "whoIsThisFor": {
+      "title": "WHO IS THIS CLASS FOR?"
+    },
+    "targetAudience": {
+      "item1": "You want to start ecommerce business",
+      "item2": "Looking for step by step guidance and hand-holding",
+      "item3": "You've tried ads but don't understand what's wrong",
+      "item4": "You want real support, not recorded videos"
+    },
+    "seatsLeft": "3 Seats Left",
+    "whatIs": {
+      "title": "What is Zambeel Super Class?"
+    },
+    "features": {
+      "weekProgram": "4-week live program",
+      "stepByStep": "step-by-step guidance",
+      "experts": "Top industry experts",
+      "marketResearch": "Market Research & Practical Product Hunting",
+      "creatives": "Creating Hunting & Editing for Winning Creatives",
+      "shopify": "Shopify Store Setup & Optimisation",
+      "businessManager": "Business Manager, Ad Account & Pixel Setup",
+      "campaigns": "Campaign Setup & Analysis",
+      "scaling": "Business Scaling"
+    },
+    "instructors": {
+      "title": "Super Instructors for SuperClass",
+      "subtitle": "Top Industry Experts - Building your Ecommerce Business LIVE with you!",
+      "waleed": {
+        "role": "Community Operations & Seller Training Expert"
+      },
+      "ilqa": {
+        "role": "Product Hunting & Creative Strategy Expert"
+      },
+      "ibrahim": {
+        "role": "Meta & TikTok Marketing Expert"
+      },
+      "farah": {
+        "role": "Shopify & Marketing Expert"
+      }
+    },
+    "priceTicker": "Starts 23 January 2026 · Live Online · $50 Only",
+    "howItWorks": {
+      "title": "HOW THE PROGRAM WORKS (STRUCTURE)",
+      "instructorClasses": {
+        "title": "Super Instructor Classes",
+        "fridaySaturday": "Friday & Saturday",
+        "duration": "2 hours daily",
+        "content": "Strategy, frameworks, live builds",
+        "decisionMaking": "Real-time decision making"
+      },
+      "practiceSessions": {
+        "title": "Practice Sessions",
+        "tuesdayThursday": "Tuesday & Thursday",
+        "duration": "1.5 hours daily",
+        "execution": "Hands-on execution",
+        "support": "Store audits, ad reviews & learning support"
+      },
+      "summary": "You learn on weekends | You execute with support during the week."
     }
   }
 }

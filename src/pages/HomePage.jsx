@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 const blue_logoImage = "/blue_logo.png";
 import { StackedCards } from "../components/UI/staking-cards";
+import Ticker from "../components/Ticker";
 
 export default function HomePage() {
   const { t, i18n } = useTranslation();
@@ -394,7 +395,9 @@ export default function HomePage() {
         </div>
       </main>
 
-      <section id="where-to-sell" className="w-full lg:bg-[#FDE8E9] pt-8 pb-0 md:py-8 px-4 flex justify-center">
+      <Ticker />
+
+      <section id="where-to-sell" className="w-full lg:bg-[#FDE8E9] pt-2 pb-0 md:pt-8 md:pb-8 px-4 flex justify-center">
         <div className="max-w-[1200px] w-full mx-auto bg-white rounded-[2.5rem] p-6 lg:px-12 lg:py-6">
           <div className="flex lg:hidden gap-3 items-center">
             <div className="flex flex-col items-center justify-between py-2">
