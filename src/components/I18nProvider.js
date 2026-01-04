@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en/translation.json';
@@ -29,7 +29,7 @@ const getInitialLocale = (serverLocale) => {
   if (serverLocale && (serverLocale === 'en' || serverLocale === 'ar')) {
     return serverLocale;
   }
-  // Fallback to cookie if available
+  // Fallback to cookie if available (only on client)
   if (typeof window !== 'undefined') {
     const savedLocale = getCookie('zambeel-locale');
     if (savedLocale === 'en' || savedLocale === 'ar') {
@@ -39,9 +39,12 @@ const getInitialLocale = (serverLocale) => {
   return 'en'; // Default to English
 };
 
-// Initialize i18n lazily with server locale
+// Initialize i18n only once with the server locale
+// This must happen synchronously before any components render
+let i18nInitialized = false;
 const initializeI18n = (locale) => {
-  if (!i18n.isInitialized) {
+  if (!i18nInitialized) {
+    i18nInitialized = true;
     i18n
       .use(initReactI18next)
       .init({
@@ -58,10 +61,11 @@ const initializeI18n = (locale) => {
         interpolation: {
           escapeValue: false,
         },
+        react: {
+          useSuspense: false,
+        },
+        initImmediate: true, // Initialize immediately, don't wait
       });
-  } else if (i18n.language !== locale) {
-    // If already initialized but locale doesn't match, update it
-    i18n.changeLanguage(locale);
   }
 };
 
@@ -81,11 +85,17 @@ export const changeLanguage = (lang) => {
 };
 
 export default function I18nProvider({ children, initialLocale = 'en' }) {
-  const locale = useMemo(() => getInitialLocale(initialLocale), [initialLocale]);
+  // Get the locale from server (prevents hydration mismatch)
+  const locale = getInitialLocale(initialLocale);
   
-  // Initialize i18n with server locale before first render
+  // Initialize i18n synchronously with server locale before first render
   // This ensures server and client render with the same language
-  initializeI18n(locale);
+  if (!i18nInitialized) {
+    initializeI18n(locale);
+  } else if (i18n.language !== locale) {
+    // If already initialized but locale doesn't match, update it synchronously
+    i18n.changeLanguage(locale);
+  }
   
   useEffect(() => {
     // Update HTML tag attributes when locale changes
@@ -94,8 +104,8 @@ export default function I18nProvider({ children, initialLocale = 'en' }) {
       document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
     }
     
-    // Ensure language stays in sync
-    if (locale && i18n.language !== locale) {
+    // Ensure language stays in sync (in case of race conditions)
+    if (i18n.isInitialized && i18n.language !== locale) {
       i18n.changeLanguage(locale);
     }
   }, [locale]);
