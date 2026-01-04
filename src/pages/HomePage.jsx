@@ -713,30 +713,35 @@ export default function HomePage() {
                       title: t('homepage.whyZambeel.features.learnEcommerce.title'),
                       desc: t('homepage.whyZambeel.features.learnEcommerce.desc'),
                     },
-                  ].map((card) => (
-                    <div
-                      key={card.title}
-                      className="group relative rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0"
-                      style={{ width: "320px" }}
-                    >
-                      <Image
-                        src={card.img}
-                        alt={card.title}
-                        width={320}
-                        height={500}
-                        className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-8 z-10">
-                        <h3 className="text-white text-xl font-bold mb-1">
-                          {card.title}
-                        </h3>
-                        <p className="text-gray-200 text-sm leading-snug">
-                          {card.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  ].map((card, index) => {
+                    const blogSlugs = ['zambeel-dropshipping', 'zambeel-360', 'warehousing-3pl', 'learn-ecommerce'];
+                    const blogSlug = blogSlugs[index] || 'zambeel-dropshipping';
+                    return (
+                      <Link
+                        key={card.title}
+                        href={`/blog/${blogSlug}`}
+                        className="group relative rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 block"
+                        style={{ width: "320px" }}
+                      >
+                        <Image
+                          src={card.img}
+                          alt={card.title}
+                          width={320}
+                          height={500}
+                          className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                        <div className="absolute bottom-0 left-0 p-8 z-10">
+                          <h3 className="text-white text-xl font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
+                            {card.title}
+                          </h3>
+                          <p className="text-gray-200 text-sm leading-snug">
+                            {card.desc}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -779,45 +784,51 @@ export default function HomePage() {
                     },
                   ]
                   : []),
-              ].map((card) => (
-                <div
-                  key={card.title}
-                  className="group relative rounded-3xl overflow-hidden aspect-[4/5]"
-                >
-                  <Image
-                    src={card.img}
-                    alt={card.title}
-                    width={400}
-                    height={600}
-                    className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-5 z-10">
-                    <h3 className="text-white text-base font-bold mb-1">
-                      {card.title}
-                    </h3>
-                    <p className="text-gray-200 text-[11px] leading-snug">
-                      {card.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
+              ].map((card, index) => {
+                const blogSlugs = ['zambeel-dropshipping', 'cash-on-delivery', 'ai-enabled-economy', 'dedicated-support'];
+                const blogSlug = blogSlugs[index] || 'zambeel-dropshipping';
+                return (
+                  <Link
+                    key={card.title}
+                    href={`/blog/${blogSlug}`}
+                    className="group relative rounded-3xl overflow-hidden aspect-[4/5] block"
+                  >
+                    <Image
+                      src={card.img}
+                      alt={card.title}
+                      width={400}
+                      height={600}
+                      className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-5 z-10">
+                      <h3 className="text-white text-base font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
+                        {card.title}
+                      </h3>
+                      <p className="text-gray-200 text-[11px] leading-snug">
+                        {card.desc}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
             <div className="flex justify-center mt-8">
-              <button
-                onClick={() => setShowAllFeatures(!showAllFeatures)}
-                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
-              >
-                {showAllFeatures ? (
-                  <>
-                    {t('common.viewLess')} <i className="fa-solid fa-arrow-up" />
-                  </>
-                ) : (
-                  <>
-                    {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
-                  </>
-                )}
-              </button>
+              {showAllFeatures ? (
+                <Link
+                  href="/blog"
+                  className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+                >
+                  {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowAllFeatures(!showAllFeatures)}
+                  className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+                >
+                  {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -827,17 +838,26 @@ export default function HomePage() {
                 onClick={() => setShowAllFeatures(false)}
                 className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition ml-[286px]"
               >
-                <i className="fa-solid fa-arrow-left" /> {t('common.viewMore')}
+                <i className="fa-solid fa-arrow-left" /> {t('common.viewLess')}
               </button>
             ) : (
               <div></div>
             )}
-            <button
-              onClick={() => setShowAllFeatures(true)}
-              className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
-            >
-              {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
-            </button>
+            {showAllFeatures ? (
+              <Link
+                href="/blog"
+                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+              >
+                {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowAllFeatures(true)}
+                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+              >
+                {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+              </button>
+            )}
           </div>
         </div>
       </section>

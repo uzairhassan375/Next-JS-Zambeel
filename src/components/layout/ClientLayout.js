@@ -8,7 +8,7 @@ import Footer from '../Footer';
 import WhatsAppPopup from '../WhatsAppPopup';
 import WhatsAppFloat from '../WhatsAppFloat';
 
-export default function ClientLayout({ children }) {
+export default function ClientLayout({ children, initialLocale }) {
   const pathname = usePathname();
   const shouldHavePadding = pathname === "/" || pathname === "/about" || pathname === "/team";
   const theme = pathname === "/pages/zambeel-360" || pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/pages/warehousing-3pl" || pathname === "/learn-ecommerce" ? "light" : "dark";
@@ -18,7 +18,7 @@ export default function ClientLayout({ children }) {
   }, [pathname]);
 
   return (
-    <I18nProvider>
+    <I18nProvider initialLocale={initialLocale}>
       <WhatsAppPopup />
       <WhatsAppFloat />
       <Header theme={theme} />

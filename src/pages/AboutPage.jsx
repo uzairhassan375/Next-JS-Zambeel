@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
 function AboutPage() {
@@ -131,64 +132,73 @@ function AboutPage() {
         {/* Image Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
           {/* Zambeel Dropshipping */}
-          <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px]">
+          <Link
+            href="/blog/zambeel-dropshipping"
+            className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px] block group"
+          >
             <Image
               src="https://images.unsplash.com/photo-1612452830710-97cd38a7b6e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGVjb21tZXJjZXxlbnwwfDF8MHx8fDA%3D"
               alt={t('about.whyZambeel.features.dropshipping.title')}
               width={500}
               height={320}
-              className="w-full h-full object-cover absolute inset-0"
+              className="w-full h-full object-cover absolute inset-0 group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-[#FCD64C] transition-colors">
                 {t('about.whyZambeel.features.dropshipping.title')}
               </h3>
               <p className="text-sm sm:text-base text-white/90">
                 {t('about.whyZambeel.features.dropshipping.desc')}
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* Cash on Delivery */}
-          <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px]">
+          <Link
+            href="/blog/cash-on-delivery"
+            className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px] block group"
+          >
             <Image
               src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FzaCUyMG9uJTIwZGVsaXZlcnl8ZW58MHwxfDB8fHww"
               alt={t('about.whyZambeel.features.cod.title')}
               width={500}
               height={320}
-              className="w-full h-full object-cover absolute inset-0"
+              className="w-full h-full object-cover absolute inset-0 group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-[#FCD64C] transition-colors">
                 {t('about.whyZambeel.features.cod.title')}
               </h3>
               <p className="text-sm sm:text-base text-white/90">
                 {t('about.whyZambeel.features.cod.desc')}
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* AI Enabled Economy */}
-          <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px]">
+          <Link
+            href="/blog/ai-enabled-economy"
+            className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px] block group"
+          >
             <Image
               src="https://plus.unsplash.com/premium_photo-1677269465314-d5d2247a0b0c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fEFJfGVufDB8MXwwfHx8MA%3D%3D"
               alt={t('about.whyZambeel.features.ai.title')}
               width={500}
               height={320}
-              className="w-full h-full object-cover absolute inset-0"
+              className="w-full h-full object-cover absolute inset-0 group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-[#FCD64C] transition-colors">
                 {t('about.whyZambeel.features.ai.title')}
               </h3>
               <p className="text-sm sm:text-base text-white/90">
                 {t('about.whyZambeel.features.ai.desc')}
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* Dedicated Support */}
           <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px]">
@@ -213,12 +223,15 @@ function AboutPage() {
 
         {/* View More Button */}
         <div className="flex justify-end">
-          <button className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-[#1e3a8a] text-[#1e3a8a] font-semibold rounded-lg hover:bg-[#1e3a8a] hover:text-white transition-colors">
+          <Link
+            href="/blog"
+            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-[#1e3a8a] text-[#1e3a8a] font-semibold rounded-lg hover:bg-[#1e3a8a] hover:text-white transition-colors"
+          >
             {t('common.viewMore')}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
+          </Link>
         </div>
         </div>
       </section>

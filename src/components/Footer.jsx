@@ -22,8 +22,8 @@ export default function Footer() {
           {t('footer.tagline')}
           </p>
           <div className="flex gap-5 text-sm mt-6">
-            <a href="#" className="opacity-80 hover:opacity-100 transition">
-              <i className="fa-brands fa-twitter"></i>
+            <a href="https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
+              <i className="fa-brands fa-instagram"></i>
             </a>
             <a href="https://www.facebook.com/share/1CHT3yCtCm/" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
               <i className="fa-brands fa-facebook-f"></i>
@@ -85,15 +85,16 @@ export default function Footer() {
             <li className="flex items-center gap-3">
               <i className="fa-solid fa-envelope w-4"></i>
               <a
-                href="mailto:zambeel@help.com"
+                href="mailto:zambeelsupport@myzambeel.com"
                 className="hover:text-white hover:underline"
+                dir="ltr"
               >
                 {t('footer.email')}
               </a>
             </li>
             <li className="flex items-center gap-3">
               <i className="fa-brands fa-whatsapp w-4"></i>
-              <a href="#" className="hover:text-white hover:underline">
+              <a href="#" className="hover:text-white hover:underline" dir="ltr">
                 {t('footer.phone')}
               </a>
             </li>

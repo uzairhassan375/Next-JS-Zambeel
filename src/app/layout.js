@@ -1,4 +1,5 @@
 import '../index.css';
+import { cookies } from 'next/headers';
 import ClientLayout from '../components/layout/ClientLayout';
 import FontAwesomeLoader from '../components/FontAwesomeLoader';
 
@@ -12,13 +13,17 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const cookieStore = await cookies();
+  const savedLocale = cookieStore.get('zambeel-locale')?.value;
+  const locale = (savedLocale === 'en' || savedLocale === 'ar') ? savedLocale : 'en';
+  
   return (
-    <html lang="en">
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body suppressHydrationWarning>
         <FontAwesomeLoader />
         <div className="min-h-screen flex flex-col bg-transparent">
-          <ClientLayout>
+          <ClientLayout initialLocale={locale}>
             {children}
           </ClientLayout>
         </div>
