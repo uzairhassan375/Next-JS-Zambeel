@@ -143,7 +143,7 @@ export default function Header({ theme = "dark" }) {
             )}
           </div>
           <a 
-            href="https://www.myzambeel.com/pages/products" 
+            href="https://products.myzambeel.com" 
             target="_blank"
             rel="noopener noreferrer"
             className={`${hoverColor} transition cursor-pointer`}
@@ -394,7 +394,7 @@ export default function Header({ theme = "dark" }) {
               )}
             </div>
             <a
-              href="https://www.myzambeel.com/pages/products"
+              href="https://products.myzambeel.com"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setShowMobileMenu(false)}
