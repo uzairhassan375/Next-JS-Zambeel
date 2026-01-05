@@ -14,9 +14,10 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
+  // Read cookie BEFORE rendering - this is the flow: request → read cookie → set language+direction → render page
   const cookieStore = await cookies();
-  const savedLocale = cookieStore.get('zambeel-locale')?.value;
-  const locale = (savedLocale === 'en' || savedLocale === 'ar') ? savedLocale : 'en';
+  const langCookie = cookieStore.get('lang')?.value;
+  const locale = (langCookie === 'en' || langCookie === 'ar') ? langCookie : 'en';
   
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
