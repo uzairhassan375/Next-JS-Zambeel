@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { getLocalePath } from "../lib/localeUtils";
 const blue_logoImage = "/blue_logo.png";
 import { StackedCards } from "../components/UI/staking-cards";
 import Ticker from "../components/Ticker";
@@ -819,7 +820,7 @@ export default function HomePage() {
             <div className="flex justify-center mt-8">
               {showAllFeatures ? (
                 <Link
-                  href="/blog"
+                  href={getLocalePath('/blog', pathname)}
                   className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
                 >
                   {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
@@ -848,7 +849,7 @@ export default function HomePage() {
             )}
             {showAllFeatures ? (
               <Link
-                href="/blog"
+                href={getLocalePath('/blog', pathname)}
                 className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
               >
                 {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />

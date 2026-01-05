@@ -1,14 +1,16 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { blogs } from '../data/blogs/index';
+import { getLocalePath } from '../lib/localeUtils';
 
 export default function BlogDetailPage({ slug }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const pathname = usePathname();
 
   const blog = blogs[slug];
 
@@ -18,7 +20,7 @@ export default function BlogDetailPage({ slug }) {
         <main className="flex-grow flex items-center justify-center pt-16">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Blog Not Found</h1>
-            <Link href="/blog" className="text-blue-600 hover:underline">
+            <Link href={getLocalePath('/blog', pathname)} className="text-blue-600 hover:underline">
               Back to Blog
             </Link>
           </div>
@@ -34,7 +36,7 @@ export default function BlogDetailPage({ slug }) {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
             {/* Back Button */}
             <Link
-              href="/blog"
+              href={getLocalePath('/blog', pathname)}
               className="inline-flex items-center gap-2 text-[#1e3a8a] hover:text-[#FCD64C] mb-8 transition-colors"
             >
               <i className="fa-solid fa-arrow-left"></i>

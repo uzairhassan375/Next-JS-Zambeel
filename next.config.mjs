@@ -56,6 +56,16 @@ const nextConfig = {
         destination: 'https://portal.myzambeel.com',
         permanent: true,
       },
+      {
+        source: '/products/:slug*',
+        destination: 'https://products.myzambeel.com/products/:slug*',
+        permanent: true
+      },
+      {
+        source: '/collections/:collection*',
+        destination: 'https://products.myzambeel.com/collections/:collection*',
+        permanent: true
+      }
     ];
   },
 };

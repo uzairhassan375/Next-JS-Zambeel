@@ -2,10 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { getLocalePath } from '../lib/localeUtils';
 
 function AboutPage() {
   const { t } = useTranslation();
+  const pathname = usePathname();
   
   return (
     <div className="min-h-screen bg-white">
@@ -133,7 +136,7 @@ function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
           {/* Zambeel Dropshipping */}
           <Link
-            href="/blog/zambeel-dropshipping"
+            href={getLocalePath('/blog/zambeel-dropshipping', pathname)}
             className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px] block group"
           >
             <Image
@@ -156,7 +159,7 @@ function AboutPage() {
 
           {/* Cash on Delivery */}
           <Link
-            href="/blog/cash-on-delivery"
+            href={getLocalePath('/blog/cash-on-delivery', pathname)}
             className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px] block group"
           >
             <Image
@@ -179,7 +182,7 @@ function AboutPage() {
 
           {/* AI Enabled Economy */}
           <Link
-            href="/blog/ai-enabled-economy"
+            href={getLocalePath('/blog/ai-enabled-economy', pathname)}
             className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px] block group"
           >
             <Image
@@ -224,7 +227,7 @@ function AboutPage() {
         {/* View More Button */}
         <div className="flex justify-end">
           <Link
-            href="/blog"
+            href={getLocalePath('/blog', pathname)}
             className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-[#1e3a8a] text-[#1e3a8a] font-semibold rounded-lg hover:bg-[#1e3a8a] hover:text-white transition-colors"
           >
             {t('common.viewMore')}

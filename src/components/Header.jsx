@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "./I18nProvider";
+import { getLocalePath } from "../lib/localeUtils";
 const white_logoImage = "/white_logo.png";
 const blue_logoImage = "/blue_logo.png";
 
@@ -38,6 +39,37 @@ export default function Header({ theme = "dark" }) {
   const handleLanguageChange = (lang) => {
     changeLanguage(lang);
     setShowLanguageDropdown(false);
+    
+    // Navigate to the correct route based on language
+    const currentPath = pathname;
+    let newPath = '';
+    
+    if (lang === 'ar') {
+      // Switch to Arabic: add /ar prefix
+      if (currentPath === '/') {
+        newPath = '/ar';
+      } else {
+        // Remove leading slash, add /ar prefix
+        const pathWithoutSlash = currentPath.startsWith('/') ? currentPath.slice(1) : currentPath;
+        newPath = `/ar/${pathWithoutSlash}`;
+      }
+    } else {
+      // Switch to English: remove /ar prefix
+      if (currentPath === '/ar') {
+        newPath = '/';
+      } else if (currentPath.startsWith('/ar/')) {
+        // Remove /ar prefix
+        newPath = currentPath.replace(/^\/ar/, '') || '/';
+      } else {
+        // Already on English route
+        newPath = currentPath;
+      }
+    }
+    
+    // Only navigate if path changed
+    if (newPath !== currentPath) {
+      router.push(newPath);
+    }
   };
 
   const handleSectionClick = (sectionId) => {
@@ -85,7 +117,7 @@ export default function Header({ theme = "dark" }) {
     <>
       <nav className={`w-[96%] max-w-[1400px] ${navBgColor} rounded-full px-4 md:px-5 py-2.5 flex justify-between items-center shadow-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 mx-auto`}>
         <div className="flex items-center gap-3 pl-4">
-          <Link href="/" className="mt-1">
+          <Link href={getLocalePath('/', pathname)} className="mt-1">
             <Image
               src={logoImage}
               alt="Zambeel Logo"
@@ -115,25 +147,25 @@ export default function Header({ theme = "dark" }) {
               <div className="absolute top-full left-0 pt-2 bg-transparent min-w-[200px] z-50">
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
                   <Link
-                    href="/pages/dropshipping-uae-and-ksa"
+                    href={getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.dropshipping')}
                   </Link>
                   <Link
-                    href="/pages/zambeel-360"
+                    href={getLocalePath('/pages/zambeel-360', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.zambeel360')}
                   </Link>
                   <Link
-                    href="/pages/warehousing-3pl"
+                    href={getLocalePath('/pages/warehousing-3pl', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.zambeel3PL')}
                   </Link>
                   <Link
-                    href="/learn-ecommerce"
+                    href={getLocalePath('/learn-ecommerce', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.learnEcomm')}
@@ -196,7 +228,7 @@ export default function Header({ theme = "dark" }) {
               </div>
             )}
           </div>
-          <Link href="/supplier" className={`${hoverColor} transition`}>
+          <Link href={getLocalePath('/supplier', pathname)} className={`${hoverColor} transition`}>
             {t('header.becomeASupplier')}
           </Link>
         </div>
@@ -363,28 +395,28 @@ export default function Header({ theme = "dark" }) {
               {showServicesDropdown && (
                 <div className="mt-2 pl-4 space-y-2">
                   <Link
-                    href="/pages/dropshipping-uae-and-ksa"
+                    href={getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.dropshipping')}
                   </Link>
                   <Link
-                    href="/pages/zambeel-360"
+                    href={getLocalePath('/pages/zambeel-360', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.zambeel360')}
                   </Link>
                   <Link
-                    href="/pages/warehousing-3pl"
+                    href={getLocalePath('/pages/warehousing-3pl', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.zambeel3PL')}
                   </Link>
                   <Link
-                    href="/learn-ecommerce"
+                    href={getLocalePath('/learn-ecommerce', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
@@ -455,7 +487,7 @@ export default function Header({ theme = "dark" }) {
               )}
             </div>
             <Link
-              href="/supplier"
+              href={getLocalePath('/supplier', pathname)}
               onClick={() => setShowMobileMenu(false)}
               className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition`}
             >

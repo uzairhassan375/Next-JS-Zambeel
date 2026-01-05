@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { getLocalePath } from "../lib/localeUtils";
 const white_logoImage = "/white_logo.png";
 
 export default function Footer() {
   const { t } = useTranslation();
+  const pathname = usePathname();
   return (
     <footer className="max-w-6xl mx-auto text-white pb-8 md:pb-12 pt-8 md:pt-12 px-6 md:px-16">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6 text-sm items-start">
@@ -39,22 +42,22 @@ export default function Footer() {
           </h4>
           <ul className="space-y-3 text-sm text-blue-50 opacity-90">
             <li>
-              <Link href="/learn-ecommerce" className="hover:text-white hover:underline">
+              <Link href={getLocalePath('/learn-ecommerce', pathname)} className="hover:text-white hover:underline">
                 {t('footer.learnEcommerce')}
               </Link>
             </li>
             <li>
-              <Link href="/pages/dropshipping-uae-and-ksa" className="hover:text-white hover:underline">
+              <Link href={getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)} className="hover:text-white hover:underline">
                 {t('header.dropshipping')}
               </Link>
             </li>
             <li>
-              <Link href="/pages/warehousing-3pl" className="hover:text-white hover:underline">
+              <Link href={getLocalePath('/pages/warehousing-3pl', pathname)} className="hover:text-white hover:underline">
                 {t('header.zambeel3PL')}
               </Link>
             </li>
             <li>
-              <Link href="/pages/zambeel-360" className="hover:text-white hover:underline">
+              <Link href={getLocalePath('/pages/zambeel-360', pathname)} className="hover:text-white hover:underline">
                 {t('header.zambeel360')}
               </Link>
             </li>

@@ -10,8 +10,20 @@ import WhatsAppFloat from '../WhatsAppFloat';
 
 export default function ClientLayout({ children, initialLocale }) {
   const pathname = usePathname();
-  const shouldHavePadding = pathname === "/" || pathname === "/about" || pathname === "/team";
-  const theme = pathname === "/pages/zambeel-360" || pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/pages/warehousing-3pl" || pathname === "/learn-ecommerce" ? "light" : "dark";
+  
+  // Check for pages that need padding (both English and Arabic routes)
+  const shouldHavePadding = pathname === "/" || pathname === "/ar" || 
+    pathname === "/about" || pathname === "/ar/about" ||
+    pathname === "/team" || pathname === "/ar/team";
+  
+  // Check for pages that need light theme (both English and Arabic routes)
+  const isLightThemePage = 
+    pathname === "/pages/zambeel-360" || pathname === "/ar/pages/zambeel-360" ||
+    pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/ar/pages/dropshipping-uae-and-ksa" ||
+    pathname === "/pages/warehousing-3pl" || pathname === "/ar/pages/warehousing-3pl" ||
+    pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce";
+  
+  const theme = isLightThemePage ? "light" : "dark";
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
