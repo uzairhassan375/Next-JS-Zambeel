@@ -1,5 +1,5 @@
 import '../index.css';
-import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import ClientLayout from '../components/layout/ClientLayout';
 import FontAwesomeLoader from '../components/FontAwesomeLoader';
 
@@ -14,10 +14,10 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  // Read cookie BEFORE rendering - this is the flow: request → read cookie → set language+direction → render page
-  const cookieStore = await cookies();
-  const langCookie = cookieStore.get('lang')?.value;
-  const locale = (langCookie === 'en' || langCookie === 'ar') ? langCookie : 'en';
+  // Middleware reads cookie and sets x-locale header
+  // Server reads header to set language+direction before rendering
+  const headersList = await headers();
+  const locale = headersList.get('x-locale') || 'en';
   
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>

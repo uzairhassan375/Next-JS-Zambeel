@@ -6,7 +6,7 @@ import { initReactI18next } from 'react-i18next';
 import enTranslations from '../locales/en/translation.json';
 import arTranslations from '../locales/ar/translation.json';
 
-// Cookie utility functions - using 'lang' cookie only
+// Cookie utility - using 'lang' cookie only
 const setCookie = (name, value, days = 365) => {
   if (typeof document === 'undefined') return;
   const date = new Date();
@@ -15,35 +15,31 @@ const setCookie = (name, value, days = 365) => {
   document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
 };
 
-// Initialize i18n only once - this happens at module load, before any components render
-// The server-provided locale is used to initialize i18n synchronously
+// Initialize i18n once at module level (before any components)
 let i18nInitialized = false;
-const initializeI18n = (locale) => {
-  if (!i18nInitialized) {
-    i18nInitialized = true;
-    i18n
-      .use(initReactI18next)
-      .init({
-        resources: {
-          en: {
-            translation: enTranslations,
-          },
-          ar: {
-            translation: arTranslations,
-          },
+if (!i18nInitialized) {
+  i18nInitialized = true;
+  i18n
+    .use(initReactI18next)
+    .init({
+      resources: {
+        en: {
+          translation: enTranslations,
         },
-        lng: locale, // Use server-provided locale from cookie
-        fallbackLng: 'en',
-        interpolation: {
-          escapeValue: false,
+        ar: {
+          translation: arTranslations,
         },
-        react: {
-          useSuspense: false,
-        },
-        initImmediate: true, // Initialize immediately, synchronously
-      });
-  }
-};
+      },
+      lng: 'en', // Default, will be synced in useEffect
+      fallbackLng: 'en',
+      interpolation: {
+        escapeValue: false,
+      },
+      react: {
+        useSuspense: false,
+      },
+    });
+}
 
 export const changeLanguage = (lang) => {
   // Validate language
@@ -62,31 +58,19 @@ export const changeLanguage = (lang) => {
   
   // Save preference to cookie - using 'lang' cookie only
   if (typeof window !== 'undefined') {
-    setCookie('lang', lang, 365); // Store for 1 year
+    setCookie('lang', lang, 365);
   }
 };
 
+// Client component - only syncs i18n in useEffect
+// No rendering logic, no state updates in render
 export default function I18nProvider({ children, initialLocale = 'en' }) {
-  // Validate locale from server
+  // Validate locale from server (set by middleware)
   const locale = (initialLocale === 'en' || initialLocale === 'ar') ? initialLocale : 'en';
   
-  // Initialize i18n synchronously with server locale BEFORE first render
-  // This ensures translations are loaded before any component renders
-  if (!i18nInitialized) {
-    initializeI18n(locale);
-  } else if (i18n.language !== locale) {
-    // If already initialized but locale doesn't match, update it synchronously
-    i18n.changeLanguage(locale);
-  }
-  
+  // Only sync i18n in useEffect - no rendering logic, no state updates in render
   useEffect(() => {
-    // Update HTML tag attributes when locale changes (client-side only)
-    if (typeof document !== 'undefined' && locale) {
-      document.documentElement.lang = locale;
-      document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
-    }
-    
-    // Ensure language stays in sync
+    // Sync i18n language with server-provided locale
     if (i18n.isInitialized && i18n.language !== locale) {
       i18n.changeLanguage(locale);
     }
