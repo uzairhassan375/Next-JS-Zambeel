@@ -4,6 +4,23 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 
+// Cookie utility functions
+const getCookie = (name) => {
+  if (typeof document === 'undefined') return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+};
+
+const setCookie = (name, value, days = 365) => {
+  if (typeof document === 'undefined') return;
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  const expires = `expires=${date.toUTCString()}`;
+  document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+};
+
 const ComingSoon = ({ title, description }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
@@ -15,10 +32,21 @@ const ComingSoon = ({ title, description }) => {
     seconds: 0,
   });
 
-  // Countdown timer (example: 30 days from now)
+  // Countdown timer (10 days) - persists across page refreshes using cookies
   useEffect(() => {
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 30);
+    // Get target date from cookie or create new one
+    let targetDate;
+    const savedTargetDate = getCookie('supplier_countdown_target');
+    
+    if (savedTargetDate) {
+      // Use saved target date from cookie
+      targetDate = new Date(parseInt(savedTargetDate, 10));
+    } else {
+      // First visit: set target date to 10 days from now and save to cookie
+      targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 10);
+      setCookie('supplier_countdown_target', targetDate.getTime().toString(), 11); // Store for 11 days to be safe
+    }
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -30,6 +58,14 @@ const ComingSoon = ({ title, description }) => {
           hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((distance % (1000 * 60)) / 1000),
+        });
+      } else {
+        // Timer expired
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
         });
       }
     }, 1000);

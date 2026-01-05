@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 import Marquee from 'react-fast-marquee';
 
 const SuperClassPage = () => {
@@ -66,19 +67,23 @@ const SuperClassPage = () => {
   const instructors = [
     {
       name: 'Waleed Ali',
-      role: t('superClass.instructors.waleed.role', { defaultValue: 'Community Operations & Seller Training Expert' })
+      role: t('superClass.instructors.waleed.role', { defaultValue: 'Community Operations & Seller Training Expert' }),
+      image: '/assets/instructors/1.jpeg'
     },
     {
       name: 'Ilqa Rasul',
-      role: t('superClass.instructors.ilqa.role', { defaultValue: 'Product Hunting & Creative Strategy Expert' })
+      role: t('superClass.instructors.ilqa.role', { defaultValue: 'Product Hunting & Creative Strategy Expert' }),
+      image: '/assets/instructors/2.jpeg'
     },
     {
       name: 'Ibrahim Ahmed',
-      role: t('superClass.instructors.ibrahim.role', { defaultValue: 'Meta & TikTok Marketing Expert' })
+      role: t('superClass.instructors.ibrahim.role', { defaultValue: 'Meta & TikTok Marketing Expert' }),
+      image: '/assets/instructors/3.jpeg'
     },
     {
       name: 'Farah Kiran',
-      role: t('superClass.instructors.farah.role', { defaultValue: 'Shopify & Marketing Expert' })
+      role: t('superClass.instructors.farah.role', { defaultValue: 'Shopify & Marketing Expert' }),
+      image: '/assets/instructors/4.jpeg'
     }
   ];
 
@@ -252,10 +257,14 @@ const SuperClassPage = () => {
                 key={index}
                 className="bg-[#E7EFFC] rounded-xl p-6 text-center border-2 border-transparent hover:border-[#FCD64C] transition-all duration-300 hover:shadow-lg"
               >
-                <div className="w-24 h-24 bg-[#2E3B78] rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-white text-2xl font-bold">
-                    {instructor.name.split(' ').map(n => n[0]).join('')}
-                  </span>
+                <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center relative">
+                  <Image
+                    src={instructor.image}
+                    alt={instructor.name}
+                    width={96}
+                    height={96}
+                    className="w-full h-full object-cover rounded-full"
+                  />
                 </div>
                 <h3 className="text-lg font-bold text-[#2E3B78] mb-2">
                   {instructor.name}
