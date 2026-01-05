@@ -58,6 +58,11 @@ export default function Footer() {
                 {t('header.zambeel360')}
               </Link>
             </li>
+            <li>
+              <a href="https://storeintel.tools/" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
+                {t('footer.storeIntel')}
+              </a>
+            </li>
           </ul>
         </div>
         <div className="pt-2 md:pl-4 flex flex-col">
