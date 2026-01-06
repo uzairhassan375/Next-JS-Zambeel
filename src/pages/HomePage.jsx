@@ -335,7 +335,7 @@ export default function HomePage() {
             />
           </div>
           <div className="relative inline-block px-4 w-full max-w-full">
-            <h1 className="text-[#2E3B78] text-xl md:text-2xl font-bold leading-normal relative">
+            <h1 className="text-[#2E3B78] text-xl md:text-3xl font-bold leading-normal relative">
               {t('homepage.hero.title')}
               <span className="bg-[#FCD64C] px-5 py-1 rounded-full mx-1 inline-block w-[105px] text-center">
                 {numberText}
@@ -396,7 +396,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <Ticker />
+      {currentLanguage !== 'ar' && <Ticker />}
 
       <section id="where-to-sell" className="w-full lg:bg-[#FDE8E9] pt-2 pb-0 md:pt-8 md:pb-8 px-4 flex justify-center">
         <div className="max-w-[1200px] w-full mx-auto bg-white rounded-[2.5rem] p-6 lg:px-12 lg:py-6">

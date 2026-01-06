@@ -89,7 +89,12 @@ const Wts = ({
   
   const handleButtonClick = () => {
     if (buttonLink) {
-      window.location.href = buttonLink;
+      // Check if it's an external link (http/https)
+      if (buttonLink.startsWith('http://') || buttonLink.startsWith('https://')) {
+        window.open(buttonLink, '_blank', 'noopener,noreferrer');
+      } else {
+        window.location.href = buttonLink;
+      }
     } else {
       // Default: redirect to login page
       window.location.href = 'https://portal.myzambeel.com/login';

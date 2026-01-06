@@ -199,9 +199,14 @@ const Zambeel360Page = () => {
             </div>
             {/* Get Started Button */}
             <div className="flex justify-center mb-8">
-              <button className="bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg">
+              <a 
+                href="https://wa.me/971568472271?text=I%20want%20to%20start%20with%20Zambeel%20360%20or%20Zambeel%203PL.%20Please%20assign%20me%20an%20account%20manager"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg inline-block"
+              >
                 {t('common.talkToAgent')}
-              </button>
+              </a>
             </div>
           </div>
           <div className="max-w-md md:max-w-2xl mx-auto">
@@ -397,6 +402,7 @@ const Zambeel360Page = () => {
         title={t('zambeel360.whereToStart.title')}
         description={t('zambeel360.whereToStart.description')}
         buttonText={t('common.talkToAgent')}
+        buttonLink="https://wa.me/971568472271?text=I%20want%20to%20start%20with%20Zambeel%20360%20or%20Zambeel%203PL.%20Please%20assign%20me%20an%20account%20manager"
         steps={[
           {
             number: 1,
