@@ -48,7 +48,11 @@ export default function Header({ theme = "dark" }) {
     
     if (lang === 'ar') {
       // Switch to Arabic: add /ar prefix
-      if (currentPath === '/') {
+      // Check if already on Arabic route
+      if (currentPath.startsWith('/ar')) {
+        // Already on Arabic route, don't change
+        newPath = currentPath;
+      } else if (currentPath === '/') {
         newPath = '/ar';
       } else {
         // Remove leading slash, add /ar prefix
