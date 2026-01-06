@@ -8,9 +8,10 @@ export default function WhatsAppFloat() {
   const currentLanguage = i18n.language || 'en';
 
   const getWhatsAppLink = () => {
-    return currentLanguage === 'ar' 
-      ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I' // Arabic WhatsApp channel link
-      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'; // English WhatsApp channel link
+    // Support phone number: +971 56 847 2271
+    // Format: remove spaces, plus sign, and use wa.me format
+    const phoneNumber = '971568472271';
+    return `https://wa.me/${phoneNumber}`;
   };
 
   const handleClick = () => {

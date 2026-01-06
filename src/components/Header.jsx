@@ -29,8 +29,10 @@ export default function Header({ theme = "dark" }) {
   };
 
   const getFacebookLink = () => {
-    return 'https://www.facebook.com/share/1CHT3yCtCm/'; // Facebook page link
-  };
+     return currentLanguage === 'ar'
+     ? 'https://www.facebook.com/share/g/1Akg1x5P4G/?mibextid=wwXIfr' // Arabic Facebook channel link
+     : 'https://www.facebook.com/share/g/1DAxzz9dQo/?mibextid=wwXIfr'; // English Facebook channel link
+ };
 
   const getLinkedInLink = () => {
     return 'https://www.linkedin.com/company/myzambeel/'; // LinkedIn company page

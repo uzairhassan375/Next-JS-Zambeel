@@ -335,7 +335,7 @@ export default function HomePage() {
             />
           </div>
           <div className="relative inline-block px-4 w-full max-w-full">
-            <h1 className="text-[#2E3B78] text-xl md:text-lg font-bold leading-normal relative">
+            <h1 className="text-[#2E3B78] text-xl md:text-2xl font-bold leading-normal relative">
               {t('homepage.hero.title')}
               <span className="bg-[#FCD64C] px-5 py-1 rounded-full mx-1 inline-block w-[105px] text-center">
                 {numberText}

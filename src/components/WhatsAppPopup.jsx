@@ -12,6 +12,8 @@ export default function WhatsAppPopup() {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
 
+
+
   useEffect(() => {
     // Show popup after 2.5 seconds
     const timer = setTimeout(() => {
@@ -31,12 +33,24 @@ export default function WhatsAppPopup() {
     window.open(getWhatsAppLink(), '_blank', 'noopener,noreferrer');
   };
 
+  const getInstagramLink = () => {
+    return currentLanguage === 'ar'
+      ? 'https://www.instagram.com/zambeel_arabia?igsh=MWg0emhiMndqY3lq' // Arabic Instagram link
+      : 'https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4'; // English Instagram link
+  };
+
+  const getFacebookLink = () => {
+    return currentLanguage === 'ar'
+      ? 'https://www.facebook.com/share/1AMQmX7cT6/?mibextid=wwXIfr' // Arabic Facebook link
+      : 'https://www.facebook.com/share/1CHT3yCtCm/'; // English Facebook link
+  };
+
   const handleInstagramClick = () => {
-    window.open('https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4', '_blank', 'noopener,noreferrer');
+    window.open(getInstagramLink(), '_blank', 'noopener,noreferrer');
   };
 
   const handleFacebookClick = () => {
-    window.open('https://www.facebook.com/share/1CHT3yCtCm/', '_blank', 'noopener,noreferrer');
+    window.open(getFacebookLink(), '_blank', 'noopener,noreferrer');
   };
 
   return (
