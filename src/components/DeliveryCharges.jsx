@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 const DeliveryCharges = ({ 
@@ -9,6 +12,8 @@ const DeliveryCharges = ({
 }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
+  const [selectedCountryIndex, setSelectedCountryIndex] = useState(0);
+  const selectedCountry = countries[selectedCountryIndex];
 
   // Helper function to translate currency symbols and "Days" in values
   const translateValue = (value) => {
@@ -93,6 +98,24 @@ const DeliveryCharges = ({
             </clipPath>
           </defs>
         </svg>
+      ),
+      Oman: (
+        <Image
+          src="https://flagcdn.com/w160/om.png"
+          width={64}
+          height={64}
+          className="w-full h-full object-cover rounded-full"
+          alt="Oman"
+        />
+      ),
+      Bahrain: (
+        <Image
+          src="https://flagcdn.com/w160/bh.png"
+          width={64}
+          height={64}
+          className="w-full h-full object-cover rounded-full"
+          alt="Bahrain"
+        />
       )
     };
     return flags[countryCode] || null;
@@ -111,8 +134,80 @@ const DeliveryCharges = ({
           </p>
         </div>
 
-        {/* Delivery Charges Table */}
-        <div className="bg-white rounded-lg md:rounded-xl lg:rounded-2xl shadow-lg overflow-hidden mb-4 md:mb-6 overflow-x-auto">
+        {/* Mobile Tab View (hidden on md and above) */}
+        <div className="md:hidden">
+          <div className="flex gap-3">
+            {/* Country Tabs - Left Side */}
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-shrink-0">
+              <div className="flex flex-col">
+                {countries.map((country, index) => (
+                  <button
+                    key={country.code}
+                    onClick={() => setSelectedCountryIndex(index)}
+                    className={`px-4 py-3 border-b border-gray-200 last:border-b-0 transition-all duration-300 text-left ${
+                      selectedCountryIndex === index
+                        ? 'bg-[#243a86] text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="text-xs font-semibold leading-tight whitespace-nowrap">{country.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Selected Country Breakdown - Right Side */}
+            {selectedCountry && (
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1">
+                {/* Country Header */}
+                <div className="bg-[#243a86] text-white p-4">
+                  <div className="flex items-center gap-3 justify-center">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-white p-1 flex-shrink-0">
+                      {getCountryFlag(selectedCountry.code)}
+                    </div>
+                    <div className="flex flex-col items-center flex-1">
+                      <div className="text-base font-bold">{selectedCountry.name}</div>
+                      <div className="text-xs text-gray-300">{translateCurrencyCode(selectedCountry.currency)}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Breakdown List */}
+                <div className="divide-y divide-gray-200">
+                  {charges.map((charge, index) => (
+                    <div
+                      key={index}
+                      className={`p-4 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          {charge.icon && <span className="text-yellow-500 text-base flex-shrink-0">{charge.icon}</span>}
+                          <div className="flex flex-col min-w-0">
+                            {charge.label.includes(' / ') ? (
+                              charge.label.split(' / ').map((part, partIndex) => (
+                                <span key={partIndex} className="text-xs text-gray-800 leading-tight">
+                                  {part}
+                                </span>
+                              ))
+                            ) : (
+                              <span className="text-xs text-gray-800 leading-tight break-words">{charge.label}</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-sm font-bold text-gray-700 flex-shrink-0">
+                          {translateValue(charge.values[selectedCountry.code]) || '-'}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Desktop Table View (hidden on mobile, shown on md and above) */}
+        <div className="hidden md:block bg-white rounded-lg md:rounded-xl lg:rounded-2xl shadow-lg overflow-hidden mb-4 md:mb-6 overflow-x-auto">
           <div className="min-w-full">
             {/* Table Header */}
             <div className="bg-[#243a86] text-white">
@@ -168,6 +263,17 @@ const DeliveryCharges = ({
           </div>
         </div>
       </div>
+
+      {/* Hide scrollbar styles */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 };

@@ -12,6 +12,26 @@ const SuperClassPage = () => {
   const isRTL = currentLanguage === 'ar';
   const registerLink = 'https://docs.google.com/forms/d/e/1FAIpQLSeA4WTKzxanXcM4inCxjpGsimihwMlbQh50dK1UMSjUhPEzYQ/viewform';
 
+  // Text carousel state - MUST be declared before any conditional returns
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  
+  const carouselTexts = [
+    t('superClass.hero.carousel.productHunting', { defaultValue: 'Product Hunting' }),
+    t('superClass.hero.carousel.creativeHunting', { defaultValue: 'Creative Hunting' }),
+    t('superClass.hero.carousel.websiteDesign', { defaultValue: 'Website Design' }),
+    t('superClass.hero.carousel.digitalMarketing', { defaultValue: 'Digital Marketing' })
+  ];
+
+  // Auto-rotate text every 3.5 seconds - MUST be declared before any conditional returns
+  useEffect(() => {
+    if (currentLanguage === 'ar') return; // Early exit for Arabic, but hook still called
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % carouselTexts.length);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [carouselTexts.length, t, currentLanguage]);
+
   // Show Coming Soon page for Arabic language
   if (currentLanguage === 'ar') {
     return (
@@ -22,25 +42,6 @@ const SuperClassPage = () => {
       />
     );
   }
-
-  // Text carousel state
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  
-  const carouselTexts = [
-    t('superClass.hero.carousel.productHunting', { defaultValue: 'Product Hunting' }),
-    t('superClass.hero.carousel.creativeHunting', { defaultValue: 'Creative Hunting' }),
-    t('superClass.hero.carousel.websiteDesign', { defaultValue: 'Website Design' }),
-    t('superClass.hero.carousel.digitalMarketing', { defaultValue: 'Digital Marketing' })
-  ];
-
-  // Auto-rotate text every 3.5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % carouselTexts.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [carouselTexts.length, t]);
 
   // Moving ticker content
   const tickerText = t('superClass.ticker', { 
@@ -82,7 +83,7 @@ const SuperClassPage = () => {
   const instructors = [
     {
       name: 'Waleed Ali',
-      role: t('superClass.instructors.waleed.role', { defaultValue: 'Community Operations & Seller Training Expert' }),
+      role: t('superClass.instructors.waleed.role', { defaultValue: 'Community & Seller Training Lead' }),
       image: '/assets/instructors/1.jpeg'
     },
     {
@@ -97,7 +98,7 @@ const SuperClassPage = () => {
     },
     {
       name: 'Farah Kiran',
-      role: t('superClass.instructors.farah.role', { defaultValue: 'Shopify & Marketing Expert' }),
+      role: t('superClass.instructors.farah.role', { defaultValue: 'Shopify Store & Marketing Specialist' }),
       image: '/assets/instructors/4.jpeg'
     }
   ];
