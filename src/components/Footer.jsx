@@ -102,7 +102,13 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <i className="fa-brands fa-whatsapp w-4"></i>
-              <a href="#" className="hover:text-white hover:underline" dir="ltr">
+              <a 
+                href="https://wa.me/971568472271" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-white hover:underline" 
+                dir="ltr"
+              >
                 {t('footer.phone')}
               </a>
             </li>
