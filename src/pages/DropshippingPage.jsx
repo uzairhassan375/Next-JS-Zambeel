@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import PricingSection from "../components/PricingSection.jsx"; 
 import TrendingProducts from "../components/dropshiping_components/TrendingProducts.jsx"; 
@@ -152,7 +153,7 @@ const DropshippingPage = () => {
           {/* Bottom: Other services available */}
           <div className="bg-gray-100 px-4 pt-2 pb-3 rounded-b-[32px]" style={{ filter: 'grayscale(100%)', opacity: 0.6 }}>
             <p className="text-gray-500 font-bold text-lg mb-3 text-center">{t('dropshipping.hero.otherServices')}</p>
-            <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap">
               {/* Qatar */}
               <div className="flex flex-col items-center">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow" style={{ filter: 'grayscale(100%)' }}>
@@ -175,6 +176,32 @@ const DropshippingPage = () => {
                   </div>
                 </div>
                 <span className="text-gray-500 font-semibold text-xs">{t('countries.Kuwait')}</span>
+              </div>
+              {/* Oman */}
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow overflow-hidden border border-gray-400" style={{ filter: 'grayscale(100%)' }}>
+                  <Image
+                    src="https://flagcdn.com/w80/om.png"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
+                    alt="Oman"
+                  />
+                </div>
+                <span className="text-gray-500 font-semibold text-xs">{t('countries.Oman')}</span>
+              </div>
+              {/* Bahrain */}
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow overflow-hidden border border-gray-400" style={{ filter: 'grayscale(100%)' }}>
+                  <Image
+                    src="https://flagcdn.com/w80/bh.png"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
+                    alt="Bahrain"
+                  />
+                </div>
+                <span className="text-gray-500 font-semibold text-xs">{t('countries.Bahrain')}</span>
               </div>
             </div>
           </div>

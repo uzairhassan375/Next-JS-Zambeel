@@ -21,7 +21,7 @@ const setCookie = (name, value, days = 365) => {
   document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
 };
 
-const ComingSoon = ({ title, description }) => {
+const ComingSoon = ({ title, description, cookieName = 'supplier_countdown_target' }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const isRTL = currentLanguage === 'ar';
@@ -36,7 +36,7 @@ const ComingSoon = ({ title, description }) => {
   useEffect(() => {
     // Get target date from cookie or create new one
     let targetDate;
-    const savedTargetDate = getCookie('supplier_countdown_target');
+    const savedTargetDate = getCookie(cookieName);
     
     if (savedTargetDate) {
       // Use saved target date from cookie
@@ -45,7 +45,7 @@ const ComingSoon = ({ title, description }) => {
       // First visit: set target date to 10 days from now and save to cookie
       targetDate = new Date();
       targetDate.setDate(targetDate.getDate() + 10);
-      setCookie('supplier_countdown_target', targetDate.getTime().toString(), 11); // Store for 11 days to be safe
+      setCookie(cookieName, targetDate.getTime().toString(), 11); // Store for 11 days to be safe
     }
 
     const timer = setInterval(() => {
@@ -71,7 +71,7 @@ const ComingSoon = ({ title, description }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [cookieName]);
 
   return (
     <div
@@ -170,13 +170,22 @@ const ComingSoon = ({ title, description }) => {
             <i className="fa-brands fa-whatsapp text-white text-xl"></i>
           </a>
           <a
-            href="https://www.facebook.com/share/1CHT3yCtCm/"
+            href={i18n.language === 'ar' ? 'https://www.facebook.com/share/1AMQmX7cT6/?mibextid=wwXIfr' : 'https://www.facebook.com/share/1CHT3yCtCm/'}
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"
             aria-label="Facebook"
           >
             <i className="fa-brands fa-facebook-f text-white text-xl"></i>
+          </a>
+          <a
+            href={i18n.language === 'ar' ? 'https://www.instagram.com/zambeel_arabia?igsh=MWg0emhiMndqY3lq' : 'https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"
+            aria-label="Instagram"
+          >
+            <i className="fa-brands fa-instagram text-white text-xl"></i>
           </a>
         </div>
       </div>

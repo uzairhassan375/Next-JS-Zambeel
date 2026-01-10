@@ -16,7 +16,7 @@
       "dropshipping": "Dropshipping",
       "zambeel3PL": "Zambeel 3PL",
       "zambeel360": "Zambeel 360",
-      "learnEcomm": "Learn E-comm",
+      "learnEcomm": "Learn E-commerce",
       "dropshippingProducts": "Dropshipping Products",
       "whereCanYouSell": "Where can you sell?",
       "whyZambeel": "Why Zambeel?",
@@ -409,7 +409,9 @@
     "KSA": "KSA",
     "Qatar": "Qatar",
     "Kuwait": "Kuwait",
-    "Pakistan": "Pakistan"
+    "Pakistan": "Pakistan",
+    "Oman": "Oman",
+    "Bahrain": "Bahrain"
   },
   "trendingProducts": {
     "sold": "sold",
@@ -473,8 +475,14 @@
   "superClass": {
     "ticker": "Starts 23 January 2026 · Live Online · 3 Seats Left",
     "hero": {
-      "title": "Learn, Launch & Scale a Profitable E-commerce Store in Just 4 Weeks",
-      "subtitle": "Don't just study e-commerce. Launch it LIVE - Step by Step with Ecommerce Experts",
+      "title": "Learn E-commerce",
+      "subtitle": "Don't just study e-commerce. Launch it LIVE - Step by Step with E-commerce Experts",
+      "carousel": {
+        "productHunting": "Product Hunting",
+        "creativeHunting": "Creative Hunting",
+        "websiteDesign": "Website Design",
+        "digitalMarketing": "Digital Marketing"
+      },
       "duration": "4 Weeks",
       "liveClasses": "Live Classes",
       "buildLive": "Build Everything Live",
@@ -485,7 +493,8 @@
       "joinZambeel": "Join the Zambeel Super Class"
     },
     "whoIsThisFor": {
-      "title": "WHO IS THIS CLASS FOR?"
+      "title": "WHO IS THIS CLASS FOR?",
+      "everyone": "For EVERYONE who wants to start and scale E-commerce business"
     },
     "targetAudience": {
       "item1": "You want to start ecommerce business",
@@ -510,7 +519,7 @@
     },
     "instructors": {
       "title": "Super Instructors for SuperClass",
-      "subtitle": "Top Industry Experts - Building your Ecommerce Business LIVE with you!",
+      "subtitle": "Top Industry Experts - Building your E-commerce Business LIVE with you!",
       "waleed": {
         "role": "Community Operations & Seller Training Expert"
       },

@@ -409,7 +409,9 @@
         "KSA": "السعودية",
         "Qatar": "قطر",
         "Kuwait": "الكويت",
-        "Pakistan": "باكستان"
+        "Pakistan": "باكستان",
+        "Oman": "عُمان",
+        "Bahrain": "البحرين"
     },
     "trendingProducts": {
         "sold": "مباع",

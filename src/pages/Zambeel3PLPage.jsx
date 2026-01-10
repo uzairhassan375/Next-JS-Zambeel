@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import PricingSection from '../components/PricingSection';
 import WhyZambeel from '../components/dropshiping_components/WhyZambeel';
@@ -261,7 +262,7 @@ const Zambeel3PLPage = () => {
                     <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Pakistan')}</span>
                   </div>
                 </div>
-                <div className="flex justify-center items-center gap-12 md:contents">
+                <div className="flex justify-center items-center gap-6 md:gap-12 md:contents flex-wrap">
                   <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
                       <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden relative">
@@ -282,6 +283,34 @@ const Zambeel3PLPage = () => {
                       </div>
                     </div>
                     <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Qatar')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/om.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="Oman"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Oman')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/bh.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="Bahrain"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Bahrain')}</span>
                   </div>
                 </div>
               </div>
@@ -511,6 +540,8 @@ const Zambeel3PLPage = () => {
           { code: "KSA", name: t('countries.KSA'), currency: "SAR" },
           { code: "Kuwait", name: t('countries.Kuwait'), currency: "AED" },
           { code: "Qatar", name: t('countries.Qatar'), currency: "AED" },
+          { code: "Oman", name: t('countries.Oman'), currency: "AED" },
+          { code: "Bahrain", name: t('countries.Bahrain'), currency: "AED" },
           { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" }
         ]}
         charges={[
@@ -521,6 +552,8 @@ const Zambeel3PLPage = () => {
               KSA: "28 SAR",
               Kuwait: "30 AED",
               Qatar: "25 AED",
+              Oman: "25 AED",
+              Bahrain: "25 AED",
               Pakistan: "350 PKR"
             }
           },
@@ -531,6 +564,8 @@ const Zambeel3PLPage = () => {
               KSA: "7.5 SAR",
               Kuwait: "15 AED",
               Qatar: "5 AED",
+              Oman: "5 AED",
+              Bahrain: "5 AED",
               Pakistan: "350 PKR"
             }
           },
@@ -541,6 +576,8 @@ const Zambeel3PLPage = () => {
               KSA: "0%",
               Kuwait: "0%",
               Qatar: "0%",
+              Oman: "0%",
+              Bahrain: "0%",
               Pakistan: "4%"
             }
           },
@@ -552,6 +589,8 @@ const Zambeel3PLPage = () => {
               KSA: "1-3 Days",
               Kuwait: "1-2 Days",
               Qatar: "1-2 Days",
+              Oman: "1-2 Days",
+              Bahrain: "1-2 Days",
               Pakistan: "1-3 Days"
             }
           }

@@ -189,6 +189,8 @@ export default function HomePage() {
     { name: "KSA", code: "sa", services: ["Dropshipping", "360", "3PL"] },
     { name: "Qatar", code: "qa", services: ["360", "3PL"] },
     { name: "Kuwait", code: "kw", services: ["360", "3PL"] },
+    { name: "Oman", code: "om", services: ["360", "3PL"] },
+    { name: "Bahrain", code: "bh", services: ["360", "3PL"] },
     { name: "Pakistan", code: "pk", services: ["Dropshipping", "360", "3PL"] },
   ];
 
@@ -465,7 +467,7 @@ export default function HomePage() {
               <p className="text-[#4A5568] text-xs leading-relaxed mb-5">
                 {selectedCountry === "Pakistan"
                   ? t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
-                  : selectedCountry === "Qatar" || selectedCountry === "Kuwait"
+                  : selectedCountry === "Qatar" || selectedCountry === "Kuwait" || selectedCountry === "Oman" || selectedCountry === "Bahrain"
                     ? t('homepage.whereToSell.description.noDropshipping', { country: translateCountryName(selectedCountry) })
                     : t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
                 }
@@ -578,7 +580,7 @@ export default function HomePage() {
               <p className="text-[#4A5568] text-sm lg:text-base leading-relaxed mb-4">
                 {selectedCountry === "Pakistan"
                   ? t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
-                  : selectedCountry === "Qatar" || selectedCountry === "Kuwait"
+                  : selectedCountry === "Qatar" || selectedCountry === "Kuwait" || selectedCountry === "Oman" || selectedCountry === "Bahrain"
                     ? t('homepage.whereToSell.description.noDropshipping', { country: translateCountryName(selectedCountry) })
                     : t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
                 }
