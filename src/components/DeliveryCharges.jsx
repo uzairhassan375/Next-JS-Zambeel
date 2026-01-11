@@ -207,17 +207,19 @@ const DeliveryCharges = ({
               >
                 {/* Country Header */}
                 <div 
-                  className="text-white p-2 flex-shrink-0 relative"
+                  className="text-white p-2 flex-shrink-0"
                   style={{
                     background: 'linear-gradient(135deg, rgba(46, 59, 120, 1) 0%, rgba(74, 97, 196, 0.95) 100%)'
                   }}
                 >
-                  <div className="w-10 h-7 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 absolute left-14 border-2 border-white">
-                    {getCountryFlag(selectedCountry.code)}
-                  </div>
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="text-xs font-bold">{selectedCountry.name}</div>
-                    <div className="text-[9px] text-gray-300">{translateCurrencyCode(selectedCountry.currency)}</div>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-10 h-7 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 border-2 border-white">
+                      {getCountryFlag(selectedCountry.code)}
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="text-xs font-bold">{selectedCountry.name}</div>
+                      <div className="text-[9px] text-gray-300">{translateCurrencyCode(selectedCountry.currency)}</div>
+                    </div>
                   </div>
                 </div>
 
