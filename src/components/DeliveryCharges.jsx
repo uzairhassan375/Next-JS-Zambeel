@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
@@ -14,6 +14,35 @@ const DeliveryCharges = ({
   const currentLanguage = i18n.language || 'en';
   const [selectedCountryIndex, setSelectedCountryIndex] = useState(0);
   const selectedCountry = countries[selectedCountryIndex];
+  const flagsContainerRef = useRef(null);
+  const flagRefs = useRef({});
+
+  // Scroll selected flag into view
+  useEffect(() => {
+    if (flagsContainerRef.current && flagRefs.current[selectedCountryIndex]) {
+      const flagElement = flagRefs.current[selectedCountryIndex];
+      const container = flagsContainerRef.current;
+      
+      const flagTop = flagElement.offsetTop;
+      const flagHeight = flagElement.offsetHeight;
+      const containerHeight = container.clientHeight;
+      const scrollTop = container.scrollTop;
+      
+      // Calculate if flag is visible (showing ~4 flags at a time)
+      const flagBottom = flagTop + flagHeight;
+      const visibleTop = scrollTop;
+      const visibleBottom = scrollTop + containerHeight;
+      
+      // Scroll to center the selected flag if it's not fully visible
+      if (flagTop < visibleTop || flagBottom > visibleBottom) {
+        const targetScroll = flagTop - (containerHeight / 2) + (flagHeight / 2);
+        container.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [selectedCountryIndex]);
 
   // Helper function to translate currency symbols and "Days" in values
   const translateValue = (value) => {
@@ -43,82 +72,34 @@ const DeliveryCharges = ({
     }
     return currencyCode;
   };
-  // Helper function to get country flag SVG
-  const getCountryFlag = (countryCode) => {
-    const flags = {
-      UAE: (
-        <div className="w-full h-full rounded-full overflow-hidden relative">
-          <div className="absolute inset-0 flex flex-col">
-            <div className="h-1/3 bg-green-600"></div>
-            <div className="h-1/3 bg-white"></div>
-            <div className="h-1/3 bg-black"></div>
-          </div>
-          <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-red-600"></div>
-        </div>
-      ),
-      KSA: (
-        <svg width="96" height="96" viewBox="0 0 96 96" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="48" cy="48" r="34" fill="#6DA544" />
-          <path d="M34 58C34 60.7614 36.2386 63 39 63H53C53 65.2091 54.7909 67 57 67H61C63.2091 67 65 65.2091 65 63V58H34Z" fill="#F0F0F0" />
-          <path d="M65 36V46C65 47.6569 63.6569 49 62 49V53C65.866 53 69 49.866 69 46V36H65Z" fill="#F0F0F0" />
-          <path d="M32 46C32 47.6569 30.6569 49 29 49V53C32.866 53 36 49.866 36 46V36H32V46Z" fill="#F0F0F0" />
-          <path d="M56 36H60V46H56V36Z" fill="#F0F0F0" />
-          <path d="M50 42C50 42.5523 49.5523 43 49 43C48.4477 43 48 42.5523 48 42V36H44V42C44 42.5523 43.5523 43 43 43C42.4477 43 42 42.5523 42 42V36H38V42C38 44.7614 40.2386 47 43 47C44.1046 47 45.1046 46.6569 46 46C46.8954 46.6569 47.8954 47 49 47C49.1843 47 49.364 46.987 49.538 46.962C49.268 48.378 48.1 49.4 46.7 49.4V53C50.566 53 53.7 49.866 53.7 46V42H50Z" fill="#F0F0F0" />
-          <path d="M38 49H44V53H38V49Z" fill="#F0F0F0" />
-        </svg>
-      ),
-      Kuwait: (
-        <div className="w-full h-full rounded-full overflow-hidden relative">
-          <div className="absolute inset-0 flex flex-col">
-            <div className="h-1/3 bg-green-600"></div>
-            <div className="h-1/3 bg-white"></div>
-            <div className="h-1/3 bg-black"></div>
-          </div>
-          <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-red-600" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}></div>
-        </div>
-      ),
-      Qatar: (
-        <div className="w-full h-full rounded-full overflow-hidden relative">
-          <div className="absolute inset-0 bg-[#8B1538]"></div>
-          <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-white" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 20%, 100% 30%, 100% 70%, 0 80%)' }}></div>
-        </div>
-      ),
-      Pakistan: (
-        <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-          <g clipPath="url(#clip-pk)">
-            <path d="M48 86C70.0914 86 88 68.0914 88 46C88 23.9086 70.0914 6 48 6C25.9086 6 8 23.9086 8 46C8 68.0914 25.9086 86 48 86Z" fill="#F0F0F0" />
-            <path d="M8 45.9997C8 61.1614 16.4358 74.3519 28.8695 81.1361V10.8633C16.4358 17.6475 8 30.838 8 45.9997Z" fill="#F0F0F0" />
-            <path d="M48.0035 6C41.0738 6 34.556 7.76297 28.873 10.8636V81.1363C34.556 84.237 41.0738 86 48.0035 86C70.0948 86 88.0035 68.0913 88.0035 46C88.0035 23.9087 70.0948 6 48.0035 6Z" fill="#496E2D" />
-            <path d="M65.1017 52.6155C60.0412 56.2719 52.9746 55.1338 49.3184 50.0735C45.6618 45.0129 46.8001 37.9465 51.8606 34.2902C53.4384 33.1502 55.2112 32.4763 57.0148 32.2421C53.5449 31.7232 49.877 32.5051 46.8087 34.7221C40.5806 39.2224 39.1795 47.9194 43.6796 54.1479C48.1798 60.3758 56.877 61.7771 63.1054 57.2765C66.174 55.0594 68.0679 51.823 68.6645 48.3654C67.876 50.0038 66.6796 51.4754 65.1017 52.6155Z" fill="#F0F0F0" />
-            <path d="M64.8824 32.0879L67.733 35.1599L71.5355 33.3987L69.4945 37.0587L72.3449 40.131L68.233 39.3209L66.1921 42.9812L65.692 38.8202L61.5801 38.0101L65.3827 36.2488L64.8824 32.0879Z" fill="#F0F0F0" />
-          </g>
-          <defs>
-            <clipPath id="clip-pk">
-              <rect width="80" height="80" transform="translate(8 6)" />
-            </clipPath>
-          </defs>
-        </svg>
-      ),
-      Oman: (
-        <Image
-          src="https://flagcdn.com/w160/om.png"
-          width={64}
-          height={64}
-          className="w-full h-full object-cover rounded-full"
-          alt="Oman"
-        />
-      ),
-      Bahrain: (
-        <Image
-          src="https://flagcdn.com/w160/bh.png"
-          width={64}
-          height={64}
-          className="w-full h-full object-cover rounded-full"
-          alt="Bahrain"
-        />
-      )
+  // Helper function to get country flag - mapping country codes to flagcdn.com codes
+  const getCountryFlagCode = (countryCode) => {
+    const codeMap = {
+      'UAE': 'ae',
+      'KSA': 'sa',
+      'Kuwait': 'kw',
+      'Qatar': 'qa',
+      'Oman': 'om',
+      'Bahrain': 'bh',
+      'Pakistan': 'pk'
     };
-    return flags[countryCode] || null;
+    return codeMap[countryCode] || null;
+  };
+
+  // Helper function to get country flag
+  const getCountryFlag = (countryCode) => {
+    const flagCode = getCountryFlagCode(countryCode);
+    if (!flagCode) return null;
+
+    return (
+      <Image
+        src={`https://flagcdn.com/w160/${flagCode}.png`}
+        width={160}
+        height={120}
+        className="w-full h-full object-cover"
+        alt={countryCode}
+      />
+    );
   };
 
   return (
@@ -134,67 +115,139 @@ const DeliveryCharges = ({
           </p>
         </div>
 
-        {/* Mobile Tab View (hidden on md and above) */}
+        {/* Mobile Flag View (hidden on md and above) */}
         <div className="md:hidden">
-          <div className="flex gap-3">
-            {/* Country Tabs - Left Side */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-shrink-0">
-              <div className="flex flex-col">
-                {countries.map((country, index) => (
-                  <button
-                    key={country.code}
-                    onClick={() => setSelectedCountryIndex(index)}
-                    className={`px-4 py-3 border-b border-gray-200 last:border-b-0 transition-all duration-300 text-left ${
-                      selectedCountryIndex === index
-                        ? 'bg-[#243a86] text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <span className="text-xs font-semibold leading-tight whitespace-nowrap">{country.name}</span>
-                  </button>
-                ))}
+          <div className="flex gap-3 items-stretch">
+            {/* Country Flags - Left Side Panel */}
+            <div 
+              className="flex flex-col items-center justify-between flex-shrink-0 px-2 py-3 rounded-2xl"
+              style={{
+                background: 'linear-gradient(180deg, rgba(46, 59, 120, 0.9) 0%, rgba(74, 97, 196, 0.7) 50%, rgba(46, 59, 120, 0.9) 100%)',
+                boxShadow: '0 4px 20px rgba(46, 59, 120, 0.3)'
+              }}
+            >
+              <button
+                onClick={() => {
+                  const prevIndex = selectedCountryIndex === 0
+                    ? countries.length - 1
+                    : selectedCountryIndex - 1;
+                  setSelectedCountryIndex(prevIndex);
+                }}
+                className="w-10 h-10 rounded-full bg-[#FCD64C] flex items-center justify-center shadow-lg hover:bg-[#E5C043] transition z-10 mb-2"
+                style={{ boxShadow: '0 2px 10px rgba(252, 214, 76, 0.4)' }}
+              >
+                <i className="fa-solid fa-chevron-up text-[#2E3B78] text-sm font-bold"></i>
+              </button>
+              <div className="relative">
+                {/* Top fade gradient */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-6 z-10 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(46, 59, 120, 0.9) 0%, rgba(46, 59, 120, 0) 100%)'
+                  }}
+                />
+                {/* Scrollable flags container - shows exactly 4 flags */}
+                <div 
+                  ref={flagsContainerRef}
+                  className="flex flex-col gap-2.5 items-center h-[220px] overflow-y-auto scrollbar-hide py-2 px-1.5 relative"
+                  style={{ scrollBehavior: 'smooth' }}
+                >
+                  {countries.map((country, index) => (
+                    <div
+                      key={country.code}
+                      ref={(el) => (flagRefs.current[index] = el)}
+                      onClick={() => setSelectedCountryIndex(index)}
+                      className={`w-14 h-10 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-200 relative flex-shrink-0 ${
+                        selectedCountryIndex === index
+                          ? "scale-105"
+                          : "opacity-80 hover:opacity-100"
+                      }`}
+                      style={{
+                        boxShadow: selectedCountryIndex === index 
+                          ? '0 0 0 3px #FCD64C, 0 0 15px rgba(252, 214, 76, 0.6), 0 2px 8px rgba(0, 0, 0, 0.2)' 
+                          : '0 2px 6px rgba(0, 0, 0, 0.15)',
+                      }}
+                    >
+                      <div className="w-full h-full rounded-lg overflow-hidden bg-white">
+                        {getCountryFlag(country.code)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {/* Bottom fade gradient */}
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-6 z-10 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(0deg, rgba(46, 59, 120, 0.9) 0%, rgba(46, 59, 120, 0) 100%)'
+                  }}
+                />
               </div>
+              <button
+                onClick={() => {
+                  const nextIndex = selectedCountryIndex === countries.length - 1
+                    ? 0
+                    : selectedCountryIndex + 1;
+                  setSelectedCountryIndex(nextIndex);
+                }}
+                className="w-10 h-10 rounded-full bg-[#FCD64C] flex items-center justify-center shadow-lg hover:bg-[#E5C043] transition z-10 mt-2"
+                style={{ boxShadow: '0 2px 10px rgba(252, 214, 76, 0.4)' }}
+              >
+                <i className="fa-solid fa-chevron-down text-[#2E3B78] text-sm font-bold"></i>
+              </button>
             </div>
 
-            {/* Selected Country Breakdown - Right Side */}
+            {/* Selected Country Breakdown - Right Side Panel */}
             {selectedCountry && (
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1">
+              <div 
+                className="bg-white rounded-2xl overflow-hidden flex flex-col self-center flex-1 mr-2"
+                style={{
+                  boxShadow: '0 0 0 3px rgba(252, 214, 76, 0.6), 0 0 25px rgba(252, 214, 76, 0.3), 0 8px 30px rgba(46, 59, 120, 0.25)',
+                  minHeight: '260px'
+                }}
+              >
                 {/* Country Header */}
-                <div className="bg-[#243a86] text-white p-4">
-                  <div className="flex items-center gap-3 justify-center">
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-white p-1 flex-shrink-0">
-                      {getCountryFlag(selectedCountry.code)}
-                    </div>
-                    <div className="flex flex-col items-center flex-1">
-                      <div className="text-base font-bold">{selectedCountry.name}</div>
-                      <div className="text-xs text-gray-300">{translateCurrencyCode(selectedCountry.currency)}</div>
-                    </div>
+                <div 
+                  className="text-white p-2 flex-shrink-0 relative"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(46, 59, 120, 1) 0%, rgba(74, 97, 196, 0.95) 100%)'
+                  }}
+                >
+                  <div className="w-10 h-7 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 absolute left-14 border-2 border-white">
+                    {getCountryFlag(selectedCountry.code)}
+                  </div>
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="text-xs font-bold">{selectedCountry.name}</div>
+                    <div className="text-[9px] text-gray-300">{translateCurrencyCode(selectedCountry.currency)}</div>
                   </div>
                 </div>
 
                 {/* Breakdown List */}
-                <div className="divide-y divide-gray-200">
+                <div className="bg-[#FDE8E9] divide-y divide-pink-200 flex-1 overflow-hidden flex flex-col">
                   {charges.map((charge, index) => (
                     <div
                       key={index}
-                      className={`p-4 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+                      className="px-2.5 py-1.5 bg-[#FDE8E9] hover:bg-[#FCE0E1] transition-colors flex-1 flex items-center"
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          {charge.icon && <span className="text-yellow-500 text-base flex-shrink-0">{charge.icon}</span>}
+                      <div className="flex items-center justify-between gap-2 w-full">
+                        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                          {charge.icon && (
+                            <span className="text-[#FCD64C] text-xs flex-shrink-0" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' }}>
+                              {charge.icon}
+                            </span>
+                          )}
                           <div className="flex flex-col min-w-0">
                             {charge.label.includes(' / ') ? (
                               charge.label.split(' / ').map((part, partIndex) => (
-                                <span key={partIndex} className="text-xs text-gray-800 leading-tight">
+                                <span key={partIndex} className="text-[10px] text-gray-800 leading-tight font-medium">
                                   {part}
                                 </span>
                               ))
                             ) : (
-                              <span className="text-xs text-gray-800 leading-tight break-words">{charge.label}</span>
+                              <span className="text-[10px] text-gray-800 leading-tight break-words font-medium">{charge.label}</span>
                             )}
                           </div>
                         </div>
-                        <div className="text-sm font-bold text-gray-700 flex-shrink-0">
+                        <div className="text-[10px] font-bold text-[#2E3B78] flex-shrink-0">
                           {translateValue(charge.values[selectedCountry.code]) || '-'}
                         </div>
                       </div>
@@ -210,7 +263,7 @@ const DeliveryCharges = ({
         <div className="hidden md:block bg-white rounded-lg md:rounded-xl lg:rounded-2xl shadow-lg overflow-hidden mb-4 md:mb-6 overflow-x-auto">
           <div className="min-w-full">
             {/* Table Header */}
-            <div className="bg-[#243a86] text-white">
+            <div className="bg-[#2E3B78] text-white">
               <div 
                 className="grid gap-0.5 md:gap-2 lg:gap-4 items-center p-1 md:p-3 lg:p-6"
                 style={{ gridTemplateColumns: `minmax(75px, 1.2fr) repeat(${countries.length}, minmax(45px, 1fr))` }}
@@ -219,7 +272,9 @@ const DeliveryCharges = ({
                 {countries.map((country) => (
                   <div key={country.code} className="flex flex-col items-center gap-0">
                     <div className="w-4 h-4 md:w-8 md:h-8 lg:w-12 lg:h-12 rounded-full overflow-hidden flex items-center justify-center bg-white p-0.5 md:p-1">
-                      {getCountryFlag(country.code)}
+                      <div className="w-full h-full rounded-full overflow-hidden">
+                        {getCountryFlag(country.code)}
+                      </div>
                     </div>
                     <div className="text-[7px] md:text-[10px] lg:text-sm font-semibold leading-tight mt-0.5">{country.name}</div>
                     <div className="text-[6px] md:text-[9px] lg:text-xs text-gray-300 leading-tight">{translateCurrencyCode(country.currency)}</div>
