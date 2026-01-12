@@ -552,8 +552,8 @@ const Zambeel3PLPage = () => {
               KSA: "28 SAR",
               Kuwait: "30 AED",
               Qatar: "25 AED",
-              Oman: "25 AED",
-              Bahrain: "25 AED",
+              Oman: "26 AED",
+              Bahrain: "20 AED",
               Pakistan: "350 PKR"
             }
           },
@@ -564,8 +564,8 @@ const Zambeel3PLPage = () => {
               KSA: "7.5 SAR",
               Kuwait: "15 AED",
               Qatar: "5 AED",
-              Oman: "5 AED",
-              Bahrain: "5 AED",
+              Oman: "12 AED",
+              Bahrain: "12 AED",
               Pakistan: "350 PKR"
             }
           },

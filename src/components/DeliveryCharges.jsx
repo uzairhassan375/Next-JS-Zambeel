@@ -107,7 +107,7 @@ const DeliveryCharges = ({
       <div className="max-w-[1200px] mx-auto">
         {/* Title and Subtitle */}
         <div className="text-center mb-3 md:mb-6 lg:mb-8">
-          <h2 className="text-sm md:text-2xl lg:text-3xl font-bold text-white mb-0.5 md:mb-2" style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: '700' }}>
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-0.5 md:mb-2" style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: '700' }}>
             {title}
           </h2>
           <p className="text-[9px] md:text-sm lg:text-base text-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>
@@ -240,16 +240,16 @@ const DeliveryCharges = ({
                           <div className="flex flex-col min-w-0">
                             {charge.label.includes(' / ') ? (
                               charge.label.split(' / ').map((part, partIndex) => (
-                                <span key={partIndex} className="text-[10px] text-gray-800 leading-tight font-medium">
+                                <span key={partIndex} className="text-xs text-gray-800 leading-tight font-bold">
                                   {part}
                                 </span>
                               ))
                             ) : (
-                              <span className="text-[10px] text-gray-800 leading-tight break-words font-medium">{charge.label}</span>
+                              <span className="text-xs text-gray-800 leading-tight break-words font-bold">{charge.label}</span>
                             )}
                           </div>
                         </div>
-                        <div className="text-[10px] font-bold text-[#2E3B78] flex-shrink-0">
+                        <div className="text-xs font-bold text-[#2E3B78] flex-shrink-0">
                           {translateValue(charge.values[selectedCountry.code]) || '-'}
                         </div>
                       </div>
