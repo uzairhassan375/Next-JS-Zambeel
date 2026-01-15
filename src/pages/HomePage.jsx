@@ -74,61 +74,15 @@ export default function HomePage() {
     };
   }, [t]);
 
-  // Statistics counting animation
+  // Intersection Observer for triggering animation
   useEffect(() => {
+    if (hasAnimated) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
+          if (entry.isIntersecting) {
             setHasAnimated(true);
-
-            // Animate orders delivered (1000K+)
-            const codTarget = 1000;
-            const codDuration = 2000;
-            const codSteps = 60;
-            const codIncrement = codTarget / codSteps;
-            let codCurrent = 0;
-            const codInterval = setInterval(() => {
-              codCurrent += codIncrement;
-              if (codCurrent >= codTarget) {
-                setCodCount(codTarget);
-                clearInterval(codInterval);
-              } else {
-                setCodCount(Math.floor(codCurrent));
-              }
-            }, codDuration / codSteps);
-
-            // Animate Sellers Registered (30K+)
-            const sellersTarget = 50;
-            const sellersDuration = 2000;
-            const sellersSteps = 60;
-            const sellersIncrement = sellersTarget / sellersSteps;
-            let sellersCurrent = 0;
-            const sellersInterval = setInterval(() => {
-              sellersCurrent += sellersIncrement;
-              if (sellersCurrent >= sellersTarget) {
-                setSellersCount(sellersTarget);
-                clearInterval(sellersInterval);
-              } else {
-                setSellersCount(Math.floor(sellersCurrent));
-              }
-            }, sellersDuration / sellersSteps);
-
-            // Animate Countries Represented (177+)
-            const countriesTarget = 177;
-            const countriesDuration = 2000;
-            const countriesSteps = 60;
-            const countriesIncrement = countriesTarget / countriesSteps;
-            let countriesCurrent = 0;
-            const countriesInterval = setInterval(() => {
-              countriesCurrent += countriesIncrement;
-              if (countriesCurrent >= countriesTarget) {
-                setCountriesCount(countriesTarget);
-                clearInterval(countriesInterval);
-              } else {
-                setCountriesCount(Math.floor(countriesCurrent));
-              }
-            }, countriesDuration / countriesSteps);
           }
         });
       },
@@ -144,6 +98,40 @@ export default function HomePage() {
       if (currentRef) {
         observer.unobserve(currentRef);
       }
+    };
+  }, [hasAnimated]);
+
+  // Statistics counting animation
+  useEffect(() => {
+    if (!hasAnimated) return;
+
+    const intervals = [];
+
+    // Helper to start animation
+    const typeAnimation = (target, setter, duration = 2000, steps = 60) => {
+      const increment = target / steps;
+      let current = 0;
+      const interval = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          setter(target);
+          clearInterval(interval);
+        } else {
+          setter(Math.floor(current));
+        }
+      }, duration / steps);
+      intervals.push(interval);
+    };
+
+    // Animate orders delivered (1000K+)
+    typeAnimation(1000, setCodCount);
+    // Animate Sellers Registered (30K+)
+    typeAnimation(50, setSellersCount);
+    // Animate Countries Represented (177+)
+    typeAnimation(177, setCountriesCount);
+
+    return () => {
+      intervals.forEach(clearInterval);
     };
   }, [hasAnimated]);
 
@@ -398,7 +386,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      {currentLanguage !== 'ar' && <Ticker />}
+      <Ticker />
 
       <section id="where-to-sell" className="w-full lg:bg-[#FDE8E9] pt-2 pb-0 md:pt-8 md:pb-8 px-4 flex justify-center">
         <div className="max-w-[1200px] w-full mx-auto bg-white rounded-[2.5rem] p-6 lg:px-12 lg:py-6">
@@ -724,27 +712,27 @@ export default function HomePage() {
                     const blogSlug = blogSlugs[index] || 'zambeel-dropshipping';
                     return (
                       <Link
-                      key={card.title}
+                        key={card.title}
                         href={`/blog/${blogSlug}`}
                         className="group relative rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 block"
-                      style={{ width: "320px" }}
-                    >
+                        style={{ width: "320px" }}
+                      >
                         <Image
-                        src={card.img}
-                        alt={card.title}
+                          src={card.img}
+                          alt={card.title}
                           width={320}
                           height={500}
-                        className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-8 z-10">
+                          className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                        <div className="absolute bottom-0 left-0 p-8 z-10">
                           <h3 className="text-white text-xl font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
-                          {card.title}
-                        </h3>
-                        <p className="text-gray-200 text-sm leading-snug">
-                          {card.desc}
-                        </p>
-                      </div>
+                            {card.title}
+                          </h3>
+                          <p className="text-gray-200 text-sm leading-snug">
+                            {card.desc}
+                          </p>
+                        </div>
                       </Link>
                     );
                   })}
@@ -795,26 +783,26 @@ export default function HomePage() {
                 const blogSlug = blogSlugs[index] || 'zambeel-dropshipping';
                 return (
                   <Link
-                  key={card.title}
+                    key={card.title}
                     href={`/blog/${blogSlug}`}
                     className="group relative rounded-3xl overflow-hidden aspect-[4/5] block"
-                >
+                  >
                     <Image
-                    src={card.img}
-                    alt={card.title}
+                      src={card.img}
+                      alt={card.title}
                       width={400}
                       height={600}
-                    className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-5 z-10">
+                      className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-5 z-10">
                       <h3 className="text-white text-base font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
-                      {card.title}
-                    </h3>
-                    <p className="text-gray-200 text-[11px] leading-snug">
-                      {card.desc}
-                    </p>
-                  </div>
+                        {card.title}
+                      </h3>
+                      <p className="text-gray-200 text-[11px] leading-snug">
+                        {card.desc}
+                      </p>
+                    </div>
                   </Link>
                 );
               })}
@@ -828,12 +816,12 @@ export default function HomePage() {
                   {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
                 </Link>
               ) : (
-              <button
-                onClick={() => setShowAllFeatures(!showAllFeatures)}
-                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
-              >
-                    {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
-              </button>
+                <button
+                  onClick={() => setShowAllFeatures(!showAllFeatures)}
+                  className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+                >
+                  {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+                </button>
               )}
             </div>
           </div>
@@ -857,12 +845,12 @@ export default function HomePage() {
                 {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
               </Link>
             ) : (
-            <button
-              onClick={() => setShowAllFeatures(true)}
-              className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
-            >
-              {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
-            </button>
+              <button
+                onClick={() => setShowAllFeatures(true)}
+                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+              >
+                {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+              </button>
             )}
           </div>
         </div>

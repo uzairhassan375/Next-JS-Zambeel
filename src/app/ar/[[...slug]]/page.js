@@ -9,6 +9,7 @@ import SupplierWrapper from './SupplierWrapper';
 import DropshippingPage from '../../../pages/DropshippingPage';
 import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
+import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 
 // Loading fallback
 function PageFallback() {
@@ -33,6 +34,7 @@ const routeMap = {
   'pages/dropshipping-uae-and-ksa': DropshippingPage,
   'pages/zambeel-360': Zambeel360Page,
   'pages/warehousing-3pl': Zambeel3PLPage,
+  'pages/refund-replacement-policy': RefundReplacementPolicyPage,
 };
 
 export default async function ArabicPage({ params }) {

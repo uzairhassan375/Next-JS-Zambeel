@@ -12,7 +12,7 @@ export default function Footer() {
   const pathname = usePathname();
   return (
     <footer className="max-w-6xl mx-auto text-white pb-8 md:pb-12 pt-8 md:pt-12 px-6 md:px-16">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6 text-sm items-start">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-6 text-sm items-start">
         <div className="space-y-5 flex flex-col">
           <Image
             src={white_logoImage}
@@ -25,7 +25,7 @@ export default function Footer() {
           {t('footer.tagline')}
           </p>
           <div className="flex gap-5 text-sm mt-6">
-            <a href="https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
+            <a href={pathname?.startsWith('/ar') ? 'https://www.instagram.com/zambeel_ecommerce?igsh=MWg0emhiMndqY3lq' : 'https://www.instagram.com/zambeel.ecommerce?igsh=a20zdW9naGE2aDA4'} target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
               <i className="fa-brands fa-instagram"></i>
             </a>
             <a href="https://www.facebook.com/share/1CHT3yCtCm/" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
@@ -82,6 +82,18 @@ export default function Footer() {
               <a href="https://portal.myzambeel.com/login" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
                 {t('common.signIn')}
               </a>
+            </li>
+          </ul>
+        </div>
+        <div className="pt-2 md:pl-4 flex flex-col">
+          <h4 className="font-bold text-base mb-4 md:mb-6 text-white">
+            {t('footer.policies')}
+          </h4>
+          <ul className="space-y-3 text-sm text-blue-50 opacity-90">
+            <li>
+              <Link href={getLocalePath('/pages/refund-replacement-policy', pathname)} className="hover:text-white hover:underline">
+                {t('refundReplacement.title')}
+              </Link>
             </li>
           </ul>
         </div>

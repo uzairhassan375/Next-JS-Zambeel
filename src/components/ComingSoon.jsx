@@ -179,7 +179,7 @@ const ComingSoon = ({ title, description, cookieName = 'supplier_countdown_targe
             <i className="fa-brands fa-facebook-f text-white text-xl"></i>
           </a>
           <a
-            href={i18n.language === 'ar' ? 'https://www.instagram.com/zambeel_arabia?igsh=MWg0emhiMndqY3lq' : 'https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4'}
+            href={i18n.language === 'ar' ? 'https://www.instagram.com/zambeel_ecommerce?igsh=MWg0emhiMndqY3lq' : 'https://www.instagram.com/zambeel.ecommerce?igsh=a20zdW9naGE2aDA4'}
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"

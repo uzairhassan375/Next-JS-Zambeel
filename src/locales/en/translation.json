@@ -39,6 +39,7 @@
     "storeIntel": "StoreIntel",
     "zambeelPortal": "Zambeel Portal",
     "contactUs": "Contact Us",
+    "policies": "Policies",
     "email": "zambeelsupport@myzambeel.com",
     "phone": "+971 56 847 2271",
     "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow E-commerce Business in United Arab Emirates, Saudi Arabia, Kuwait, Qatar & Pakistan"
@@ -120,7 +121,8 @@
     },
     "ticker": {
       "superclass": "Don't study Ecommerce, Launch it LIVE with Zambeel SuperClass: ",
-      "registerNow": "Register Now!"
+      "registerNow": "Register Now!",
+      "newMarkets": "2 New Markets Launched: Oman & Bahrain"
     },
     "network": {
       "title": "Our Network, Active & Rising",
@@ -551,6 +553,59 @@
         "support": "Store audits, ad reviews & learning support"
       },
       "summary": "You learn on weekends | You execute with support during the week."
+    }
+  },
+  "refundReplacement": {
+    "title": "Refund & Replacement Policy",
+    "tabs": {
+      "customers": "For Customers",
+      "resellers": "For Resellers"
+    },
+    "customers": {
+      "intro": "Please paste this return policy on your dropshipping stores connected with Zambeel to improve customer experience on your stores.",
+      "effectiveDate": "Effective Date: 29-April-2025",
+      "thankYou": "Thank you for shopping at Tazah Global's partner store *Insert Your Store Name here*. We strive to provide a seamless shopping experience and want you completely satisfied with your purchase. This policy explains our guidelines and procedures for processing refunds and replacements. By purchasing on our website, you agree to the terms of this Policy.",
+      "replacementEligibility": "Replacement Eligibility:",
+      "productEligibility": "Product Eligibility",
+      "productEligibilityDesc": "As a responsible company Tazah Global wants to ensure that the product is received by the customer in its original condition and is not incorrect, broken or faulty. If you receive a product that is incorrect, faulty, broken or damaged you are eligible for a free replacement.",
+      "timeframe": "Timeframe",
+      "timeframeDesc": "*Insert Your Store Name here* will cater all complaints landed within 30 days of delivery.",
+      "timeframeDesc2": "Your request of a replacement within 7 days from the date of delivery will be done free of cost. After 7 days, there will be certain charges for the replacement.",
+      "replacementProcess": "Replacement Process",
+      "initiation": "Initiation",
+      "initiationDesc": "To initiate a replacement, please share a video of the incorrect, faulty or damaged product to our customer support team within the eligible time frame. In a lot of cases the issue is with the usage of the product and our team can guide you on how the issue you are facing can be fixed. If we determine that the product is indeed faulty….",
+      "optionA": "OPTION A",
+      "optionADesc": "We will ask you to ship the incorrect, faulty damaged or broken product in its original packing (Original Product Box and All Accessories) to our warehouse at the below address:-",
+      "warehouseAddress": "Tazah Global LLC, Warehouse # 13, Plot # 4488, Al Sajaa Industrial, Sharjah, UAE",
+      "optionADesc2": "And within 5 working days of receipt of the incorrect, faulty damaged or broken product we will ship the replacement for you free of charge.",
+      "optionB": "OPTION B",
+      "optionBDesc": "We will schedule a replacement for you within 14 working days. Please pack the product (Original Product Box and All Accessories) for the courier to pick it up and provide you a replacement.",
+      "note": "Please note that we do not offer a replacement for \"change of mind\".",
+      "refund": "Refund",
+      "refundDesc": "We do not have a refund policy."
+    },
+    "resellers": {
+      "effectiveDate": "Effective Date: 29-April-2025",
+      "thankYou": "Thank you for selling with Zambeel. We strive to provide a seamless shopping experience and want your customers to be completely satisfied with their purchase. This policy explains our guidelines and procedures for processing refunds and replacement. By selling a product through our website, you agree to the terms of this Policy.",
+      "recommendation": "Zambeel recommends a standard refund and replacement policy for all its partner stores (https://www.myzambeel.com/pages/refund-replacement-policy-for-customers). The implementation of the above policy will have a cash-neutral impact on you which means that you won't be charged for any replacements.",
+      "productListing": "Product Listing:",
+      "productListingDesc": "Furthermore, to minimize instances of bad customer experience, please make sure that in your creatives you do not advertise features that the product does not have. Also please make sure the product SKU list (Variant, Color and Size) which is mentioned on Zambeel, is the same advertised on the store. Additionally, it's important to price the product at a reasonable point so as the customer has realistic expectations from the product being delivered.",
+      "warehousingService": "Warehousing Service:",
+      "warehousingServiceDesc": "Zambeel shall not be held legally liable for any losses, damages, or destruction of inventory during storage, unless such loss results from the willful misconduct or gross negligence.",
+      "refundAndReplacement": "Refund and Replacement:",
+      "refundAndReplacementDesc": "Please be informed that Zambeel will now process replacements of complaints landed within 30 Days of delivery for all replacement cases.",
+      "customizedPolicy": "In case you want to have a customized return and refund policy please find the cost below:-",
+      "replacementNonFaulty": "Replacement in the case of a non-faulty product or after 30 days of delivery",
+      "replacementNonFaultyDesc": "If you initiate a product replacement where Zambeel has established that the product does not have faults or the 30 days deadline for replacement has expired, the following costs will be charged to you for the replacement operations",
+      "uae": "For UAE : 27 AED",
+      "ksa": "For KSA : 46 SAR",
+      "refund": "Refund",
+      "refundDesc": "Zambeel does not have a refund policy. If due to any reason, you want to initiate a refund the following costs will be charged to you:-",
+      "fulfillmentCost": "Fulfillment and shipping cost of the initial order: 18 AED for UAE / 35 SAR for KSA",
+      "pickupCost": "Cost of product pickup and refund: 9 AED for UAE / 11 SAR for KSA",
+      "refundNote": "Please note that in the case of refund the sale amount of that transaction will be reversed from your account.",
+      "specialCaseRefund": "Special Case Refund",
+      "specialCaseRefundDesc": "In certain circumstances when dealing with a security risk Zambeel will initiate a refund for the customer. In those cases, Zambeel will bear the cost of refund but the sale amount of that transaction will be reversed from your account. These cases happen rarely but in case they do, they will be mentioned in your weekly payment invoice."
     }
   }
 }

@@ -35,8 +35,8 @@ export default function WhatsAppPopup() {
 
   const getInstagramLink = () => {
     return currentLanguage === 'ar'
-      ? 'https://www.instagram.com/zambeel_arabia?igsh=MWg0emhiMndqY3lq' // Arabic Instagram link
-      : 'https://www.instagram.com/zambeel_dropshipping?igsh=eXF3MmRtOW5meGg4'; // English Instagram link
+      ? 'https://www.instagram.com/zambeel_ecommerce?igsh=MWg0emhiMndqY3lq' // Arabic Instagram link
+      : 'https://www.instagram.com/zambeel.ecommerce?igsh=a20zdW9naGE2aDA4'; // English Instagram link
   };
 
   const getFacebookLink = () => {

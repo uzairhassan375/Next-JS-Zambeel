@@ -65,6 +65,11 @@ const nextConfig = {
         source: '/collections/:collection*',
         destination: 'https://products.myzambeel.com/collections/:collection*',
         permanent: true
+      },
+      {
+        source: '/pages/unauthorised-access',
+        destination: 'https://products.myzambeel.com/pages/unauthorised-access',
+        permanent: true
       }
     ];
   },
