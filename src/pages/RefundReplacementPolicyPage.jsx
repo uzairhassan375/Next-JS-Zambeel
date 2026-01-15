@@ -9,7 +9,7 @@ const RefundReplacementPolicyPage = () => {
   const [activeTab, setActiveTab] = useState('customers');
 
   return (
-    <div className="min-h-screen bg-[#FBFCFE] py-8 md:py-12 px-4">
+    <div className="min-h-screen bg-[#FBFCFE] pt-24 md:pt-28 pb-8 md:pb-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Page Title */}
         <h1 className="text-3xl md:text-4xl font-bold text-[#2E3B78] mb-8 text-center">
