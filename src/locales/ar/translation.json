@@ -163,7 +163,7 @@
             "title": "لماذا زمبيل؟",
             "subtitle": "ابدأ مشروع التجارة الإلكترونية الخاص بك من أي مكان في العالم دون الحاجة إلى تسجيل تجاري.",
             "metrics": {
-                "countriesCovered": "تم تغطية 5 دول",
+                "countriesCovered": "تم تغطية 7 دول",
                 "deliverySuccess": "نسبة نجاح التسليم 80%",
                 "productsListed": "أكثر من 10 آلاف منتج مُدرج",
                 "paymentGuarantee": "ضمان الدفع خلال 5 أيام"
@@ -505,10 +505,10 @@
             "weekProgram": "برنامج مباشر لمدة 4 أسابيع",
             "stepByStep": "إرشادات خطوة بخطوة",
             "experts": "أفضل خبراء الصناعة",
-            "marketResearch": "أبحاث السوق والصيد العملي للمنتجات",
-            "creatives": "إنشاء وتحرير الإبداعات الرابحة",
+            "marketResearch": "أبحاث السوق وصيد المنتجات",
+            "creatives": "البحث عن الإبداع والتحرير",
             "shopify": "إعداد متجر Shopify وتحسينه",
-            "businessManager": "إعداد Business Manager وحساب الإعلانات و Pixel",
+            "businessManager": "إعداد Business والإعلانات و Pixel",
             "campaigns": "إعداد وتحليل الحملات",
             "scaling": "توسيع الأعمال"
         },
