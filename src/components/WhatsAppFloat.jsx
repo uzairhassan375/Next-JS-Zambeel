@@ -21,7 +21,7 @@ export default function WhatsAppFloat() {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-6 left-6 z-50 p-2 hover:opacity-80 transition-all duration-300 hover:scale-110 focus:outline-none"
+      className="fixed bottom-6 left-6 z-50 flex flex-col items-center gap-2 hover:opacity-80 transition-all duration-300 hover:scale-110 focus:outline-none"
       aria-label="Contact us on WhatsApp"
     >
       <Image 
@@ -31,6 +31,9 @@ export default function WhatsAppFloat() {
         height={48}
         className="w-10 h-10 md:w-12 md:h-12"
       />
+      <span className="text-xs md:text-sm font-semibold text-white bg-[#25D366] px-3 py-1 rounded-full shadow-lg">
+        Talk to us
+      </span>
     </button>
   );
 }

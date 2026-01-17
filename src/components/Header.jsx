@@ -181,19 +181,16 @@ export default function Header({ theme = "dark" }) {
             )}
           </div>
           <a 
-            href="https://products.myzambeel.com" 
+            href={currentLanguage === 'ar' ? 'https://products.myzambeel.com/ar' : 'https://products.myzambeel.com'} 
             target="_blank"
             rel="noopener noreferrer"
             className={`${hoverColor} transition cursor-pointer`}
           >
             {t('header.dropshippingProducts')}
           </a>
-          <button
-            onClick={() => handleSectionClick("where-to-sell")}
-            className={`${hoverColor} transition cursor-pointer`}
-          >
-            {t('header.whereCanYouSell')}
-          </button>
+          <Link href={getLocalePath('/pages/partner-agencies', pathname)} className={`${hoverColor} transition`}>
+            Partner Agencies
+          </Link>
           <div
             className="relative joinus-dropdown"
             onMouseEnter={() => setShowJoinUsDropdown(true)}
@@ -432,7 +429,7 @@ export default function Header({ theme = "dark" }) {
               )}
             </div>
             <a
-              href="https://products.myzambeel.com"
+              href={currentLanguage === 'ar' ? 'https://products.myzambeel.com/ar' : 'https://products.myzambeel.com'}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setShowMobileMenu(false)}
@@ -440,12 +437,13 @@ export default function Header({ theme = "dark" }) {
             >
               {t('header.dropshippingProducts')}
             </a>
-            <button
-              onClick={() => handleSectionClick("where-to-sell")}
+            <Link
+              href={getLocalePath('/pages/partner-agencies', pathname)}
+              onClick={() => setShowMobileMenu(false)}
               className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition text-left w-full`}
             >
-              {t('header.whereCanYouSell')}
-            </button>
+              Partner Agencies
+            </Link>
             <div className="relative joinus-dropdown">
               <button
                 onClick={(e) => {
