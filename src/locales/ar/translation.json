@@ -27,6 +27,7 @@
         "facebook": "فيسبوك",
         "linkedin": "لينكد إن",
         "becomeASupplier": "كن مورداً",
+        "trustedPartners": "الشركاء الموثوقون",
         "selectLanguage": "اختر اللغة",
         "toggleMenu": "تبديل القائمة",
         "languageEnglish": "English",
@@ -472,6 +473,10 @@
         "supplier": {
             "title": "كن مورداً",
             "description": "انضم إلى شبكة الموردين لدينا ونمّي أعمالك مع زمبيل. نحن نعد شيئًا خاصًا لك!"
+        },
+        "trustedPartners": {
+            "title": "الشركاء الموثوقون",
+            "description": "نعمل بجد لنقدم لك شبكة شركاء رائعة. ترقبوا التحديثات!"
         }
     },
     "superClass": {

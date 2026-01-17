@@ -1,5 +1,8 @@
+'use client';
+
 import { Suspense } from 'react';
-import PartnerAgenciesPage from '../../../pages/PartnerAgenciesPage';
+import ComingSoon from '../../../components/ComingSoon';
+import { useTranslation } from 'react-i18next';
 
 function PartnerAgenciesFallback() {
   return (
@@ -12,10 +15,22 @@ function PartnerAgenciesFallback() {
   );
 }
 
+function PartnerAgenciesContent() {
+  const { t } = useTranslation();
+
+  return (
+    <ComingSoon
+      title={t('comingSoon.trustedPartners.title')}
+      description={t('comingSoon.trustedPartners.description')}
+      cookieName="trusted_partners_countdown_target"
+    />
+  );
+}
+
 export default function PartnerAgencies() {
   return (
     <Suspense fallback={<PartnerAgenciesFallback />}>
-      <PartnerAgenciesPage />
+      <PartnerAgenciesContent />
     </Suspense>
   );
 }

@@ -16,6 +16,8 @@ export default function Header({ theme = "dark" }) {
   const [showJoinUsDropdown, setShowJoinUsDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [showWhatsAppSubmenu, setShowWhatsAppSubmenu] = useState(false);
+  const [showFacebookSubmenu, setShowFacebookSubmenu] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -25,14 +27,22 @@ export default function Header({ theme = "dark" }) {
   const getWhatsAppLink = () => {
     return currentLanguage === 'ar' 
       ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I' // Arabic WhatsApp channel link
-      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'; // English WhatsApp channel link
+      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w'; // Urdu/Hindi WhatsApp channel link (Urdu/Hindi)
+  };
+
+  const getWhatsAppEnglishLink = () => {
+    return 'https://whatsapp.com/channel/0029Vb6w7xB0gcfMsxMRT900'; // English WhatsApp channel link
   };
 
   const getFacebookLink = () => {
      return currentLanguage === 'ar'
      ? 'https://www.facebook.com/share/g/1Akg1x5P4G/?mibextid=wwXIfr' // Arabic Facebook channel link
-     : 'https://www.facebook.com/share/g/1DAxzz9dQo/?mibextid=wwXIfr'; // English Facebook channel link
+     : 'https://www.facebook.com/share/g/1DAxzz9dQo/?mibextid=wwXIfr'; // Urdu/Hindi Facebook channel link
  };
+
+  const getFacebookEnglishLink = () => {
+    return 'https://www.facebook.com/share/g/1Etwkeru5B/?mibextid=wwXIfr'; // English Facebook channel link
+  };
 
   const getLinkedInLink = () => {
     return 'https://www.linkedin.com/company/myzambeel/'; // LinkedIn company page
@@ -189,7 +199,7 @@ export default function Header({ theme = "dark" }) {
             {t('header.dropshippingProducts')}
           </a>
           <Link href={getLocalePath('/pages/partner-agencies', pathname)} className={`${hoverColor} transition`}>
-            Partner Agencies
+            {t('header.trustedPartners')}
           </Link>
           <div
             className="relative joinus-dropdown"
@@ -208,25 +218,117 @@ export default function Header({ theme = "dark" }) {
             </button>
             {showJoinUsDropdown && (
               <div className="absolute top-full right-0 pt-2 bg-transparent min-w-[180px] z-50">
-                <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
-                  <a
-                    href={getWhatsAppLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full flex items-center gap-2`}
-                  >
-                    <i className="fa-brands fa-whatsapp"></i>
-                    {t('header.whatsapp')}
-                  </a>
-                  <a
-                    href={getFacebookLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full flex items-center gap-2`}
-                  >
-                    <i className="fa-brands fa-facebook-f"></i>
-                    {t('header.facebook')}
-                  </a>
+                <div className="bg-white rounded-xl shadow-2xl overflow-visible">
+                  {currentLanguage === 'en' ? (
+                    <>
+                      <div
+                        className="relative"
+                        onMouseEnter={() => setShowWhatsAppSubmenu(true)}
+                        onMouseLeave={() => setShowWhatsAppSubmenu(false)}
+                      >
+                        <button
+                          className={`w-full px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium flex items-center justify-between gap-2`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="fa-brands fa-whatsapp"></i>
+                            <span>{t('header.whatsapp')}</span>
+                          </div>
+                          <svg
+                            className={`w-3 h-3 transition-transform duration-200 ${showWhatsAppSubmenu ? 'rotate-90' : ''}`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        {showWhatsAppSubmenu && (
+                          <div className="absolute left-full top-0 ml-0 bg-white rounded-lg shadow-lg border border-gray-100 min-w-[150px] z-50 overflow-hidden">
+                            <a
+                              href={getWhatsAppLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block px-4 py-2.5 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full rounded-t-lg`}
+                            >
+                              Urdu/Hindi
+                            </a>
+                            <a
+                              href={getWhatsAppEnglishLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block px-4 py-2.5 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full rounded-b-lg`}
+                            >
+                              English
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <a
+                      href={getWhatsAppLink()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full flex items-center gap-2`}
+                    >
+                      <i className="fa-brands fa-whatsapp"></i>
+                      {t('header.whatsapp')}
+                    </a>
+                  )}
+                  {currentLanguage === 'en' ? (
+                    <>
+                      <div
+                        className="relative"
+                        onMouseEnter={() => setShowFacebookSubmenu(true)}
+                        onMouseLeave={() => setShowFacebookSubmenu(false)}
+                      >
+                        <button
+                          className={`w-full px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium flex items-center justify-between gap-2`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="fa-brands fa-facebook-f"></i>
+                            <span>{t('header.facebook')}</span>
+                          </div>
+                          <svg
+                            className={`w-3 h-3 transition-transform duration-200 ${showFacebookSubmenu ? 'rotate-90' : ''}`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        {showFacebookSubmenu && (
+                          <div className="absolute left-full top-0 ml-0 bg-white rounded-lg shadow-lg border border-gray-100 min-w-[150px] z-50 overflow-hidden">
+                            <a
+                              href={getFacebookLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block px-4 py-2.5 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full rounded-t-lg`}
+                            >
+                              Urdu/Hindi
+                            </a>
+                            <a
+                              href={getFacebookEnglishLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block px-4 py-2.5 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full rounded-b-lg`}
+                            >
+                              English
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <a
+                      href={getFacebookLink()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full flex items-center gap-2`}
+                    >
+                      <i className="fa-brands fa-facebook-f"></i>
+                      {t('header.facebook')}
+                    </a>
+                  )}
                 </div>
               </div>
             )}
@@ -442,7 +544,7 @@ export default function Header({ theme = "dark" }) {
               onClick={() => setShowMobileMenu(false)}
               className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition text-left w-full`}
             >
-              Partner Agencies
+              {t('header.trustedPartners')}
             </Link>
             <div className="relative joinus-dropdown">
               <button
@@ -467,26 +569,122 @@ export default function Header({ theme = "dark" }) {
               </button>
               {showJoinUsDropdown && (
                 <div className="mt-2 pl-4 space-y-2">
-                  <a
-                    href={getWhatsAppLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm flex items-center gap-2`}
-                    onClick={() => setShowMobileMenu(false)}
-                  >
-                    <i className="fa-brands fa-whatsapp"></i>
-                    {t('header.whatsapp')}
-                  </a>
-                  <a
-                    href={getFacebookLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm flex items-center gap-2`}
-                    onClick={() => setShowMobileMenu(false)}
-                  >
-                    <i className="fa-brands fa-facebook-f"></i>
-                    {t('header.facebook')}
-                  </a>
+                  {currentLanguage === 'en' ? (
+                    <>
+                      <div className="relative">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowWhatsAppSubmenu(!showWhatsAppSubmenu);
+                          }}
+                          className={`w-full flex items-center justify-between ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="fa-brands fa-whatsapp"></i>
+                            <span>{t('header.whatsapp')}</span>
+                          </div>
+                          <svg
+                            className={`w-4 h-4 transition-transform ${showWhatsAppSubmenu ? "rotate-90" : ""}`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        {showWhatsAppSubmenu && (
+                          <div className="mt-2 pl-4 space-y-1">
+                            <a
+                              href={getWhatsAppLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                              onClick={() => setShowMobileMenu(false)}
+                            >
+                              Urdu/Hindi
+                            </a>
+                            <a
+                              href={getWhatsAppEnglishLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                              onClick={() => setShowMobileMenu(false)}
+                            >
+                              English
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <a
+                      href={getWhatsAppLink()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm flex items-center gap-2`}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      <i className="fa-brands fa-whatsapp"></i>
+                      {t('header.whatsapp')}
+                    </a>
+                  )}
+                  {currentLanguage === 'en' ? (
+                    <>
+                      <div className="relative">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowFacebookSubmenu(!showFacebookSubmenu);
+                          }}
+                          className={`w-full flex items-center justify-between ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="fa-brands fa-facebook-f"></i>
+                            <span>{t('header.facebook')}</span>
+                          </div>
+                          <svg
+                            className={`w-4 h-4 transition-transform ${showFacebookSubmenu ? "rotate-90" : ""}`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        {showFacebookSubmenu && (
+                          <div className="mt-2 pl-4 space-y-1">
+                            <a
+                              href={getFacebookLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                              onClick={() => setShowMobileMenu(false)}
+                            >
+                              Urdu/Hindi
+                            </a>
+                            <a
+                              href={getFacebookEnglishLink()}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                              onClick={() => setShowMobileMenu(false)}
+                            >
+                              English
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <a
+                      href={getFacebookLink()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm flex items-center gap-2`}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      <i className="fa-brands fa-facebook-f"></i>
+                      {t('header.facebook')}
+                    </a>
+                  )}
                 </div>
               )}
             </div>

@@ -27,6 +27,7 @@
       "facebook": "Facebook",
       "linkedin": "LinkedIn",
       "becomeASupplier": "Become a supplier",
+      "trustedPartners": "Trusted Partners",
       "selectLanguage": "Select language",
       "toggleMenu": "Toggle menu",
       "languageEnglish": "English",
@@ -472,6 +473,10 @@
     "supplier": {
       "title": "Become a Supplier",
       "description": "Join our supplier network and grow your business with Zambeel. We are preparing something special for you!"
+    },
+    "trustedPartners": {
+      "title": "Trusted Partners",
+      "description": "We are working hard to bring you an amazing partner network. Stay tuned for updates!"
     }
   },
   "superClass": {
