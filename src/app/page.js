@@ -1,5 +1,8 @@
 import { Suspense } from 'react';
+import { headers } from 'next/headers';
 import HomePage from '../pages/HomePage';
+import enTranslations from '../locales/en/translation.json';
+import arTranslations from '../locales/ar/translation.json';
 
 function HomePageFallback() {
   return (
@@ -10,6 +13,22 @@ function HomePageFallback() {
       </div>
     </div>
   );
+}
+
+export async function generateMetadata() {
+  const headersList = await headers();
+  const locale = headersList.get('x-locale') || 'en';
+  const translations = locale === 'ar' ? arTranslations : enTranslations;
+  
+  return {
+    title: 'Zambeel - One Platform for Your E-commerce Business',
+    description: translations.footer.seoDescription || translations.homepage.whereToSell.seoDescription || 'Zambeel E-commerce Solutions',
+    openGraph: {
+      title: 'Zambeel - One Platform for Your E-commerce Business',
+      description: translations.footer.seoDescription || translations.homepage.whereToSell.seoDescription || 'Zambeel E-commerce Solutions',
+      type: 'website',
+    },
+  };
 }
 
 export default function Home() {
