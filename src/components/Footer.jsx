@@ -124,6 +124,12 @@ export default function Footer() {
                 {t('footer.phone')}
               </a>
             </li>
+            <li className="flex items-center gap-3">
+              <i className="fa-solid fa-info-circle w-4"></i>
+              <Link href={getLocalePath('/about', pathname)} className="hover:text-white hover:underline">
+                {t('header.aboutUs')}
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
