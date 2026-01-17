@@ -163,7 +163,7 @@
       "title": "Why Zambeel?",
       "subtitle": "Start your Ecommerce business from anywhere in the world without business registration.",
       "metrics": {
-        "countriesCovered": "5 countries covered",
+        "countriesCovered": "7 countries covered",
         "deliverySuccess": "80% Delivery Success",
         "productsListed": "10K+ Products Listed",
         "paymentGuarantee": "5-Day Payment Guarantee"
@@ -509,13 +509,13 @@
       "title": "What is Zambeel Super Class?"
     },
     "features": {
-      "weekProgram": "4-week live program",
-      "stepByStep": "step-by-step guidance",
-      "experts": "Top industry experts",
-      "marketResearch": "Market Research & Practical Product Hunting",
-      "creatives": "Creating Hunting & Editing for Winning Creatives",
+      "weekProgram": "4-Week Live Program",
+      "stepByStep": "Step-by-Step Guidance",
+      "experts": "Top Industry Experts",
+      "marketResearch": "Market Research & Product Hunting",
+      "creatives": "Creative Hunting & Editing",
       "shopify": "Shopify Store Setup & Optimisation",
-      "businessManager": "Business Manager, Ad Account & Pixel Setup",
+      "businessManager": "Business, Ads & Pixel Setup",
       "campaigns": "Campaign Setup & Analysis",
       "scaling": "Business Scaling"
     },

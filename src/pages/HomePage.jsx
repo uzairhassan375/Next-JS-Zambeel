@@ -623,7 +623,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-[#2E3B78] text-base md:text-lg lg:text-xl">
-                      5
+                      7
                     </h4>
                     <span className="text-xs md:text-sm lg:text-base text-gray-500">{t('homepage.whyZambeel.stats.countriesCovered')}</span>
                   </div>
