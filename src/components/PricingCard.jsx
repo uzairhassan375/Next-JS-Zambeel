@@ -83,7 +83,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
           {/* 2. Price: Stays after the pack name */}
           <div className={`text-2xl font-extrabold text-[#243a86]`}>
             {price}
-            <span className="text-base font-normal opacity-100">{isLast ? '/6 mo' : '/mo'}</span>
+            <span className="text-base font-normal opacity-100">{isLast ? '/6 months' : '/month'}</span>
           </div>
         </div>
       )}
@@ -100,7 +100,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
             {/* Price (Money) - Below pack name, centered */}
             <div className={`text-3xl font-extrabold text-[#243a86]`}>
               {price}
-              <span className={`text-base font-normal opacity-70`}>{isLast ? '/6 mo' : '/mo'}</span>
+              <span className={`text-base font-normal opacity-70`}>{isLast ? '/6 months' : '/month'}</span>
             </div>
           </div>
           

@@ -235,19 +235,6 @@ function AboutPage() {
             </div>
           </div>
         </div>
-
-        {/* View More Button */}
-        <div className="flex justify-end">
-          <Link
-            href={getLocalePath('/blog', pathname)}
-            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-[#1e3a8a] text-[#1e3a8a] font-semibold rounded-lg hover:bg-[#1e3a8a] hover:text-white transition-colors"
-          >
-            {t('common.viewMore')}
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
         </div>
       </section>
     </div>
