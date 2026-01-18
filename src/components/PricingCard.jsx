@@ -7,8 +7,30 @@ const EXPANDED_HEIGHT = 500; // Fixed height when the card is fully expanded
 
 // --- Pricing Card Component ---
 const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false, isMiddle = false, cardIndex = 0 }) => {
-  const { t } = useTranslation();
-  const price = isMonthly ? plan.monthlyPrice : plan.yearlyPrice;
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || 'en';
+  const priceValue = isMonthly ? plan.monthlyPrice : plan.yearlyPrice;
+  
+  // Format price based on language
+  const formatPrice = (price, isLast) => {
+    // Extract number from price string (e.g., "$69" -> "69")
+    const number = price.replace('$', '');
+    const isArabic = currentLanguage === 'ar';
+    
+    if (isLast) {
+      // 6 months plan
+      return isArabic 
+        ? { main: `$${number}`, period: ' / 6 أشهر' }
+        : { main: price, period: '/6 months' };
+    } else {
+      // Monthly plan
+      return isArabic 
+        ? { main: `$${number}`, period: ' شهريًا' }
+        : { main: price, period: '/month' };
+    }
+  };
+  
+  const formattedPrice = formatPrice(priceValue, isLast);
   
   // Translate plan name and tag
   const planName = plan.nameTranslationKey ? t(plan.nameTranslationKey) : plan.name;
@@ -82,8 +104,8 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
           </p>
           {/* 2. Price: Stays after the pack name */}
           <div className={`text-2xl font-extrabold text-[#243a86]`}>
-            {price}
-            <span className="text-base font-normal opacity-100">{isLast ? '/6 months' : '/month'}</span>
+            {formattedPrice.main}
+            <span className="text-base font-normal opacity-100">{formattedPrice.period}</span>
           </div>
         </div>
       )}
@@ -99,8 +121,8 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
             </p>
             {/* Price (Money) - Below pack name, centered */}
             <div className={`text-3xl font-extrabold text-[#243a86]`}>
-              {price}
-              <span className={`text-base font-normal opacity-70`}>{isLast ? '/6 months' : '/month'}</span>
+              {formattedPrice.main}
+              <span className={`text-base font-normal opacity-70`}>{formattedPrice.period}</span>
             </div>
           </div>
           
