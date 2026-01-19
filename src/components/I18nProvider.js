@@ -16,9 +16,7 @@ const setCookie = (name, value, days = 365) => {
 };
 
 // Initialize i18n once at module level (before any components)
-let i18nInitialized = false;
-if (!i18nInitialized) {
-  i18nInitialized = true;
+if (!i18n.isInitialized) {
   i18n
     .use(initReactI18next)
     .init({

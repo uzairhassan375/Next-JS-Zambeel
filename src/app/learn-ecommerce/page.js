@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import SuperClassPage from '../../pages/SuperClassPage';
+import SuperClassWrapper from '../../components/SuperClassWrapper';
 import enTranslations from '../../locales/en/translation.json';
 import arTranslations from '../../locales/ar/translation.json';
 
@@ -24,7 +24,7 @@ export async function generateMetadata() {
 }
 
 export default function LearnEcommerce() {
-  return <SuperClassPage />;
+  return <SuperClassWrapper />;
 }
 
 
