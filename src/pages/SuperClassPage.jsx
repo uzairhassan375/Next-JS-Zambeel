@@ -49,7 +49,7 @@ const SuperClassPage = () => {
 
   // Moving ticker content
   const tickerText = t('superClass.ticker', { 
-    defaultValue: 'Starts 23 January 2026 · Live Online · 3 Seats Left' 
+    defaultValue: 'Starts 27th March 2026 · Live Online' 
   });
 
   // Icon components for each feature
@@ -650,7 +650,7 @@ const SuperClassPage = () => {
             >
               {Array.from({ length: 15 }, (_, i) => (
                 <span key={i} className="mx-4 font-bold text-sm md:text-base">
-                  {t('superClass.priceTicker', { defaultValue: 'Starts 23 January 2026 · Live Online · $50 Only' })} • 
+                  {t('superClass.priceTicker', { defaultValue: 'Starts 27th March 2026 · Live Online · $50 Only' })} • 
                 </span>
               ))}
             </Marquee>
