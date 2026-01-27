@@ -540,7 +540,6 @@ const Zambeel360Page = () => {
         ]}
         importantInfo={[
           t('deliveryCharges.warehousingFree'),
-          t('deliveryCharges.failedDelivery'),
           t('deliveryCharges.outskirtAreas')
         ]}
       />

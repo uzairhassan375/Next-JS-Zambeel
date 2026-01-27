@@ -8,7 +8,8 @@ const DeliveryCharges = ({
   title, 
   subtitle, 
   countries, 
-  charges
+  charges,
+  importantInfo
 }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
@@ -319,6 +320,27 @@ const DeliveryCharges = ({
             </div>
           </div>
         </div>
+
+        {/* Important Info Section */}
+        {importantInfo && importantInfo.length > 0 && (
+          <div className="mt-3 md:mt-4">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg md:rounded-xl lg:rounded-2xl border border-white/10 p-3 md:p-4 lg:p-5">
+              <h3 className="text-white font-semibold mb-2 md:mb-2.5 text-sm md:text-base lg:text-lg" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                {t('deliveryCharges.importantInfo')}
+              </h3>
+              <ul className="space-y-1.5 md:space-y-2">
+                {importantInfo.map((info, index) => (
+                  <li key={index} className="flex items-start gap-2 md:gap-3">
+                    <span className="text-[#ffd24c] text-xs md:text-sm lg:text-base mt-0.5 flex-shrink-0">•</span>
+                    <p className="text-white/80 text-xs md:text-sm lg:text-base leading-relaxed" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                      {info}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Hide scrollbar styles */}

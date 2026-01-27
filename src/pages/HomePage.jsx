@@ -195,7 +195,7 @@ export default function HomePage() {
       name: "Mark Smith",
       date: "19th August, 2022",
       rating: 4,
-      text: "Started our dropshipping business with Zambeel and never looked back. The product quality is exceptional and customer support is available 24/7. Amazing experience!",
+      text: "Started our dropshipping journey with Zambeel—exceptional product quality and reliable 24/7 customer support",
       image: "/assets/avatars/mark.png",
     },
     {

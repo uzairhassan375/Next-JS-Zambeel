@@ -368,7 +368,8 @@
       "getStarted": "Get Started",
       "buyGold": "Buy Gold plan",
       "buyDiamond": "Buy Diamond plan"
-    }
+    },
+    "nonRefundable": "Terms and conditions applied"
   },
   "deliveryCharges": {
     "breakdown": "Delivery Charges Breakdown",
@@ -382,8 +383,8 @@
     "currencyPKR": "PKR",
     "importantInfo": "Important Info",
     "failedDelivery": "In case of failed delivery, only 'Return' will be charged",
-    "outskirtAreas": "In some outskirt areas, delivery charges can be greater too. This happens on 3% of the orders only.",
-    "warehousingFree": "Warehousing is FREE for first 2 months, after this 1AED/item/Month will be charged on unsold inventory"
+    "outskirtAreas": "In case of Remote areas, delivery charges will be greater than normal charges.",
+    "warehousingFree": "Warehousing is free for first 2 months. After that, 1 AED per month per item will be charged"
   },
   "whereToStart": {
     "title": "How to Start?",

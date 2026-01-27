@@ -513,7 +513,7 @@ const Zambeel3PLPage = () => {
             tagTranslationKey: "pricing.plans.diamond.tag",
             name: "Super Saver",
             nameTranslationKey: "pricing.plans.diamond.name",
-            monthlyPrice: "$199",
+            monthlyPrice: "$299",
             yearlyPrice: "$447",
             description: "",
             features: [
@@ -597,7 +597,6 @@ const Zambeel3PLPage = () => {
         ]}
         importantInfo={[
           t('deliveryCharges.warehousingFree'),
-          t('deliveryCharges.failedDelivery'),
           t('deliveryCharges.outskirtAreas')
         ]}
       />

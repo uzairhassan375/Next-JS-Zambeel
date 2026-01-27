@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
+import { Info } from 'lucide-react';
 import PricingCard from "./PricingCard";
 import { pricingPlans as defaultPricingPlans } from "../data/pricingPlans";
 
@@ -11,6 +13,7 @@ const PricingSection = ({
   defaultActiveIndex = null,
   customPlans = null 
 }) => {
+  const { t } = useTranslation();
   const [isDesktop, setIsDesktop] = useState(false);
   const [mounted, setMounted] = useState(false);
   
@@ -55,20 +58,33 @@ const PricingSection = ({
         </p>
 
         {/* Card Layout - Vertical on mobile, horizontal on desktop */}
-        <div className="flex flex-col md:flex-row gap-12 md:gap-6 items-center justify-center w-full max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-12 md:gap-6 items-center justify-center w-full max-w-7xl mx-auto relative">
           {plans.map((plan, idx) => {
             const middleIndex = Math.floor(plans.length / 2);
             const isMiddle = idx === middleIndex;
+            const isGoldPlan = plan.tag === "GOLD";
             return (
-            <PricingCard
-              key={idx}
-              plan={plan}
-              isActive={mounted && isDesktop ? true : activeIndex === idx}
-              onClick={() => setActiveIndex(idx)}
+            <div key={idx} className="relative w-full md:w-auto flex flex-col items-center">
+              <PricingCard
+                plan={plan}
+                isActive={mounted && isDesktop ? true : activeIndex === idx}
+                onClick={() => setActiveIndex(idx)}
                 isLast={idx === plans.length - 1}
                 isMiddle={isMiddle}
                 cardIndex={idx}
-            />
+              />
+              {/* Non-refundable notice positioned below Gold plan card */}
+              {isGoldPlan && (
+                <div className="mt-4 md:mt-6 w-full md:w-auto flex items-center justify-center gap-2 text-white/75 px-4">
+                  <div className="flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                    <Info className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-[#ffd24c]" />
+                    <p className="text-xs md:text-sm font-normal text-center" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                      {t('pricing.nonRefundable')}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
             );
           })}
         </div>
