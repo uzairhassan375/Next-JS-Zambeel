@@ -62,23 +62,23 @@ const PricingSection = ({
           {plans.map((plan, idx) => {
             const middleIndex = Math.floor(plans.length / 2);
             const isMiddle = idx === middleIndex;
-            const isGoldPlan = plan.tag === "GOLD";
+            const isActiveCard = mounted && isDesktop ? true : activeIndex === idx;
             return (
             <div key={idx} className="relative w-full md:w-auto flex flex-col items-center">
               <PricingCard
                 plan={plan}
-                isActive={mounted && isDesktop ? true : activeIndex === idx}
+                isActive={isActiveCard}
                 onClick={() => setActiveIndex(idx)}
                 isLast={idx === plans.length - 1}
                 isMiddle={isMiddle}
                 cardIndex={idx}
               />
-              {/* Non-refundable notice positioned below Gold plan card */}
-              {isGoldPlan && (
-                <div className="mt-4 md:mt-6 w-full md:w-auto flex items-center justify-center gap-2 text-white/75 px-4">
-                  <div className="flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/10">
-                    <Info className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-[#ffd24c]" />
-                    <p className="text-xs md:text-sm font-normal text-center" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              {/* Terms and conditions notice - shown below active card on mobile, hidden on desktop */}
+              {!isDesktop && isActiveCard && (
+                <div className="mt-4 w-full flex items-center justify-center px-4">
+                  <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/10">
+                    <Info className="w-3.5 h-3.5 shrink-0 text-[#ffd24c]" />
+                    <p className="text-xs font-normal text-center text-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                       {t('pricing.nonRefundable')}
                     </p>
                   </div>
@@ -87,6 +87,16 @@ const PricingSection = ({
             </div>
             );
           })}
+        </div>
+        
+        {/* Terms and conditions notice - shown once for all plans on desktop only */}
+        <div className="hidden md:flex mt-6 md:mt-8 w-full items-center justify-center px-4">
+          <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-lg px-3 py-2 md:px-4 md:py-2.5 border border-white/10">
+            <Info className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-[#ffd24c]" />
+            <p className="text-xs md:text-sm font-normal text-center text-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              {t('pricing.nonRefundable')}
+            </p>
+          </div>
         </div>
       </div>
     </section>
