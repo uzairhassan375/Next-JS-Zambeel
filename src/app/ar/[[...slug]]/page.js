@@ -120,8 +120,8 @@ export async function generateMetadata({ params }) {
       };
     case 'pages/partner-agencies':
       return {
-        title: `${translations.header?.trustedPartners || 'الشركاء الموثوقون'} - زمبيل`,
-        description: 'تواصل مع الشركاء الموثوقين الذين يمكنهم مساعدتك في تنمية أعمالك',
+        title: `${translations.comingSoon?.trustedPartners?.title || 'الشركاء الموثوقون'} - زمبيل`,
+        description: translations.comingSoon?.trustedPartners?.description || 'نعمل بجد لنقدم لك شبكة شركاء رائعة. ترقبوا التحديثات!',
       };
     default:
       return {
