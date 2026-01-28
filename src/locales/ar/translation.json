@@ -481,6 +481,21 @@
             "description": "نعمل بجد لنقدم لك شبكة شركاء رائعة. ترقبوا التحديثات!"
         }
     },
+    "partnerAgencies": {
+        "title": "وكالات الشركاء",
+        "subtitle": "تواصل مع الشركاء الموثوقين الذين يمكنهم مساعدتك في تنمية أعمالك",
+        "becomePartner": "كن شريكًا",
+        "ourEsteemedPartners": "شركاؤنا الموقرون",
+        "partnersSubtitle": "شركاء موثوقون يساعدون الشركات على النمو والنجاح",
+        "diamondPartners": "شركاء الماس",
+        "goldPartners": "شركاء الذهب",
+        "bronzePartners": "شركاء البرونز",
+        "viewMore": "عرض المزيد",
+        "partnersCount": "شريكًا عبر 7 دول",
+        "about": "حول",
+        "contact": "اتصل",
+        "website": "الموقع الإلكتروني"
+    },
     "superClass": {
         "ticker": "يبدأ في 27 مارس 2026 · عبر الإنترنت مباشرة",
         "hero": {

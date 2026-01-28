@@ -21,7 +21,8 @@ export default function ClientLayout({ children, initialLocale }) {
     pathname === "/pages/zambeel-360" || pathname === "/ar/pages/zambeel-360" ||
     pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/ar/pages/dropshipping-uae-and-ksa" ||
     pathname === "/pages/warehousing-3pl" || pathname === "/ar/pages/warehousing-3pl" ||
-    pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce";
+    pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce" ||
+    pathname === "/pages/partner-agencies" || pathname === "/ar/pages/partner-agencies";
   
   const theme = isLightThemePage ? "light" : "dark";
 

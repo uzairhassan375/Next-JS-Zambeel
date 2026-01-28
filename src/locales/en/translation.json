@@ -481,6 +481,21 @@
       "description": "We are working hard to bring you an amazing partner network. Stay tuned for updates!"
     }
   },
+  "partnerAgencies": {
+    "title": "Partner Agencies",
+    "subtitle": "Connect with trusted partners who can help grow your business",
+    "becomePartner": "Become a Partner",
+    "ourEsteemedPartners": "Our Esteemed Partners",
+    "partnersSubtitle": "Trusted partners helping businesses grow and succeed",
+    "diamondPartners": "Diamond Partners",
+    "goldPartners": "Gold Partners",
+    "bronzePartners": "Bronze Partners",
+    "viewMore": "View More",
+    "partnersCount": "Partners Across 7 Countries",
+    "about": "About",
+    "contact": "Contact",
+    "website": "Website"
+  },
   "superClass": {
     "ticker": "Starts 27th March 2026 · Live Online",
     "hero": {
