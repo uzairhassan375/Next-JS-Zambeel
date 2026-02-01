@@ -62,6 +62,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <a href={pathname?.startsWith('/ar') ? 'https://products.myzambeel.com/ar' : 'https://products.myzambeel.com'} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
+                {t('header.dropshippingProducts')}
+              </a>
+            </li>
+            <li>
               <a href="https://storeintel.tools/" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
                 {t('footer.storeIntel')}
               </a>
@@ -93,6 +98,16 @@ export default function Footer() {
             <li>
               <Link href={getLocalePath('/pages/refund-replacement-policy', pathname)} className="hover:text-white hover:underline">
                 {t('refundReplacement.title')}
+              </Link>
+            </li>
+            <li>
+              <Link href={getLocalePath('/pages/terms-of-service', pathname)} className="hover:text-white hover:underline">
+                {t('footer.termsOfService')}
+              </Link>
+            </li>
+            <li>
+              <Link href={getLocalePath('/blog', pathname)} className="hover:text-white hover:underline">
+                {t('footer.blog')}
               </Link>
             </li>
           </ul>

@@ -12,6 +12,7 @@ import DropshippingPage from '../../../pages/DropshippingPage';
 import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
+import TermsOfServicePage from '../../../pages/TermsOfServicePage';
 import enTranslations from '../../../locales/en/translation.json';
 import arTranslations from '../../../locales/ar/translation.json';
 
@@ -39,6 +40,7 @@ const routeMap = {
   'pages/zambeel-360': Zambeel360Page,
   'pages/warehousing-3pl': Zambeel3PLPage,
   'pages/refund-replacement-policy': RefundReplacementPolicyPage,
+  'pages/terms-of-service': TermsOfServicePage,
   'pages/partner-agencies': PartnerAgenciesWrapper,
 };
 
@@ -112,6 +114,11 @@ export async function generateMetadata({ params }) {
       return {
         title: `${translations.refundReplacement.title} - زمبيل`,
         description: `تعرف على سياسة الاسترداد والاستبدال لدى زمبيل للعملاء والبائعين. فهم إرشاداتنا وإجراءاتنا لمعالجة عمليات الاسترداد والاستبدال.`,
+      };
+    case 'pages/terms-of-service':
+      return {
+        title: `${translations.footer?.termsOfService || 'شروط الخدمة'} - زمبيل`,
+        description: 'اتفاقية الوكيل - الشروط والأحكام لاستخدام خدمات زمبيل الدروبشيبينغ.',
       };
     case 'supplier':
       return {
