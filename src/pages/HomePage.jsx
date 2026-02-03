@@ -6,9 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
+import { blogList } from "../data/blogs/index";
 const blue_logoImage = "/blue_logo.png";
 import { StackedCards } from "../components/UI/staking-cards";
 import Ticker from "../components/Ticker";
+
+const BLOG_CARD_WIDTH = 320;
+const BLOG_CARD_GAP = 16;
+const BLOG_SCROLL_STEP = BLOG_CARD_WIDTH + BLOG_CARD_GAP;
 
 export default function HomePage() {
   const { t, i18n } = useTranslation();
@@ -17,12 +22,29 @@ export default function HomePage() {
   const currentLanguage = i18n.language || 'en';
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
-  const [showAllFeatures, setShowAllFeatures] = useState(false);
 
   const [numberText, setNumberText] = useState("");
 
   // Statistics animation
   const statsRef = useRef(null);
+  const blogCarouselRef = useRef(null);
+
+  // Arrow key navigation for blog slideshow
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const target = e.target;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        blogCarouselRef.current?.scrollBy({ left: -BLOG_SCROLL_STEP, behavior: 'smooth' });
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        blogCarouselRef.current?.scrollBy({ left: BLOG_SCROLL_STEP, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
   const [codCount, setCodCount] = useState(0);
   const [sellersCount, setSellersCount] = useState(0);
   const [countriesCount, setCountriesCount] = useState(0);
@@ -665,194 +687,106 @@ export default function HomePage() {
             </div>
 
             {/* Carousel - Desktop only */}
-            <div className="hidden lg:flex gap-4 h-[500px] justify-center">
-
+            <div className="hidden lg:flex flex-col gap-4 h-[500px] justify-center w-full max-w-[830px] mx-auto">
               <div
-                className="relative overflow-hidden h-full mx-auto"
-                style={{ width: "830px" }}
+                ref={blogCarouselRef}
+                className="relative overflow-x-auto overflow-y-hidden h-full w-full scroll-smooth [&::-webkit-scrollbar]:hidden"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "linear-gradient(to right, white 0%, rgba(255,255,255,0) 6%, rgba(255,255,255,0) 94%, white 100%)",
-                  }}
-                />
-                <div
-                  className="flex h-full gap-4 transition-transform duration-700 ease-in-out"
-                  style={{
-                    transform: showAllFeatures
-                      ? "translateX(-165px)"
-                      : "translateX(0)",
-                  }}
-                >
-                  {[
-                    {
-                      img: "https://images.unsplash.com/photo-1625571281240-694bfa82e4c9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fDUtMTAlMjBwcm9kdWN0cyUyMGltYWdlc3xlbnwwfDF8MHx8fDA%3D",
-                      title: t('homepage.whyZambeel.features.dropshipping.title'),
-                      desc: t('homepage.whyZambeel.features.dropshipping.desc'),
-                    },
-                    {
-                      img: "https://plus.unsplash.com/premium_photo-1661393335735-7ee8d420b58a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzaCUyMG9uJTIwZGVsaXZlcnl8ZW58MHwxfDB8fHww",
-                      title: t('homepage.whyZambeel.features.zambeel360.title'),
-                      desc: t('homepage.whyZambeel.features.zambeel360.desc'),
-                    },
-                    {
-                      img: "https://plus.unsplash.com/premium_photo-1683120966127-14162cdd0935?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fEFJfGVufDB8MXwwfHx8MA%3D%3D",
-                      title: t('homepage.whyZambeel.features.3PL.title'),
-                      desc: t('homepage.whyZambeel.features.3PL.desc'),
-                    },
-                    {
-                      img: "https://plus.unsplash.com/premium_photo-1683120966127-14162cdd0935?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fEFJfGVufDB8MXwwfHx8MA%3D%3D",
-                      title: t('homepage.whyZambeel.features.learnEcommerce.title'),
-                      desc: t('homepage.whyZambeel.features.learnEcommerce.desc'),
-                    },
-                  ].map((card, index) => {
-                    const blogSlugs = ['zambeel-dropshipping', 'zambeel-360', 'warehousing-3pl', 'learn-ecommerce'];
-                    const blogSlug = blogSlugs[index] || 'zambeel-dropshipping';
-                    return (
-                      <Link
-                        key={card.title}
-                        href={`/blog/${blogSlug}`}
-                        className="group relative rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 block"
-                        style={{ width: "320px" }}
-                      >
-                        <Image
-                          src={card.img}
-                          alt={card.title}
-                          width={320}
-                          height={500}
-                          className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                        <div className="absolute bottom-0 left-0 p-8 z-10">
-                          <h3 className="text-white text-xl font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
-                            {card.title}
-                          </h3>
-                          <p className="text-gray-200 text-sm leading-snug">
-                            {card.desc}
-                          </p>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                <div className="flex h-full gap-4 pr-4" style={{ width: 'max-content' }}>
+                  {blogList.map((blog) => (
+                    <Link
+                      key={blog.slug}
+                      href={getLocalePath(`/blog/${blog.slug}`, pathname)}
+                      className="group relative rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 block"
+                      style={{ width: `${BLOG_CARD_WIDTH}px` }}
+                    >
+                      <Image
+                        src={blog.img}
+                        alt={t(blog.titleKey)}
+                        width={BLOG_CARD_WIDTH}
+                        height={500}
+                        className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                      <div className="absolute bottom-0 left-0 p-8 z-10">
+                        <h3 className="text-white text-xl font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
+                          {t(blog.titleKey)}
+                        </h3>
+                        <p className="text-gray-200 text-sm leading-snug line-clamp-2">
+                          {t(blog.descKey)}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="lg:hidden">
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                {
-                  img: "https://images.unsplash.com/photo-1625571281240-694bfa82e4c9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fDUtMTAlMjBwcm9kdWN0cyUyMGltYWdlc3xlbnwwfDF8MHx8fDA%3D",
-                  title: t('homepage.whyZambeel.features.dropshipping.title'),
-                  desc: t('homepage.whyZambeel.features.dropshipping.desc'),
-                },
-                {
-                  img: "https://plus.unsplash.com/premium_photo-1661393335735-7ee8d420b58a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzaCUyMG9uJTIwZGVsaXZlcnl8ZW58MHwxfDB8fHww",
-                  title: t('about.whyZambeel.features.cod.title'),
-                  desc: t('about.whyZambeel.features.cod.desc'),
-                },
-                {
-                  img: "https://plus.unsplash.com/premium_photo-1683120966127-14162cdd0935?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fEFJfGVufDB8MXwwfHx8MA%3D%3D",
-                  title: t('about.whyZambeel.features.ai.title'),
-                  desc: t('about.whyZambeel.features.ai.desc'),
-                },
-                {
-                  img: "https://picsum.photos/400/600?random=4",
-                  title: t('about.whyZambeel.features.support.title'),
-                  desc: t('about.whyZambeel.features.support.desc'),
-                },
-                ...(showAllFeatures
-                  ? [
-                    {
-                      img: "https://picsum.photos/400/600?random=5",
-                      title: "Global Reach",
-                      desc: "Sell to customers worldwide with ease.",
-                    },
-                    {
-                      img: "https://picsum.photos/400/600?random=6",
-                      title: "Secure Platform",
-                      desc: "Your data and transactions are always protected.",
-                    },
-                  ]
-                  : []),
-              ].map((card, index) => {
-                const blogSlugs = ['zambeel-dropshipping', 'cash-on-delivery', 'ai-enabled-economy', 'dedicated-support'];
-                const blogSlug = blogSlugs[index] || 'zambeel-dropshipping';
-                return (
-                  <Link
-                    key={card.title}
-                    href={`/blog/${blogSlug}`}
-                    className="group relative rounded-3xl overflow-hidden aspect-[4/5] block"
-                  >
-                    <Image
-                      src={card.img}
-                      alt={card.title}
-                      width={400}
-                      height={600}
-                      className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-5 z-10">
-                      <h3 className="text-white text-base font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
-                        {card.title}
-                      </h3>
-                      <p className="text-gray-200 text-[11px] leading-snug">
-                        {card.desc}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-            <div className="flex justify-center mt-8">
-              {showAllFeatures ? (
+              {/* Desktop: Left arrow | View More (center) | Right arrow */}
+              <div className="hidden lg:flex justify-between items-center w-full max-w-[830px] mx-auto">
+                <button
+                  type="button"
+                  onClick={() => blogCarouselRef.current?.scrollBy({ left: -BLOG_SCROLL_STEP, behavior: 'smooth' })}
+                  className="bg-[#2E3B78] hover:bg-[#1a2542] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition flex-shrink-0"
+                  aria-label={currentLanguage === 'ar' ? 'السابق' : 'Previous'}
+                >
+                  <i className="fa-solid fa-arrow-left" />
+                </button>
                 <Link
                   href={getLocalePath('/blog', pathname)}
                   className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
                 >
                   {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
                 </Link>
-              ) : (
                 <button
-                  onClick={() => setShowAllFeatures(!showAllFeatures)}
-                  className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
+                  type="button"
+                  onClick={() => blogCarouselRef.current?.scrollBy({ left: BLOG_SCROLL_STEP, behavior: 'smooth' })}
+                  className="bg-[#2E3B78] hover:bg-[#1a2542] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition flex-shrink-0"
+                  aria-label={currentLanguage === 'ar' ? 'التالي' : 'Next'}
                 >
-                  {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
+                  <i className="fa-solid fa-arrow-right" />
                 </button>
-              )}
+              </div>
             </div>
           </div>
 
-          <div className="hidden lg:flex justify-between items-center mt-6 lg:mt-4">
-            {showAllFeatures ? (
-              <button
-                onClick={() => setShowAllFeatures(false)}
-                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition ml-[286px]"
-              >
-                <i className="fa-solid fa-arrow-left" /> {t('common.viewLess')}
-              </button>
-            ) : (
-              <div></div>
-            )}
-            {showAllFeatures ? (
+          <div className="lg:hidden">
+            <div className="grid grid-cols-2 gap-4">
+              {blogList.slice(0, 4).map((blog) => (
+                <Link
+                  key={blog.slug}
+                  href={getLocalePath(`/blog/${blog.slug}`, pathname)}
+                  className="group relative rounded-3xl overflow-hidden aspect-[4/5] block"
+                >
+                  <Image
+                    src={blog.img}
+                    alt={t(blog.titleKey)}
+                    width={400}
+                    height={500}
+                    className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-5 z-10">
+                    <h3 className="text-white text-base font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
+                      {t(blog.titleKey)}
+                    </h3>
+                    <p className="text-gray-200 text-[11px] leading-snug line-clamp-2">
+                      {t(blog.descKey)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="flex justify-center mt-8">
               <Link
                 href={getLocalePath('/blog', pathname)}
                 className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
               >
                 {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
               </Link>
-            ) : (
-              <button
-                onClick={() => setShowAllFeatures(true)}
-                className="bg-[#2E3B78] hover:bg-[#1a2542] text-white px-10 py-4 rounded-full text-sm font-bold flex items-center gap-3 shadow-lg transition"
-              >
-                {t('common.viewMore')} <i className="fa-solid fa-arrow-right" />
-              </button>
-            )}
+            </div>
           </div>
+
         </div>
       </section>
 

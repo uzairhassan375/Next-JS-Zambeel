@@ -2,12 +2,18 @@
 import { zambeelDropshippingBlog } from './zambeel-dropshipping';
 import { zambeel360Blog } from './zambeel-360';
 import { warehousing3plBlog } from './warehousing-3pl';
+import { tiktokDropshippingSaudiBlog } from './tiktok-dropshipping-saudi';
+import { trendingProductsDropshipSaudiBlog } from './trending-products-dropship-saudi';
+import { codDropshippingBlog } from './cod-dropshipping';
 
 // Export all blogs as an object keyed by slug
 export const blogs = {
   'zambeel-dropshipping': zambeelDropshippingBlog,
   'zambeel-360': zambeel360Blog,
   'warehousing-3pl': warehousing3plBlog,
+  'tiktok-dropshipping-saudi': tiktokDropshippingSaudiBlog,
+  'trending-products-dropship-saudi': trendingProductsDropshipSaudiBlog,
+  'cod-dropshipping': codDropshippingBlog,
   // Keep old slugs for backward compatibility
   'cash-on-delivery': {
     slug: 'cash-on-delivery',
@@ -51,6 +57,24 @@ export const blogList = [
     titleKey: warehousing3plBlog.titleKey,
     descKey: warehousing3plBlog.descKey,
     img: warehousing3plBlog.img,
+  },
+  {
+    slug: tiktokDropshippingSaudiBlog.slug,
+    titleKey: tiktokDropshippingSaudiBlog.titleKey,
+    descKey: tiktokDropshippingSaudiBlog.descKey,
+    img: tiktokDropshippingSaudiBlog.img,
+  },
+  {
+    slug: trendingProductsDropshipSaudiBlog.slug,
+    titleKey: trendingProductsDropshipSaudiBlog.titleKey,
+    descKey: trendingProductsDropshipSaudiBlog.descKey,
+    img: trendingProductsDropshipSaudiBlog.img,
+  },
+  {
+    slug: codDropshippingBlog.slug,
+    titleKey: codDropshippingBlog.titleKey,
+    descKey: codDropshippingBlog.descKey,
+    img: codDropshippingBlog.img,
   },
 ];
 
