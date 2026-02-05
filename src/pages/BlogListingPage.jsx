@@ -26,21 +26,22 @@ export default function BlogListingPage() {
                 <Link
                   key={blog.slug}
                   href={`/blog/${blog.slug}`}
-                  className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow min-h-[280px] sm:min-h-[320px]"
+                  className="group flex flex-col rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-white"
                 >
-                  <Image
-                    src={blog.img}
-                    alt={t(blog.titleKey)}
-                    width={500}
-                    height={320}
-                    className="w-full h-full object-cover absolute inset-0 group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-[#FCD64C] transition-colors">
+                  <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden">
+                    <Image
+                      src={blog.img}
+                      alt={t(blog.titleKey)}
+                      width={500}
+                      height={320}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4 sm:p-6 flex-1 flex flex-col">
+                    <h3 className="text-lg sm:text-xl font-bold text-[#1e3a8a] mb-2 group-hover:text-[#FCD64C] transition-colors">
                       {t(blog.titleKey)}
                     </h3>
-                    <p className="text-sm sm:text-base text-white/90 line-clamp-2">
+                    <p className="text-sm sm:text-base text-gray-700 line-clamp-2">
                       {t(blog.descKey)}
                     </p>
                   </div>

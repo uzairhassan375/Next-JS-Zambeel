@@ -3,7 +3,6 @@
 import { useTranslation } from 'react-i18next';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { blogs } from '../data/blogs/index';
 import { getLocalePath } from '../lib/localeUtils';
 
@@ -52,13 +51,13 @@ export default function BlogDetailPage({ slug }) {
               <span>{t('blog.backToBlog', { defaultValue: 'Back to Blog' })}</span>
             </Link>
 
-            {/* Blog Image */}
-            <div className="relative rounded-lg overflow-hidden shadow-lg mb-8 h-64 sm:h-96">
-              <Image
+            {/* Blog Image - full height visible, no cropping */}
+            <div className="w-full rounded-lg overflow-hidden shadow-lg mb-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={blog.img}
                 alt={t(blog.titleKey)}
-                fill
-                className="object-cover"
+                className="w-full h-auto block"
               />
             </div>
 
