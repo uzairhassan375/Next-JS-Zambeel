@@ -7,7 +7,7 @@ import BlogDetailPage from '../../../pages/BlogDetailPage';
 import SuperClassPage from '../../../pages/SuperClassPage';
 import TeamPage from '../../../pages/TeamPage';
 import SupplierWrapper from './SupplierWrapper';
-import PartnerAgenciesPage from '../../../pages/PartnerAgenciesPage';
+import PartnerAgenciesWrapper from './PartnerAgenciesWrapper';
 import DropshippingPage from '../../../pages/DropshippingPage';
 import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
@@ -41,7 +41,7 @@ const routeMap = {
   'pages/warehousing-3pl': Zambeel3PLPage,
   'pages/refund-replacement-policy': RefundReplacementPolicyPage,
   'pages/terms-of-service': TermsOfServicePage,
-  'pages/partner-agencies': PartnerAgenciesPage,
+  'pages/partner-agencies': PartnerAgenciesWrapper,
 };
 
 export async function generateMetadata({ params }) {
@@ -127,8 +127,8 @@ export async function generateMetadata({ params }) {
       };
     case 'pages/partner-agencies':
       return {
-        title: `${translations.partnerAgencies?.title || 'وكالات الشركاء'} - زمبيل`,
-        description: translations.partnerAgencies?.subtitle || 'تواصل مع الشركاء الموثوقين الذين يمكنهم مساعدتك في تنمية أعمالك',
+        title: `${translations.comingSoon?.trustedPartners?.title || 'الشركاء الموثوقون'} - زمبيل`,
+        description: translations.comingSoon?.trustedPartners?.description || 'نعمل بجد لنقدم لك شبكة شركاء رائعة. ترقبوا التحديثات!',
       };
     default:
       return {
