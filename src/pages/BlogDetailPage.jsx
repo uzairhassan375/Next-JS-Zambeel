@@ -3,16 +3,24 @@
 import { useTranslation } from 'react-i18next';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { blogs } from '../data/blogs/index';
 import { getLocalePath } from '../lib/localeUtils';
 
+// Renders text with **bold** converted to <strong>
+function renderWithBold(text) {
+  if (!text || typeof text !== 'string') return text;
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return parts.map((part, i) => i % 2 === 1 ? <strong key={i}>{part}</strong> : part);
+}
+
 export default function BlogDetailPage({ slug }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
+  const isArabic = (i18n.language || '').startsWith('ar');
 
   const blog = blogs[slug];
+  const blogContent = blog && (isArabic && blog.contentAr ? blog.contentAr : blog.content);
 
   if (!blog) {
     return (
@@ -43,18 +51,18 @@ export default function BlogDetailPage({ slug }) {
               <span>{t('blog.backToBlog', { defaultValue: 'Back to Blog' })}</span>
             </Link>
 
-            {/* Blog Image */}
-            <div className="relative rounded-lg overflow-hidden shadow-lg mb-8 h-64 sm:h-96">
-              <Image
+            {/* Blog Image - full height visible, no cropping */}
+            <div className="w-full rounded-lg overflow-hidden shadow-lg mb-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={blog.img}
                 alt={t(blog.titleKey)}
-                fill
-                className="object-cover"
+                className="w-full h-auto block"
               />
             </div>
 
             {/* Blog Content */}
-            <article>
+            <article dir={isArabic ? 'rtl' : 'ltr'} className={isArabic ? 'text-right' : ''}>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1e3a8a] mb-6">
                 {t(blog.titleKey)}
               </h1>
@@ -65,20 +73,27 @@ export default function BlogDetailPage({ slug }) {
                 </p>
                 
                 <div className="text-base text-gray-600 leading-relaxed space-y-6">
-                  {blog.content ? (
+                  {blogContent ? (
                     <div className="whitespace-pre-line">
-                      {blog.content.split('\n').map((line, index) => {
+                      {blogContent.split('\n').map((line, index) => {
                         if (line.startsWith('## ')) {
                           return (
                             <h2 key={index} className="text-2xl font-bold text-[#1e3a8a] mt-8 mb-4">
-                              {line.replace('## ', '')}
+                              {renderWithBold(line.replace('## ', ''))}
                             </h2>
+                          );
+                        }
+                        if (line.startsWith('### ')) {
+                          return (
+                            <h3 key={index} className="text-xl font-semibold text-[#1e3a8a] mt-6 mb-3">
+                              {renderWithBold(line.replace('### ', ''))}
+                            </h3>
                           );
                         }
                         if (line.trim().startsWith('- ')) {
                           return (
                             <li key={index} className="ml-6 list-disc">
-                              {line.replace('- ', '')}
+                              {renderWithBold(line.replace(/^- /, ''))}
                             </li>
                           );
                         }
@@ -87,7 +102,7 @@ export default function BlogDetailPage({ slug }) {
                         }
                         return (
                           <p key={index} className="mb-4">
-                            {line}
+                            {renderWithBold(line)}
                           </p>
                         );
                       })}

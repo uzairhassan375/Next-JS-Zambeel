@@ -333,9 +333,14 @@ export default function Header({ theme = "dark" }) {
               </div>
             )}
           </div>
-          <Link href={getLocalePath('/supplier', pathname)} className={`${hoverColor} transition`}>
+          <a
+            href="https://supplier-portal-xi.vercel.app/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${hoverColor} transition`}
+          >
             {t('header.becomeASupplier')}
-          </Link>
+          </a>
         </div>
 
         {/* Language Dropdown */}
@@ -688,13 +693,15 @@ export default function Header({ theme = "dark" }) {
                 </div>
               )}
             </div>
-            <Link
-              href={getLocalePath('/supplier', pathname)}
+            <a
+              href="https://supplier-portal-xi.vercel.app/login"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setShowMobileMenu(false)}
               className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition`}
             >
               {t('header.becomeASupplier')}
-            </Link>
+            </a>
             <div className={`pt-4 border-t ${isLightTheme ? 'border-[#2E3B78]/20' : 'border-white/20'}`}>
               {/* Language Dropdown for Mobile */}
 

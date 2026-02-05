@@ -485,18 +485,27 @@
   },
   "partnerAgencies": {
     "title": "Partner Agencies",
+    "globalTitlePrefix": "Our Global",
+    "globalTitle": "Partner Agencies",
+    "globalSubtitle": "Trusted partners across the world, powering our platform at Diamond, Gold, and Silver levels.",
     "subtitle": "Connect with trusted partners who can help grow your business",
     "becomePartner": "Become a Partner",
+    "trustedWorldwide": "Trusted Worldwide",
     "ourEsteemedPartners": "Our Esteemed Partners",
     "partnersSubtitle": "Trusted partners helping businesses grow and succeed",
     "diamondPartners": "Diamond Partners",
+    "diamondSubtitle": "Our most exclusive partners with enterprise-level collaboration.",
     "goldPartners": "Gold Partners",
+    "goldSubtitle": "Strategic partners with strong regional presence.",
+    "silverPartners": "Silver Partners",
+    "silverSubtitle": "Growing partners contributing to our expanding ecosystem.",
     "bronzePartners": "Bronze Partners",
     "viewMore": "View More",
     "partnersCount": "Partners Across 7 Countries",
     "about": "About",
     "contact": "Contact",
-    "website": "Website"
+    "website": "Website",
+    "clickHereToSeeDetails": "Click here to see details"
   },
   "superClass": {
     "ticker": "Starts 27th March 2026 · Live Online",
@@ -767,6 +776,58 @@
       "amendmentAndWaiver": "Amendment and Waiver:",
       "severability": "Severability:",
       "entireAgreement": "Entire Agreement:"
+    }
+  },
+  "blog": {
+    "title": "Blogs",
+    "backToBlog": "Back to Blog",
+    "tiktokDropshippingSaudi": {
+      "title": "How to Run a Successful TikTok Dropshipping Business in Saudi Arabia",
+      "desc": "Learn how to leverage TikTok's 26 million active users in Saudi Arabia to build a profitable dropshipping business. This complete guide covers everything from product selection to viral content creation and local market optimization."
+    },
+    "trendingProductsDropshipSaudi": {
+      "title": "Trending Products to Dropship in Saudi Arabia This Year",
+      "desc": "Discover the most popular and profitable products for dropshipping in Saudi Arabia—from health and wellness to modest fashion, beauty, smart home, and eco-friendly items—aligned with Vision 2030 and local consumer trends."
+    },
+    "codDropshipping": {
+      "title": "How to Start Dropshipping with Cash on Delivery (COD)",
+      "desc": "Learn how to start a successful COD dropshipping business. This comprehensive guide covers everything from understanding COD dropshipping, its benefits and challenges, to step-by-step setup, marketing strategies, and tips for success in emerging markets."
+    },
+    "winningProducts": {
+      "title": "How to Find Winning Products",
+      "desc": "Discover proven strategies to identify winning products with high profit potential and strong market demand. From research methods and validation techniques to avoiding common pitfalls—your complete guide to driving e-commerce growth."
+    },
+    "uaeProfitableProducts": {
+      "title": "Top 10 Profitable Products/Niches to Dropship in the UAE",
+      "desc": "A guide to the most profitable products and niches for dropshipping in the UAE—from health and wellness and electronics to beauty, eco-friendly goods, home décor, fashion, kids, pets, and automotive accessories."
+    },
+    "howToStartDropshipping": {
+      "title": "How to Start Dropshipping",
+      "desc": "A step-by-step guide to starting your dropshipping business—from choosing your niche and finding suppliers to setting up your store, pricing, marketing, and managing orders. Low risk, scalable, and perfect for new entrepreneurs."
+    },
+    "uaeDigitalMarketing": {
+      "title": "Dropshipping in the UAE: Effective Digital Marketing Strategies",
+      "desc": "Proven digital marketing strategies for UAE dropshipping: localized SEO, social media, paid ads, content marketing, email, analytics, and mobile-first approach to stand out in a competitive market."
+    },
+    "dropshippingVsWholesaleKsa": {
+      "title": "Dropshipping vs Wholesale in KSA: Which Business Model Should You Choose",
+      "desc": "Compare dropshipping and wholesale models in Saudi Arabia—investment requirements, profit margins, risk levels, scalability, and control. Make an informed decision for your KSA e-commerce business."
+    },
+    "uaeSocialMediaAds": {
+      "title": "Social Media Ads to Grow a Dropshipping Business in the UAE",
+      "desc": "Master social media advertising for UAE dropshipping—platform selection (Instagram, TikTok, Facebook, Snapchat), ad creation, targeting, budgeting, influencer marketing, and cultural campaign timing for maximum ROI."
+    },
+    "uaeCustomsImportRegulations": {
+      "title": "The UAE Customs and Import Regulations for Dropshipping",
+      "desc": "Complete guide to UAE customs duties, VAT, prohibited/restricted goods, labeling requirements, documentation, free zones, and logistics partners for dropshipping businesses importing to the UAE."
+    },
+    "uaeDropshippingComprehensiveGuide": {
+      "title": "Dropshipping in UAE: A Comprehensive Guide to Starting and Growing Your Business",
+      "desc": "Complete guide to dropshipping in the UAE—from understanding the model and why UAE is ideal, to setup, niche selection, legal compliance, challenges, tools, success stories, and future outlook."
+    },
+    "ksaDropshippingComprehensiveGuide": {
+      "title": "Dropshipping in KSA: Your Ultimate Guide to Starting a Profitable Business in Saudi Arabia",
+      "desc": "Complete guide to dropshipping in Saudi Arabia—Vision 2030 opportunities, legal setup, niche selection, marketing strategies, challenges, compliance, success stories, and future trends for KSA entrepreneurs."
     }
   }
 }
