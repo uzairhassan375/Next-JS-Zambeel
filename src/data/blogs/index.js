@@ -59,24 +59,6 @@ export const blogs = {
 // Export blog list for listing page (without full content)
 export const blogList = [
   {
-    slug: zambeelDropshippingBlog.slug,
-    titleKey: zambeelDropshippingBlog.titleKey,
-    descKey: zambeelDropshippingBlog.descKey,
-    img: zambeelDropshippingBlog.img,
-  },
-  {
-    slug: zambeel360Blog.slug,
-    titleKey: zambeel360Blog.titleKey,
-    descKey: zambeel360Blog.descKey,
-    img: zambeel360Blog.img,
-  },
-  {
-    slug: warehousing3plBlog.slug,
-    titleKey: warehousing3plBlog.titleKey,
-    descKey: warehousing3plBlog.descKey,
-    img: warehousing3plBlog.img,
-  },
-  {
     slug: tiktokDropshippingSaudiBlog.slug,
     titleKey: tiktokDropshippingSaudiBlog.titleKey,
     descKey: tiktokDropshippingSaudiBlog.descKey,

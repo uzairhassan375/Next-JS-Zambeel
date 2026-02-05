@@ -698,24 +698,27 @@ export default function HomePage() {
                     <Link
                       key={blog.slug}
                       href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                      className="group relative rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 block"
+                      className="group flex flex-col rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 bg-white shadow-md hover:shadow-lg transition-shadow"
                       style={{ width: `${BLOG_CARD_WIDTH}px` }}
                     >
-                      <Image
-                        src={blog.img}
-                        alt={t(blog.titleKey)}
-                        width={BLOG_CARD_WIDTH}
-                        height={500}
-                        className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-8 z-10">
-                        <h3 className="text-white text-xl font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
-                          {t(blog.titleKey)}
-                        </h3>
-                        <p className="text-gray-200 text-sm leading-snug line-clamp-2">
-                          {t(blog.descKey)}
-                        </p>
+                      <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
+                        <Image
+                          src={blog.img}
+                          alt={t(blog.titleKey)}
+                          width={BLOG_CARD_WIDTH}
+                          height={200}
+                          className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="flex-1 flex flex-col p-6 justify-between">
+                        <div className="flex-1 flex flex-col">
+                          <h3 className="text-[#1e3a8a] text-lg font-bold mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                            {t(blog.titleKey)}
+                          </h3>
+                          <p className="text-gray-700 text-sm leading-relaxed line-clamp-5 flex-1">
+                            {t(blog.descKey)}
+                          </p>
+                        </div>
                       </div>
                     </Link>
                   ))}
@@ -756,23 +759,26 @@ export default function HomePage() {
                 <Link
                   key={blog.slug}
                   href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                  className="group relative rounded-3xl overflow-hidden aspect-[4/5] block"
+                  className="group flex flex-col rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <Image
-                    src={blog.img}
-                    alt={t(blog.titleKey)}
-                    width={400}
-                    height={500}
-                    className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-5 z-10">
-                    <h3 className="text-white text-base font-bold mb-1 group-hover:text-[#FCD64C] transition-colors">
-                      {t(blog.titleKey)}
-                    </h3>
-                    <p className="text-gray-200 text-[11px] leading-snug line-clamp-2">
-                      {t(blog.descKey)}
-                    </p>
+                  <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
+                    <Image
+                      src={blog.img}
+                      alt={t(blog.titleKey)}
+                      width={400}
+                      height={250}
+                      className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="flex-1 flex flex-col p-4 justify-between min-h-[140px]">
+                    <div className="flex-1 flex flex-col">
+                      <h3 className="text-[#1e3a8a] text-sm font-bold mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                        {t(blog.titleKey)}
+                      </h3>
+                      <p className="text-gray-700 text-[11px] leading-relaxed line-clamp-4 flex-1">
+                        {t(blog.descKey)}
+                      </p>
+                    </div>
                   </div>
                 </Link>
               ))}
