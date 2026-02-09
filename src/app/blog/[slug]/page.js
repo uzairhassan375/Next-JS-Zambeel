@@ -1,25 +1,41 @@
-import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
+import { getBlogBySlug, getAllBlogSlugs } from '../../../lib/blog';
 import BlogDetailPage from '../../../pages/BlogDetailPage';
+
+export const revalidate = 3600; // ISR: revalidate every hour
+
+export async function generateStaticParams() {
+  const slugs = await getAllBlogSlugs();
+  return slugs;
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const headersList = await headers();
-  const locale = headersList.get('x-locale') || 'en';
-  
-  // Basic metadata for blog posts - can be enhanced with actual blog data
+  const post = await getBlogBySlug(slug);
+  if (!post) {
+    return {
+      title: 'Blog Post | Zambeel',
+      description: 'Read our blog post.',
+    };
+  }
+  const title = post.titleEn || post.titleAr || slug?.replace(/-/g, ' ') || 'Blog Post';
+  const description =
+    post.descriptionEn || post.descriptionAr || `Read our blog post: ${title}.`;
   return {
-    title: `${slug ? slug.replace(/-/g, ' ') : 'Blog Post'} - Zambeel Blog`,
-    description: `Read our blog post about ${slug ? slug.replace(/-/g, ' ') : 'e-commerce'}. Get insights and tips on dropshipping, e-commerce business, and more.`,
+    title: `${title} | Zambeel Blog`,
+    description,
     openGraph: {
-      title: `${slug ? slug.replace(/-/g, ' ') : 'Blog Post'} - Zambeel Blog`,
-      description: `Read our blog post about ${slug ? slug.replace(/-/g, ' ') : 'e-commerce'}. Get insights and tips on dropshipping, e-commerce business, and more.`,
+      title: `${title} | Zambeel Blog`,
+      description,
       type: 'article',
+      images: post.image ? [{ url: post.image, alt: title }] : undefined,
     },
   };
 }
 
-export default async function BlogPost({ params }) {
+export default async function BlogPostPage({ params }) {
   const { slug } = await params;
-  return <BlogDetailPage slug={slug} />;
+  const post = await getBlogBySlug(slug);
+  if (!post) notFound();
+  return <BlogDetailPage post={post} />;
 }
-

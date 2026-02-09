@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
-import { blogList } from "../data/blogs/index";
 const blue_logoImage = "/blue_logo.png";
 import { StackedCards } from "../components/UI/staking-cards";
 import Ticker from "../components/Ticker";
@@ -22,12 +21,27 @@ export default function HomePage() {
   const currentLanguage = i18n.language || 'en';
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+  const [blogList, setBlogList] = useState([]);
 
   const [numberText, setNumberText] = useState("");
 
   // Statistics animation
   const statsRef = useRef(null);
   const blogCarouselRef = useRef(null);
+
+  // Fetch blogs from API
+  useEffect(() => {
+    fetch('/api/blogs')
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setBlogList(data);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch blogs:', err);
+      });
+  }, []);
 
   // Arrow key navigation for blog slideshow
   useEffect(() => {
@@ -694,34 +708,47 @@ export default function HomePage() {
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 <div className="flex h-full gap-4 pr-4" style={{ width: 'max-content' }}>
-                  {blogList.map((blog) => (
-                    <Link
-                      key={blog.slug}
-                      href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                      className="group flex flex-col rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 bg-white shadow-md hover:shadow-lg transition-shadow"
-                      style={{ width: `${BLOG_CARD_WIDTH}px` }}
-                    >
-                      <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
-                        <Image
-                          src={blog.img}
-                          alt={t(blog.titleKey)}
-                          width={BLOG_CARD_WIDTH}
-                          height={200}
-                          className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
-                        />
-                      </div>
-                      <div className="flex-1 flex flex-col p-6 justify-between">
-                        <div className="flex-1 flex flex-col">
-                          <h3 className="text-[#1e3a8a] text-lg font-bold mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
-                            {t(blog.titleKey)}
-                          </h3>
-                          <p className="text-gray-700 text-sm leading-relaxed line-clamp-5 flex-1">
-                            {t(blog.descKey)}
-                          </p>
+                  {blogList.map((blog) => {
+                    const isArabic = currentLanguage.startsWith('ar');
+                    const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
+                    const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
+                    const img = blog.image || '';
+                    return (
+                      <Link
+                        key={blog.slug}
+                        href={getLocalePath(`/blog/${blog.slug}`, pathname)}
+                        className="group flex flex-col rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 bg-white shadow-md hover:shadow-lg transition-shadow"
+                        style={{ width: `${BLOG_CARD_WIDTH}px` }}
+                      >
+                        <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
+                          {img ? (
+                            <Image
+                              src={img}
+                              alt={title}
+                              width={BLOG_CARD_WIDTH}
+                              height={200}
+                              className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
+                              unoptimized={img.startsWith('http') || img.startsWith('data:')}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                              No image
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                        <div className="flex-1 flex flex-col p-6 justify-between">
+                          <div className="flex-1 flex flex-col">
+                            <h3 className="text-[#1e3a8a] text-lg font-bold mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                              {title}
+                            </h3>
+                            <p className="text-gray-700 text-sm leading-relaxed line-clamp-5 flex-1">
+                              {desc}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -755,33 +782,46 @@ export default function HomePage() {
 
           <div className="lg:hidden">
             <div className="grid grid-cols-2 gap-4">
-              {blogList.slice(0, 4).map((blog) => (
-                <Link
-                  key={blog.slug}
-                  href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                  className="group flex flex-col rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow"
-                >
-                  <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
-                    <Image
-                      src={blog.img}
-                      alt={t(blog.titleKey)}
-                      width={400}
-                      height={250}
-                      className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-col p-4 justify-between min-h-[140px]">
-                    <div className="flex-1 flex flex-col">
-                      <h3 className="text-[#1e3a8a] text-sm font-bold mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
-                        {t(blog.titleKey)}
-                      </h3>
-                      <p className="text-gray-700 text-[11px] leading-relaxed line-clamp-4 flex-1">
-                        {t(blog.descKey)}
-                      </p>
+              {blogList.slice(0, 4).map((blog) => {
+                const isArabic = currentLanguage.startsWith('ar');
+                const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
+                const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
+                const img = blog.image || '';
+                return (
+                  <Link
+                    key={blog.slug}
+                    href={getLocalePath(`/blog/${blog.slug}`, pathname)}
+                    className="group flex flex-col rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow"
+                  >
+                    <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
+                      {img ? (
+                        <Image
+                          src={img}
+                          alt={title}
+                          width={400}
+                          height={250}
+                          unoptimized={img.startsWith('http') || img.startsWith('data:')}
+                          className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                          No image
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 flex flex-col p-4 justify-between min-h-[140px]">
+                      <div className="flex-1 flex flex-col">
+                        <h3 className="text-[#1e3a8a] text-sm font-bold mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                          {title}
+                        </h3>
+                        <p className="text-gray-700 text-[11px] leading-relaxed line-clamp-4 flex-1">
+                          {desc}
+                        </p>
                     </div>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
             <div className="flex justify-center mt-8">
               <Link

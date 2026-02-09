@@ -10,7 +10,13 @@ import WhatsAppFloat from '../WhatsAppFloat';
 
 export default function ClientLayout({ children, initialLocale }) {
   const pathname = usePathname();
-  
+  const isAdmin = pathname?.startsWith('/admin');
+
+  // Admin dashboard: no site header/footer or WhatsApp
+  if (isAdmin) {
+    return <>{children}</>;
+  }
+
   // Check for pages that need padding (both English and Arabic routes)
   const shouldHavePadding = pathname === "/" || pathname === "/ar" || 
     pathname === "/about" || pathname === "/ar/about" ||

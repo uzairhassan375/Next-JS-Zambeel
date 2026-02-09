@@ -39,3 +39,9 @@
     background: linear-gradient(180deg, #3E4C85 0%, #526AD1 100%);
   }
 }
+
+/* Blog content text sizes (from rich editor) */
+.blog-content font[size="2"] { font-size: 0.875rem; }
+.blog-content font[size="3"] { font-size: 1rem; }
+.blog-content font[size="4"] { font-size: 1.125rem; }
+.blog-content font[size="5"] { font-size: 1.35rem; }

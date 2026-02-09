@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 import HomePage from '../../../pages/HomePage';
 import AboutPage from '../../../pages/AboutPage';
 import BlogListingPage from '../../../pages/BlogListingPage';
@@ -13,6 +14,7 @@ import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 import TermsOfServicePage from '../../../pages/TermsOfServicePage';
+import { getBlogBySlug, getBlogs } from '../../../lib/blog';
 import enTranslations from '../../../locales/en/translation.json';
 import arTranslations from '../../../locales/ar/translation.json';
 
@@ -149,12 +151,25 @@ export default async function ArabicPage({ params }) {
     const parts = routePath.split('/');
     if (parts.length === 2 && parts[0] === 'blog') {
       const blogSlug = parts[1];
+      // Fetch blog data from database
+      const post = await getBlogBySlug(blogSlug);
+      if (!post) notFound();
       return (
         <Suspense fallback={<PageFallback />}>
-          <BlogDetailPage slug={blogSlug} />
+          <BlogDetailPage post={post} />
         </Suspense>
       );
     }
+  }
+  
+  // Handle blog listing page - needs to fetch blogs
+  if (routePath === 'blog') {
+    const blogs = await getBlogs();
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <BlogListingPage blogs={blogs} />
+      </Suspense>
+    );
   }
   
   // Get the component for the route
