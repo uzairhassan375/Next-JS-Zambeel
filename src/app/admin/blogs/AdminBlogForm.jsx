@@ -12,6 +12,10 @@ const defaultBlog = {
   titleAr: '',
   descriptionEn: '',
   descriptionAr: '',
+  metaTitleEn: '',
+  metaTitleAr: '',
+  metaDescriptionEn: '',
+  metaDescriptionAr: '',
   image: '',
   contentEn: '',
   contentAr: '',
@@ -29,7 +33,15 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
 
   useEffect(() => {
     if (initialData) {
-      setForm(initialData);
+      // Merge with defaultBlog to ensure all fields are strings (not undefined)
+      setForm({
+        ...defaultBlog,
+        ...initialData,
+        metaTitleEn: initialData.metaTitleEn || '',
+        metaTitleAr: initialData.metaTitleAr || '',
+        metaDescriptionEn: initialData.metaDescriptionEn || '',
+        metaDescriptionAr: initialData.metaDescriptionAr || '',
+      });
       // Set preview for existing image
       if (initialData.image && !removeImage) {
         setImagePreview(initialData.image);
@@ -75,13 +87,32 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
       const body = {
         slug: form.slug, // Include slug for both create and edit
         titleEn: form.titleEn,
-        titleAr: form.titleAr,
-        descriptionEn: form.descriptionEn,
-        descriptionAr: form.descriptionAr,
-        contentEn: form.contentEn,
-        contentAr: form.contentAr,
+        titleAr: form.titleAr || '',
+        descriptionEn: form.descriptionEn || '',
+        descriptionAr: form.descriptionAr || '',
+        metaTitleEn: form.metaTitleEn || '',
+        metaTitleAr: form.metaTitleAr || '',
+        metaDescriptionEn: form.metaDescriptionEn || '',
+        metaDescriptionAr: form.metaDescriptionAr || '',
+        contentEn: form.contentEn || '',
+        contentAr: form.contentAr || '',
         image: removeImage ? '' : (imageBase64 || form.image || ''),
       };
+      
+      console.log('AdminBlogForm - Form state before submit:', {
+        metaTitleEn: form.metaTitleEn,
+        metaTitleAr: form.metaTitleAr,
+        metaDescriptionEn: form.metaDescriptionEn,
+        metaDescriptionAr: form.metaDescriptionAr
+      });
+      
+      console.log('AdminBlogForm - Submitting body with meta fields:', {
+        metaTitleEn: body.metaTitleEn,
+        metaTitleAr: body.metaTitleAr,
+        metaDescriptionEn: body.metaDescriptionEn,
+        metaDescriptionAr: body.metaDescriptionAr,
+        fullBody: body
+      });
       
       const res = await fetch(url, {
         method,
@@ -204,6 +235,18 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title (EN)</label>
+            <input
+              type="text"
+              value={form.metaTitleEn || ''}
+              onChange={(e) => update('metaTitleEn', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
+              placeholder="SEO title for search engines (optional)"
+              maxLength={60}
+            />
+            <p className="text-xs text-gray-500 mt-1">Recommended: 50-60 characters. If empty, blog title will be used.</p>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description (EN)</label>
             <textarea
               value={form.descriptionEn}
@@ -211,6 +254,18 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               rows={2}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description (EN)</label>
+            <textarea
+              value={form.metaDescriptionEn || ''}
+              onChange={(e) => update('metaDescriptionEn', e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
+              placeholder="SEO description for search engines (optional)"
+              maxLength={160}
+            />
+            <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters. If empty, blog description will be used.</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content (EN)</label>
@@ -238,6 +293,19 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title (AR)</label>
+            <input
+              type="text"
+              value={form.metaTitleAr || ''}
+              onChange={(e) => update('metaTitleAr', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
+              placeholder="عنوان SEO لمحركات البحث (اختياري)"
+              dir="rtl"
+              maxLength={60}
+            />
+            <p className="text-xs text-gray-500 mt-1" dir="ltr">Recommended: 50-60 characters. If empty, blog title will be used.</p>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description (AR)</label>
             <textarea
               value={form.descriptionAr}
@@ -246,6 +314,19 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
               dir="rtl"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description (AR)</label>
+            <textarea
+              value={form.metaDescriptionAr || ''}
+              onChange={(e) => update('metaDescriptionAr', e.target.value)}
+              rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
+              placeholder="وصف SEO لمحركات البحث (اختياري)"
+              dir="rtl"
+              maxLength={160}
+            />
+            <p className="text-xs text-gray-500 mt-1" dir="ltr">Recommended: 150-160 characters. If empty, blog description will be used.</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content (AR)</label>

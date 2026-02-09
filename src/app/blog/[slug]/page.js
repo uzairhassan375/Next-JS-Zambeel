@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { getBlogBySlug, getAllBlogSlugs } from '../../../lib/blog';
 import BlogDetailPage from '../../../pages/BlogDetailPage';
 
@@ -11,6 +12,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
+  const headersList = await headers();
+  const locale = headersList.get('x-locale') || 'en';
+  const isArabic = locale === 'ar';
+  
   const post = await getBlogBySlug(slug);
   if (!post) {
     return {
@@ -18,9 +23,20 @@ export async function generateMetadata({ params }) {
       description: 'Read our blog post.',
     };
   }
-  const title = post.titleEn || post.titleAr || slug?.replace(/-/g, ' ') || 'Blog Post';
-  const description =
-    post.descriptionEn || post.descriptionAr || `Read our blog post: ${title}.`;
+  
+  // Use meta fields if available, otherwise fall back to title/description
+  const metaTitle = isArabic 
+    ? (post.metaTitleAr || post.titleAr || post.metaTitleEn || post.titleEn)
+    : (post.metaTitleEn || post.titleEn || post.metaTitleAr || post.titleAr);
+  
+  const metaDescription = isArabic
+    ? (post.metaDescriptionAr || post.descriptionAr || post.metaDescriptionEn || post.descriptionEn)
+    : (post.metaDescriptionEn || post.descriptionEn || post.metaDescriptionAr || post.descriptionAr);
+  
+  // Fallback to slug if no title available
+  const title = metaTitle || slug?.replace(/-/g, ' ') || 'Blog Post';
+  const description = metaDescription || `Read our blog post: ${title}.`;
+  
   return {
     title: `${title} | Zambeel Blog`,
     description,

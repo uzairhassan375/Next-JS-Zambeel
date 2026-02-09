@@ -60,7 +60,7 @@ export async function POST(request) {
   try {
     await connectDB();
     const body = await request.json();
-    const { slug, titleEn, titleAr, descriptionEn, descriptionAr, image, contentEn, contentAr } = body;
+    const { slug, titleEn, titleAr, descriptionEn, descriptionAr, metaTitleEn, metaTitleAr, metaDescriptionEn, metaDescriptionAr, image, contentEn, contentAr } = body;
     if (!slug || !titleEn) {
       return NextResponse.json({ error: 'slug and titleEn are required' }, { status: 400 });
     }
@@ -84,6 +84,10 @@ export async function POST(request) {
       titleAr: titleAr || '',
       descriptionEn: descriptionEn || '',
       descriptionAr: descriptionAr || '',
+      metaTitleEn: metaTitleEn || '',
+      metaTitleAr: metaTitleAr || '',
+      metaDescriptionEn: metaDescriptionEn || '',
+      metaDescriptionAr: metaDescriptionAr || '',
       image: image || '', // Store base64 string directly
       contentEn: contentEn || '',
       contentAr: contentAr || '',

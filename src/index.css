@@ -45,3 +45,34 @@
 .blog-content font[size="3"] { font-size: 1rem; }
 .blog-content font[size="4"] { font-size: 1.125rem; }
 .blog-content font[size="5"] { font-size: 1.35rem; }
+
+/* Blog content link styling - make links clearly visible */
+.blog-content a,
+.prose a,
+.blog-link {
+  color: #2563eb !important;
+  text-decoration: underline !important;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.blog-content a:hover,
+.prose a:hover,
+.blog-link:hover {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+
+.blog-content a:visited,
+.prose a:visited,
+.blog-link:visited {
+  color: #7c3aed !important;
+}
+
+/* Ensure links are visible even if parent has different styles */
+.blog-content a,
+.prose a,
+.blog-link {
+  display: inline;
+}

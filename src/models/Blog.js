@@ -7,6 +7,10 @@ const blogSchema = new mongoose.Schema(
     titleAr: { type: String, default: '' },
     descriptionEn: { type: String, default: '' },
     descriptionAr: { type: String, default: '' },
+    metaTitleEn: { type: String, default: '' },
+    metaTitleAr: { type: String, default: '' },
+    metaDescriptionEn: { type: String, default: '' },
+    metaDescriptionAr: { type: String, default: '' },
     image: { type: String, default: '' }, // Stores base64 data URL or external URL
     contentEn: { type: String, default: '' },
     contentAr: { type: String, default: '' },

@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { getLocalePath } from '../lib/localeUtils';
 
 function renderWithBold(text) {
@@ -79,6 +80,24 @@ export default function BlogDetailPage({ post }) {
   const { t, i18n } = useTranslation();
   const pathname = usePathname();
   const isArabic = (i18n.language || '').startsWith('ar');
+
+  // Ensure all links are properly styled and have title attributes displayed on hover
+  useEffect(() => {
+    const blogContent = document.querySelector('.blog-content, .prose');
+    if (blogContent) {
+      const links = blogContent.querySelectorAll('a');
+      links.forEach((link) => {
+        // Ensure links have proper styling classes
+        if (!link.classList.contains('blog-link')) {
+          link.classList.add('blog-link');
+        }
+        // Ensure links with target="_blank" have proper rel attribute for security
+        if (link.target === '_blank' && !link.getAttribute('rel')) {
+          link.setAttribute('rel', 'noopener noreferrer');
+        }
+      });
+    }
+  }, [post]);
 
   if (!post) return null;
 
