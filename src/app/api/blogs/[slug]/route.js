@@ -47,10 +47,23 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const { slug } = await params;
+    const { slug: currentSlug } = await params;
     await connectDB();
     const body = await request.json();
-    const { titleEn, titleAr, descriptionEn, descriptionAr, image, contentEn, contentAr } = body;
+    const { slug: newSlug, titleEn, titleAr, descriptionEn, descriptionAr, image, contentEn, contentAr } = body;
+    
+    // Normalize new slug
+    const normalizedNewSlug = newSlug ? newSlug.trim().toLowerCase().replace(/\s+/g, '-') : currentSlug;
+    
+    // Check if slug is being changed
+    if (normalizedNewSlug !== currentSlug) {
+      // Check if new slug already exists
+      const existing = await Blog.findOne({ slug: normalizedNewSlug });
+      if (existing && existing.slug !== currentSlug) {
+        return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 });
+      }
+    }
+    
     const $set = {
       ...(titleEn != null && { titleEn }),
       ...(titleAr != null && { titleAr }),
@@ -59,6 +72,11 @@ export async function PUT(request, { params }) {
       ...(contentEn != null && { contentEn }),
       ...(contentAr != null && { contentAr }),
     };
+    
+    // Handle slug update if changed
+    if (normalizedNewSlug !== currentSlug) {
+      $set.slug = normalizedNewSlug;
+    }
     
     // Handle image updates - image is now base64 string
     if (image !== undefined) {
@@ -75,7 +93,7 @@ export async function PUT(request, { params }) {
     
     // Explicitly exclude imageFile field and also unset it if it exists
     const blog = await Blog.findOneAndUpdate(
-      { slug },
+      { slug: currentSlug },
       { $set, $unset: { imageFile: 1 } },
       { new: true }
     ).select('-imageFile').lean();

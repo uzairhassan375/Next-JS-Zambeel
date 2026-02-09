@@ -73,7 +73,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
       
       // Send as JSON with base64 string
       const body = {
-        ...(isEdit ? {} : { slug: form.slug }),
+        slug: form.slug, // Include slug for both create and edit
         titleEn: form.titleEn,
         titleAr: form.titleAr,
         descriptionEn: form.descriptionEn,
@@ -111,12 +111,11 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             type="text"
             value={form.slug}
             onChange={(e) => update('slug', e.target.value)}
-            readOnly={isEdit}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm focus:ring-2 focus:ring-[#1e3a8a] bg-gray-50"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm focus:ring-2 focus:ring-[#1e3a8a] bg-white"
             placeholder="my-blog-post"
             required
           />
-          {isEdit && <p className="text-xs text-gray-500 mt-1">Slug cannot be changed when editing.</p>}
+          {isEdit && <p className="text-xs text-gray-500 mt-1">Changing the slug will change the blog URL. Old links may break.</p>}
         </div>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Cover image</label>
