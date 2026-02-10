@@ -14,14 +14,15 @@ const BLOG_CARD_WIDTH = 320;
 const BLOG_CARD_GAP = 16;
 const BLOG_SCROLL_STEP = BLOG_CARD_WIDTH + BLOG_CARD_GAP;
 
-export default function HomePage() {
+export default function HomePage({ initialBlogs = [] }) {
   const { t, i18n } = useTranslation();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentLanguage = i18n.language || 'en';
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
-  const [blogList, setBlogList] = useState([]);
+  // Use server-passed blogs for first paint so section isn't empty; then replace with full list when loaded
+  const [blogList, setBlogList] = useState(Array.isArray(initialBlogs) ? initialBlogs : []);
 
   const [numberText, setNumberText] = useState("");
 
@@ -29,12 +30,12 @@ export default function HomePage() {
   const statsRef = useRef(null);
   const blogCarouselRef = useRef(null);
 
-  // Fetch blogs from API
+  // Fetch full blog list in background (for carousel). First view already has initialBlogs from server.
   useEffect(() => {
     fetch('/api/blogs')
       .then((r) => r.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setBlogList(data);
         }
       })

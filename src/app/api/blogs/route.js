@@ -40,10 +40,14 @@ export async function GET(request) {
       return NextResponse.json(blogsForResponse(blogs));
     } else {
       // For public blog listing: fetch title, description, image (no content)
-      const blogs = await Blog.find({})
+      // Optional ?limit=N for homepage / faster first load
+      const limitParam = searchParams.get('limit');
+      const limit = limitParam ? Math.min(Math.max(1, parseInt(limitParam, 10) || 0), 100) : 0;
+      const query = Blog.find({})
         .select('slug titleEn titleAr descriptionEn descriptionAr image createdAt updatedAt')
-        .sort({ createdAt: -1 })
-        .lean();
+        .sort({ createdAt: -1 });
+      if (limit > 0) query.limit(limit);
+      const blogs = await query.lean();
       return NextResponse.json(blogsForResponse(blogs));
     }
   } catch (e) {

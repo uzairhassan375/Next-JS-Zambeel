@@ -58,16 +58,16 @@ export default function AdminGuard({ children }) {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#1e3a8a] text-white flex flex-col shrink-0">
-        <div className="p-5 border-b border-white/20">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* Sidebar: fixed height, scrollable nav, footer always visible */}
+      <aside className="w-64 h-screen bg-[#1e3a8a] text-white flex flex-col shrink-0 overflow-hidden">
+        <div className="p-5 border-b border-white/20 shrink-0">
           <Link href="/admin/blogs" className="text-xl font-bold tracking-tight">
             Zambeel Admin
           </Link>
           <p className="text-xs text-blue-200 mt-1">Content dashboard</p>
         </div>
-        <nav className="p-3 flex-1">
+        <nav className="p-3 flex-1 min-h-0 overflow-y-auto">
           <p className="px-3 text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2">
             Content
           </p>
@@ -90,7 +90,7 @@ export default function AdminGuard({ children }) {
             })}
           </ul>
         </nav>
-        <div className="p-3 border-t border-white/20 space-y-1">
+        <div className="p-3 border-t border-white/20 space-y-1 shrink-0">
           <a
             href="/"
             target="_blank"
@@ -117,7 +117,7 @@ export default function AdminGuard({ children }) {
         </div>
       </aside>
       {/* Main content */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 min-h-0 overflow-auto">
         {children}
       </main>
     </div>

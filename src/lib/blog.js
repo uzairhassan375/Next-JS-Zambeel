@@ -49,6 +49,22 @@ export async function getBlogs() {
 }
 
 /**
+ * Fetch first N blogs for homepage above-the-fold. Server-only.
+ * Use in Server Components to avoid client fetch for first view.
+ * @param {number} limit - Max number of blogs (default 6)
+ * @returns {Promise<Array>} Blogs with minimal fields, sorted by createdAt desc.
+ */
+export async function getBlogsForHomepage(limit = 6) {
+  await connectDB();
+  const blogs = await Blog.find({})
+    .select('slug titleEn titleAr descriptionEn descriptionAr image createdAt updatedAt')
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .lean();
+  return blogs.map(serializeBlog);
+}
+
+/**
  * Fetch a single blog by slug. Server-only; use in Server Components.
  * @param {string} slug
  * @returns {Promise<Object|null>} Blog or null if not found.

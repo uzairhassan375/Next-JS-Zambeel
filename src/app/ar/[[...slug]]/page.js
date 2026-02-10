@@ -14,7 +14,7 @@ import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 import TermsOfServicePage from '../../../pages/TermsOfServicePage';
-import { getBlogBySlug, getBlogs } from '../../../lib/blog';
+import { getBlogBySlug, getBlogs, getBlogsForHomepage } from '../../../lib/blog';
 import enTranslations from '../../../locales/en/translation.json';
 import arTranslations from '../../../locales/ar/translation.json';
 
@@ -184,6 +184,16 @@ export default async function ArabicPage({ params }) {
           <p className="text-lg text-gray-600">Page not found</p>
         </div>
       </div>
+    );
+  }
+  
+  // Homepage: pass initial blogs so they show immediately without client fetch
+  if (routePath === '' && PageComponent === HomePage) {
+    const initialBlogs = await getBlogsForHomepage(6);
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <HomePage initialBlogs={initialBlogs} />
+      </Suspense>
     );
   }
   
