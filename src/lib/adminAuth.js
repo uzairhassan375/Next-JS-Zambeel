@@ -5,10 +5,15 @@ const COOKIE_NAME = 'admin_session';
 const MAX_AGE = 60 * 60 * 24; // 24 hours
 
 function sign(value) {
-  return crypto.createHmac('sha256', process.env.ADMIN_SECRET || 'fallback').update(value).digest('hex');
+  const secret = process.env.ADMIN_SECRET;
+  if (!secret) throw new Error('ADMIN_SECRET is not configured');
+  return crypto.createHmac('sha256', secret).update(value).digest('hex');
 }
 
 export function createAdminSession() {
+  if (!process.env.ADMIN_SECRET) {
+    throw new Error('ADMIN_SECRET is not configured');
+  }
   const payload = { admin: true, exp: Date.now() + MAX_AGE * 1000 };
   const raw = Buffer.from(JSON.stringify(payload)).toString('base64url');
   const signature = sign(raw);
@@ -48,5 +53,5 @@ export async function setAdminCookie() {
 
 export async function clearAdminCookie() {
   const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
+  cookieStore.delete(COOKIE_NAME, { path: '/' });
 }

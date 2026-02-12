@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import HomePage from '../pages/HomePage';
 import { getBlogsForHomepage } from '../lib/blog';
+import { buildMetadataForPage } from '../lib/pageMeta';
 import enTranslations from '../locales/en/translation.json';
 import arTranslations from '../locales/ar/translation.json';
 
@@ -20,16 +21,11 @@ export async function generateMetadata() {
   const headersList = await headers();
   const locale = headersList.get('x-locale') || 'en';
   const translations = locale === 'ar' ? arTranslations : enTranslations;
-  
-  return {
+  const fallback = {
     title: 'Zambeel - One Platform for Your E-commerce Business',
     description: translations.footer.seoDescription || translations.homepage.whereToSell.seoDescription || 'Zambeel E-commerce Solutions',
-    openGraph: {
-      title: 'Zambeel - One Platform for Your E-commerce Business',
-      description: translations.footer.seoDescription || translations.homepage.whereToSell.seoDescription || 'Zambeel E-commerce Solutions',
-      type: 'website',
-    },
   };
+  return buildMetadataForPage('home', locale, fallback);
 }
 
 export default async function Home() {

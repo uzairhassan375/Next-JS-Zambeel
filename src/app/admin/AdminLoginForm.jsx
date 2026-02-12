@@ -34,7 +34,8 @@ export default function AdminLoginForm() {
         setError(data.error || 'Invalid password');
         return;
       }
-      router.push('/admin/blogs');
+      // Use replace so back button doesn't return to login; then refresh to load dashboard
+      router.replace('/admin/blogs');
       router.refresh();
     } catch {
       setError('Something went wrong');
@@ -64,13 +65,12 @@ export default function AdminLoginForm() {
           You are already logged in. Your session stays active for 24 hours on this browser.
         </p>
         <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={() => router.push('/admin/blogs')}
-            className="flex-1 bg-[#1e3a8a] text-white py-2 rounded-lg font-medium hover:bg-[#1e3a8a]/90"
+          <a
+            href="/admin/blogs"
+            className="flex-1 bg-[#1e3a8a] text-white py-2 rounded-lg font-medium hover:bg-[#1e3a8a]/90 text-center inline-block"
           >
             Go to dashboard
-          </button>
+          </a>
           <button
             type="button"
             onClick={handleLogout}

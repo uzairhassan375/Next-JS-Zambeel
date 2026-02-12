@@ -55,6 +55,7 @@ export default function AdminGuard({ children }) {
   const navItems = [
     { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
     { href: '/admin/blogs/new', label: 'New Blog', icon: '➕' },
+    { href: '/admin/page-meta', label: 'Page meta (SEO)', icon: '🔖' },
   ];
 
   return (
