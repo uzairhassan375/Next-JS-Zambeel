@@ -22,28 +22,24 @@ const TIER_COLORS = {
 
 const COMPANIES = {
   diamond: [
-    { id: 1, name: 'Business Recorder', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'partners@shopify.com', website: 'www.shopify.com', logo: '/assets/partners/diamond/business.webp' },
-    { id: 2, name: 'WooCommerce', country: 'United States', description: 'Open-source e-commerce platform built on WordPress, powering online stores worldwide.', contact: 'partners@woocommerce.com', website: 'woocommerce.com', logo: '/assets/partners/diamond/woo.png' },
-    { id: 3, name: 'Arab News', country: 'Global', description: 'Modern e-commerce solutions and themes enabling seamless online retail experiences.', contact: 'hello@dawn.com', website: 'www.dawn.com', logo: '/assets/partners/diamond/arab-news.webp' },
-    { id: 4, name: 'Menabytes', country: 'United States', description: 'Digital marketing agency driving growth through data-driven strategies.', contact: 'hello@digitaldynamics.com', website: 'www.digitaldynamics.com',logo: '/assets/partners/diamond/menabytes.webp' },
-    { id: 5, name: 'Rest of World', country: 'Australia', description: 'Cloud infrastructure specialists providing scalable solutions for modern businesses.', contact: 'support@cloudsync.com', website: 'www.cloudsync.com',logo: '/assets/partners/diamond/rest-of-world.webp' },
-    { id: 6, name: 'Tech Crunch', country: 'Singapore', description: 'E-commerce platform developers creating seamless online shopping experiences.', contact: 'partners@smartcommerce.com', website: 'www.smartcommerce.com',logo: '/assets/partners/diamond/techcrunch.webp' },
+    { id: 1, name: 'Shopify', country: 'Canada', description: 'E-commerce platform to create and manage online stores.', contact: 'partners@shopify.com', website: 'www.shopify.com', logo: '/assets/partners/diamond/shopify.png' },
+    { id: 2, name: 'Releasit (Release it COD)', country: 'Italy', description: 'Shopify app for COD order form and upsells.', contact: 'partners@releas.it', website: 'www.releas.it', logo: '/assets/partners/diamond/release-it.png' },
+    { id: 3, name: 'iMile', country: 'UAE', description: 'Last-mile delivery and logistics company for e-commerce.', contact: 'hello@imile.com', website: 'www.imile.com', logo: '/assets/partners/diamond/imile.png' },
+    { id: 4, name: 'Easy Orders', country: 'Saudi Arabia', description: 'Platform to create online stores and manage orders.', contact: 'hello@easy-orders.net', website: 'www.easy-orders.net', logo: '/assets/partners/diamond/easyorder.png' },
+    { id: 5, name: 'Salla', country: 'Saudi Arabia', description: 'E-commerce platform for building online stores, popular in the GCC.', contact: 'support@salla.com', website: 'salla.com/en', logo: '/assets/partners/diamond/salla.png' },
   ],
   gold: [
-    { id: 11, name: 'Shopify', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'partners@shopify.com', website: 'www.shopify.com', logo: '/assets/partners/gold/shopify.png' },
-    { id: 12, name: 'WooCommerce', country: 'United States', description: 'Open-source e-commerce platform built on WordPress, powering online stores worldwide.', contact: 'partners@woocommerce.com', website: 'woocommerce.com', logo: '/assets/partners/gold/woo.png' },
-    { id: 13, name: 'Dawn', country: 'Global', description: 'Modern e-commerce solutions and themes enabling seamless online retail experiences.', contact: 'hello@dawn.com', website: 'www.dawn.com', logo: '/assets/partners/gold/dawn.png' },
-    { id: 14, name: 'ConnectPro Services', country: 'Netherlands', description: 'Networking and connectivity solutions for businesses worldwide.', contact: 'support@connectpro.nl', website: 'www.connectpro.nl' },
-    { id: 15, name: 'Growth Partners LLC', country: 'United States', description: 'Growth consulting firm focused on scaling businesses efficiently.', contact: 'partners@growthpartners.com', website: 'www.growthpartners.com' },
-    { id: 16, name: 'Innovation Labs', country: 'Israel', description: 'Research and development lab creating cutting-edge solutions.', contact: 'labs@innovation.com', website: 'www.innovationlabs.com' },
+    { id: 11, name: 'HOX', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'business@houseofxperts.com', phone: '+923152925795', website: 'www.shopify.com', logo: '/assets/partners/gold/hox.png' },
+    { id: 12, name: 'HSNECOM', country: 'United States', description: 'Open-source e-commerce platform built on WordPress, powering online stores worldwide.', contact: 'hsnecom99@gmail.com', phone: '+923295619315', website: 'www.hsn-ecom.com', logo: '/assets/partners/gold/hsn-ecom.png' },
   ],
   silver: [
-    { id: 21, name: 'Shopify', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'partners@shopify.com', website: 'www.shopify.com', logo: '/assets/partners/silver/shopify.png' },
-    { id: 22, name: 'WooCommerce', country: 'United States', description: 'Open-source e-commerce platform built on WordPress, powering online stores worldwide.', contact: 'partners@woocommerce.com', website: 'woocommerce.com', logo: '/assets/partners/silver/woo.png' },
-    { id: 23, name: 'Dawn', country: 'Global', description: 'Modern e-commerce solutions and themes enabling seamless online retail experiences.', contact: 'hello@dawn.com', website: 'www.dawn.com', logo: '/assets/partners/silver/dawn.png' },
-    { id: 24, name: 'TechVenture Japan', country: 'Japan', description: 'Essential growth tools and strategies for growing businesses.', contact: 'info@techventure.jp', website: 'www.techventure.jp' },
-    { id: 25, name: 'Nordic Solutions', country: 'Sweden', description: 'Fundamental business services for new entrepreneurs.', contact: 'basics@nordicsolutions.se', website: 'www.nordicsolutions.se' },
-    { id: 26, name: 'Iberia Digital', country: 'Spain', description: 'Progressive approach to business partnership and collaboration.', contact: 'partners@iberiadigital.es', website: 'www.iberiadigital.es' },
+    { id: 21, name: 'AD FAZ', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'info@adfaz.sa', phone: '+966920033456', website: 'www.shopify.com', logo: '/assets/partners/silver/adfaz.png' },
+    { id: 22, name: 'Aiselas', country: 'United States', description: 'Open-source e-commerce platform built on WordPress, powering online stores worldwide.', contact: '10xecommercee@gmail.com', phone: '+923432843665', website: 'woocommerce.com', logo: '/assets/partners/silver/aiselas.png' },
+    { id: 23, name: 'AMG Marketing solutions', country: 'Global', description: 'Modern e-commerce solutions and themes enabling seamless online retail experiences.', contact: 'amgmarketingsolutions99@gmail.com', phone: '+923189829997', website: 'www.dawn.com', logo: '/assets/partners/silver/amg.png' },
+    { id: 24, name: 'Codus Labz & Technologies', country: 'Japan', description: 'Essential growth tools and strategies for growing businesses.', contact: 'info@coduslabz.com', phone: '+923196346326', website: 'www.techventure.jp', logo: '/assets/partners/silver/codus.png' },
+    { id: 25, name: 'Fahman Academy', country: 'Sweden', description: 'Fundamental business services for new entrepreneurs.', contact: 'tamegeto0111@gmail.com', phone: '+201092140201', website: 'www.nordicsolutions.se', logo: '/assets/partners/silver/fahman.png' },
+    { id: 26, name: 'Markex Digital Marketing Agency', country: 'Spain', description: 'Progressive approach to business partnership and collaboration.', contact: 'markex.digitalagency@gmail.com', phone: '+923421240965', website: 'www.iberiadigital.es', logo: '/assets/partners/silver/markex-agency.png' },
+    { id: 27, name: 'Tellihub', country: 'Spain', description: 'Progressive approach to business partnership and collaboration.', contact: 'tellihub@gmail.com', phone: '+923207674451', website: 'www.iberiadigital.es', logo: '/assets/partners/silver/tellihub.png' },
   ]
 };
 
@@ -272,6 +268,12 @@ function PartnerAgenciesPage() {
                   <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.contact')}</h3>
                   <p className="text-white/80">{selectedCompany.contact}</p>
                 </div>
+                {selectedCompany.phone && (
+                  <div>
+                    <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.phone')}</h3>
+                    <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]">{selectedCompany.phone}</a>
+                  </div>
+                )}
                 <div>
                   <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.website')}</h3>
                   <a href={`https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all">{selectedCompany.website}</a>
