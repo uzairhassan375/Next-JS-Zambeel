@@ -29,7 +29,7 @@ const COMPANIES = {
     { id: 5, name: 'Salla', country: 'Saudi Arabia', description: 'E-commerce platform for building online stores, popular in the GCC.', contact: 'support@salla.com', website: 'salla.com/en', logo: '/assets/partners/diamond/salla.png' },
   ],
   gold: [
-    { id: 11, name: 'HOX', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'business@houseofxperts.com', phone: '+923152925795', website: 'www.shopify.com', logo: '/assets/partners/gold/hox.png' },
+    { id: 11, name: 'HOX', country: 'Canada', description: 'Leading commerce platform empowering millions of businesses to start, run, and grow their stores online.', contact: 'business@houseofxperts.com', phone: '+923152925795' , logo: '/assets/partners/gold/hox.png' },
     { id: 12, name: 'HSNECOM', country: 'United States', description: 'Open-source e-commerce platform built on WordPress, powering online stores worldwide.', contact: 'hsnecom99@gmail.com', phone: '+923295619315', website: 'www.hsn-ecom.com', logo: '/assets/partners/gold/hsn-ecom.png' },
   ],
   silver: [
@@ -47,6 +47,7 @@ function PartnerAgenciesPage() {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedTier, setSelectedTier] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState({ diamond: 0, gold: 0, silver: 0 });
   const [isMobile, setIsMobile] = useState(false);
@@ -77,14 +78,16 @@ function PartnerAgenciesPage() {
   const getInitials = (name) =>
     name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
-  const openDetails = (company) => {
+  const openDetails = (company, tierKey) => {
     setSelectedCompany(company);
+    setSelectedTier(tierKey);
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false);
     setSelectedCompany(null);
+    setSelectedTier(null);
   };
 
   const renderTierSection = (tierKey, tierLabelKey, subtitleKey) => {
@@ -146,7 +149,7 @@ function PartnerAgenciesPage() {
                   clickToSeeDetailsLabel={t('partnerAgencies.clickHereToSeeDetails')}
                   clickDetailsColor={colors.clickDetailsColor}
                   getInitials={getInitials}
-                  onTap={openDetails}
+                  onTap={(company) => openDetails(company, tierKey)}
                 />
               ))}
             </div>
@@ -164,7 +167,7 @@ function PartnerAgenciesPage() {
                   clickToSeeDetailsLabel={t('partnerAgencies.clickHereToSeeDetails')}
                   clickDetailsColor={colors.clickDetailsColor}
                   getInitials={getInitials}
-                  onTap={openDetails}
+                  onTap={(company) => openDetails(company, tierKey)}
                   compact
                 />
               ))}
@@ -274,10 +277,12 @@ function PartnerAgenciesPage() {
                     <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]">{selectedCompany.phone}</a>
                   </div>
                 )}
-                <div>
-                  <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.website')}</h3>
-                  <a href={`https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all">{selectedCompany.website}</a>
-                </div>
+                {selectedTier === 'diamond' && (
+                  <div>
+                    <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.website')}</h3>
+                    <a href={`https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all">{selectedCompany.website}</a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
