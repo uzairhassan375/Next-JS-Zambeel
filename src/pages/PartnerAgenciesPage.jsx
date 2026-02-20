@@ -277,10 +277,10 @@ function PartnerAgenciesPage() {
                     <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]">{selectedCompany.phone}</a>
                   </div>
                 )}
-                {selectedTier === 'diamond' && (
+                {selectedCompany.website && (selectedTier === 'diamond' || [11, 12, 24].includes(selectedCompany.id)) && (
                   <div>
                     <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.website')}</h3>
-                    <a href={`https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all">{selectedCompany.website}</a>
+                    <a href={`https://${selectedCompany.website.replace(/^https?:\/\//, '')}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all">{selectedCompany.website.replace(/^https?:\/\//, '')}</a>
                   </div>
                 )}
               </div>
