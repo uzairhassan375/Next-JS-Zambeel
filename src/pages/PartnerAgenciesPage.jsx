@@ -223,12 +223,15 @@ function PartnerAgenciesPage() {
         <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto mb-8">
           {t('partnerAgencies.globalSubtitle')}
         </p>
-        <button
-          className="px-6 py-3 rounded-full font-semibold text-sm md:text-base transition-all hover:opacity-90"
+        <a
+          href={currentLanguage === 'ar' ? 'https://forms.gle/jN9ohywiuXwAZ5hQ6' : 'https://forms.gle/TgCpb8KXjxRpKLG39'}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block px-6 py-3 rounded-full font-semibold text-sm md:text-base transition-all hover:opacity-90"
           style={{ background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)', color: '#fff', fontFamily: 'DM Sans, sans-serif' }}
         >
           {t('partnerAgencies.becomePartner')}
-        </button>
+        </a>
       </section>
 
       <section className="relative pb-16 md:pb-20 px-4 md:px-6">
