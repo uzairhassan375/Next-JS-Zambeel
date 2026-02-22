@@ -35,11 +35,9 @@ const COMPANIES = {
   silver: [
     { id: 21, name: 'AD FAZ', country: 'Egypt', description: 'Your partner in digital advertising and brand success. AD FAZ turns ideas into campaigns that engage, convert, and scale.', contact: 'info@adfaz.sa', phone: '+966920033456', website: 'www.shopify.com', logo: '/assets/partners/silver/adfaz.png' },
     { id: 22, name: 'Aiselas', country: 'Pakistan', description: 'Your partner in building impactful online presence. Aiselas combines creativity, strategy, and technology for measurable success.', contact: '10xecommercee@gmail.com', phone: '+923432843665', website: 'woocommerce.com', logo: '/assets/partners/silver/aiselas.png' },
-    { id: 23, name: 'AMG Marketing solutions', country: 'Global', description: 'Modern e-commerce solutions and themes enabling seamless online retail experiences.', contact: 'amgmarketingsolutions99@gmail.com', phone: '+923189829997', website: 'www.dawn.com', logo: '/assets/partners/silver/amg.png' },
     { id: 24, name: 'Codus Labz & Technologies', country: 'Pakistan', description: 'Where technology meets innovation. Codus Labz & Technologies creates products and campaigns that accelerate success.', contact: 'info@coduslabz.com', phone: '+923196346326', website: 'www.coduslabz.com', logo: '/assets/partners/silver/codus.png' },
     { id: 25, name: 'Fahman Academy', country: 'Egypt', description: 'Fahman Academy empowers entrepreneurs to master e-commerce and grow their online business.', contact: 'tamegeto0111@gmail.com', phone: '+201092140201', website: 'www.nordicsolutions.se', logo: '/assets/partners/silver/fahman.png' },
     { id: 26, name: 'Markex Digital Marketing Agency', country: 'Pakistan', description: 'Where innovation meets performance marketing. Markex empowers brands to grow, compete, and lead online.', contact: 'markex.digitalagency@gmail.com', phone: '+923421240965', website: 'www.iberiadigital.es', logo: '/assets/partners/silver/markex-agency.png' },
-    { id: 27, name: 'Tellihub', country: 'Spain', description: 'Progressive approach to business partnership and collaboration.', contact: 'tellihub@gmail.com', phone: '+923207674451', website: 'www.iberiadigital.es', logo: '/assets/partners/silver/tellihub.png' },
   ]
 };
 
@@ -277,7 +275,7 @@ function PartnerAgenciesPage() {
                 {selectedCompany.phone && (
                   <div>
                     <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.phone')}</h3>
-                    <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]">{selectedCompany.phone}</a>
+                    <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]" dir="ltr">{selectedCompany.phone}</a>
                   </div>
                 )}
                 {selectedCompany.website && (selectedTier === 'diamond' || [11, 12, 24].includes(selectedCompany.id)) && (
