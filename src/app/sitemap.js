@@ -1,11 +1,13 @@
 import { getAllBlogSlugs } from '../lib/blog';
 
-// Set NEXT_PUBLIC_SITE_URL in .env (e.g. https://www.myzambeel.com) for production sitemap URLs
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.myzambeel.com';
+// Make sure this exists in your .env file:
+// NEXT_PUBLIC_SITE_URL=https://www.myzambeel.com
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.myzambeel.com';
 
-/** Static routes: English and Arabic (no admin or api) */
+/** Static routes (exclude admin & api) */
 const STATIC_ROUTES = [
-  { path: '', priority: 1, changeFrequency: 'weekly' },
+  { path: '', priority: 1.0, changeFrequency: 'weekly' },
   { path: 'about', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'team', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'blog', priority: 0.9, changeFrequency: 'weekly' },
@@ -19,10 +21,21 @@ const STATIC_ROUTES = [
   { path: 'pages/terms-of-service', priority: 0.5, changeFrequency: 'yearly' },
 ];
 
-function toUrl(path, locale = '') {
-  const segment = locale ? (path ? `${locale}/${path}` : locale) : path;
-  const url = segment ? `${BASE_URL}/${segment}` : BASE_URL + '/';
-  return url.replace(/\/+/g, '/').replace(/\/$/, '') || BASE_URL + '/';
+/**
+ * Safe URL builder (does NOT break https://)
+ */
+function buildUrl(path = '', locale = '') {
+  let url = BASE_URL.replace(/\/$/, ''); // remove trailing slash only
+
+  if (locale) {
+    url += `/${locale}`;
+  }
+
+  if (path) {
+    url += `/${path}`;
+  }
+
+  return url;
 }
 
 export default async function sitemap() {
@@ -31,7 +44,7 @@ export default async function sitemap() {
   // English static pages
   for (const route of STATIC_ROUTES) {
     entries.push({
-      url: toUrl(route.path),
+      url: buildUrl(route.path),
       lastModified: new Date(),
       changeFrequency: route.changeFrequency,
       priority: route.priority,
@@ -41,34 +54,38 @@ export default async function sitemap() {
   // Arabic static pages
   for (const route of STATIC_ROUTES) {
     entries.push({
-      url: toUrl(route.path, 'ar'),
+      url: buildUrl(route.path, 'ar'),
       lastModified: new Date(),
       changeFrequency: route.changeFrequency,
       priority: route.priority,
     });
   }
 
-  // Blog posts from database (English and Arabic URLs)
+  // Blog posts (English + Arabic)
   try {
     const slugs = await getAllBlogSlugs();
-    const validSlugs = slugs.filter((s) => s?.slug?.trim());
-    for (const { slug } of validSlugs) {
-      if (!slug) continue;
+
+    const validSlugs = slugs?.filter((s) => s?.slug?.trim());
+
+    for (const { slug } of validSlugs || []) {
+      const safeSlug = encodeURIComponent(slug);
+
       entries.push({
-        url: `${BASE_URL}/blog/${encodeURIComponent(slug)}`,
+        url: buildUrl(`blog/${safeSlug}`),
         lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.7,
       });
+
       entries.push({
-        url: `${BASE_URL}/ar/blog/${encodeURIComponent(slug)}`,
+        url: buildUrl(`blog/${safeSlug}`, 'ar'),
         lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.7,
       });
     }
-  } catch (e) {
-    console.error('Sitemap: failed to fetch blog slugs', e);
+  } catch (error) {
+    console.error('Sitemap: Failed to fetch blog slugs', error);
   }
 
   return entries;

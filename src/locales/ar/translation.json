@@ -506,7 +506,8 @@
         "contact": "اتصل",
         "phone": "هاتف",
         "website": "الموقع الإلكتروني",
-        "clickHereToSeeDetails": "انقر هنا لعرض التفاصيل"
+        "clickHereToSeeDetails": "انقر هنا لعرض التفاصيل",
+        "loading": "جاري تحميل الشركاء..."
     },
     "superClass": {
         "ticker": "يبدأ في 27 مارس 2026 · عبر الإنترنت مباشرة",

@@ -30,11 +30,9 @@ export async function GET(request) {
     const isAdminList = searchParams.get('admin') === 'true';
     
     if (isAdminList) {
-      // For admin list: only fetch minimal fields needed for the table
-      // Exclude large content fields (contentEn, contentAr) to dramatically improve performance
-      // Only fetch: slug, titleEn, image, createdAt, updatedAt
+      // For admin list: fetch only table columns; exclude image and content (large base64)
       const blogs = await Blog.find({})
-        .select('slug titleEn image createdAt updatedAt')
+        .select('slug titleEn createdAt updatedAt')
         .sort({ createdAt: -1 })
         .lean();
       return NextResponse.json(blogsForResponse(blogs));
@@ -62,8 +60,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    await connectDB();
-    const body = await request.json();
+    const [_, body] = await Promise.all([connectDB(), request.json()]);
     const { slug, titleEn, titleAr, descriptionEn, descriptionAr, metaTitleEn, metaTitleAr, metaDescriptionEn, metaDescriptionAr, image, contentEn, contentAr } = body;
     if (!slug || !titleEn) {
       return NextResponse.json({ error: 'slug and titleEn are required' }, { status: 400 });

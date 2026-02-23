@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { CldUploadWidget } from 'next-cloudinary';
 import RichTextEditor from './RichTextEditor';
+
+const useCloudinary = Boolean(
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME && process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+);
+const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || '';
 
 const defaultBlog = {
   slug: '',
@@ -72,20 +78,21 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         : '/api/blogs';
       const method = isEdit ? 'PUT' : 'POST';
       
-      // Convert image file to base64 if selected
-      let imageBase64 = '';
-      if (imageFile) {
+      // Image: Cloudinary URL (fast) or base64 from file fallback
+      let imagePayload = form.image || '';
+      if (removeImage) {
+        imagePayload = '';
+      } else if (imageFile) {
         const reader = new FileReader();
-        imageBase64 = await new Promise((resolve, reject) => {
+        imagePayload = await new Promise((resolve, reject) => {
           reader.onloadend = () => resolve(reader.result);
           reader.onerror = reject;
           reader.readAsDataURL(imageFile);
         });
       }
-      
-      // Send as JSON with base64 string
+
       const body = {
-        slug: form.slug, // Include slug for both create and edit
+        slug: form.slug,
         titleEn: form.titleEn,
         titleAr: form.titleAr || '',
         descriptionEn: form.descriptionEn || '',
@@ -96,24 +103,9 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         metaDescriptionAr: form.metaDescriptionAr || '',
         contentEn: form.contentEn || '',
         contentAr: form.contentAr || '',
-        image: removeImage ? '' : (imageBase64 || form.image || ''),
+        image: imagePayload,
       };
-      
-      console.log('AdminBlogForm - Form state before submit:', {
-        metaTitleEn: form.metaTitleEn,
-        metaTitleAr: form.metaTitleAr,
-        metaDescriptionEn: form.metaDescriptionEn,
-        metaDescriptionAr: form.metaDescriptionAr
-      });
-      
-      console.log('AdminBlogForm - Submitting body with meta fields:', {
-        metaTitleEn: body.metaTitleEn,
-        metaTitleAr: body.metaTitleAr,
-        metaDescriptionEn: body.metaDescriptionEn,
-        metaDescriptionAr: body.metaDescriptionAr,
-        fullBody: body
-      });
-      
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -150,7 +142,40 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         </div>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Cover image</label>
+          <p className="text-xs text-gray-500 mb-2">Upload to Cloudinary for fast loading (URL stored in DB). Or choose a file to embed.</p>
           <div className="flex flex-wrap items-center gap-3">
+            {useCloudinary && (
+              <CldUploadWidget
+                config={{
+                  cloud: {
+                    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+                    apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+                  },
+                }}
+                uploadPreset={uploadPreset}
+                options={{ folder: 'blogs', maxFileSize: 3145728, maxFiles: 1, sources: ['local', 'url'], multiple: false }}
+                onSuccess={(results, { widget }) => {
+                  widget?.close?.();
+                  const url = results?.info?.secure_url;
+                  if (url) {
+                    setImageFile(null);
+                    setRemoveImage(false);
+                    setImagePreview(url);
+                    update('image', url);
+                  }
+                }}
+              >
+                {({ open }) => (
+                  <button
+                    type="button"
+                    onClick={() => open()}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-lg font-medium hover:bg-[#1e3a8a]/90 transition-colors"
+                  >
+                    ☁️ Upload to Cloudinary
+                  </button>
+                )}
+              </CldUploadWidget>
+            )}
             <input
               type="file"
               id="blog-image-file"
@@ -160,8 +185,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
                 const f = e.target.files?.[0];
                 if (f) {
                   setImageFile(f);
-                  setRemoveImage(false); // Cancel removal if new file selected
-                  // Create preview URL for selected file
+                  setRemoveImage(false);
                   const reader = new FileReader();
                   reader.onloadend = () => {
                     setImagePreview(reader.result);

@@ -39,14 +39,7 @@ export async function GET(request, { params }) {
       metaDescriptionEn: blog.metaDescriptionEn || '',
       metaDescriptionAr: blog.metaDescriptionAr || '',
     };
-    
-    console.log('GET /api/blogs/[slug] - Blog meta fields:', {
-      metaTitleEn: blogWithMeta.metaTitleEn,
-      metaTitleAr: blogWithMeta.metaTitleAr,
-      metaDescriptionEn: blogWithMeta.metaDescriptionEn,
-      metaDescriptionAr: blogWithMeta.metaDescriptionAr
-    });
-    
+
     return NextResponse.json(blogForResponse(blogWithMeta), {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
@@ -66,18 +59,9 @@ export async function PUT(request, { params }) {
   }
   try {
     const { slug: currentSlug } = await params;
-    await connectDB();
-    const body = await request.json();
+    const [_, body] = await Promise.all([connectDB(), request.json()]);
     const { slug: newSlug, titleEn, titleAr, descriptionEn, descriptionAr, metaTitleEn, metaTitleAr, metaDescriptionEn, metaDescriptionAr, image, contentEn, contentAr } = body;
-    
-    // Debug logging
-    console.log('PUT /api/blogs/[slug] - Received meta fields:', {
-      metaTitleEn,
-      metaTitleAr,
-      metaDescriptionEn,
-      metaDescriptionAr
-    });
-    
+
     // Normalize new slug
     const normalizedNewSlug = newSlug ? newSlug.trim().toLowerCase().replace(/\s+/g, '-') : currentSlug;
     
@@ -107,18 +91,7 @@ export async function PUT(request, { params }) {
     $set.metaTitleAr = String(metaTitleAr ?? '');
     $set.metaDescriptionEn = String(metaDescriptionEn ?? '');
     $set.metaDescriptionAr = String(metaDescriptionAr ?? '');
-    
-    console.log('PUT /api/blogs/[slug] - $set object:', JSON.stringify($set, null, 2));
-    console.log('PUT /api/blogs/[slug] - Meta fields in $set:', {
-      metaTitleEn: $set.metaTitleEn,
-      metaTitleAr: $set.metaTitleAr,
-      metaDescriptionEn: $set.metaDescriptionEn,
-      metaDescriptionAr: $set.metaDescriptionAr,
-      metaTitleEnType: typeof $set.metaTitleEn,
-      metaTitleEnLength: $set.metaTitleEn?.length,
-      hasMetaTitleEn: 'metaTitleEn' in $set
-    });
-    
+
     // Handle slug update if changed
     if (normalizedNewSlug !== currentSlug) {
       $set.slug = normalizedNewSlug;
@@ -136,12 +109,7 @@ export async function PUT(request, { params }) {
       $set.image = image || '';
     }
     // If image is not provided, keep existing image (don't modify image field)
-    
-    // Verify $set contains meta fields before update
-    console.log('PUT /api/blogs/[slug] - About to update with $set keys:', Object.keys($set));
-    console.log('PUT /api/blogs/[slug] - $set.metaTitleEn exists?', 'metaTitleEn' in $set);
-    console.log('PUT /api/blogs/[slug] - $set.metaTitleEn value:', $set.metaTitleEn);
-    
+
     // Explicitly exclude imageFile field and also unset it if it exists
     // Use runValidators to ensure schema validation runs
     // Use setDefaultsOnInsert to ensure defaults are applied
@@ -164,23 +132,7 @@ export async function PUT(request, { params }) {
     // Convert to plain object
     const blog = updateResult.toObject ? updateResult.toObject() : updateResult;
     delete blog.imageFile;
-    
-    console.log('PUT /api/blogs/[slug] - Updated blog meta fields:', {
-      metaTitleEn: blog.metaTitleEn,
-      metaTitleAr: blog.metaTitleAr,
-      metaDescriptionEn: blog.metaDescriptionEn,
-      metaDescriptionAr: blog.metaDescriptionAr
-    });
-    
-    // Verify the update actually saved the meta fields by fetching again
-    const verifyBlog = await Blog.findOne({ slug: currentSlug }).select('-imageFile').lean();
-    console.log('PUT /api/blogs/[slug] - Verification fetch meta fields:', {
-      metaTitleEn: verifyBlog?.metaTitleEn,
-      metaTitleAr: verifyBlog?.metaTitleAr,
-      metaDescriptionEn: verifyBlog?.metaDescriptionEn,
-      metaDescriptionAr: verifyBlog?.metaDescriptionAr
-    });
-    
+
     return NextResponse.json(blogForResponse(blog));
   } catch (e) {
     console.error('PUT /api/blogs/[slug]', e);
