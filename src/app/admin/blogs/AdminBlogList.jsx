@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function AdminBlogList() {
   const [blogs, setBlogs] = useState([]);
@@ -56,23 +55,8 @@ export default function AdminBlogList() {
           {blogs.map((blog) => (
             <tr key={blog.slug} className="border-b border-gray-100 hover:bg-gray-50/50">
               <td className="py-3 px-4">
-                <div className="w-16 h-10 relative rounded overflow-hidden bg-gray-100">
-                  {blog.image ? (
-                    <Image
-                      src={blog.image}
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                      unoptimized={
-                        blog.image.startsWith('http') ||
-                        blog.image.startsWith('/api') ||
-                        blog.image.startsWith('data:')
-                      }
-                    />
-                  ) : (
-                    <span className="text-gray-400 text-xs flex items-center justify-center w-full h-full">—</span>
-                  )}
+                <div className="w-16 h-10 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
+                  <span className="text-gray-400 text-xs">—</span>
                 </div>
               </td>
               <td className="py-3 px-4 text-gray-800">{blog.titleEn || '—'}</td>

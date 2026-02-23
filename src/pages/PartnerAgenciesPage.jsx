@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Gem, Crown, Medal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -20,35 +20,53 @@ const TIER_COLORS = {
   silver: { accent: '#94a3b8', card: 'rgba(148, 163, 184, 0.15)', cardStyle: 'solid', label: 'text-[#cbd5e1]', headingColor: '#cbd5e1', clickDetailsColor: '#cbd5e1', TierIcon: Medal, tierIconColor: '#cbd5e1' },
 };
 
-const COMPANIES = {
-  diamond: [
-    { id: 1, name: 'Shopify', country: 'Canada', description: 'E-commerce platform to create and manage online stores.', contact: 'partners@shopify.com', website: 'www.shopify.com', logo: '/assets/partners/diamond/shopify.png' },
-    { id: 2, name: 'Releasit (Release it COD)', country: 'Italy', description: 'Shopify app for COD order form and upsells.', contact: 'partners@releas.it', website: 'www.releas.it', logo: '/assets/partners/diamond/release-it.png' },
-    { id: 3, name: 'iMile', country: 'UAE', description: 'Last-mile delivery and logistics company for e-commerce.', contact: 'hello@imile.com', website: 'www.imile.com', logo: '/assets/partners/diamond/imile.png' },
-    { id: 4, name: 'Easy Orders', country: 'Saudi Arabia', description: 'Platform to create online stores and manage orders.', contact: 'hello@easy-orders.net', website: 'www.easy-orders.net', logo: '/assets/partners/diamond/easyorder.png' },
-    { id: 5, name: 'Salla', country: 'Saudi Arabia', description: 'E-commerce platform for building online stores, popular in the GCC.', contact: 'support@salla.com', website: 'salla.com/en', logo: '/assets/partners/diamond/salla.png' },
-  ],
-  gold: [
-    { id: 11, name: 'HOX', country: 'Pakistan', description: 'Hox is a results-driven marketing agency focused on scalable brand growth. We combine strategy, creativity, and data to deliver measurable impact.', contact: 'business@houseofxperts.com', phone: '+923152925795', website: 'houseofxperts.com', logo: '/assets/partners/gold/hox.png' },
-    { id: 12, name: 'HSNECOM', country: 'Pakistan', description: 'Digital marketing made simple and effective. HSNECOM delivers campaigns that increase visibility, traffic, and sales.', contact: 'hsnecom99@gmail.com', phone: '+923295619315', website: 'hsnecom.com', logo: '/assets/partners/gold/hsn-ecom.png' },
-  ],
-  silver: [
-    { id: 21, name: 'AD FAZ', country: 'Egypt', description: 'Your partner in digital advertising and brand success. AD FAZ turns ideas into campaigns that engage, convert, and scale.', contact: 'info@adfaz.sa', phone: '+966920033456', website: 'www.shopify.com', logo: '/assets/partners/silver/adfaz.png' },
-    { id: 22, name: 'Aiselas', country: 'Pakistan', description: 'Your partner in building impactful online presence. Aiselas combines creativity, strategy, and technology for measurable success.', contact: '10xecommercee@gmail.com', phone: '+923432843665', website: 'woocommerce.com', logo: '/assets/partners/silver/aiselas.png' },
-    { id: 24, name: 'Codus Labz & Technologies', country: 'Pakistan', description: 'Where technology meets innovation. Codus Labz & Technologies creates products and campaigns that accelerate success.', contact: 'info@coduslabz.com', phone: '+923196346326', website: 'www.coduslabz.com', logo: '/assets/partners/silver/codus.png' },
-    { id: 25, name: 'Fahman Academy', country: 'Egypt', description: 'Fahman Academy empowers entrepreneurs to master e-commerce and grow their online business.', contact: 'tamegeto0111@gmail.com', phone: '+201092140201', website: 'www.nordicsolutions.se', logo: '/assets/partners/silver/fahman.png' },
-    { id: 26, name: 'Markex Digital Marketing Agency', country: 'Pakistan', description: 'Where innovation meets performance marketing. Markex empowers brands to grow, compete, and lead online.', contact: 'markex.digitalagency@gmail.com', phone: '+923421240965', website: 'www.iberiadigital.es', logo: '/assets/partners/silver/markex-agency.png' },
-  ]
-};
+function buildCompaniesByTier(agencies, lang) {
+  const isAr = lang === 'ar';
+  const byTier = { diamond: [], gold: [], silver: [] };
+  (agencies || []).forEach((a) => {
+    const tier = a.tier && byTier[a.tier] ? a.tier : 'silver';
+    // Use logoUrl from API (fast list) or logo (admin/edit / legacy)
+    const logo = a.logoUrl || a.logo || '';
+    byTier[tier].push({
+      id: a.id || a._id,
+      name: (isAr && a.nameAr ? a.nameAr : a.nameEn) || '',
+      country: (isAr && a.countryAr ? a.countryAr : a.countryEn) || '',
+      description: (isAr && a.descriptionAr ? a.descriptionAr : a.descriptionEn) || '',
+      contact: a.contact ?? '',
+      phone: a.phone ?? '',
+      website: a.website ?? '',
+      logo,
+    });
+  });
+  return byTier;
+}
 
-function PartnerAgenciesPage() {
+function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
+  // Use server-passed copy so server and client render the same (avoids hydration mismatch)
+  const c = (key, fallback = '') => initialCopy?.[key] ?? t(`partnerAgencies.${key}`, fallback);
+  const [agencies, setAgencies] = useState(initialAgencies ?? []);
+  const [loading, setLoading] = useState(typeof initialAgencies === 'undefined');
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedTier, setSelectedTier] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState({ diamond: 0, gold: 0, silver: 0 });
   const [isMobile, setIsMobile] = useState(false);
+
+  const companies = useMemo(() => buildCompaniesByTier(agencies, currentLanguage), [agencies, currentLanguage]);
+
+  useEffect(() => {
+    if (initialAgencies !== undefined) return; // already have server data
+    fetch('/api/partner-agencies', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setAgencies(data);
+        else setAgencies([]);
+      })
+      .catch(() => setAgencies([]))
+      .finally(() => setLoading(false));
+  }, [initialAgencies]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -62,7 +80,7 @@ function PartnerAgenciesPage() {
       setCurrentSlide(prev => {
         const next = { ...prev };
         ['diamond', 'gold', 'silver'].forEach(tier => {
-          const list = COMPANIES[tier];
+          const list = companies[tier] || [];
           const perSlide = isMobile ? 2 : 3;
           const total = Math.ceil(list.length / perSlide);
           if (total > 1) next[tier] = (prev[tier] + 1) % total;
@@ -71,7 +89,7 @@ function PartnerAgenciesPage() {
       });
     }, 4000);
     return () => clearInterval(interval);
-  }, [isMobile]);
+  }, [isMobile, companies]);
 
   const getInitials = (name) =>
     name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
@@ -88,8 +106,8 @@ function PartnerAgenciesPage() {
     setSelectedTier(null);
   };
 
-  const renderTierSection = (tierKey, tierLabelKey, subtitleKey) => {
-    const list = COMPANIES[tierKey];
+  const renderTierSection = (tierKey, tierLabel, subtitle) => {
+    const list = companies[tierKey] || [];
     const colors = TIER_COLORS[tierKey];
     const perSlideDesktop = 3;
     const perSlideMobile = 2;
@@ -110,9 +128,9 @@ function PartnerAgenciesPage() {
             className="text-xl md:text-2xl font-bold mb-1"
             style={{ fontFamily: 'DM Sans, sans-serif', color: colors.headingColor || undefined }}
           >
-            {t(tierLabelKey)}
+            {tierLabel}
           </h3>
-          <p className="text-white/70 text-sm md:text-base">{t(subtitleKey)}</p>
+          <p className="text-white/70 text-sm md:text-base">{subtitle}</p>
         </div>
 
         <div className="py-6 md:py-8">
@@ -144,7 +162,7 @@ function PartnerAgenciesPage() {
                   cardStyle={colors.cardStyle}
                   TierIcon={colors.TierIcon}
                   tierIconColor={colors.tierIconColor}
-                  clickToSeeDetailsLabel={t('partnerAgencies.clickHereToSeeDetails')}
+                  clickToSeeDetailsLabel={c('clickHereToSeeDetails')}
                   clickDetailsColor={colors.clickDetailsColor}
                   getInitials={getInitials}
                   onTap={(company) => openDetails(company, tierKey)}
@@ -162,7 +180,7 @@ function PartnerAgenciesPage() {
                   cardStyle={colors.cardStyle}
                   TierIcon={colors.TierIcon}
                   tierIconColor={colors.tierIconColor}
-                  clickToSeeDetailsLabel={t('partnerAgencies.clickHereToSeeDetails')}
+                  clickToSeeDetailsLabel={c('clickHereToSeeDetails')}
                   clickDetailsColor={colors.clickDetailsColor}
                   getInitials={getInitials}
                   onTap={(company) => openDetails(company, tierKey)}
@@ -203,6 +221,17 @@ function PartnerAgenciesPage() {
     );
   };
 
+  if (loading) {
+    return (
+      <div
+        className="min-h-screen overflow-x-hidden flex items-center justify-center"
+        style={{ background: 'linear-gradient(180deg, #0b0f1a 0%, #0f172a 50%, #0b122a 100%)' }}
+      >
+        <p className="text-white/70">{c('loading', 'Loading partners...')}</p>
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-h-screen overflow-x-hidden"
@@ -211,15 +240,15 @@ function PartnerAgenciesPage() {
       <section className="relative pt-24 md:pt-28 pb-10 md:pb-12 px-4 md:px-6 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#22d3ee]/40 text-[#22d3ee] text-xs md:text-sm mb-6">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0h.5a2.5 2.5 0 002.5-2.5V3.935M12 12a2 2 0 104 0 2 2 0 00-4 0z" /></svg>
-          {t('partnerAgencies.trustedWorldwide')}
+          {c('trustedWorldwide')}
         </div>
 
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ fontFamily: 'DM Sans, sans-serif' }}>
-          <span className="text-white">{t('partnerAgencies.globalTitlePrefix')} </span>
-          <span className="bg-gradient-to-r from-[#3b82f6] to-[#a855f7] bg-clip-text text-transparent">{t('partnerAgencies.globalTitle')}</span>
+          <span className="text-white">{c('globalTitlePrefix')} </span>
+          <span className="bg-gradient-to-r from-[#3b82f6] to-[#a855f7] bg-clip-text text-transparent">{c('globalTitle')}</span>
         </h1>
         <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto mb-8">
-          {t('partnerAgencies.globalSubtitle')}
+          {c('globalSubtitle')}
         </p>
         <a
           href={currentLanguage === 'ar' ? 'https://forms.gle/jN9ohywiuXwAZ5hQ6' : 'https://forms.gle/TgCpb8KXjxRpKLG39'}
@@ -228,14 +257,14 @@ function PartnerAgenciesPage() {
           className="inline-block px-6 py-3 rounded-full font-semibold text-sm md:text-base transition-all hover:opacity-90"
           style={{ background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)', color: '#fff', fontFamily: 'DM Sans, sans-serif' }}
         >
-          {t('partnerAgencies.becomePartner')}
+          {c('becomePartner')}
         </a>
       </section>
 
       <section className="relative pb-16 md:pb-20 px-4 md:px-6">
-        {renderTierSection('diamond', 'partnerAgencies.diamondPartners', 'partnerAgencies.diamondSubtitle')}
-        {renderTierSection('gold', 'partnerAgencies.goldPartners', 'partnerAgencies.goldSubtitle')}
-        {renderTierSection('silver', 'partnerAgencies.silverPartners', 'partnerAgencies.silverSubtitle')}
+        {renderTierSection('diamond', c('diamondPartners'), c('diamondSubtitle'))}
+        {renderTierSection('gold', c('goldPartners'), c('goldSubtitle'))}
+        {renderTierSection('silver', c('silverPartners'), c('silverSubtitle'))}
       </section>
 
       {/* Details modal – dark card style */}
@@ -251,37 +280,41 @@ function PartnerAgenciesPage() {
                 <div className="flex items-center gap-4 min-w-0">
                   <div className={`w-16 h-16 md:w-20 md:h-20 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden p-1.5 ${selectedCompany.logo ? 'bg-white/95' : ''}`} style={!selectedCompany.logo ? { backgroundColor: 'rgba(59, 130, 246, 0.5)' } : undefined}>
                     {selectedCompany.logo ? (
-                      <Image src={selectedCompany.logo} alt={selectedCompany.name} width={80} height={80} className="w-full h-full object-contain" />
+                      <Image src={selectedCompany.logo} alt={selectedCompany.name} width={80} height={80} className="w-full h-full object-contain" unoptimized={selectedCompany.logo?.startsWith('data:') || selectedCompany.logo?.startsWith('/api/')} />
                     ) : (
                       <span className="text-white font-bold text-lg md:text-xl">{getInitials(selectedCompany.name)}</span>
                     )}
                   </div>
                   <div className="min-w-0">
                     <h2 className="text-xl md:text-2xl font-bold text-white truncate" style={{ fontFamily: 'DM Sans, sans-serif' }}>{selectedCompany.name}</h2>
-                    <p className="text-[#22d3ee] text-sm">{selectedCompany.country}</p>
+                    {selectedCompany.country?.trim() && <p className="text-[#22d3ee] text-sm">{selectedCompany.country}</p>}
                   </div>
                 </div>
                 <button onClick={closeModal} className="text-white/60 hover:text-white text-2xl leading-none p-1">×</button>
               </div>
               <div className="space-y-4 text-sm md:text-base">
-                <div>
-                  <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.about')}</h3>
-                  <p className="text-white/80 leading-relaxed">{selectedCompany.description}</p>
-                </div>
-                <div>
-                  <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.contact')}</h3>
-                  <p className="text-white/80">{selectedCompany.contact}</p>
-                </div>
-                {selectedCompany.phone && (
+                {selectedCompany.description?.trim() && (
                   <div>
-                    <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.phone')}</h3>
-                    <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]" dir="ltr">{selectedCompany.phone}</a>
+                    <h3 className="text-[#22d3ee] font-semibold mb-1">{c('about')}</h3>
+                    <p className="text-white/80 leading-relaxed">{selectedCompany.description.trim()}</p>
                   </div>
                 )}
-                {selectedTier === 'diamond' && (
+                {selectedCompany.contact?.trim() && (
                   <div>
-                    <h3 className="text-[#22d3ee] font-semibold mb-1">{t('partnerAgencies.website')}</h3>
-                    <a href={`https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all">{selectedCompany.website}</a>
+                    <h3 className="text-[#22d3ee] font-semibold mb-1">{c('contact')}</h3>
+                    <p className="text-white/80">{selectedCompany.contact.trim()}</p>
+                  </div>
+                )}
+                {selectedCompany.phone?.trim() && (
+                  <div>
+                    <h3 className="text-[#22d3ee] font-semibold mb-1">{c('phone')}</h3>
+                    <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-white/80 hover:text-[#22d3ee]" dir="ltr">{selectedCompany.phone.trim()}</a>
+                  </div>
+                )}
+                {selectedCompany.website?.trim() && (
+                  <div>
+                    <h3 className="text-[#22d3ee] font-semibold mb-1">{c('website')}</h3>
+                    <a href={selectedCompany.website.startsWith('http') ? selectedCompany.website : `https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#22d3ee] hover:underline break-all" dir="ltr">{selectedCompany.website.trim()}</a>
                   </div>
                 )}
               </div>
@@ -318,6 +351,7 @@ function PartnerCard({ company, accentColor, cardBg, cardStyle = 'solid', TierIc
               height={56}
               className="object-contain w-full h-full"
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              unoptimized={company.logo?.startsWith('data:') || company.logo?.startsWith('/api/')}
             />
           </div>
         ) : (
@@ -330,7 +364,7 @@ function PartnerCard({ company, accentColor, cardBg, cardStyle = 'solid', TierIc
         )}
         <div className="min-w-0 flex-1">
           <p className="text-white font-semibold truncate text-sm" style={{ fontFamily: 'DM Sans, sans-serif' }}>{company.name}</p>
-          <p className="text-white/60 text-xs">{company.country}</p>
+          {company.country?.trim() && <p className="text-white/60 text-xs">{company.country}</p>}
         </div>
       </div>
 
@@ -346,6 +380,7 @@ function PartnerCard({ company, accentColor, cardBg, cardStyle = 'solid', TierIc
                 height={80}
                 className="object-contain w-full h-full"
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                unoptimized={company.logo?.startsWith('data:') || company.logo?.startsWith('/api/')}
               />
             </div>
           ) : (
@@ -361,7 +396,7 @@ function PartnerCard({ company, accentColor, cardBg, cardStyle = 'solid', TierIc
           <p className="text-white font-semibold text-lg truncate w-full px-2" style={{ fontFamily: 'DM Sans, sans-serif' }}>
             {company.name}
           </p>
-          <p className="text-white/60 text-sm">{company.country}</p>
+          {company.country?.trim() && <p className="text-white/60 text-sm">{company.country}</p>}
         </div>
       </div>
 

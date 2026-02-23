@@ -506,7 +506,8 @@
     "contact": "Contact",
     "phone": "Phone",
     "website": "Website",
-    "clickHereToSeeDetails": "Click here to see details"
+    "clickHereToSeeDetails": "Click here to see details",
+    "loading": "Loading partners..."
   },
   "superClass": {
     "ticker": "Starts 27th March 2026 · Live Online",

@@ -53,9 +53,9 @@ export default function AdminGuard({ children }) {
   }
 
   const navItems = [
-    { href: '/admin/blogs', label: 'Blogs', icon: '📝' },
-    { href: '/admin/blogs/new', label: 'New Blog', icon: '➕' },
-    { href: '/admin/page-meta', label: 'Page meta (SEO)', icon: '🔖' },
+    { href: '/admin/blogs', label: 'Blogs' },
+    { href: '/admin/partner-agencies', label: 'Partner Agencies' },
+    { href: '/admin/page-meta', label: 'Page meta (SEO)' },
   ];
 
   return (
@@ -79,11 +79,10 @@ export default function AdminGuard({ children }) {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                       isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white'
                     }`}
                   >
-                    <span className="text-lg">{item.icon}</span>
                     {item.label}
                   </Link>
                 </li>
