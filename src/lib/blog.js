@@ -42,7 +42,7 @@ export async function getBlogs() {
   await connectDB();
   // Only fetch fields needed for listing page - exclude large content fields
   const blogs = await Blog.find({})
-    .select('slug titleEn titleAr descriptionEn descriptionAr image createdAt updatedAt')
+    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr createdAt updatedAt')
     .sort({ createdAt: -1 })
     .lean();
   return blogs.map(serializeBlog);
@@ -57,7 +57,7 @@ export async function getBlogs() {
 export async function getBlogsForHomepage(limit = 6) {
   await connectDB();
   const blogs = await Blog.find({})
-    .select('slug titleEn titleAr descriptionEn descriptionAr image createdAt updatedAt')
+    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr createdAt updatedAt')
     .sort({ createdAt: -1 })
     .limit(limit)
     .lean();

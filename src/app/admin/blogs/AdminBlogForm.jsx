@@ -23,6 +23,7 @@ const defaultBlog = {
   metaDescriptionEn: '',
   metaDescriptionAr: '',
   image: '',
+  imageAr: '',
   contentEn: '',
   contentAr: '',
 };
@@ -34,6 +35,9 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [removeImage, setRemoveImage] = useState(false);
+  const [imageFileAr, setImageFileAr] = useState(null);
+  const [imagePreviewAr, setImagePreviewAr] = useState(null);
+  const [removeImageAr, setRemoveImageAr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -48,14 +52,19 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         metaDescriptionEn: initialData.metaDescriptionEn || '',
         metaDescriptionAr: initialData.metaDescriptionAr || '',
       });
-      // Set preview for existing image
+      // Set preview for existing images (EN + AR)
       if (initialData.image && !removeImage) {
         setImagePreview(initialData.image);
       } else {
         setImagePreview(null);
       }
+      if (initialData.imageAr && !removeImageAr) {
+        setImagePreviewAr(initialData.imageAr);
+      } else {
+        setImagePreviewAr(null);
+      }
     }
-  }, [initialData, removeImage]);
+  }, [initialData, removeImage, removeImageAr]);
 
   function update(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -78,7 +87,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         : '/api/blogs';
       const method = isEdit ? 'PUT' : 'POST';
       
-      // Image: Cloudinary URL (fast) or base64 from file fallback
+      // Image (EN): Cloudinary URL (fast) or base64 from file fallback
       let imagePayload = form.image || '';
       if (removeImage) {
         imagePayload = '';
@@ -88,6 +97,19 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           reader.onloadend = () => resolve(reader.result);
           reader.onerror = reject;
           reader.readAsDataURL(imageFile);
+        });
+      }
+
+      // Image (AR): Cloudinary URL or base64 from file fallback
+      let imageArPayload = form.imageAr || '';
+      if (removeImageAr) {
+        imageArPayload = '';
+      } else if (imageFileAr) {
+        const readerAr = new FileReader();
+        imageArPayload = await new Promise((resolve, reject) => {
+          readerAr.onloadend = () => resolve(readerAr.result);
+          readerAr.onerror = reject;
+          readerAr.readAsDataURL(imageFileAr);
         });
       }
 
@@ -104,6 +126,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         contentEn: form.contentEn || '',
         contentAr: form.contentAr || '',
         image: imagePayload,
+        imageAr: imageArPayload,
       };
 
       const res = await fetch(url, {
@@ -141,7 +164,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           {isEdit && <p className="text-xs text-gray-500 mt-1">Changing the slug will change the blog URL. Old links may break.</p>}
         </div>
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Cover image</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Cover image (English)</label>
           <p className="text-xs text-gray-500 mb-2">Upload to Cloudinary for fast loading (URL stored in DB). Or choose a file to embed.</p>
           <div className="flex flex-wrap items-center gap-3">
             {useCloudinary && (
@@ -227,7 +250,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             )}
           </div>
           
-          {/* Image Preview */}
+          {/* Image Preview (EN) */}
           {imagePreview && !removeImage && (
             <div className="mt-3 border border-gray-200 rounded-lg p-3 bg-gray-50">
               <p className="text-xs text-gray-600 mb-2 font-medium">Preview:</p>
@@ -243,6 +266,112 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Arabic thumbnail upload */}
+      <div className="border-t border-gray-200 pt-4">
+        <h3 className="font-semibold text-gray-800 mb-3">Arabic Thumbnail (اختياري)</h3>
+        <p className="text-xs text-gray-500 mb-2">
+          Upload a separate thumbnail for Arabic. If not set, the English thumbnail will be used.
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          {useCloudinary && (
+            <CldUploadWidget
+              config={{
+                cloud: {
+                  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+                  apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+                },
+              }}
+              uploadPreset={uploadPreset}
+              options={{ folder: 'blogs/ar', maxFileSize: 3145728, maxFiles: 1, sources: ['local', 'url'], multiple: false }}
+              onSuccess={(results, { widget }) => {
+                widget?.close?.();
+                const url = results?.info?.secure_url;
+                if (url) {
+                  setImageFileAr(null);
+                  setRemoveImageAr(false);
+                  setImagePreviewAr(url);
+                  update('imageAr', url);
+                }
+              }}
+            >
+              {({ open }) => (
+                <button
+                  type="button"
+                  onClick={() => open()}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-lg font-medium hover:bg-[#1e3a8a]/90 transition-colors"
+                >
+                  ☁️ Upload Arabic thumbnail
+                </button>
+              )}
+            </CldUploadWidget>
+          )}
+          <input
+            type="file"
+            id="blog-image-ar-file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) {
+                setImageFileAr(f);
+                setRemoveImageAr(false);
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  setImagePreviewAr(reader.result);
+                };
+                reader.readAsDataURL(f);
+                update('imageAr', '');
+              }
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => document.getElementById('blog-image-ar-file')?.click()}
+            className="inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-[#1e3a8a] hover:text-[#1e3a8a] transition-colors font-medium"
+          >
+            📁 Choose Arabic file
+          </button>
+          {imageFileAr ? (
+            <span className="text-sm text-green-600 font-medium">
+              {imageFileAr.name} ({(imageFileAr.size / 1024).toFixed(1)} KB)
+            </span>
+          ) : imagePreviewAr && !removeImageAr ? (
+            <span className="text-sm text-blue-600 font-medium">Arabic image selected</span>
+          ) : (
+            <span className="text-sm text-gray-500">JPEG, PNG, WebP or GIF — max 3MB</span>
+          )}
+          {(imageFileAr || (imagePreviewAr && !removeImageAr)) && (
+            <button
+              type="button"
+              onClick={() => {
+                setImageFileAr(null);
+                setRemoveImageAr(true);
+                setImagePreviewAr(null);
+                const input = document.getElementById('blog-image-ar-file');
+                if (input) input.value = '';
+              }}
+              className="text-sm text-red-600 hover:underline"
+            >
+              Remove Arabic image
+            </button>
+          )}
+        </div>
+        {imagePreviewAr && !removeImageAr && (
+          <div className="mt-3 border border-gray-200 rounded-lg p-3 bg-gray-50">
+            <p className="text-xs text-gray-600 mb-2 font-medium">Arabic preview:</p>
+            <div className="relative w-full max-w-md aspect-video bg-gray-100 rounded overflow-hidden">
+              <Image
+                src={imagePreviewAr}
+                alt="Arabic Preview"
+                fill
+                className="object-contain"
+                unoptimized={imagePreviewAr.startsWith('data:') || imagePreviewAr.startsWith('/api')}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="border-t border-gray-200 pt-4">

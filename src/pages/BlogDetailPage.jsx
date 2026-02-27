@@ -116,7 +116,9 @@ export default function BlogDetailPage({ post }) {
   const blogContent = isArabic && contentAr
     ? post.contentAr  // Use original (with formatting) not trimmed
     : (post.contentEn || '');
-  const img = post.image || '';
+  const img = isArabic && (post.imageAr?.trim() || '')
+    ? post.imageAr
+    : (post.image || '');
 
   return (
     <div className="min-h-screen flex flex-col">

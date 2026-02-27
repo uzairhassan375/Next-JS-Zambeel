@@ -24,7 +24,13 @@ export default function BlogListingPage({ blogs = [] }) {
     }
     return blog.descriptionEn || '';
   };
-  const getImg = (blog) => blog.image || '';
+  const getImg = (blog) => {
+    const arImg = blog.imageAr?.trim?.() || '';
+    if (isArabic && arImg) {
+      return blog.imageAr;
+    }
+    return blog.image || '';
+  };
 
   return (
     <div className="min-h-screen flex flex-col">

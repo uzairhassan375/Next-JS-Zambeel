@@ -60,7 +60,21 @@ export async function PUT(request, { params }) {
   try {
     const { slug: currentSlug } = await params;
     const [_, body] = await Promise.all([connectDB(), request.json()]);
-    const { slug: newSlug, titleEn, titleAr, descriptionEn, descriptionAr, metaTitleEn, metaTitleAr, metaDescriptionEn, metaDescriptionAr, image, contentEn, contentAr } = body;
+    const {
+      slug: newSlug,
+      titleEn,
+      titleAr,
+      descriptionEn,
+      descriptionAr,
+      metaTitleEn,
+      metaTitleAr,
+      metaDescriptionEn,
+      metaDescriptionAr,
+      image,
+      imageAr,
+      contentEn,
+      contentAr,
+    } = body;
 
     // Normalize new slug
     const normalizedNewSlug = newSlug ? newSlug.trim().toLowerCase().replace(/\s+/g, '-') : currentSlug;
@@ -97,7 +111,7 @@ export async function PUT(request, { params }) {
       $set.slug = normalizedNewSlug;
     }
     
-    // Handle image updates - image is now base64 string
+    // Handle image updates - image fields are base64 strings or external URLs
     if (image !== undefined) {
       if (image && image.startsWith('data:image/')) {
         // Validate base64 image size
@@ -109,6 +123,17 @@ export async function PUT(request, { params }) {
       $set.image = image || '';
     }
     // If image is not provided, keep existing image (don't modify image field)
+
+    if (imageAr !== undefined) {
+      if (imageAr && imageAr.startsWith('data:image/')) {
+        const validationAr = validateBase64ImageSize(imageAr);
+        if (!validationAr.valid) {
+          return NextResponse.json({ error: validationAr.error }, { status: 400 });
+        }
+      }
+      $set.imageAr = imageAr || '';
+    }
+    // If imageAr is not provided, keep existing Arabic image (don't modify imageAr field)
 
     // Explicitly exclude imageFile field and also unset it if it exists
     // Use runValidators to ensure schema validation runs

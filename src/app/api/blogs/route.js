@@ -42,7 +42,7 @@ export async function GET(request) {
       const limitParam = searchParams.get('limit');
       const limit = limitParam ? Math.min(Math.max(1, parseInt(limitParam, 10) || 0), 100) : 0;
       const query = Blog.find({})
-        .select('slug titleEn titleAr descriptionEn descriptionAr image createdAt updatedAt')
+        .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr createdAt updatedAt')
         .sort({ createdAt: -1 });
       if (limit > 0) query.limit(limit);
       const blogs = await query.lean();
@@ -61,7 +61,21 @@ export async function POST(request) {
   }
   try {
     const [_, body] = await Promise.all([connectDB(), request.json()]);
-    const { slug, titleEn, titleAr, descriptionEn, descriptionAr, metaTitleEn, metaTitleAr, metaDescriptionEn, metaDescriptionAr, image, contentEn, contentAr } = body;
+    const {
+      slug,
+      titleEn,
+      titleAr,
+      descriptionEn,
+      descriptionAr,
+      metaTitleEn,
+      metaTitleAr,
+      metaDescriptionEn,
+      metaDescriptionAr,
+      image,
+      imageAr,
+      contentEn,
+      contentAr,
+    } = body;
     if (!slug || !titleEn) {
       return NextResponse.json({ error: 'slug and titleEn are required' }, { status: 400 });
     }
@@ -71,11 +85,17 @@ export async function POST(request) {
       return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 });
     }
     
-    // Validate base64 image if provided
+    // Validate base64 images if provided
     if (image && image.startsWith('data:image/')) {
       const validation = validateBase64ImageSize(image);
       if (!validation.valid) {
         return NextResponse.json({ error: validation.error }, { status: 400 });
+      }
+    }
+    if (imageAr && imageAr.startsWith('data:image/')) {
+      const validationAr = validateBase64ImageSize(imageAr);
+      if (!validationAr.valid) {
+        return NextResponse.json({ error: validationAr.error }, { status: 400 });
       }
     }
     
@@ -89,7 +109,8 @@ export async function POST(request) {
       metaTitleAr: metaTitleAr || '',
       metaDescriptionEn: metaDescriptionEn || '',
       metaDescriptionAr: metaDescriptionAr || '',
-      image: image || '', // Store base64 string directly
+      image: image || '', // Default/English thumbnail
+      imageAr: imageAr || '', // Arabic thumbnail (optional)
       contentEn: contentEn || '',
       contentAr: contentAr || '',
     };

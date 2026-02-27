@@ -32,6 +32,9 @@ export async function generateMetadata({ params }) {
   const metaDescription = isArabic
     ? (post.metaDescriptionAr || post.descriptionAr || post.metaDescriptionEn || post.descriptionEn)
     : (post.metaDescriptionEn || post.descriptionEn || post.metaDescriptionAr || post.descriptionAr);
+  const imageUrl = isArabic && (post.imageAr || '').trim()
+    ? post.imageAr
+    : post.image;
   
   // Fallback to slug if no title available
   const title = metaTitle || slug?.replace(/-/g, ' ') || 'Blog Post';
@@ -44,7 +47,7 @@ export async function generateMetadata({ params }) {
       title: `${title} | Zambeel Blog`,
       description,
       type: 'article',
-      images: post.image ? [{ url: post.image, alt: title }] : undefined,
+      images: imageUrl ? [{ url: imageUrl, alt: title }] : undefined,
     },
   };
 }

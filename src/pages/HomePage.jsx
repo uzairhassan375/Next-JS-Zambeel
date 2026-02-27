@@ -713,7 +713,9 @@ export default function HomePage({ initialBlogs = [] }) {
                     const isArabic = currentLanguage.startsWith('ar');
                     const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
                     const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
-                    const img = blog.image || '';
+                    const img = isArabic && (blog.imageAr?.trim?.() || '')
+                      ? blog.imageAr
+                      : (blog.image || '');
                     return (
                       <Link
                         key={blog.slug}
@@ -787,7 +789,9 @@ export default function HomePage({ initialBlogs = [] }) {
                 const isArabic = currentLanguage.startsWith('ar');
                 const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
                 const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
-                const img = blog.image || '';
+                const img = isArabic && (blog.imageAr?.trim?.() || '')
+                  ? blog.imageAr
+                  : (blog.image || '');
                 return (
                   <Link
                     key={blog.slug}
