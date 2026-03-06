@@ -334,7 +334,7 @@ export default function Header({ theme = "dark" }) {
             )}
           </div>
           <a
-            href="https://supplier-portal-xi.vercel.app/login"
+            href="https://supplier-portal-zm.vercel.app/login"
             target="_blank"
             rel="noopener noreferrer"
             className={`${hoverColor} transition`}
@@ -694,7 +694,7 @@ export default function Header({ theme = "dark" }) {
               )}
             </div>
             <a
-              href="https://supplier-portal-xi.vercel.app/login"
+              href="https://supplier-portal-zm.vercel.app/login"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setShowMobileMenu(false)}
