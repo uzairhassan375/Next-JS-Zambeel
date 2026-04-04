@@ -596,6 +596,7 @@ const Zambeel3PLPage = () => {
           }
         ]}
         importantInfo={[
+          t('deliveryCharges.pakistanParcelRatesNote'),
           t('deliveryCharges.warehousingFree'),
           t('deliveryCharges.outskirtAreas')
         ]}

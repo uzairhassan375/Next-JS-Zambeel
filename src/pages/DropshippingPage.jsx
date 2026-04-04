@@ -326,7 +326,7 @@ const DropshippingPage = () => {
           {
             label: t('deliveryCharges.orderConfirmation'),
             values: {
-              Pakistan: "200 PKR",
+              Pakistan: "220 PKR",
               UAE: "18 AED",
               KSA: "26 SAR"
             }
@@ -334,7 +334,7 @@ const DropshippingPage = () => {
           {
             label: t('deliveryCharges.return'),
             values: {
-              Pakistan: "200 PKR",
+              Pakistan: "220 PKR",
               UAE: "5 AED",
               KSA: "7.5 SAR"
             }
@@ -358,6 +358,7 @@ const DropshippingPage = () => {
           }
         ]}
         importantInfo={[
+          t('deliveryCharges.pakistanParcelRatesNote'),
           t('deliveryCharges.outskirtAreas')
         ]}
       />

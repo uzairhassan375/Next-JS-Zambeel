@@ -384,6 +384,7 @@
     "currencySAR": "SAR",
     "currencyPKR": "PKR",
     "importantInfo": "Important Info",
+    "pakistanParcelRatesNote": "Pakistan (PKR): The Delivery & Fulfillment charge per parcel shown above applies to both delivered and returned parcels.",
     "failedDelivery": "In case of failed delivery, only 'Return' will be charged",
     "outskirtAreas": "In case of Remote areas, delivery charges will be greater than normal charges.",
     "warehousingFree": "Warehousing is free for first 2 months. After that, 1 AED per month per item will be charged"
