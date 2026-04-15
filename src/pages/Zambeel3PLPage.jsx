@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import Marquee from 'react-fast-marquee';
 import PricingSection from '../components/PricingSection';
 import WhyZambeel from '../components/dropshiping_components/WhyZambeel';
 import Wts from '../components/dropshiping_components/WhereTS';
@@ -464,6 +465,14 @@ const Zambeel3PLPage = () => {
       />
 
       {/* Pricing Section */}
+      <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
+        <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
+          <span className="mx-6 text-sm md:text-base font-semibold">
+            {t('pricing.goldRiskFreeTicker')}
+          </span>
+          <span className="mx-6 text-black/60">•</span>
+        </Marquee>
+      </div>
       <PricingSection 
         title={t('zambeel3PL.pricing.title')}
         subtitle={t('zambeel3PL.pricing.subtitle')}
@@ -479,13 +488,15 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.juniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime4Hours", included: true },
+              { translationKey: "pricing.features.dropshippingCountries3", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: false },
-              { translationKey: "pricing.features.winningCreativity", included: false },
+              { translationKey: "pricing.features.exclusiveWinningProduct", included: false },
+              { translationKey: "pricing.features.winningCreativedStrategy", included: false },
               { translationKey: "pricing.features.bumperTrendingProducts", included: false },
               { translationKey: "pricing.features.seniorBusinessConsultant", included: false },
-              { translationKey: "pricing.features.winningCreativedStrategy", included: false },
               { translationKey: "pricing.features.customisedPackaging", included: false },
               { translationKey: "pricing.features.productFinancing", included: false },
+              { translationKey: "pricing.features.discountedProductPrices", included: false },
             ],
           },
           {
@@ -499,6 +510,7 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
+              { translationKey: "pricing.features.dropshippingCountries7", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -506,6 +518,7 @@ const Zambeel3PLPage = () => {
               { translationKey: "pricing.features.seniorBusinessConsultant", included: true },
               { translationKey: "pricing.features.customisedPackaging", included: true },
               { translationKey: "pricing.features.productFinancing", included: true },
+              { translationKey: "pricing.features.discountedProductPrices", included: true },
             ],
           },
           {
@@ -519,6 +532,7 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
+              { translationKey: "pricing.features.dropshippingCountries7", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -526,6 +540,7 @@ const Zambeel3PLPage = () => {
               { translationKey: "pricing.features.seniorBusinessConsultant", included: true },
               { translationKey: "pricing.features.customisedPackaging", included: true },
               { translationKey: "pricing.features.productFinancing", included: true },
+              { translationKey: "pricing.features.discountedProductPrices", included: true },
             ],
           },
         ]}

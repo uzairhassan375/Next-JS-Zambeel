@@ -11,13 +11,15 @@ export const pricingPlans = [
     features: [
       { translationKey: "pricing.features.juniorAccountManager", included: true },
       { translationKey: "pricing.features.responseTime4Hours", included: true },
+      { translationKey: "pricing.features.dropshippingCountries3", included: true },
       { translationKey: "pricing.features.whatsappGroupAccess", included: false },
-      { translationKey: "pricing.features.winningCreativity", included: false },
+      { translationKey: "pricing.features.exclusiveWinningProduct", included: false },
+      { translationKey: "pricing.features.winningCreativedStrategy", included: false },
       { translationKey: "pricing.features.bumperTrendingProducts", included: false },
       { translationKey: "pricing.features.seniorBusinessConsultant", included: false },
-      { translationKey: "pricing.features.winningCreativedStrategy", included: false },
       { translationKey: "pricing.features.customisedPackaging", included: false },
       { translationKey: "pricing.features.productFinancing", included: false },
+      { translationKey: "pricing.features.discountedProductPrices", included: false },
     ],
   },
   {
@@ -31,6 +33,7 @@ export const pricingPlans = [
     features: [
       { translationKey: "pricing.features.seniorAccountManager", included: true },
       { translationKey: "pricing.features.responseTime30Minutes", included: true },
+      { translationKey: "pricing.features.dropshippingCountries7", included: true },
       { translationKey: "pricing.features.whatsappGroupAccess", included: true },
       { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
       { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -38,6 +41,7 @@ export const pricingPlans = [
       { translationKey: "pricing.features.seniorBusinessConsultant", included: true },
       { translationKey: "pricing.features.customisedPackaging", included: true },
       { translationKey: "pricing.features.productFinancing", included: true },
+      { translationKey: "pricing.features.discountedProductPrices", included: true },
     ],
   },
   {
@@ -51,6 +55,7 @@ export const pricingPlans = [
     features: [
       { translationKey: "pricing.features.seniorAccountManager", included: true },
       { translationKey: "pricing.features.responseTime30Minutes", included: true },
+      { translationKey: "pricing.features.dropshippingCountries7", included: true },
       { translationKey: "pricing.features.whatsappGroupAccess", included: true },
       { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
       { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -58,6 +63,7 @@ export const pricingPlans = [
       { translationKey: "pricing.features.seniorBusinessConsultant", included: true },
       { translationKey: "pricing.features.customisedPackaging", included: true },
       { translationKey: "pricing.features.productFinancing", included: true },
+      { translationKey: "pricing.features.discountedProductPrices", included: true },
     ],
   },
 ];

@@ -338,6 +338,7 @@
         }
     },
     "pricing": {
+        "goldRiskFreeTicker": "جرّب اشتراك Gold بدون مخاطر — حقّق هدفًا شهريًا صغيرًا وسنُعيد لك مبلغ 69 دولارًا.",
         "plans": {
             "free": {
                 "tag": "مجانًا",
@@ -362,6 +363,9 @@
             "winningCreativedStrategy": "الإبداع والاستراتيجية الرابحة",
             "customisedPackaging": "تغليف مخصص",
             "productFinancing": "تمويل المنتج",
+            "discountedProductPrices": "أسعار مخفّضة للمنتجات",
+            "dropshippingCountries3": "الدروبشيبينغ في 3 دول",
+            "dropshippingCountries7": "الدروبشيبينغ في 7 دول",
             "seniorAccountManager": "مدير مخصص خبير",
             "responseTime30Minutes": "مدة الاستجابة: 30 دقيقة",
             "exclusiveWinningProduct": "منتج رابح حصري"

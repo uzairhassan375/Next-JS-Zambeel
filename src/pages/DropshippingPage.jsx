@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import Marquee from "react-fast-marquee";
 import PricingSection from "../components/PricingSection.jsx"; 
 import TrendingProducts from "../components/dropshiping_components/TrendingProducts.jsx"; 
 import Wts from "../components/dropshiping_components/WhereTS.jsx";
@@ -92,120 +93,114 @@ const DropshippingPage = () => {
         </div>
         {/* UAE/KSA Box */}
         <div className="px-4 md:px-0 relative z-10">
-          <div className="mx-auto rounded-[32px] shadow-lg max-w-lg overflow-hidden w-full" style={{boxShadow: '0 8px 32px rgba(36,58,134,0.18)'}}>
-          {/* Top: Dropshipping available */}
-          <div className="bg-[#e3e7f6] px-4 pt-3 pb-2">
-            <p className="text-[#243a86] font-bold text-lg mb-3 text-center">{t('dropshipping.hero.availableIn')}</p>
-            <div className="flex items-center justify-center gap-6 md:gap-8">
-              {/* UAE Flag */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center mb-1 shadow-md">
-                  <div className="w-14 h-14 rounded-full overflow-hidden relative">
-                    <div className="absolute inset-0 flex flex-col">
-                      <div className="h-1/3 bg-green-600"></div>
-                      <div className="h-1/3 bg-white"></div>
-                      <div className="h-1/3 bg-black"></div>
+          <div className="max-w-md md:max-w-2xl mx-auto">
+            <div className="bg-[#d5dce8]/95 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl p-6 md:p-8 lg:p-10">
+              <p className="text-[#2c3e5f] text-center text-xs sm:text-sm md:text-base font-semibold mb-6 md:mb-8">
+                {t('dropshipping.hero.availableIn')}
+              </p>
+              <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:justify-center md:items-center md:space-x-6 lg:space-x-10">
+                <div className="flex justify-center items-center gap-6 md:contents">
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden relative">
+                        <div className="absolute inset-0 flex flex-col">
+                          <div className="h-1/3 bg-green-600"></div>
+                          <div className="h-1/3 bg-white"></div>
+                          <div className="h-1/3 bg-black"></div>
+                        </div>
+                        <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-red-600"></div>
+                      </div>
                     </div>
-                    <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-red-600"></div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.UAE')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-20 h-20 md:w-22 md:h-22 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <svg width="96" height="96" viewBox="0 0 96 96" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="48" cy="48" r="34" fill="#6DA544" />
+                        <path d="M34 58C34 60.7614 36.2386 63 39 63H53C53 65.2091 54.7909 67 57 67H61C63.2091 67 65 65.2091 65 63V58H34Z" fill="#F0F0F0" />
+                        <path d="M65 36V46C65 47.6569 63.6569 49 62 49V53C65.866 53 69 49.866 69 46V36H65Z" fill="#F0F0F0" />
+                        <path d="M32 46C32 47.6569 30.6569 49 29 49V53C32.866 53 36 49.866 36 46V36H32V46Z" fill="#F0F0F0" />
+                        <path d="M56 36H60V46H56V36Z" fill="#F0F0F0" />
+                        <path d="M50 42C50 42.5523 49.5523 43 49 43C48.4477 43 48 42.5523 48 42V36H44V42C44 42.5523 43.5523 43 43 43C42.4477 43 42 42.5523 42 42V36H38V42C38 44.7614 40.2386 47 43 47C44.1046 47 45.1046 46.6569 46 46C46.8954 46.6569 47.8954 47 49 47C49.1843 47 49.364 46.987 49.538 46.962C49.268 48.378 48.1 49.4 46.7 49.4V53C50.566 53 53.7 49.866 53.7 46V42H50Z" fill="#F0F0F0" />
+                        <path d="M38 49H44V53H38V49Z" fill="#F0F0F0" />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.KSA')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-18 h-18 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" className="w-full h-full p-1">
+                        <g clipPath="url(#clip-pk-top)">
+                          <path d="M48 86C70.0914 86 88 68.0914 88 46C88 23.9086 70.0914 6 48 6C25.9086 6 8 23.9086 8 46C8 68.0914 25.9086 86 48 86Z" fill="#F0F0F0" />
+                          <path d="M8 45.9997C8 61.1614 16.4358 74.3519 28.8695 81.1361V10.8633C16.4358 17.6475 8 30.838 8 45.9997Z" fill="#F0F0F0" />
+                          <path d="M48.0035 6C41.0738 6 34.556 7.76297 28.873 10.8636V81.1363C34.556 84.237 41.0738 86 48.0035 86C70.0948 86 88.0035 68.0913 88.0035 46C88.0035 23.9087 70.0948 6 48.0035 6Z" fill="#496E2D" />
+                          <path d="M65.1017 52.6155C60.0412 56.2719 52.9746 55.1338 49.3184 50.0735C45.6618 45.0129 46.8001 37.9465 51.8606 34.2902C53.4384 33.1502 55.2112 32.4763 57.0148 32.2421C53.5449 31.7232 49.877 32.5051 46.8087 34.7221C40.5806 39.2224 39.1795 47.9194 43.6796 54.1479C48.1798 60.3758 56.877 61.7771 63.1054 57.2765C66.174 55.0594 68.0679 51.823 68.6645 48.3654C67.876 50.0038 66.6796 51.4754 65.1017 52.6155Z" fill="#F0F0F0" />
+                          <path d="M64.8824 32.0879L67.733 35.1599L71.5355 33.3987L69.4945 37.0587L72.3449 40.131L68.233 39.3209L66.1921 42.9812L65.692 38.8202L61.5801 38.0101L65.3827 36.2488L64.8824 32.0879Z" fill="#F0F0F0" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip-pk-top">
+                            <rect width="80" height="80" transform="translate(8 6)" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Pakistan')}</span>
                   </div>
                 </div>
-                <span className="mt-1 text-[#243a86] font-semibold text-sm">{t('countries.UAE')}</span>
-              </div>
-              {/* KSA Custom Icon */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center mb-1 shadow-md">
-                  <svg viewBox="0 0 96 96" className="w-[75px] h-[75px]" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="48" cy="48" r="34" fill="#6DA544" />
-                    <path d="M34 58C34 60.7614 36.2386 63 39 63H53C53 65.2091 54.7909 67 57 67H61C63.2091 67 65 65.2091 65 63V58H34Z" fill="#F0F0F0" />
-                    <path d="M65 36V46C65 47.6569 63.6569 49 62 49V53C65.866 53 69 49.866 69 46V36H65Z" fill="#F0F0F0" />
-                    <path d="M32 46C32 47.6569 30.6569 49 29 49V53C32.866 53 36 49.866 36 46V36H32V46Z" fill="#F0F0F0" />
-                    <path d="M56 36H60V46H56V36Z" fill="#F0F0F0" />
-                    <path d="M50 42C50 42.5523 49.5523 43 49 43C48.4477 43 48 42.5523 48 42V36H44V42C44 42.5523 43.5523 43 43 43C42.4477 43 42 42.5523 42 42V36H38V42C38 44.7614 40.2386 47 43 47C44.1046 47 45.1046 46.6569 46 46C46.8954 46.6569 47.8954 47 49 47C49.1843 47 49.364 46.987 49.538 46.962C49.268 48.378 48.1 49.4 46.7 49.4V53C50.566 53 53.7 49.866 53.7 46V42H50Z" fill="#F0F0F0" />
-                    <path d="M38 49H44V53H38V49Z" fill="#F0F0F0" />
-                  </svg>
+                <div className="flex justify-center items-center gap-6 md:gap-12 md:contents flex-wrap">
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden relative">
+                        <div className="absolute inset-0 flex flex-col">
+                          <div className="h-1/3 bg-green-600"></div>
+                          <div className="h-1/3 bg-white"></div>
+                          <div className="h-1/3 bg-red-600"></div>
+                        </div>
+                        <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-black"></div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Kuwait')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#8d1b3d] flex items-center justify-center relative overflow-hidden">
+                        <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-white" style={{ clipPath: 'polygon(0 0, 100% 20%, 100% 30%, 0 50%, 100% 70%, 100% 80%, 0 100%)' }}></div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Qatar')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/om.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="Oman"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Oman')}</span>
+                  </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/bh.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="Bahrain"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Bahrain')}</span>
+                  </div>
                 </div>
-                <span className="mt-1 text-[#243a86] font-semibold text-sm">{t('countries.KSA')}</span>
-              </div>
-              {/* Pakistan */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center mb-1 shadow-md">
-                  <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" className="w-[75px] h-[75px]">
-                    <g clipPath="url(#clip-pk-top)">
-                      <path d="M48 86C70.0914 86 88 68.0914 88 46C88 23.9086 70.0914 6 48 6C25.9086 6 8 23.9086 8 46C8 68.0914 25.9086 86 48 86Z" fill="#F0F0F0" />
-                      <path d="M8 45.9997C8 61.1614 16.4358 74.3519 28.8695 81.1361V10.8633C16.4358 17.6475 8 30.838 8 45.9997Z" fill="#F0F0F0" />
-                      <path d="M48.0035 6C41.0738 6 34.556 7.76297 28.873 10.8636V81.1363C34.556 84.237 41.0738 86 48.0035 86C70.0948 86 88.0035 68.0913 88.0035 46C88.0035 23.9087 70.0948 6 48.0035 6Z" fill="#496E2D" />
-                      <path d="M65.1017 52.6155C60.0412 56.2719 52.9746 55.1338 49.3184 50.0735C45.6618 45.0129 46.8001 37.9465 51.8606 34.2902C53.4384 33.1502 55.2112 32.4763 57.0148 32.2421C53.5449 31.7232 49.877 32.5051 46.8087 34.7221C40.5806 39.2224 39.1795 47.9194 43.6796 54.1479C48.1798 60.3758 56.877 61.7771 63.1054 57.2765C66.174 55.0594 68.0679 51.823 68.6645 48.3654C67.876 50.0038 66.6796 51.4754 65.1017 52.6155Z" fill="#F0F0F0" />
-                      <path d="M64.8824 32.0879L67.733 35.1599L71.5355 33.3987L69.4945 37.0587L72.3449 40.131L68.233 39.3209L66.1921 42.9812L65.692 38.8202L61.5801 38.0101L65.3827 36.2488L64.8824 32.0879Z" fill="#F0F0F0" />
-                    </g>
-                    <defs>
-                      <clipPath id="clip-pk-top">
-                        <rect width="80" height="80" transform="translate(8 6)" />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </div>
-                <span className="mt-1 text-[#243a86] font-semibold text-sm">{t('countries.Pakistan')}</span>
               </div>
             </div>
           </div>
-          {/* Divider */}
-          <div className="bg-[#e3e7f6] h-2"></div>
-          {/* Bottom: Other services available */}
-          <div className="bg-gray-100 px-4 pt-2 pb-3 rounded-b-[32px]" style={{ filter: 'grayscale(100%)', opacity: 0.6 }}>
-            <p className="text-gray-500 font-bold text-lg mb-3 text-center">{t('dropshipping.hero.otherServices')}</p>
-            <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap">
-              {/* Qatar */}
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow" style={{ filter: 'grayscale(100%)' }}>
-                  <div className="w-9 h-9 rounded-full bg-gray-400 flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-gray-300" style={{ clipPath: 'polygon(0 0, 100% 20%, 100% 30%, 0 50%, 100% 70%, 100% 80%, 0 100%)' }}></div>
-                  </div>
-                </div>
-                <span className="text-gray-500 font-semibold text-xs">{t('countries.Qatar')}</span>
-              </div>
-              {/* Kuwait */}
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow" style={{ filter: 'grayscale(100%)' }}>
-                  <div className="w-9 h-9 rounded-full overflow-hidden relative">
-                    <div className="absolute inset-0 flex flex-col">
-                      <div className="h-1/3 bg-gray-500"></div>
-                      <div className="h-1/3 bg-gray-200"></div>
-                      <div className="h-1/3 bg-gray-600"></div>
-                    </div>
-                    <div className="absolute left-0 top-0 bottom-0 w-1/3 bg-gray-700"></div>
-                  </div>
-                </div>
-                <span className="text-gray-500 font-semibold text-xs">{t('countries.Kuwait')}</span>
-              </div>
-              {/* Oman */}
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow overflow-hidden border border-gray-400" style={{ filter: 'grayscale(100%)' }}>
-                  <Image
-                    src="https://flagcdn.com/w80/om.png"
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-cover"
-                    alt="Oman"
-                  />
-                </div>
-                <span className="text-gray-500 font-semibold text-xs">{t('countries.Oman')}</span>
-              </div>
-              {/* Bahrain */}
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-1 shadow overflow-hidden border border-gray-400" style={{ filter: 'grayscale(100%)' }}>
-                  <Image
-                    src="https://flagcdn.com/w80/bh.png"
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-cover"
-                    alt="Bahrain"
-                  />
-                </div>
-                <span className="text-gray-500 font-semibold text-xs">{t('countries.Bahrain')}</span>
-              </div>
-            </div>
-          </div>
-        </div>
         </div>
       </section>
 
@@ -246,6 +241,14 @@ const DropshippingPage = () => {
       </section>
 
       {/* ================= PRICING ================= */}
+      <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
+        <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
+          <span className="mx-6 text-sm md:text-base font-semibold">
+            {t('pricing.goldRiskFreeTicker')}
+          </span>
+          <span className="mx-6 text-black/60">•</span>
+        </Marquee>
+      </div>
       <PricingSection 
         title={t('dropshipping.pricing.title')}
         subtitle={t('dropshipping.pricing.subtitle')}
@@ -261,13 +264,15 @@ const DropshippingPage = () => {
             features: [
               { translationKey: "pricing.features.juniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime4Hours", included: true },
+              { translationKey: "pricing.features.dropshippingCountries3", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: false },
-              { translationKey: "pricing.features.winningCreativity", included: false },
+              { translationKey: "pricing.features.exclusiveWinningProduct", included: false },
+              { translationKey: "pricing.features.winningCreativedStrategy", included: false },
               { translationKey: "pricing.features.bumperTrendingProducts", included: false },
               { translationKey: "pricing.features.seniorBusinessConsultant", included: false },
-              { translationKey: "pricing.features.winningCreativedStrategy", included: false },
               { translationKey: "pricing.features.customisedPackaging", included: false },
               { translationKey: "pricing.features.productFinancing", included: false },
+              { translationKey: "pricing.features.discountedProductPrices", included: false },
             ],
           },
           {
@@ -281,6 +286,7 @@ const DropshippingPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
+              { translationKey: "pricing.features.dropshippingCountries7", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -288,6 +294,7 @@ const DropshippingPage = () => {
               { translationKey: "pricing.features.seniorBusinessConsultant", included: true },
               { translationKey: "pricing.features.customisedPackaging", included: true },
               { translationKey: "pricing.features.productFinancing", included: true },
+              { translationKey: "pricing.features.discountedProductPrices", included: true },
             ],
           },
           {
@@ -301,6 +308,7 @@ const DropshippingPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
+              { translationKey: "pricing.features.dropshippingCountries7", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -308,6 +316,7 @@ const DropshippingPage = () => {
               { translationKey: "pricing.features.seniorBusinessConsultant", included: true },
               { translationKey: "pricing.features.customisedPackaging", included: true },
               { translationKey: "pricing.features.productFinancing", included: true },
+              { translationKey: "pricing.features.discountedProductPrices", included: true },
             ],
           },
         ]}

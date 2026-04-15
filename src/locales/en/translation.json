@@ -338,6 +338,7 @@
     }
   },
   "pricing": {
+    "goldRiskFreeTicker": "Try Gold subscription Risk-FREE — achieve a small monthly target and we'll return your $69.",
     "plans": {
       "free": {
         "tag": "FREE",
@@ -361,6 +362,9 @@
       "seniorBusinessConsultant": "Senior Business consultant",
       "customisedPackaging": "Customised Packaging",
       "productFinancing": "Product Financing",
+      "discountedProductPrices": "Discounted product prices",
+      "dropshippingCountries3": "Dropshipping in 3 countries",
+      "dropshippingCountries7": "Dropshipping in 7 countries",
       "seniorAccountManager": "Senior Dedicated Manager",
       "responseTime30Minutes": "Response time: 30 minutes",
       "exclusiveWinningProduct": "Exclusive Winning Product",
