@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import Marquee from 'react-fast-marquee';
+import GoldRiskFreeTickerMarquee from '../components/GoldRiskFreeTickerMarquee.jsx';
 import PricingSection from '../components/PricingSection';
 import WhyZambeel from '../components/dropshiping_components/WhyZambeel';
 import Wts from '../components/dropshiping_components/WhereTS';
@@ -470,14 +470,7 @@ const Zambeel360Page = () => {
       />
 
       {/* Pricing Section */}
-      <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
-        <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
-          <span className="mx-6 text-sm md:text-base font-semibold">
-            {t('pricing.goldRiskFreeTicker')}
-          </span>
-          <span className="mx-6 text-black/60">•</span>
-        </Marquee>
-      </div>
+      <GoldRiskFreeTickerMarquee />
       <PricingSection 
         title={t('zambeel360.pricing.title')}
         subtitle={t('zambeel360.pricing.subtitle')}

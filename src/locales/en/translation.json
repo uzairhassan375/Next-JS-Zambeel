@@ -338,7 +338,9 @@
     }
   },
   "pricing": {
-    "goldRiskFreeTicker": "Try Gold subscription Risk-FREE — achieve a small monthly target and we'll return your $69.",
+    "goldRiskFreeTickerLead": "Try Gold subscription Risk-FREE",
+    "goldRiskFreeTickerMiddle": " — achieve a small monthly target and we'll ",
+    "goldRiskFreeTickerRefund": "return your $69.",
     "plans": {
       "free": {
         "tag": "FREE",

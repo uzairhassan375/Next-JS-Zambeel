@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import Marquee from "react-fast-marquee";
-import PricingSection from "../components/PricingSection.jsx"; 
+import PricingSection from "../components/PricingSection.jsx";
+import GoldRiskFreeTickerMarquee from "../components/GoldRiskFreeTickerMarquee.jsx";
 import TrendingProducts from "../components/dropshiping_components/TrendingProducts.jsx"; 
 import Wts from "../components/dropshiping_components/WhereTS.jsx";
 import WhyZambeel from "../components/dropshiping_components/WhyZambeel.jsx";
@@ -241,14 +241,7 @@ const DropshippingPage = () => {
       </section>
 
       {/* ================= PRICING ================= */}
-      <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
-        <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
-          <span className="mx-6 text-sm md:text-base font-semibold">
-            {t('pricing.goldRiskFreeTicker')}
-          </span>
-          <span className="mx-6 text-black/60">•</span>
-        </Marquee>
-      </div>
+      <GoldRiskFreeTickerMarquee />
       <PricingSection 
         title={t('dropshipping.pricing.title')}
         subtitle={t('dropshipping.pricing.subtitle')}
@@ -327,42 +320,62 @@ const DropshippingPage = () => {
         title={t('dropshipping.deliveryCharges.title')}
         subtitle={t('dropshipping.deliveryCharges.subtitle')}
         countries={[
-          { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" },
           { code: "UAE", name: t('countries.UAE'), currency: "AED" },
-          { code: "KSA", name: t('countries.KSA'), currency: "SAR" }
+          { code: "KSA", name: t('countries.KSA'), currency: "SAR" },
+          { code: "Kuwait", name: t('countries.Kuwait'), currency: "AED" },
+          { code: "Qatar", name: t('countries.Qatar'), currency: "AED" },
+          { code: "Oman", name: t('countries.Oman'), currency: "AED" },
+          { code: "Bahrain", name: t('countries.Bahrain'), currency: "AED" },
+          { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" }
         ]}
         charges={[
           {
             label: t('deliveryCharges.orderConfirmation'),
             values: {
-              Pakistan: "220 PKR",
               UAE: "18 AED",
-              KSA: "26 SAR"
+              KSA: "26 SAR",
+              Kuwait: "30 AED",
+              Qatar: "25 AED",
+              Oman: "26 AED",
+              Bahrain: "20 AED",
+              Pakistan: "220 PKR"
             }
           },
           {
             label: t('deliveryCharges.return'),
             values: {
-              Pakistan: "220 PKR",
               UAE: "5 AED",
-              KSA: "7.5 SAR"
+              KSA: "7.5 SAR",
+              Kuwait: "15 AED",
+              Qatar: "5 AED",
+              Oman: "12 AED",
+              Bahrain: "12 AED",
+              Pakistan: "220 PKR"
             }
           },
           {
             label: t('deliveryCharges.codTax'),
             values: {
-              Pakistan: "4%",
               UAE: "0%",
-              KSA: "0%"
+              KSA: "0%",
+              Kuwait: "0%",
+              Qatar: "0%",
+              Oman: "0%",
+              Bahrain: "0%",
+              Pakistan: "4%"
             }
           },
           {
             label: t('deliveryCharges.deliveryTime'),
             icon: "⚡",
             values: {
-              Pakistan: "1-3 Days",
               UAE: "1-2 Days",
-              KSA: "1-3 Days"
+              KSA: "1-3 Days",
+              Kuwait: "1-2 Days",
+              Qatar: "1-2 Days",
+              Oman: "1-2 Days",
+              Bahrain: "1-2 Days",
+              Pakistan: "1-3 Days"
             }
           }
         ]}

@@ -143,22 +143,39 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
                   'pricing.features.seniorBusinessConsultant'
                 ];
                 const shouldBeBold = feature.translationKey && boldFeatures.includes(feature.translationKey);
-                const isDropshipping7Highlight = feature.translationKey === 'pricing.features.dropshippingCountries7';
+                const isDropshippingHighlight =
+                  feature.included &&
+                  (feature.translationKey === 'pricing.features.dropshippingCountries3' ||
+                    feature.translationKey === 'pricing.features.dropshippingCountries7');
                 const isWinningCreativesStrategy = feature.translationKey === 'pricing.features.winningCreativedStrategy';
                 
                 return (
                   <li
                     key={i}
-                    className={`flex items-center gap-2 ${isDropshipping7Highlight ? 'bg-[#FCD64C]/25 border border-[#FCD64C]/70 rounded-lg px-2 py-1.5' : ''}`}
+                    className={`flex gap-2 ${
+                      isDropshippingHighlight
+                        ? 'items-stretch rounded-e-lg border-s-4 border-violet-600 bg-violet-100/90 py-2 ps-2 pe-2 shadow-sm ring-1 ring-inset ring-violet-300/70'
+                        : 'items-center'
+                    }`}
                   >
                     {feature.included ? (
-                      <Check className="w-5 h-5 text-green-500 shrink-0" />
+                      <Check
+                        className={`w-5 h-5 shrink-0 ${isDropshippingHighlight ? 'mt-0.5 self-start text-violet-700' : 'text-green-500'}`}
+                      />
                     ) : (
                       <X className="w-5 h-5 text-red-400 shrink-0" />
                     )}
                     <span
-                      className={`${shouldBeBold ? 'font-bold' : 'font-medium'} leading-[100%] tracking-[0] ${!feature.included ? 'text-gray-400 line-through' : ''} ${isDropshipping7Highlight && feature.included ? 'text-[#1e3a8a]' : ''} ${isWinningCreativesStrategy ? 'whitespace-nowrap' : ''}`}
-                      style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', fontWeight: (shouldBeBold || isDropshipping7Highlight) ? '700' : '500' }}
+                      className={`min-w-0 flex-1 ${
+                        isDropshippingHighlight
+                          ? 'font-bold leading-[130%] tracking-[0.01em] text-violet-950'
+                          : `${shouldBeBold ? 'font-bold' : 'font-medium'} leading-[100%] tracking-[0] ${!feature.included ? 'text-gray-400 line-through' : ''} ${isWinningCreativesStrategy ? 'whitespace-nowrap' : ''}`
+                      }`}
+                      style={{
+                        fontFamily: 'DM Sans, sans-serif',
+                        fontSize: '16px',
+                        fontWeight: isDropshippingHighlight ? '700' : shouldBeBold ? '700' : '500',
+                      }}
                     >
                       {featureText}
                     </span>
