@@ -362,13 +362,15 @@ export default function HomePage({ initialBlogs = [] }) {
             />
           </div>
           <div className="relative inline-block px-4 w-full max-w-full">
-            <h1 className="text-[#2E3B78] text-xl md:text-3xl font-bold leading-normal relative">
-              {t('homepage.hero.title')}
-              <span className="bg-[#FCD64C] px-5 py-1 rounded-full mx-1 inline-block w-[105px] text-center">
+            <h1 className="text-[#2E3B78] text-xl md:text-3xl font-bold leading-normal relative flex flex-wrap items-center justify-center gap-x-1.5 gap-y-2 text-balance">
+              <span className="shrink-0">{t('homepage.hero.title')}</span>
+              <span className="bg-[#FCD64C] box-border inline-flex align-middle items-center justify-center gap-0.5 mx-0.5 w-[118px] sm:w-[124px] md:w-[132px] shrink-0 whitespace-nowrap px-2 py-1 md:px-2.5 md:py-1.5 rounded-full">
                 {numberText}
-                <span className="animate-pulse">|</span>
+                <span className="animate-pulse inline-block w-[0.35em] text-center shrink-0" aria-hidden>
+                  |
+                </span>
               </span>
-              {t('homepage.hero.subtitle')}
+              <span className="shrink-0">{t('homepage.hero.subtitle')}</span>
             </h1>
           </div>
         </div>
