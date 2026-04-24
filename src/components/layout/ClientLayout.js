@@ -26,6 +26,7 @@ export default function ClientLayout({ children, initialLocale }) {
   const isLightThemePage = 
     pathname === "/pages/zambeel-360" || pathname === "/ar/pages/zambeel-360" ||
     pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/ar/pages/dropshipping-uae-and-ksa" ||
+    pathname === "/pages/us-dropshipping" || pathname === "/ar/pages/us-dropshipping" ||
     pathname === "/pages/warehousing-3pl" || pathname === "/ar/pages/warehousing-3pl" ||
     pathname === "/pages/partner-agencies" || pathname === "/ar/pages/partner-agencies" ||
     pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce";

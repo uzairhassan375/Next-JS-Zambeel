@@ -395,7 +395,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               onChange={(e) => update('metaTitleEn', e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
               placeholder="SEO title for search engines (optional)"
-              maxLength={60}
+              maxLength={200}
             />
             <p className="text-xs text-gray-500 mt-1">Recommended: 50-60 characters. If empty, blog title will be used.</p>
           </div>
@@ -416,7 +416,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               rows={2}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
               placeholder="SEO description for search engines (optional)"
-              maxLength={160}
+              maxLength={500}
             />
             <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters. If empty, blog description will be used.</p>
           </div>
@@ -454,7 +454,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
               placeholder="عنوان SEO لمحركات البحث (اختياري)"
               dir="rtl"
-              maxLength={60}
+              maxLength={200}
             />
             <p className="text-xs text-gray-500 mt-1" dir="ltr">Recommended: 50-60 characters. If empty, blog title will be used.</p>
           </div>
@@ -477,7 +477,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
               placeholder="وصف SEO لمحركات البحث (اختياري)"
               dir="rtl"
-              maxLength={160}
+              maxLength={500}
             />
             <p className="text-xs text-gray-500 mt-1" dir="ltr">Recommended: 150-160 characters. If empty, blog description will be used.</p>
           </div>

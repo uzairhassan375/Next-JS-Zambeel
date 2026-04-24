@@ -17,6 +17,8 @@
       "zambeel3PL": "Zambeel 3PL",
       "zambeel360": "Zambeel 360",
       "learnEcomm": "Learn E-commerce",
+      "usDropshipping": "U.S.A Dropshipping",
+      "newBadge": "NEW",
       "dropshippingProducts": "Dropshipping Products",
       "whereCanYouSell": "Where can you sell?",
       "whyZambeel": "Why Zambeel?",
@@ -339,7 +341,7 @@
   },
   "pricing": {
     "goldRiskFreeTickerLead": "Try Gold subscription Risk-FREE",
-    "goldRiskFreeTickerMiddle": " — achieve a small monthly target and we'll ",
+    "goldRiskFreeTickerMiddle": " — achieve a small monthly target and we'll",
     "goldRiskFreeTickerRefund": "return your $69.",
     "plans": {
       "free": {
@@ -838,5 +840,67 @@
       "title": "Dropshipping in KSA: Your Ultimate Guide to Starting a Profitable Business in Saudi Arabia",
       "desc": "Complete guide to dropshipping in Saudi Arabia—Vision 2030 opportunities, legal setup, niche selection, marketing strategies, challenges, compliance, success stories, and future trends for KSA entrepreneurs."
     }
+  },
+  "usDropshipping": {
+    "comingSoon": "Coming soon",
+    "comingSoonSub": "The US dropshipping page is being prepared.",
+    "metaTitle": "US Dropshipping — Zambeel",
+    "metaDescription": "Zambeel is launching US dropshipping. Start selling in the United States without company registration or a US bank account. Packages and early access.",
+    "welcomeTitle": "Zambeel is live in U.S.A",
+    "talkToUs": "Talk to us",
+    "tagline": "Start your ecommerce business without any company registration or US bank account.",
+    "servicesTitle": "Launch, Scale, Deliver — All with Zambeel",
+    "serviceDropshipping": {
+      "title": "For Dropshipping",
+      "description": "Start selling in the USA without inventory or LLC setup hassle. Access 10k+ products, fast fulfillment, and a complete system to launch and scale your business."
+    },
+    "serviceZambeel360": {
+      "title": "Zambeel 360",
+      "description": "Your end-to-end eCommerce engine. From product sourcing with logistics to warehousing, fulfillment, and last-mile delivery. We handle everything so you can focus on growth."
+    },
+    "serviceZambeel3PL": {
+      "title": "Zambeel 3PL",
+      "description": "Scale your business with USA-based logistics infrastructure. We manage storage, inventory, order processing, and last-mile delivery — ensuring faster shipping and smooth operations."
+    },
+    "packagesTitle": "US dropshipping plans",
+    "packagesSubtitle": "Three subscription tiers built for selling in the United States.",
+    "planFree": {
+      "tag": "FREE",
+      "name": "Starter",
+      "price": "$0",
+      "featureList": [
+        "LLC & Payment Gateway required",
+        "Access to 10,000+ Products",
+        "Product Sourcing Facility",
+        "Priority Agent Support"
+      ]
+    },
+    "plan49": {
+      "tag": "STANDARD",
+      "name": "Growth",
+      "price": "$49 / month",
+      "featureList": [
+        "No LLC & Get Payment Gateway",
+        "Access to 10,000+ Products",
+        "Live Coaching Session",
+        "Product Sourcing Facility",
+        "Priority Agent Support"
+      ]
+    },
+    "plan99": {
+      "tag": "PREMIUM",
+      "name": "Scale",
+      "price": "$99 / month",
+      "featureList": [
+        "No LLC & Get Payment Gateway",
+        "Shopify Store Creation & Integration",
+        "Access to 10,000+ Products",
+        "Live Coaching Session",
+        "Product Sourcing Facility",
+        "Priority Agent Support",
+        "$30 Credits"
+      ]
+    },
+    "popular": "Popular"
   }
 }

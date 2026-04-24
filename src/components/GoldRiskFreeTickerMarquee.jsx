@@ -5,7 +5,7 @@ import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
 
 /** Opacity blink driven by rAF — CSS keyframes often fail inside react-fast-marquee’s animated subtree. */
-function GoldTickerBlinkLead({ children }) {
+export function GoldTickerBlinkLead({ children }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -54,10 +54,12 @@ export default function GoldRiskFreeTickerMarquee() {
   return (
     <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
       <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
-        <span className="mx-6 text-sm md:text-base">
+        <span className="mx-6 whitespace-nowrap text-sm md:text-base">
           <GoldTickerBlinkLead>{t('pricing.goldRiskFreeTickerLead')}</GoldTickerBlinkLead>
           <span className="font-normal">{t('pricing.goldRiskFreeTickerMiddle')}</span>
-          <span className="font-bold">{t('pricing.goldRiskFreeTickerRefund')}</span>
+          <span className="ms-1 inline-block font-bold md:ms-1.5">
+            {t('pricing.goldRiskFreeTickerRefund')}
+          </span>
         </span>
         <span className="mx-6 text-black/60">•</span>
       </Marquee>

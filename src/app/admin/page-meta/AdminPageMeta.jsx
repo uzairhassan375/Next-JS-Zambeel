@@ -72,7 +72,7 @@ export default function AdminPageMeta() {
                 onChange={(e) => updateItem(item.pageId, 'metaTitleEn', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#1e3a8a]"
                 placeholder="Optional"
-                maxLength={60}
+                maxLength={200}
               />
             </div>
             <div>
@@ -84,7 +84,7 @@ export default function AdminPageMeta() {
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#1e3a8a]"
                 placeholder="اختياري"
                 dir="rtl"
-                maxLength={60}
+                maxLength={200}
               />
             </div>
             <div className="md:col-span-2">
@@ -95,7 +95,7 @@ export default function AdminPageMeta() {
                 rows={2}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#1e3a8a]"
                 placeholder="Optional"
-                maxLength={160}
+                maxLength={500}
               />
             </div>
             <div className="md:col-span-2">
@@ -107,7 +107,7 @@ export default function AdminPageMeta() {
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#1e3a8a]"
                 placeholder="اختياري"
                 dir="rtl"
-                maxLength={160}
+                maxLength={500}
               />
             </div>
           </div>

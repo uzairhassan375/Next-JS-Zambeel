@@ -1,93 +1,50 @@
 'use client';
 
-import { useMemo } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
+import { GoldTickerBlinkLead } from './GoldRiskFreeTickerMarquee';
 
-export default function Ticker() {
-  const { t, i18n } = useTranslation();
-  const currentLanguage = i18n.language || 'en';
-
-  const getWhatsAppLink = () => {
-    return currentLanguage === 'ar'
-      ? 'https://whatsapp.com/channel/0029Vb1chFnH5JLr8lKoXE2I'
-      : 'https://whatsapp.com/channel/0029VaZgjwHIN9iiX6YpEj0w';
-  };
-
-  const registerLink = 'https://docs.google.com/forms/d/e/1FAIpQLSeA4WTKzxanXcM4inCxjpGsimihwMlbQh50dK1UMSjUhPEzYQ/viewform';
-
-  // Use useMemo to ensure translations update when language changes
-  const tickerItems = useMemo(() => {
-    const tickerText = t('homepage.ticker.superclass', {
-      defaultValue: currentLanguage === 'ar'
-        ? 'لا تدرس التجارة الإلكترونية، أطلقها مباشرة مع زمبيل سوبر كلاس: '
-        : "Don't study Ecommerce, Launch it LIVE with Zambeel SuperClass: "
-    });
-    const registerText = t('homepage.ticker.registerNow', {
-      defaultValue: currentLanguage === 'ar' ? 'سجل الآن!' : 'Register Now!'
-    });
-    const newMarketsText = t('homepage.ticker.newMarkets', {
-      defaultValue: currentLanguage === 'ar'
-        ? 'إطلاق سوقين جديدين: عُمان والبحرين'
-        : '2 New Markets Launched: Oman & Bahrain'
-    });
-
-    // In Arabic, only show the new markets message
-    if (currentLanguage === 'ar') {
-      // Repeat the item multiple times to ensure the marquee has enough content to scroll smoothly
-      // without gaps, as the single message is quite short.
-      return Array(10).fill({
-        text: newMarketsText,
-        registerText: null,
-        link: null
-      });
-    }
-
-    // In English, show both messages
-    return [
-      {
-        text: tickerText,
-        registerText: registerText,
-        link: registerLink
-      },
-      {
-        text: newMarketsText,
-        registerText: null,
-        link: null
-      },
-    ];
-  }, [t, currentLanguage, registerLink]);
-
+function TickerStrip() {
+  const { t } = useTranslation();
   return (
-    <div className="w-screen bg-[#2E3B78] text-white py-2 md:py-3 mt-4 md:mt-0 overflow-hidden relative z-10" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
-      <Marquee
-        key={currentLanguage}
-        speed={50}
-        gradient={true}
-        gradientColor={[46, 59, 120]}
-        gradientWidth={50}
-        pauseOnHover={true}
-        direction={currentLanguage === 'ar' ? 'left' : 'right'}
-        autoFill={true}
-      >
-        {tickerItems && tickerItems.length > 0 && tickerItems.map((item, index) => (
-          <div key={index} className="flex items-center mx-4 md:mx-8 whitespace-nowrap text-sm md:text-base">
-            <span className="px-1">{item.text}</span>
-            {item.link && item.registerText && (
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline font-bold ml-1 md:ml-2 text-[#FCD64C] px-1"
-              >
-                {item.registerText}
-              </a>
-            )}
-            <span className="mx-4 md:mx-8 text-white opacity-60">•</span>
-          </div>
-        ))}
-      </Marquee>
+    <div className="mx-6 flex items-center whitespace-nowrap text-sm text-white md:mx-10 md:text-base">
+      <span className="whitespace-nowrap">
+        <GoldTickerBlinkLead>{t('pricing.goldRiskFreeTickerLead')}</GoldTickerBlinkLead>
+        <span className="font-normal">{t('pricing.goldRiskFreeTickerMiddle')}</span>
+        <span className="ms-1 inline-block font-bold md:ms-1.5">
+          {t('pricing.goldRiskFreeTickerRefund')}
+        </span>
+      </span>
+      <span className="mx-4 text-white/60 md:mx-6" aria-hidden>
+        •
+      </span>
     </div>
   );
 }
 
+export default function Ticker() {
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || 'en';
+
+  return (
+    <div
+      className="relative z-10 mt-4 w-screen overflow-hidden bg-[#2E3B78] py-2 text-white md:mt-0 md:py-3"
+      style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}
+    >
+      <Marquee
+        key={currentLanguage}
+        speed={50}
+        gradient
+        gradientColor={[46, 59, 120]}
+        gradientWidth={50}
+        pauseOnHover
+        direction={currentLanguage === 'ar' ? 'left' : 'right'}
+        autoFill
+      >
+        <TickerStrip />
+        <TickerStrip />
+        <TickerStrip />
+      </Marquee>
+    </div>
+  );
+}

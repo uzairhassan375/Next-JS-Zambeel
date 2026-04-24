@@ -22,6 +22,29 @@ export default function Header({ theme = "dark" }) {
   const pathname = usePathname();
 
   const currentLanguage = i18n.language || 'en';
+  const isEnglishUi = String(currentLanguage).toLowerCase().startsWith('en');
+  const isArabicUi = String(currentLanguage).toLowerCase().startsWith('ar');
+
+  const US_DROPSHIPPING_SEEN_KEY = 'zambeel_seen_us_dropshipping';
+  const [usDropNewDismissed, setUsDropNewDismissed] = useState(null);
+
+  useEffect(() => {
+    const onEnglishUsPage = pathname === '/pages/us-dropshipping';
+    let seen = false;
+    try {
+      seen = localStorage.getItem(US_DROPSHIPPING_SEEN_KEY) === '1';
+      if (onEnglishUsPage) {
+        localStorage.setItem(US_DROPSHIPPING_SEEN_KEY, '1');
+        seen = true;
+      }
+    } catch {
+      seen = onEnglishUsPage;
+    }
+    setUsDropNewDismissed(seen);
+  }, [pathname]);
+
+  const showUsDropshippingNewBadge =
+    isEnglishUi && usDropNewDismissed === false;
 
   // Social media links based on language
   const getWhatsAppLink = () => {
@@ -160,7 +183,7 @@ export default function Header({ theme = "dark" }) {
               </svg>
             </button>
             {showServicesDropdown && (
-              <div className="absolute top-full left-0 pt-2 bg-transparent min-w-[200px] z-50">
+              <div className="absolute top-full left-0 pt-2 bg-transparent min-w-[260px] z-50">
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
                   <Link
                     href={getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}
@@ -168,6 +191,29 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.dropshipping')}
                   </Link>
+                  {isArabicUi ? (
+                    <div
+                      className={`flex cursor-default items-center justify-between gap-3 px-4 py-3 text-sm font-medium ${isLightTheme ? 'text-[#2E3B78]/75' : 'text-[#2E3B78]/75'}`}
+                      role="note"
+                    >
+                      <span>{t('header.usDropshipping')}</span>
+                      <span className="shrink-0 text-xs font-semibold text-[#2E3B78]/80">
+                        {t('usDropshipping.comingSoon')}
+                      </span>
+                    </div>
+                  ) : (
+                    <Link
+                      href={getLocalePath('/pages/us-dropshipping', pathname)}
+                      className={`flex items-center justify-between gap-3 px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
+                    >
+                      <span>{t('header.usDropshipping')}</span>
+                      {showUsDropshippingNewBadge && (
+                        <span className="shrink-0 rounded-md bg-[#B91C1C] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white animate-zambeel-blink">
+                          {t('header.newBadge')}
+                        </span>
+                      )}
+                    </Link>
+                  )}
                   <Link
                     href={getLocalePath('/pages/zambeel-360', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
@@ -511,6 +557,30 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.dropshipping')}
                   </Link>
+                  {isArabicUi ? (
+                    <div
+                      className={`flex cursor-default items-center justify-between gap-2 py-2 text-sm ${isLightTheme ? 'text-[#2E3B78]/70' : 'text-white/70'}`}
+                      role="note"
+                    >
+                      <span>{t('header.usDropshipping')}</span>
+                      <span className="shrink-0 text-xs font-semibold opacity-90">
+                        {t('usDropshipping.comingSoon')}
+                      </span>
+                    </div>
+                  ) : (
+                    <Link
+                      href={getLocalePath('/pages/us-dropshipping', pathname)}
+                      className={`flex items-center justify-between gap-2 ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      <span>{t('header.usDropshipping')}</span>
+                      {showUsDropshippingNewBadge && (
+                        <span className="shrink-0 rounded-md bg-[#B91C1C] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white animate-zambeel-blink">
+                          {t('header.newBadge')}
+                        </span>
+                      )}
+                    </Link>
+                  )}
                   <Link
                     href={getLocalePath('/pages/zambeel-360', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}

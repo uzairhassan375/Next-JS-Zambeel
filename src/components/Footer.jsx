@@ -10,6 +10,7 @@ const white_logoImage = "/white_logo.png";
 export default function Footer() {
   const { t } = useTranslation();
   const pathname = usePathname();
+  const isArabicSite = pathname?.startsWith('/ar');
   return (
     <footer className="max-w-6xl mx-auto text-white pb-8 md:pb-12 pt-8 md:pt-12 px-6 md:px-16">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-6 text-sm items-start">
@@ -51,6 +52,13 @@ export default function Footer() {
                 {t('header.dropshipping')}
               </Link>
             </li>
+            {!isArabicSite && (
+              <li>
+                <Link href={getLocalePath('/pages/us-dropshipping', pathname)} className="hover:text-white hover:underline">
+                  {t('header.usDropshipping')}
+                </Link>
+              </li>
+            )}
             <li>
               <Link href={getLocalePath('/pages/warehousing-3pl', pathname)} className="hover:text-white hover:underline">
                 {t('header.zambeel3PL')}

@@ -26,7 +26,21 @@
   }
 }
 
+@keyframes zambeel-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
 @layer utilities {
+  .animate-zambeel-blink {
+    animation: zambeel-blink 1.1s ease-in-out infinite;
+  }
+
   .card-hover {
     transition: all 0.3s ease;
   }

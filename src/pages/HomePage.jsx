@@ -212,10 +212,10 @@ export default function HomePage({ initialBlogs = [] }) {
   const countries = [
     { name: "UAE", code: "ae", services: ["Dropshipping", "360", "3PL"] },
     { name: "KSA", code: "sa", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Qatar", code: "qa", services: ["360", "3PL"] },
-    { name: "Kuwait", code: "kw", services: ["360", "3PL"] },
-    { name: "Oman", code: "om", services: ["360", "3PL"] },
-    { name: "Bahrain", code: "bh", services: ["360", "3PL"] },
+    { name: "Qatar", code: "qa", services: ["Dropshipping", "360", "3PL"] },
+    { name: "Kuwait", code: "kw", services: ["Dropshipping", "360", "3PL"] },
+    { name: "Oman", code: "om", services: ["Dropshipping", "360", "3PL"] },
+    { name: "Bahrain", code: "bh", services: ["Dropshipping", "360", "3PL"] },
     { name: "Pakistan", code: "pk", services: ["Dropshipping", "360", "3PL"] },
   ];
 
@@ -492,12 +492,9 @@ export default function HomePage({ initialBlogs = [] }) {
                 </h3>
               </div>
               <p className="text-[#4A5568] text-xs leading-relaxed mb-5">
-                {selectedCountry === "Pakistan"
-                  ? t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
-                  : selectedCountry === "Qatar" || selectedCountry === "Kuwait" || selectedCountry === "Oman" || selectedCountry === "Bahrain"
-                    ? t('homepage.whereToSell.description.noDropshipping', { country: translateCountryName(selectedCountry) })
-                    : t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
-                }
+                {t('homepage.whereToSell.description.full', {
+                  country: translateCountryName(selectedCountry),
+                })}
               </p>
               <p className="text-[#4A5568] text-[10px] leading-relaxed mb-4 opacity-80 italic">
                 {t('homepage.whereToSell.seoDescription')}
@@ -605,12 +602,9 @@ export default function HomePage({ initialBlogs = [] }) {
                 {translateCountryName(selectedCountry)}
               </h3>
               <p className="text-[#4A5568] text-sm lg:text-base leading-relaxed mb-4">
-                {selectedCountry === "Pakistan"
-                  ? t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
-                  : selectedCountry === "Qatar" || selectedCountry === "Kuwait" || selectedCountry === "Oman" || selectedCountry === "Bahrain"
-                    ? t('homepage.whereToSell.description.noDropshipping', { country: translateCountryName(selectedCountry) })
-                    : t('homepage.whereToSell.description.full', { country: translateCountryName(selectedCountry) })
-                }
+                {t('homepage.whereToSell.description.full', {
+                  country: translateCountryName(selectedCountry),
+                })}
               </p>
               <p className="text-[#4A5568] text-xs lg:text-sm leading-relaxed mb-8 opacity-80 italic">
                 {t('homepage.whereToSell.seoDescription')}

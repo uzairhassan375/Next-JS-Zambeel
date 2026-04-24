@@ -11,6 +11,7 @@ export const PAGE_IDS = [
   { id: 'learn-ecommerce', label: 'Learn E-commerce', path: '/learn-ecommerce' },
   { id: 'supplier', label: 'Supplier', path: '/supplier' },
   { id: 'pages/dropshipping-uae-and-ksa', label: 'Dropshipping UAE & KSA', path: '/pages/dropshipping-uae-and-ksa' },
+  { id: 'pages/us-dropshipping', label: 'US Dropshipping', path: '/pages/us-dropshipping' },
   { id: 'pages/zambeel-360', label: 'Zambeel 360', path: '/pages/zambeel-360' },
   { id: 'pages/warehousing-3pl', label: 'Warehousing 3PL', path: '/pages/warehousing-3pl' },
   { id: 'pages/partner-agencies', label: 'Partner Agencies', path: '/pages/partner-agencies' },
