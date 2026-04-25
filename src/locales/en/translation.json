@@ -848,7 +848,7 @@
     "metaDescription": "Zambeel is launching US dropshipping. Start selling in the United States without company registration or a US bank account. Packages and early access.",
     "welcomeTitle": "Zambeel is live in U.S.A",
     "talkToUs": "Talk to us",
-    "tagline": "Start your ecommerce business without any company registration or US bank account.",
+    "tagline": "Start ecommerce journey without registering LLC and Bank Account but with ZAMBEEL only.",
     "servicesTitle": "Launch, Scale, Deliver — All with Zambeel",
     "serviceDropshipping": {
       "title": "For Dropshipping",
@@ -862,11 +862,11 @@
       "title": "Zambeel 3PL",
       "description": "Scale your business with USA-based logistics infrastructure. We manage storage, inventory, order processing, and last-mile delivery — ensuring faster shipping and smooth operations."
     },
-    "packagesTitle": "US dropshipping plans",
+    "packagesTitle": "U.S.A Dropshipping Plans",
     "packagesSubtitle": "Three subscription tiers built for selling in the United States.",
     "planFree": {
       "tag": "FREE",
-      "name": "Starter",
+      "name": "For Experts",
       "price": "$0",
       "featureList": [
         "LLC & Payment Gateway required",
@@ -877,7 +877,7 @@
     },
     "plan49": {
       "tag": "STANDARD",
-      "name": "Growth",
+      "name": "For Starters",
       "price": "$49 / month",
       "featureList": [
         "No LLC & Get Payment Gateway",
@@ -889,7 +889,7 @@
     },
     "plan99": {
       "tag": "PREMIUM",
-      "name": "Scale",
+      "name": "For Starters",
       "price": "$99 / month",
       "featureList": [
         "No LLC & Get Payment Gateway",

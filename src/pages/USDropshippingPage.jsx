@@ -54,9 +54,9 @@ export default function USDropshippingPage() {
 
   const planKeys = ['planFree', 'plan49', 'plan99'];
   const planMeta = {
-    planFree: { border: 'border-white/20', tagBg: 'bg-slate-200 text-slate-700', featured: false },
-    plan49: { border: 'border-[#FCD64C]', tagBg: 'bg-[#243a86] text-white', featured: true },
-    plan99: { border: 'border-violet-300/50', tagBg: 'bg-violet-100 text-violet-800', featured: false },
+    planFree: { border: 'border-white/20', featured: false },
+    plan49: { border: 'border-[#FCD64C]', featured: true },
+    plan99: { border: 'border-violet-300/50', featured: false },
   };
 
   const TalkButton = ({ className = '' }) => (
@@ -162,13 +162,22 @@ export default function USDropshippingPage() {
                     {t('usDropshipping.popular')}
                   </span>
                 )}
-                <span
-                  className={`mb-3 inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold uppercase ${meta.featured ? 'mt-2' : ''} ${meta.tagBg}`}
+                <div
+                  className={`flex flex-wrap items-center gap-2.5 gap-y-2 border-b border-[#2E3B78]/12 pb-4 ${meta.featured ? 'mt-2' : ''}`}
                 >
-                  {t(`usDropshipping.${planKey}.tag`)}
-                </span>
-                <h3 className="text-xl font-bold text-[#2E3B78]">{t(`usDropshipping.${planKey}.name`)}</h3>
-                <p className="mt-2 text-2xl font-bold text-[#2E3B78]">{t(`usDropshipping.${planKey}.price`)}</p>
+                  <span className="min-w-0 text-base font-bold text-[#2E3B78] md:text-lg">
+                    {t(`usDropshipping.${planKey}.name`)}
+                  </span>
+                  <span
+                    className={`shrink-0 rounded-xl px-3 py-1.5 text-base font-extrabold tracking-tight shadow-sm md:text-lg ${
+                      meta.featured
+                        ? 'bg-[#FCD64C] text-[#243a86] ring-2 ring-[#FCD64C]/50'
+                        : 'bg-[#243a86]/10 text-[#243a86] ring-1 ring-[#243a86]/15'
+                    }`}
+                  >
+                    {t(`usDropshipping.${planKey}.price`)}
+                  </span>
+                </div>
                 <ul className="mt-5 flex-1 space-y-2.5 text-left text-sm text-[#2E3B78]">
                   {list.map((line, idx) => (
                     <li key={`${planKey}-${idx}`} className="flex gap-2">
