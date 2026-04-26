@@ -4,9 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import { Check } from 'lucide-react';
 
-const WHATSAPP_EN =
-  'https://whatsapp.com/channel/0029Vb6w7xB0gcfMsxMRT900';
-
 export default function USDropshippingPage() {
   const { t } = useTranslation();
   const pathname = usePathname();
@@ -60,15 +57,16 @@ export default function USDropshippingPage() {
   };
 
   const TalkButton = ({ className = '' }) => (
-    <a
-      href={WHATSAPP_EN}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#ffd24c] px-8 py-3.5 text-base font-bold text-[#243a86] shadow-lg transition hover:bg-[#ffc933] md:text-lg ${className}`}
+    <button
+      type="button"
+      disabled
+      aria-disabled="true"
+      title="Temporarily disabled"
+      className={`inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-[#ffd24c] px-8 py-3.5 text-base font-bold text-[#243a86] opacity-70 shadow-lg transition md:text-lg ${className}`}
     >
       <i className="fa-brands fa-whatsapp text-xl" aria-hidden />
       {t('usDropshipping.talkToUs')}
-    </a>
+    </button>
   );
 
   return (

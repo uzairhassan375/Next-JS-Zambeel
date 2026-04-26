@@ -30,6 +30,9 @@ export default function ClientLayout({ children, initialLocale }) {
     pathname === "/pages/warehousing-3pl" || pathname === "/ar/pages/warehousing-3pl" ||
     pathname === "/pages/partner-agencies" || pathname === "/ar/pages/partner-agencies" ||
     pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce";
+
+  const shouldHideWhatsAppFloat =
+    pathname === "/pages/us-dropshipping" || pathname === "/ar/pages/us-dropshipping";
   
   const theme = isLightThemePage ? "light" : "dark";
 
@@ -40,7 +43,7 @@ export default function ClientLayout({ children, initialLocale }) {
   return (
     <I18nProvider initialLocale={initialLocale}>
       <WhatsAppPopup />
-      <WhatsAppFloat />
+      {!shouldHideWhatsAppFloat && <WhatsAppFloat />}
       <Header theme={theme} />
       <main className={`flex-grow bg-transparent ${shouldHavePadding ? "pt-20" : ""}`}>
         {children}

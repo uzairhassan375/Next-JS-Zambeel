@@ -573,7 +573,7 @@ const Zambeel3PLPage = () => {
               Kuwait: "15 AED",
               Qatar: "5 AED",
               Oman: "12 AED",
-              Bahrain: "12 AED",
+              Bahrain: "15 AED",
               Pakistan: "350 PKR"
             }
           },
