@@ -8,6 +8,8 @@ export default function USDropshippingPage() {
   const { t } = useTranslation();
   const pathname = usePathname();
   const isArabic = pathname?.startsWith('/ar');
+  const usaTalkToUsLink =
+    'https://wa.me/971568472271?text=Hey!%20I%20want%20to%20start%20dropshipping%20in%20USA%20with%20Zambeel';
 
   if (isArabic) {
     return (
@@ -57,16 +59,15 @@ export default function USDropshippingPage() {
   };
 
   const TalkButton = ({ className = '' }) => (
-    <button
-      type="button"
-      disabled
-      aria-disabled="true"
-      title="Temporarily disabled"
-      className={`inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-[#ffd24c] px-8 py-3.5 text-base font-bold text-[#243a86] opacity-70 shadow-lg transition md:text-lg ${className}`}
+    <a
+      href={usaTalkToUsLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#ffd24c] px-8 py-3.5 text-base font-bold text-[#243a86] shadow-lg transition hover:brightness-95 md:text-lg ${className}`}
     >
       <i className="fa-brands fa-whatsapp text-xl" aria-hidden />
       {t('usDropshipping.talkToUs')}
-    </button>
+    </a>
   );
 
   return (
@@ -167,13 +168,25 @@ export default function USDropshippingPage() {
                     {t(`usDropshipping.${planKey}.name`)}
                   </span>
                   <span
-                    className={`shrink-0 rounded-xl px-3 py-1.5 text-base font-extrabold tracking-tight shadow-sm md:text-lg ${
+                    className={`shrink-0 rounded-xl px-3 py-1.5 shadow-sm ${
                       meta.featured
                         ? 'bg-[#FCD64C] text-[#243a86] ring-2 ring-[#FCD64C]/50'
                         : 'bg-[#243a86]/10 text-[#243a86] ring-1 ring-[#243a86]/15'
                     }`}
                   >
-                    {t(`usDropshipping.${planKey}.price`)}
+                    {(() => {
+                      const rawPrice = String(t(`usDropshipping.${planKey}.price`) || '');
+                      const [amount, period] = rawPrice.split(' / ');
+                      if (!period) {
+                        return <span className="text-base font-extrabold tracking-tight md:text-lg">{rawPrice}</span>;
+                      }
+                      return (
+                        <span className="inline-flex items-end gap-0.5">
+                          <span className="text-base font-extrabold tracking-tight md:text-lg">{amount}</span>
+                          <span className="text-sm font-medium opacity-90 md:text-base">/{period}</span>
+                        </span>
+                      );
+                    })()}
                   </span>
                 </div>
                 <ul className="mt-5 flex-1 space-y-2.5 text-left text-sm text-[#2E3B78]">

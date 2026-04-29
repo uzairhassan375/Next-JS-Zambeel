@@ -14,7 +14,7 @@ const STATIC_ROUTES = [
   { path: 'learn-ecommerce', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'supplier', priority: 0.7, changeFrequency: 'monthly' },
   { path: 'pages/dropshipping-uae-and-ksa', priority: 0.9, changeFrequency: 'monthly' },
-  { path: 'pages/us-dropshipping', priority: 0.85, changeFrequency: 'monthly' },
+  { path: 'pages/usa-dropshipping', priority: 0.85, changeFrequency: 'monthly' },
   { path: 'pages/zambeel-360', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'pages/warehousing-3pl', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'pages/partner-agencies', priority: 0.8, changeFrequency: 'monthly' },

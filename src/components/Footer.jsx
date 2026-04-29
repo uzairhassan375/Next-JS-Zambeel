@@ -54,7 +54,7 @@ export default function Footer() {
             </li>
             {!isArabicSite && (
               <li>
-                <Link href={getLocalePath('/pages/us-dropshipping', pathname)} className="hover:text-white hover:underline">
+                <Link href={getLocalePath('/pages/usa-dropshipping', pathname)} className="hover:text-white hover:underline">
                   {t('header.usDropshipping')}
                 </Link>
               </li>

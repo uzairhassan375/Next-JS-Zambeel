@@ -17,7 +17,7 @@
       "zambeel3PL": "Zambeel 3PL",
       "zambeel360": "Zambeel 360",
       "learnEcomm": "Learn E-commerce",
-      "usDropshipping": "U.S.A Dropshipping",
+      "usDropshipping": "USA Dropshipping",
       "newBadge": "NEW",
       "dropshippingProducts": "Dropshipping Products",
       "whereCanYouSell": "Where can you sell?",
@@ -846,7 +846,7 @@
     "comingSoonSub": "The US dropshipping page is being prepared.",
     "metaTitle": "US Dropshipping — Zambeel",
     "metaDescription": "Zambeel is launching US dropshipping. Start selling in the United States without company registration or a US bank account. Packages and early access.",
-    "welcomeTitle": "Zambeel is live in U.S.A",
+    "welcomeTitle": "Zambeel is live in USA",
     "talkToUs": "Talk to us",
     "tagline": "Start ecommerce journey without registering LLC and Bank Account but with ZAMBEEL only.",
     "servicesTitle": "Launch, Scale, Deliver — All with Zambeel",
@@ -862,7 +862,7 @@
       "title": "Zambeel 3PL",
       "description": "Scale your business with USA-based logistics infrastructure. We manage storage, inventory, order processing, and last-mile delivery — ensuring faster shipping and smooth operations."
     },
-    "packagesTitle": "U.S.A Dropshipping Plans",
+    "packagesTitle": "USA Dropshipping Plans",
     "packagesSubtitle": "Three subscription tiers built for selling in the United States.",
     "planFree": {
       "tag": "FREE",
@@ -889,7 +889,7 @@
     },
     "plan99": {
       "tag": "PREMIUM",
-      "name": "For Starters",
+      "name": "Growth Accelerator",
       "price": "$99 / month",
       "featureList": [
         "No LLC & Get Payment Gateway",

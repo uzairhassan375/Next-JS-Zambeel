@@ -45,7 +45,7 @@ const routeMap = {
   'team': TeamPage,
   'supplier': SupplierWrapper,
   'pages/dropshipping-uae-and-ksa': DropshippingPage,
-  'pages/us-dropshipping': USDropshippingPage,
+  'pages/usa-dropshipping': USDropshippingPage,
   'pages/zambeel-360': Zambeel360Page,
   'pages/warehousing-3pl': Zambeel3PLPage,
   'pages/refund-replacement-policy': RefundReplacementPolicyPage,
@@ -97,9 +97,9 @@ export async function generateMetadata({ params }) {
         title: `${translations.dropshipping.hero.title} - ${translations.dropshipping.hero.subtitle} | زمبيل`,
         description: translations.dropshipping.whyZambeel.description || 'ابدأ البيع دون عناء إدارة المخزون أو تسجيل الأعمال مع زمبيل دروبشيبينغ',
       });
-    case 'pages/us-dropshipping':
-      return buildMetadataForPage('pages/us-dropshipping', 'ar', {
-        title: `${translations.header?.usDropshipping || 'US Dropshipping'} | زمبيل`,
+    case 'pages/usa-dropshipping':
+      return buildMetadataForPage('pages/usa-dropshipping', 'ar', {
+        title: `${translations.header?.usDropshipping || 'USA Dropshipping'} | زمبيل`,
         description:
           translations.usDropshipping?.comingSoonSub ||
           'صفحة دروبشيبينغ الولايات المتحدة قيد الإعداد.',

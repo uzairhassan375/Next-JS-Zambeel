@@ -29,7 +29,7 @@ export default function Header({ theme = "dark" }) {
   const [usDropNewDismissed, setUsDropNewDismissed] = useState(null);
 
   useEffect(() => {
-    const onEnglishUsPage = pathname === '/pages/us-dropshipping';
+    const onEnglishUsPage = pathname === '/pages/usa-dropshipping';
     let seen = false;
     try {
       seen = localStorage.getItem(US_DROPSHIPPING_SEEN_KEY) === '1';
@@ -203,7 +203,7 @@ export default function Header({ theme = "dark" }) {
                     </div>
                   ) : (
                     <Link
-                      href={getLocalePath('/pages/us-dropshipping', pathname)}
+                      href={getLocalePath('/pages/usa-dropshipping', pathname)}
                       className={`flex items-center justify-between gap-3 px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                     >
                       <span>{t('header.usDropshipping')}</span>
@@ -569,7 +569,7 @@ export default function Header({ theme = "dark" }) {
                     </div>
                   ) : (
                     <Link
-                      href={getLocalePath('/pages/us-dropshipping', pathname)}
+                      href={getLocalePath('/pages/usa-dropshipping', pathname)}
                       className={`flex items-center justify-between gap-2 ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                       onClick={() => setShowMobileMenu(false)}
                     >
