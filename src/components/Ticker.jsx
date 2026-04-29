@@ -4,15 +4,19 @@ import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
 import { GoldTickerBlinkLead } from './GoldRiskFreeTickerMarquee';
 
-function TickerStrip() {
+function TickerStrip({ isArabic }) {
   const { t } = useTranslation();
+  const lead = t('pricing.goldRiskFreeTickerLead') || 'Try Gold subscription Risk-FREE';
+  const middle = t('pricing.goldRiskFreeTickerMiddle') || " — achieve a small monthly target and we'll";
+  const refund = t('pricing.goldRiskFreeTickerRefund') || 'return your $69.';
+
   return (
     <div className="mx-6 flex items-center whitespace-nowrap text-sm text-white md:mx-10 md:text-base">
-      <span className="whitespace-nowrap">
-        <GoldTickerBlinkLead>{t('pricing.goldRiskFreeTickerLead')}</GoldTickerBlinkLead>
-        <span className="font-normal">{t('pricing.goldRiskFreeTickerMiddle')}</span>
+      <span className="whitespace-nowrap" dir={isArabic ? 'rtl' : 'ltr'}>
+        <GoldTickerBlinkLead>{lead}</GoldTickerBlinkLead>
+        <span className="font-normal">{middle}</span>
         <span className="ms-1 inline-block font-bold md:ms-1.5">
-          {t('pricing.goldRiskFreeTickerRefund')}
+          {refund}
         </span>
       </span>
       <span className="mx-4 text-white/60 md:mx-6" aria-hidden>
@@ -25,6 +29,7 @@ function TickerStrip() {
 export default function Ticker() {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
+  const isArabic = String(currentLanguage).toLowerCase().startsWith('ar');
 
   return (
     <div
@@ -32,18 +37,18 @@ export default function Ticker() {
       style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}
     >
       <Marquee
-        key={currentLanguage}
+        key={isArabic ? 'ar' : 'en'}
         speed={50}
         gradient
         gradientColor={[46, 59, 120]}
         gradientWidth={50}
         pauseOnHover
-        direction={currentLanguage === 'ar' ? 'left' : 'right'}
+        direction={isArabic ? 'right' : 'left'}
         autoFill
       >
-        <TickerStrip />
-        <TickerStrip />
-        <TickerStrip />
+        <TickerStrip isArabic={isArabic} />
+        <TickerStrip isArabic={isArabic} />
+        <TickerStrip isArabic={isArabic} />
       </Marquee>
     </div>
   );
