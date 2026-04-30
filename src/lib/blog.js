@@ -41,9 +41,9 @@ function serializeBlog(doc) {
 export async function getBlogs() {
   await connectDB();
   // Only fetch fields needed for listing page - exclude large content fields
-  const blogs = await Blog.find({})
-    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr createdAt updatedAt')
-    .sort({ createdAt: -1 })
+  const blogs = await Blog.find({ status: { $ne: 'draft' } })
+    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
+    .sort({ sortOrder: 1, createdAt: -1 })
     .lean();
   return blogs.map(serializeBlog);
 }
@@ -56,9 +56,9 @@ export async function getBlogs() {
  */
 export async function getBlogsForHomepage(limit = 6) {
   await connectDB();
-  const blogs = await Blog.find({})
-    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr createdAt updatedAt')
-    .sort({ createdAt: -1 })
+  const blogs = await Blog.find({ status: { $ne: 'draft' } })
+    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
+    .sort({ sortOrder: 1, createdAt: -1 })
     .limit(limit)
     .lean();
   return blogs.map(serializeBlog);
@@ -72,7 +72,7 @@ export async function getBlogsForHomepage(limit = 6) {
 export async function getBlogBySlug(slug) {
   if (!slug) return null;
   await connectDB();
-  const blog = await Blog.findOne({ slug }).lean();
+  const blog = await Blog.findOne({ slug, status: { $ne: 'draft' } }).lean();
   if (!blog) return null;
   return serializeBlog(blog);
 }
@@ -83,6 +83,6 @@ export async function getBlogBySlug(slug) {
  */
 export async function getAllBlogSlugs() {
   await connectDB();
-  const docs = await Blog.find({}).select('slug').lean();
+  const docs = await Blog.find({ status: { $ne: 'draft' } }).select('slug').lean();
   return docs.map((d) => ({ slug: String(d.slug || d._id?.toString() || '') }));
 }

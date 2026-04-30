@@ -22,13 +22,29 @@ function validateBase64ImageSize(base64String) {
   return { valid: true };
 }
 
+function normalizeStatus(status) {
+  return status === 'draft' ? 'draft' : 'published';
+}
+
+function normalizeSortOrder(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
 export async function GET(request, { params }) {
   try {
     const { slug } = await params;
+    const { searchParams } = new URL(request.url);
+    const wantsAdmin = searchParams.get('admin') === 'true';
+    const isAdmin = wantsAdmin ? await getAdminSession() : false;
     await connectDB();
     // Explicitly exclude imageFile field to avoid Buffer serialization issues
     // Make sure to include meta fields in the response
-    const blog = await Blog.findOne({ slug }).select('-imageFile').lean();
+    const query = { slug };
+    if (!isAdmin) {
+      query.status = { $ne: 'draft' };
+    }
+    const blog = await Blog.findOne(query).select('-imageFile').lean();
     if (!blog) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
     
     // Ensure meta fields exist (for old blogs that might not have them)
@@ -74,6 +90,8 @@ export async function PUT(request, { params }) {
       imageAr,
       contentEn,
       contentAr,
+      status,
+      sortOrder,
     } = body;
 
     // Normalize new slug
@@ -98,6 +116,8 @@ export async function PUT(request, { params }) {
     if (descriptionAr != null) $set.descriptionAr = descriptionAr;
     if (contentEn != null) $set.contentEn = contentEn;
     if (contentAr != null) $set.contentAr = contentAr;
+    if (status != null) $set.status = normalizeStatus(status);
+    if (sortOrder != null) $set.sortOrder = normalizeSortOrder(sortOrder);
     
     // ALWAYS set meta fields - explicitly convert to string, never skip them
     // Even if empty, we want to save them to the database
@@ -148,7 +168,8 @@ export async function PUT(request, { params }) {
         new: true, 
         runValidators: true, 
         upsert: false,
-        setDefaultsOnInsert: true
+        setDefaultsOnInsert: true,
+        strict: false
       }
     );
     

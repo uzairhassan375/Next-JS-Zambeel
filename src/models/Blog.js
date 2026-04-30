@@ -15,8 +15,25 @@ const blogSchema = new mongoose.Schema(
     imageAr: { type: String, default: '' }, // Arabic thumbnail: base64 or external URL
     contentEn: { type: String, default: '' },
     contentAr: { type: String, default: '' },
+    status: { type: String, enum: ['draft', 'published'], default: 'published', index: true },
+    sortOrder: { type: Number, default: 0, index: true },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Blog || mongoose.model('Blog', blogSchema);
+const BlogModel = mongoose.models.Blog || mongoose.model('Blog', blogSchema);
+
+// In dev, Next.js hot-reload can keep an old compiled model in memory.
+// Ensure new fields exist on the active schema so updates persist reliably.
+if (!BlogModel.schema.path('status')) {
+  BlogModel.schema.add({
+    status: { type: String, enum: ['draft', 'published'], default: 'published', index: true },
+  });
+}
+if (!BlogModel.schema.path('sortOrder')) {
+  BlogModel.schema.add({
+    sortOrder: { type: Number, default: 0, index: true },
+  });
+}
+
+export default BlogModel;

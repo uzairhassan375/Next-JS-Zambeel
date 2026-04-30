@@ -26,6 +26,8 @@ const defaultBlog = {
   imageAr: '',
   contentEn: '',
   contentAr: '',
+  status: 'published',
+  sortOrder: 0,
 };
 
 export default function AdminBlogForm({ slug: existingSlug, initialData }) {
@@ -47,6 +49,8 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
       setForm({
         ...defaultBlog,
         ...initialData,
+        status: initialData.status === 'draft' ? 'draft' : 'published',
+        sortOrder: Number.parseInt(initialData.sortOrder, 10) || 0,
         metaTitleEn: initialData.metaTitleEn || '',
         metaTitleAr: initialData.metaTitleAr || '',
         metaDescriptionEn: initialData.metaDescriptionEn || '',
@@ -127,6 +131,8 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         contentAr: form.contentAr || '',
         image: imagePayload,
         imageAr: imageArPayload,
+        status: form.status === 'draft' ? 'draft' : 'published',
+        sortOrder: Number.parseInt(form.sortOrder, 10) || 0,
       };
 
       const res = await fetch(url, {
@@ -162,6 +168,29 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             required
           />
           {isEdit && <p className="text-xs text-gray-500 mt-1">Changing the slug will change the blog URL. Old links may break.</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <select
+            value={form.status || 'published'}
+            onChange={(e) => update('status', e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a] bg-white"
+          >
+            <option value="published">Published (Live)</option>
+            <option value="draft">Draft (Not live)</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-1">Draft blogs are only visible in admin.</p>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
+          <input
+            type="number"
+            value={form.sortOrder ?? 0}
+            onChange={(e) => update('sortOrder', e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a] bg-white"
+            placeholder="0"
+          />
+          <p className="text-xs text-gray-500 mt-1">Lower number shows first (top).</p>
         </div>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Cover image (English)</label>

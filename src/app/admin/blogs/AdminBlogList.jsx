@@ -7,10 +7,11 @@ export default function AdminBlogList() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [reordering, setReordering] = useState(false);
 
   useEffect(() => {
     // Add ?admin=true to fetch only fields needed for admin list (faster loading)
-    fetch('/api/blogs?admin=true')
+    fetch('/api/blogs?admin=true', { cache: 'no-store' })
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) setBlogs(data);
@@ -27,6 +28,45 @@ export default function AdminBlogList() {
       setBlogs((prev) => prev.filter((b) => b.slug !== slug));
     } else {
       alert('Failed to delete');
+    }
+  }
+
+  async function updateBlogOrder(slug, sortOrder) {
+    const res = await fetch(`/api/blogs/${encodeURIComponent(slug)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sortOrder }),
+    });
+    if (!res.ok) {
+      throw new Error('Failed to update order');
+    }
+  }
+
+  function withSequentialOrder(items) {
+    return items.map((item, index) => ({ ...item, sortOrder: index }));
+  }
+
+  async function moveBlog(index, direction) {
+    if (reordering) return;
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= blogs.length) return;
+
+    const previousBlogs = blogs;
+
+    const reordered = [...blogs];
+    const [moved] = reordered.splice(index, 1);
+    reordered.splice(targetIndex, 0, moved);
+    const nextBlogs = withSequentialOrder(reordered);
+    setBlogs(nextBlogs);
+
+    setReordering(true);
+    try {
+      await Promise.all(nextBlogs.map((blog, order) => updateBlogOrder(blog.slug, order)));
+    } catch {
+      setBlogs(previousBlogs);
+      alert('Failed to change blog order');
+    } finally {
+      setReordering(false);
     }
   }
 
@@ -48,11 +88,13 @@ export default function AdminBlogList() {
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Image</th>
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Title (EN)</th>
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Slug</th>
+            <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+            <th className="text-left py-3 px-4 font-semibold text-gray-700">Order</th>
             <th className="text-right py-3 px-4 font-semibold text-gray-700">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {blogs.map((blog) => (
+          {blogs.map((blog, index) => (
             <tr key={blog.slug} className="border-b border-gray-100 hover:bg-gray-50/50">
               <td className="py-3 px-4">
                 <div className="w-16 h-10 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
@@ -61,15 +103,47 @@ export default function AdminBlogList() {
               </td>
               <td className="py-3 px-4 text-gray-800">{blog.titleEn || '—'}</td>
               <td className="py-3 px-4 text-gray-600 font-mono text-sm">{blog.slug}</td>
+              <td className="py-3 px-4">
+                <span className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${blog.status === 'draft' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+                  {blog.status === 'draft' ? 'Draft' : 'Published'}
+                </span>
+              </td>
+              <td className="py-3 px-4 text-gray-700">
+                <div className="inline-flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => moveBlog(index, 'up')}
+                    disabled={reordering || index === 0}
+                    className="w-7 h-7 rounded border border-gray-300 text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+                    title="Move up"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveBlog(index, 'down')}
+                    disabled={reordering || index === blogs.length - 1}
+                    className="w-7 h-7 rounded border border-gray-300 text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+                    title="Move down"
+                  >
+                    ↓
+                  </button>
+                  <span>{Number(blog.sortOrder) || 0}</span>
+                </div>
+              </td>
               <td className="py-3 px-4 text-right">
-                <Link
-                  href={`/blog/${blog.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[#1e3a8a] hover:underline mr-3"
-                >
-                  View
-                </Link>
+                {blog.status === 'published' ? (
+                  <Link
+                    href={`/blog/${blog.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-[#1e3a8a] hover:underline mr-3"
+                  >
+                    View
+                  </Link>
+                ) : (
+                  <span className="text-sm text-gray-400 mr-3">Draft</span>
+                )}
                 <Link
                   href={`/admin/blogs/${blog.slug}/edit`}
                   className="text-sm text-[#1e3a8a] hover:underline mr-3"

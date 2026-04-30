@@ -22,6 +22,15 @@ function validateBase64ImageSize(base64String) {
   return { valid: true };
 }
 
+function normalizeStatus(status) {
+  return status === 'draft' ? 'draft' : 'published';
+}
+
+function normalizeSortOrder(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
 export async function GET(request) {
   try {
     await connectDB();
@@ -32,8 +41,8 @@ export async function GET(request) {
     if (isAdminList) {
       // For admin list: fetch only table columns; exclude image and content (large base64)
       const blogs = await Blog.find({})
-        .select('slug titleEn createdAt updatedAt')
-        .sort({ createdAt: -1 })
+        .select('slug titleEn status sortOrder createdAt updatedAt')
+        .sort({ sortOrder: 1, createdAt: -1 })
         .lean();
       return NextResponse.json(blogsForResponse(blogs));
     } else {
@@ -41,9 +50,9 @@ export async function GET(request) {
       // Optional ?limit=N for homepage / faster first load
       const limitParam = searchParams.get('limit');
       const limit = limitParam ? Math.min(Math.max(1, parseInt(limitParam, 10) || 0), 100) : 0;
-      const query = Blog.find({})
+      const query = Blog.find({ status: { $ne: 'draft' } })
         .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr createdAt updatedAt')
-        .sort({ createdAt: -1 });
+        .sort({ sortOrder: 1, createdAt: -1 });
       if (limit > 0) query.limit(limit);
       const blogs = await query.lean();
       return NextResponse.json(blogsForResponse(blogs));
@@ -75,6 +84,8 @@ export async function POST(request) {
       imageAr,
       contentEn,
       contentAr,
+      status,
+      sortOrder,
     } = body;
     if (!slug || !titleEn) {
       return NextResponse.json({ error: 'slug and titleEn are required' }, { status: 400 });
@@ -113,6 +124,8 @@ export async function POST(request) {
       imageAr: imageAr || '', // Arabic thumbnail (optional)
       contentEn: contentEn || '',
       contentAr: contentAr || '',
+      status: normalizeStatus(status),
+      sortOrder: normalizeSortOrder(sortOrder),
     };
     
     const blog = await Blog.create(doc);

@@ -9,7 +9,7 @@ export default function AdminBlogEditPage({ slug }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`/api/blogs/${encodeURIComponent(slug)}`)
+    fetch(`/api/blogs/${encodeURIComponent(slug)}?admin=true`, { cache: 'no-store' })
       .then((r) => {
         if (!r.ok) throw new Error('Not found');
         return r.json();
