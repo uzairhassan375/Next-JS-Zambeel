@@ -425,7 +425,7 @@ export default function HomePage({ initialBlogs = [] }) {
         </div>
       </main>
 
-      <Ticker />
+      <Ticker pageId="home" />
 
       <section id="where-to-sell" className="w-full lg:bg-[#FDE8E9] pt-2 pb-0 md:pt-8 md:pb-8 px-4 flex justify-center">
         <div className="max-w-[1200px] w-full mx-auto bg-white rounded-[2.5rem] p-6 lg:px-12 lg:py-6">

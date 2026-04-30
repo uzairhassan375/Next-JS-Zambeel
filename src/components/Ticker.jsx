@@ -1,23 +1,31 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
+import { DEFAULT_TICKER_TEXT_AR, DEFAULT_TICKER_TEXT_EN } from '../lib/tickerPages';
 import { GoldTickerBlinkLead } from './GoldRiskFreeTickerMarquee';
 
-function TickerStrip({ isArabic }) {
-  const { t } = useTranslation();
-  const lead = t('pricing.goldRiskFreeTickerLead') || 'Try Gold subscription Risk-FREE';
-  const middle = t('pricing.goldRiskFreeTickerMiddle') || " — achieve a small monthly target and we'll";
-  const refund = t('pricing.goldRiskFreeTickerRefund') || 'return your $69.';
+function TickerMessage({ text, isBlink, className }) {
+  if (isBlink) {
+    return <GoldTickerBlinkLead>{text}</GoldTickerBlinkLead>;
+  }
+  return <span className={className}>{text}</span>;
+}
+
+function TickerStrip({ isArabic, text, styleConfig }) {
+  const classes = [
+    styleConfig.isBold ? 'font-bold' : 'font-normal',
+    styleConfig.isUnderline ? 'underline' : '',
+    styleConfig.isHighlight ? 'bg-[#FCD64C] text-[#1e3a8a] px-2 py-0.5 rounded' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className="mx-6 flex items-center whitespace-nowrap text-sm text-white md:mx-10 md:text-base">
       <span className="whitespace-nowrap" dir={isArabic ? 'rtl' : 'ltr'}>
-        <GoldTickerBlinkLead>{lead}</GoldTickerBlinkLead>
-        <span className="font-normal">{middle}</span>
-        <span className="ms-1 inline-block font-bold md:ms-1.5">
-          {refund}
-        </span>
+        <TickerMessage text={text} isBlink={styleConfig.isBlink} className={classes} />
       </span>
       <span className="mx-4 text-white/60 md:mx-6" aria-hidden>
         •
@@ -26,10 +34,47 @@ function TickerStrip({ isArabic }) {
   );
 }
 
-export default function Ticker() {
+export default function Ticker({ pageId = 'home' }) {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const isArabic = String(currentLanguage).toLowerCase().startsWith('ar');
+  const [ticker, setTicker] = useState({
+    textEn: DEFAULT_TICKER_TEXT_EN,
+    textAr: DEFAULT_TICKER_TEXT_AR,
+    isBold: false,
+    isUnderline: false,
+    isHighlight: false,
+    isBlink: false,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`, { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data) {
+          setTicker({
+            textEn: String(data.textEn ?? DEFAULT_TICKER_TEXT_EN),
+            textAr: String(data.textAr ?? DEFAULT_TICKER_TEXT_AR),
+            isBold: data.isBold === true,
+            isUnderline: data.isUnderline === true,
+            isHighlight: data.isHighlight === true,
+            isBlink: data.isBlink === true,
+          });
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [pageId]);
+
+  const text = useMemo(() => {
+    if (isArabic) {
+      return ticker.textAr?.trim() || DEFAULT_TICKER_TEXT_AR;
+    }
+    return ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN;
+  }, [isArabic, ticker.textAr, ticker.textEn]);
 
   return (
     <div
@@ -46,9 +91,9 @@ export default function Ticker() {
         direction={isArabic ? 'right' : 'left'}
         autoFill
       >
-        <TickerStrip isArabic={isArabic} />
-        <TickerStrip isArabic={isArabic} />
-        <TickerStrip isArabic={isArabic} />
+        <TickerStrip isArabic={isArabic} text={text} styleConfig={ticker} />
+        <TickerStrip isArabic={isArabic} text={text} styleConfig={ticker} />
+        <TickerStrip isArabic={isArabic} text={text} styleConfig={ticker} />
       </Marquee>
     </div>
   );

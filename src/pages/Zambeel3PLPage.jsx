@@ -465,7 +465,7 @@ const Zambeel3PLPage = () => {
       />
 
       {/* Pricing Section */}
-      <GoldRiskFreeTickerMarquee />
+      <GoldRiskFreeTickerMarquee pageId="zambeel3pl" />
       <PricingSection 
         title={t('zambeel3PL.pricing.title')}
         subtitle={t('zambeel3PL.pricing.subtitle')}

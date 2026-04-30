@@ -54,6 +54,7 @@ export default function AdminGuard({ children }) {
 
   const navItems = [
     { href: '/admin/blogs', label: 'Blogs' },
+    { href: '/admin/tickers', label: 'Tickers' },
     { href: '/admin/partner-agencies', label: 'Partner Agencies' },
     { href: '/admin/page-meta', label: 'Page meta (SEO)' },
   ];

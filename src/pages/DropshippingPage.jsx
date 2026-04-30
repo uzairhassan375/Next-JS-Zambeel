@@ -241,7 +241,7 @@ const DropshippingPage = () => {
       </section>
 
       {/* ================= PRICING ================= */}
-      <GoldRiskFreeTickerMarquee />
+      <GoldRiskFreeTickerMarquee pageId="dropshipping" />
       <PricingSection 
         title={t('dropshipping.pricing.title')}
         subtitle={t('dropshipping.pricing.subtitle')}
