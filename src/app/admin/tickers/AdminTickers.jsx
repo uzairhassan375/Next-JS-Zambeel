@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import TickerRichTextEditor from './TickerRichTextEditor';
 
 export default function AdminTickers() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState('');
   const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState('');
 
   useEffect(() => {
     fetch('/api/admin/tickers', { cache: 'no-store' })
@@ -34,10 +36,6 @@ export default function AdminTickers() {
           pageId: item.pageId,
           textEn: item.textEn || '',
           textAr: item.textAr || '',
-          isBold: Boolean(item.isBold),
-          isUnderline: Boolean(item.isUnderline),
-          isHighlight: Boolean(item.isHighlight),
-          isBlink: Boolean(item.isBlink),
         }),
       });
       if (!res.ok) throw new Error('Save failed');
@@ -58,60 +56,57 @@ export default function AdminTickers() {
         <div key={item.pageId} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-800">{item.label}</h2>
-            <span className="text-xs text-gray-400 font-mono">{item.path}</span>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-gray-400 font-mono">{item.path}</span>
+              <button
+                type="button"
+                onClick={() => setEditingId((prev) => (prev === item.pageId ? '' : item.pageId))}
+                className="text-xs px-3 py-1 border border-gray-300 rounded hover:bg-gray-50"
+              >
+                {editingId === item.pageId ? 'Close editor' : 'Edit ticker'}
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {editingId === item.pageId && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Ticker text (EN)</label>
-              <textarea
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ticker text (EN)
+              </label>
+              <TickerRichTextEditor
                 value={item.textEn || ''}
-                onChange={(e) => updateItem(item.pageId, 'textEn', e.target.value)}
-                rows={3}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#1e3a8a]"
+                onChange={(val) => updateItem(item.pageId, 'textEn', val)}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Ticker text (AR)</label>
-              <textarea
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ticker text (AR)
+              </label>
+              <TickerRichTextEditor
                 value={item.textAr || ''}
-                onChange={(e) => updateItem(item.pageId, 'textAr', e.target.value)}
-                rows={3}
+                onChange={(val) => updateItem(item.pageId, 'textAr', val)}
                 dir="rtl"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#1e3a8a]"
               />
             </div>
-          </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                Select specific words and use toolbar buttons for bold, italic, underline, highlight, or blink.
+              </p>
 
-          <div className="mt-4 flex flex-wrap gap-4">
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-              <input type="checkbox" checked={Boolean(item.isBold)} onChange={(e) => updateItem(item.pageId, 'isBold', e.target.checked)} />
-              Bold
-            </label>
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-              <input type="checkbox" checked={Boolean(item.isUnderline)} onChange={(e) => updateItem(item.pageId, 'isUnderline', e.target.checked)} />
-              Underline
-            </label>
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-              <input type="checkbox" checked={Boolean(item.isHighlight)} onChange={(e) => updateItem(item.pageId, 'isHighlight', e.target.checked)} />
-              Highlight
-            </label>
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-              <input type="checkbox" checked={Boolean(item.isBlink)} onChange={(e) => updateItem(item.pageId, 'isBlink', e.target.checked)} />
-              Blink
-            </label>
-          </div>
-
-          <div className="mt-4">
-            <button
-              type="button"
-              onClick={() => saveItem(item)}
-              disabled={savingId === item.pageId}
-              className="px-4 py-2 bg-[#1e3a8a] text-white rounded-lg text-sm font-medium hover:bg-[#1e3a8a]/90 disabled:opacity-50"
-            >
-              {savingId === item.pageId ? 'Saving...' : 'Save ticker'}
-            </button>
-          </div>
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={() => saveItem(item)}
+                  disabled={savingId === item.pageId}
+                  className="px-4 py-2 bg-[#1e3a8a] text-white rounded-lg text-sm font-medium hover:bg-[#1e3a8a]/90 disabled:opacity-50"
+                >
+                  {savingId === item.pageId ? 'Saving...' : 'Save ticker'}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       ))}
     </div>

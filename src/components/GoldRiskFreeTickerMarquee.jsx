@@ -49,19 +49,22 @@ export function GoldTickerBlinkLead({ children, className = '' }) {
   );
 }
 
-function StyledTickerText({ text, styleConfig }) {
-  const classes = [
-    styleConfig.isBold ? 'font-bold' : 'font-normal',
-    styleConfig.isUnderline ? 'underline' : '',
-    styleConfig.isHighlight ? 'bg-white/70 px-2 py-0.5 rounded' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+function sanitizeTickerHtml(html) {
+  if (!html) return '';
+  return String(html)
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    .replace(/\son\w+="[^"]*"/gi, '')
+    .replace(/\son\w+='[^']*'/gi, '');
+}
 
-  if (styleConfig.isBlink) {
-    return <GoldTickerBlinkLead className={classes}>{text}</GoldTickerBlinkLead>;
-  }
-  return <span className={classes}>{text}</span>;
+function StyledTickerText({ html, isArabic }) {
+  return (
+    <span
+      className="inline-block"
+      dir={isArabic ? 'rtl' : 'ltr'}
+      dangerouslySetInnerHTML={{ __html: sanitizeTickerHtml(html) }}
+    />
+  );
 }
 
 export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
@@ -70,10 +73,6 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
   const [ticker, setTicker] = useState({
     textEn: DEFAULT_TICKER_TEXT_EN,
     textAr: DEFAULT_TICKER_TEXT_AR,
-    isBold: false,
-    isUnderline: false,
-    isHighlight: false,
-    isBlink: false,
   });
 
   useEffect(() => {
@@ -85,10 +84,6 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
           setTicker({
             textEn: String(data.textEn ?? DEFAULT_TICKER_TEXT_EN),
             textAr: String(data.textAr ?? DEFAULT_TICKER_TEXT_AR),
-            isBold: data.isBold === true,
-            isUnderline: data.isUnderline === true,
-            isHighlight: data.isHighlight === true,
-            isBlink: data.isBlink === true,
           });
         }
       })
@@ -98,13 +93,15 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
     };
   }, [pageId]);
 
-  const text = isArabic ? (ticker.textAr?.trim() || DEFAULT_TICKER_TEXT_AR) : (ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN);
+  const text = isArabic
+    ? (ticker.textAr?.trim() || ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_AR)
+    : (ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN);
 
   return (
     <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
       <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
         <span className="mx-6 whitespace-nowrap text-sm md:text-base">
-          <StyledTickerText text={text} styleConfig={ticker} />
+          <StyledTickerText html={text} isArabic={isArabic} />
         </span>
         <span className="mx-6 text-black/60">•</span>
       </Marquee>

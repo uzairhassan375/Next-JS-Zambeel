@@ -18,6 +18,8 @@ const SuperClassPage = () => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   // Mobile features carousel state
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
+  const [mainTickerHtml, setMainTickerHtml] = useState('');
+  const [priceTickerHtml, setPriceTickerHtml] = useState('');
   
   const carouselTexts = [
     t('superClass.hero.carousel.productHunting', { defaultValue: 'Product Hunting' }),
@@ -36,6 +38,42 @@ const SuperClassPage = () => {
     return () => clearInterval(interval);
   }, [carouselTexts.length, t, currentLanguage]);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/tickers?pageId=learn-ecommerce-main', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data) {
+          const html = currentLanguage === 'ar'
+            ? String(data.textAr || data.textEn || '')
+            : String(data.textEn || '');
+          setMainTickerHtml(html);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [currentLanguage]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/tickers?pageId=learn-ecommerce-price', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data) {
+          const html = currentLanguage === 'ar'
+            ? String(data.textAr || data.textEn || '')
+            : String(data.textEn || '');
+          setPriceTickerHtml(html);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [currentLanguage]);
+
   // Show Coming Soon page for Arabic language
   if (currentLanguage === 'ar') {
     return (
@@ -48,9 +86,20 @@ const SuperClassPage = () => {
   }
 
   // Moving ticker content
-  const tickerText = t('superClass.ticker', { 
-    defaultValue: 'Starts 27th March 2026 · Live Online' 
+  const fallbackTicker = t('superClass.ticker', {
+    defaultValue: 'Starts 27th March 2026 · Live Online'
   });
+  const fallbackPriceTicker = t('superClass.priceTicker', {
+    defaultValue: 'Starts 27th March 2026 · Live Online · $50 Only'
+  });
+  const safeMainTickerHtml = String(mainTickerHtml || fallbackTicker)
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    .replace(/\son\w+="[^"]*"/gi, '')
+    .replace(/\son\w+='[^']*'/gi, '');
+  const safePriceTickerHtml = String(priceTickerHtml || fallbackPriceTicker)
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    .replace(/\son\w+="[^"]*"/gi, '')
+    .replace(/\son\w+='[^']*'/gi, '');
 
   // Icon components for each feature
   const getFeatureIcon = (index) => {
@@ -226,7 +275,7 @@ const SuperClassPage = () => {
         >
           {Array.from({ length: 10 }, (_, i) => (
             <div key={i} className="flex items-center mx-8 whitespace-nowrap text-sm md:text-base">
-              <span className="text-[#2E3B78] font-semibold">{tickerText}</span>
+              <span className="text-[#2E3B78] font-semibold" dangerouslySetInnerHTML={{ __html: safeMainTickerHtml }} />
               <span className="mx-8 text-[#2E3B78] opacity-60">•</span>
             </div>
           ))}
@@ -649,9 +698,7 @@ const SuperClassPage = () => {
               direction={currentLanguage === 'ar' ? 'left' : 'right'}
             >
               {Array.from({ length: 15 }, (_, i) => (
-                <span key={i} className="mx-4 font-bold text-sm md:text-base">
-                  {t('superClass.priceTicker', { defaultValue: 'Starts 27th March 2026 · Live Online · $50 Only' })} • 
-                </span>
+                <span key={i} className="mx-4 font-bold text-sm md:text-base" dangerouslySetInnerHTML={{ __html: `${safePriceTickerHtml} •` }} />
               ))}
             </Marquee>
           </div>
