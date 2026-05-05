@@ -134,7 +134,7 @@ export default function USDropshippingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-8">
+      <section className="mx-auto max-w-7xl px-4 pb-8">
         <h2 className="mb-2 text-center text-2xl font-bold text-white md:text-3xl">
           {t('usDropshipping.packagesTitle')}
         </h2>
@@ -162,9 +162,9 @@ export default function USDropshippingPage() {
                   </span>
                 )}
                 <div
-                  className={`flex flex-wrap items-center gap-2.5 gap-y-2 border-b border-[#2E3B78]/12 pb-4 ${meta.featured ? 'mt-2' : ''}`}
+                  className={`flex flex-wrap items-center justify-between gap-2.5 gap-y-2 border-b border-[#2E3B78]/12 pb-4 md:flex-nowrap ${meta.featured ? 'mt-2' : ''}`}
                 >
-                  <span className="min-w-0 text-base font-bold text-[#2E3B78] md:text-lg">
+                  <span className="min-w-0 text-base font-bold text-[#2E3B78] md:text-lg md:whitespace-nowrap">
                     {t(`usDropshipping.${planKey}.name`)}
                   </span>
                   <span
