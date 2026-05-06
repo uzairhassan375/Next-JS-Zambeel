@@ -877,10 +877,10 @@
     },
     "plan49": {
       "tag": "STANDARD",
-      "name": "For Starters",
-      "price": "$49 / month",
+      "name": "Quick Start Plan",
+      "price": "$69 / mo",
       "featureList": [
-        "No LLC & Get Payment Gateway",
+        "No LLC & Payment Gateway required",
         "Access to 10,000+ Products",
         "Live Coaching Session",
         "Product Sourcing Facility",
@@ -889,16 +889,14 @@
     },
     "plan99": {
       "tag": "PREMIUM",
-      "name": "Growth Accelerator",
-      "price": "$99 / month",
+      "name": "Shopify Store Creation",
+      "price": "$99 / mo",
       "featureList": [
-        "No LLC & Get Payment Gateway",
-        "Shopify Store Creation & Integration",
-        "Access to 10,000+ Products",
-        "Live Coaching Session",
-        "Product Sourcing Facility",
-        "Priority Agent Support",
-        "$30 Credits"
+        "5 Product Uploads (multi-product testing)",
+        "Enhanced Product Page Layout",
+        "Trust Badges + Social Proof Integration",
+        "Upsell / Cross-Sell Setup",
+        "Cart Optimization (sticky add-to-cart / quick buy)"
       ]
     },
     "popular": "Popular"

@@ -270,7 +270,7 @@ const SuperClassPage = () => {
           gradientColor={[252, 214, 76]} 
           gradientWidth={50}
           pauseOnHover={true}
-          direction={currentLanguage === 'ar' ? 'left' : 'right'}
+          direction={currentLanguage === 'ar' ? 'right' : 'left'}
           autoFill={true}
         >
           {Array.from({ length: 10 }, (_, i) => (
@@ -695,7 +695,7 @@ const SuperClassPage = () => {
             <Marquee 
               speed={40} 
               gradient={false}
-              direction={currentLanguage === 'ar' ? 'left' : 'right'}
+              direction={currentLanguage === 'ar' ? 'right' : 'left'}
             >
               {Array.from({ length: 15 }, (_, i) => (
                 <span key={i} className="mx-4 font-bold text-sm md:text-base" dangerouslySetInnerHTML={{ __html: `${safePriceTickerHtml} •` }} />
