@@ -25,26 +25,7 @@ export default function Header({ theme = "dark" }) {
   const isEnglishUi = String(currentLanguage).toLowerCase().startsWith('en');
   const isArabicUi = String(currentLanguage).toLowerCase().startsWith('ar');
 
-  const US_DROPSHIPPING_SEEN_KEY = 'zambeel_seen_us_dropshipping';
-  const [usDropNewDismissed, setUsDropNewDismissed] = useState(null);
-
-  useEffect(() => {
-    const onEnglishUsPage = pathname === '/pages/usa-dropshipping';
-    let seen = false;
-    try {
-      seen = localStorage.getItem(US_DROPSHIPPING_SEEN_KEY) === '1';
-      if (onEnglishUsPage) {
-        localStorage.setItem(US_DROPSHIPPING_SEEN_KEY, '1');
-        seen = true;
-      }
-    } catch {
-      seen = onEnglishUsPage;
-    }
-    setUsDropNewDismissed(seen);
-  }, [pathname]);
-
-  const showUsDropshippingNewBadge =
-    isEnglishUi && usDropNewDismissed === false;
+  const showUsDropshippingNewBadge = isEnglishUi;
 
   // Social media links based on language
   const getWhatsAppLink = () => {

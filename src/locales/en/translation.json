@@ -878,7 +878,7 @@
     "plan49": {
       "tag": "STANDARD",
       "name": "Quick Start Plan",
-      "price": "$49 / mo",
+      "price": "$69 / mo",
       "featureList": [
         "No LLC & Payment Gateway required",
         "Access to 10,000+ Products",
@@ -892,13 +892,11 @@
       "name": "Shopify Store Creation",
       "price": "$99 / mo",
       "featureList": [
-        "No LLC & Get Payment Gateway",
-        "Shopify Store Creation & Integration",
-        "Access to 10,000+ Products",
-        "Live Coaching Session",
-        "Product Sourcing Facility",
-        "Priority Agent Support",
-        "$30 Credits"
+        "5 Product Uploads (multi-product testing)",
+        "Enhanced Product Page Layout",
+        "Trust Badges + Social Proof Integration",
+        "Upsell / Cross-Sell Setup",
+        "Cart Optimization (sticky add-to-cart / quick buy)"
       ]
     },
     "popular": "Popular"
