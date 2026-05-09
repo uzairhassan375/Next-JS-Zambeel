@@ -12,6 +12,20 @@ const useCloudinary = Boolean(
 );
 const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || '';
 
+function truncateMiddle(str, maxLen = 60) {
+  if (!str) return '';
+  if (str.length <= maxLen) return str;
+  const half = Math.floor((maxLen - 3) / 2);
+  return `${str.slice(0, half)}...${str.slice(str.length - half)}`;
+}
+
+function copyToClipboard(text) {
+  if (!text) return;
+  if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+}
+
 const defaultBlog = {
   slug: '',
   titleEn: '',
@@ -42,6 +56,13 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
   const [removeImageAr, setRemoveImageAr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copiedKey, setCopiedKey] = useState('');
+
+  function handleCopy(text, key) {
+    copyToClipboard(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey((c) => (c === key ? '' : c)), 1500);
+  }
 
   useEffect(() => {
     if (initialData) {
@@ -278,7 +299,32 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
               </button>
             )}
           </div>
-          
+
+          {/* Paste image URL (Shopify Files / any public URL) */}
+          <div className="mt-2">
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Or paste image URL (Shopify Files or any public URL)
+            </label>
+            <input
+              type="url"
+              value={form.image && !form.image.startsWith('data:') ? form.image : ''}
+              onChange={(e) => {
+                const url = e.target.value.trim();
+                setImageFile(null);
+                setRemoveImage(false);
+                update('image', url);
+                setImagePreview(url || null);
+                const fileInput = document.getElementById('blog-image-file');
+                if (fileInput) fileInput.value = '';
+              }}
+              placeholder="https://cdn.shopify.com/s/files/..."
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-[#1e3a8a] bg-white"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Tip: Upload your image in Shopify Admin → Settings → Files, click &quot;Copy URL&quot;, then paste it here.
+            </p>
+          </div>
+
           {/* Image Preview (EN) */}
           {imagePreview && !removeImage && (
             <div className="mt-3 border border-gray-200 rounded-lg p-3 bg-gray-50">
@@ -292,6 +338,34 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
                   unoptimized={imagePreview.startsWith('data:') || imagePreview.startsWith('/api')}
                 />
               </div>
+
+              {/* Current stored URL (only shown when it's a real URL, not a base64 data URI) */}
+              {form.image && !form.image.startsWith('data:') && (
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-gray-600 font-medium">Stored URL:</span>
+                  <span
+                    className="font-mono text-gray-700 bg-white border border-gray-200 rounded px-2 py-1 break-all"
+                    title={form.image}
+                  >
+                    {truncateMiddle(form.image, 70)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(form.image, 'image-en')}
+                    className="px-2 py-1 border border-gray-300 rounded hover:bg-gray-100 text-gray-700"
+                  >
+                    {copiedKey === 'image-en' ? 'Copied!' : 'Copy'}
+                  </button>
+                  <a
+                    href={form.image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#1e3a8a] hover:underline"
+                  >
+                    Open in new tab
+                  </a>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -387,6 +461,32 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
             </button>
           )}
         </div>
+
+        {/* Paste Arabic image URL (Shopify Files / any public URL) */}
+        <div className="mt-2">
+          <label className="block text-xs font-medium text-gray-600 mb-1">
+            Or paste Arabic image URL (Shopify Files or any public URL)
+          </label>
+          <input
+            type="url"
+            value={form.imageAr && !form.imageAr.startsWith('data:') ? form.imageAr : ''}
+            onChange={(e) => {
+              const url = e.target.value.trim();
+              setImageFileAr(null);
+              setRemoveImageAr(false);
+              update('imageAr', url);
+              setImagePreviewAr(url || null);
+              const fileInput = document.getElementById('blog-image-ar-file');
+              if (fileInput) fileInput.value = '';
+            }}
+            placeholder="https://cdn.shopify.com/s/files/..."
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-[#1e3a8a] bg-white"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Tip: Upload your image in Shopify Admin → Settings → Files, click &quot;Copy URL&quot;, then paste it here.
+          </p>
+        </div>
+
         {imagePreviewAr && !removeImageAr && (
           <div className="mt-3 border border-gray-200 rounded-lg p-3 bg-gray-50">
             <p className="text-xs text-gray-600 mb-2 font-medium">Arabic preview:</p>
@@ -399,6 +499,34 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
                 unoptimized={imagePreviewAr.startsWith('data:') || imagePreviewAr.startsWith('/api')}
               />
             </div>
+
+            {/* Current stored URL (Arabic) */}
+            {form.imageAr && !form.imageAr.startsWith('data:') && (
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                <span className="text-gray-600 font-medium">Stored URL:</span>
+                <span
+                  className="font-mono text-gray-700 bg-white border border-gray-200 rounded px-2 py-1 break-all"
+                  title={form.imageAr}
+                >
+                  {truncateMiddle(form.imageAr, 70)}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleCopy(form.imageAr, 'image-ar')}
+                  className="px-2 py-1 border border-gray-300 rounded hover:bg-gray-100 text-gray-700"
+                >
+                  {copiedKey === 'image-ar' ? 'Copied!' : 'Copy'}
+                </button>
+                <a
+                  href={form.imageAr}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#1e3a8a] hover:underline"
+                >
+                  Open in new tab
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>

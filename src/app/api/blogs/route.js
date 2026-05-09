@@ -39,12 +39,18 @@ export async function GET(request) {
     const isAdminList = searchParams.get('admin') === 'true';
     
     if (isAdminList) {
-      // For admin list: fetch only table columns; exclude image and content (large base64)
+      // For admin list: include image so we can show a thumbnail + URL.
+      // Strip base64 data URIs to keep the list payload small (legacy blogs);
+      // those blogs still have full base64 in the edit form (single-doc fetch).
       const blogs = await Blog.find({})
-        .select('slug titleEn status sortOrder createdAt updatedAt')
+        .select('slug titleEn status sortOrder image createdAt updatedAt')
         .sort({ sortOrder: 1, createdAt: -1 })
         .lean();
-      return NextResponse.json(blogsForResponse(blogs));
+      const safeBlogs = blogs.map((b) => ({
+        ...b,
+        image: typeof b.image === 'string' && b.image.startsWith('data:') ? '' : b.image || '',
+      }));
+      return NextResponse.json(blogsForResponse(safeBlogs));
     } else {
       // For public blog listing: fetch title, description, image (no content)
       // Optional ?limit=N for homepage / faster first load

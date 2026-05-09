@@ -2,12 +2,30 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+function truncateMiddle(str, maxLen = 50) {
+  if (!str) return '';
+  if (str.length <= maxLen) return str;
+  const half = Math.floor((maxLen - 3) / 2);
+  return `${str.slice(0, half)}...${str.slice(str.length - half)}`;
+}
 
 export default function AdminBlogList() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reordering, setReordering] = useState(false);
+  const [copiedSlug, setCopiedSlug] = useState('');
+
+  function handleCopyUrl(url, slug) {
+    if (!url) return;
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).catch(() => {});
+    }
+    setCopiedSlug(slug);
+    setTimeout(() => setCopiedSlug((c) => (c === slug ? '' : c)), 1500);
+  }
 
   useEffect(() => {
     // Add ?admin=true to fetch only fields needed for admin list (faster loading)
@@ -88,6 +106,7 @@ export default function AdminBlogList() {
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Image</th>
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Title (EN)</th>
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Slug</th>
+            <th className="text-left py-3 px-4 font-semibold text-gray-700">Image URL</th>
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
             <th className="text-left py-3 px-4 font-semibold text-gray-700">Order</th>
             <th className="text-right py-3 px-4 font-semibold text-gray-700">Actions</th>
@@ -97,12 +116,53 @@ export default function AdminBlogList() {
           {blogs.map((blog, index) => (
             <tr key={blog.slug} className="border-b border-gray-100 hover:bg-gray-50/50">
               <td className="py-3 px-4">
-                <div className="w-16 h-10 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
-                  <span className="text-gray-400 text-xs">—</span>
+                <div className="relative w-16 h-10 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
+                  {blog.image ? (
+                    <Image
+                      src={blog.image}
+                      alt={blog.titleEn || blog.slug}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-xs">—</span>
+                  )}
                 </div>
               </td>
               <td className="py-3 px-4 text-gray-800">{blog.titleEn || '—'}</td>
               <td className="py-3 px-4 text-gray-600 font-mono text-sm">{blog.slug}</td>
+              <td className="py-3 px-4 text-xs">
+                {blog.image ? (
+                  <div className="flex items-center gap-2 max-w-[260px]">
+                    <span
+                      className="font-mono text-gray-700 truncate"
+                      title={blog.image}
+                    >
+                      {truncateMiddle(blog.image, 36)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyUrl(blog.image, blog.slug)}
+                      className="px-2 py-0.5 border border-gray-300 rounded hover:bg-gray-100 text-gray-700 whitespace-nowrap"
+                      title="Copy image URL"
+                    >
+                      {copiedSlug === blog.slug ? 'Copied!' : 'Copy'}
+                    </button>
+                    <a
+                      href={blog.image}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#1e3a8a] hover:underline whitespace-nowrap"
+                      title="Open image in new tab"
+                    >
+                      Open
+                    </a>
+                  </div>
+                ) : (
+                  <span className="text-gray-400">—</span>
+                )}
+              </td>
               <td className="py-3 px-4">
                 <span className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${blog.status === 'draft' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
                   {blog.status === 'draft' ? 'Draft' : 'Published'}
