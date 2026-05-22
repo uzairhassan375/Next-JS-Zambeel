@@ -47,7 +47,7 @@
     "blog": "Blogs",
     "email": "zambeelsupport@myzambeel.com",
     "phone": "+971 56 847 2271",
-    "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman and Bahrain."
+    "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman, Bahrain and Iraq."
   },
   "homepage": {
     "hero": {
@@ -87,7 +87,7 @@
         "full": "Selling in {{country}} gives you full access to all our services. If you want to know more about our services and how you can benefit from them click on one of the three services to begin.",
         "noDropshipping": "Selling in {{country}} gives you access to all our services except dropshipping. If you want to know more about our services and how you can benefit from them click on one of the three services to begin."
       },
-      "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman and Bahrain.",
+      "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman, Bahrain and Iraq.",
       "serviceDescriptions": {
         "3PL": "Fast, reliable and fully automated",
         "360": "Build your private label",
@@ -169,7 +169,7 @@
       "title": "Why Zambeel?",
       "subtitle": "Start your Ecommerce business from anywhere in the world without business registration.",
       "metrics": {
-        "countriesCovered": "7 countries covered",
+        "countriesCovered": "8 countries covered",
         "deliverySuccess": "80% Delivery Success",
         "productsListed": "10K+ Products Listed",
         "paymentGuarantee": "5-Day Payment Guarantee"
@@ -369,6 +369,7 @@
       "discountedProductPrices": "Discounted product prices",
       "dropshippingCountries3": "Dropshipping in 3 countries",
       "dropshippingCountries7": "Dropshipping in 7 countries",
+      "dropshippingCountries8": "Dropshipping in 8 countries",
       "seniorAccountManager": "Senior Dedicated Manager",
       "responseTime30Minutes": "Response time: 30 minutes",
       "exclusiveWinningProduct": "Exclusive Winning Product",
@@ -427,7 +428,8 @@
     "Kuwait": "Kuwait",
     "Pakistan": "Pakistan",
     "Oman": "Oman",
-    "Bahrain": "Bahrain"
+    "Bahrain": "Bahrain",
+    "Iraq": "Iraq"
   },
   "trendingProducts": {
     "sold": "sold",
@@ -510,7 +512,7 @@
     "silverSubtitle": "Verified partners building momentum within the Zambeel ecosystem through trusted execution and quality standards.",
     "bronzePartners": "Bronze Partners",
     "viewMore": "View More",
-    "partnersCount": "Partners Across 7 Countries",
+    "partnersCount": "Partners Across 8 Countries",
     "about": "About",
     "contact": "Contact",
     "phone": "Phone",

@@ -82,6 +82,7 @@ const DeliveryCharges = ({
       'Qatar': 'qa',
       'Oman': 'om',
       'Bahrain': 'bh',
+      'Iraq': 'iq',
       'Pakistan': 'pk'
     };
     return codeMap[countryCode] || null;

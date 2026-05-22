@@ -313,6 +313,20 @@ const Zambeel3PLPage = () => {
                     </div>
                     <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Bahrain')}</span>
                   </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/iq.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="Iraq"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Iraq')}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -503,7 +517,7 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
-              { translationKey: "pricing.features.dropshippingCountries7", included: true },
+              { translationKey: "pricing.features.dropshippingCountries8", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -525,7 +539,7 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
-              { translationKey: "pricing.features.dropshippingCountries7", included: true },
+              { translationKey: "pricing.features.dropshippingCountries8", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -550,6 +564,7 @@ const Zambeel3PLPage = () => {
           { code: "Qatar", name: t('countries.Qatar'), currency: "AED" },
           { code: "Oman", name: t('countries.Oman'), currency: "AED" },
           { code: "Bahrain", name: t('countries.Bahrain'), currency: "AED" },
+          { code: "Iraq", name: t('countries.Iraq'), currency: "AED" },
           { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" }
         ]}
         charges={[
@@ -562,6 +577,7 @@ const Zambeel3PLPage = () => {
               Qatar: "25 AED",
               Oman: "26 AED",
               Bahrain: "20 AED",
+              Iraq: "25 AED",
               Pakistan: "350 PKR"
             }
           },
@@ -574,6 +590,7 @@ const Zambeel3PLPage = () => {
               Qatar: "5 AED",
               Oman: "12 AED",
               Bahrain: "15 AED",
+              Iraq: "8 AED",
               Pakistan: "350 PKR"
             }
           },
@@ -586,6 +603,7 @@ const Zambeel3PLPage = () => {
               Qatar: "0%",
               Oman: "0%",
               Bahrain: "0%",
+              Iraq: "0%",
               Pakistan: "4%"
             }
           },
@@ -599,6 +617,7 @@ const Zambeel3PLPage = () => {
               Qatar: "1-2 Days",
               Oman: "1-2 Days",
               Bahrain: "1-2 Days",
+              Iraq: "1-3 Days",
               Pakistan: "1-3 Days"
             }
           }

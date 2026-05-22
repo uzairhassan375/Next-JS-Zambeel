@@ -146,7 +146,8 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
                 const isDropshippingHighlight =
                   feature.included &&
                   (feature.translationKey === 'pricing.features.dropshippingCountries3' ||
-                    feature.translationKey === 'pricing.features.dropshippingCountries7');
+                    feature.translationKey === 'pricing.features.dropshippingCountries7' ||
+                    feature.translationKey === 'pricing.features.dropshippingCountries8');
                 const isWinningCreativesStrategy = feature.translationKey === 'pricing.features.winningCreativedStrategy';
                 
                 return (
