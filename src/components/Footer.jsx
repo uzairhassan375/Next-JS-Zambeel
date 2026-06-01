@@ -70,6 +70,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href={getLocalePath('/pages/amazon-services', pathname)} className="hover:text-white hover:underline">
+                {t('header.amazonServices')}
+              </Link>
+            </li>
+            <li>
               <a href={pathname?.startsWith('/ar') ? 'https://products.myzambeel.com/ar' : 'https://products.myzambeel.com'} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
                 {t('header.dropshippingProducts')}
               </a>

@@ -206,12 +206,12 @@ export const StackedCards = () => {
             link: "/pages/dropshipping-uae-and-ksa"
         },
         {
-            id: 1,
-            title: t('homepage.featureCards.learnEcommerce.title'),
-            description: t('homepage.featureCards.learnEcommerce.desc'),
-            color: "rgba(99, 102, 241, 0.8)",
-            cta: t('homepage.featureCards.learnEcommerce.cta'),
-            link: "/learn-ecommerce"
+            id: 4,
+            title: t('homepage.featureCards.zambeel3PL.title'),
+            description: t('homepage.featureCards.zambeel3PL.desc'),
+            color: "rgba(251, 146, 60, 0.8)",
+            cta: t('homepage.featureCards.zambeel3PL.cta'),
+            link: "/pages/warehousing-3pl"
         },
         {
             id: 3,
@@ -222,12 +222,12 @@ export const StackedCards = () => {
             link: "/pages/zambeel-360"
         },
         {
-            id: 4,
-            title: t('homepage.featureCards.zambeel3PL.title'),
-            description: t('homepage.featureCards.zambeel3PL.desc'),
-            color: "rgba(251, 146, 60, 0.8)",
-            cta: t('homepage.featureCards.zambeel3PL.cta'),
-            link: "/pages/warehousing-3pl"
+            id: 5,
+            title: t('homepage.featureCards.amazon.title'),
+            description: t('homepage.featureCards.amazon.desc'),
+            color: "rgba(255, 153, 0, 0.85)",
+            cta: t('homepage.featureCards.amazon.cta'),
+            link: "/pages/amazon-services"
         }
     ];
 

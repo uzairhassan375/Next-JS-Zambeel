@@ -208,6 +208,12 @@ export default function Header({ theme = "dark" }) {
                     {t('header.zambeel3PL')}
                   </Link>
                   <Link
+                    href={getLocalePath('/pages/amazon-services', pathname)}
+                    className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
+                  >
+                    {t('header.amazonServices')}
+                  </Link>
+                  <Link
                     href={getLocalePath('/learn-ecommerce', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
@@ -575,6 +581,13 @@ export default function Header({ theme = "dark" }) {
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.zambeel3PL')}
+                  </Link>
+                  <Link
+                    href={getLocalePath('/pages/amazon-services', pathname)}
+                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    {t('header.amazonServices')}
                   </Link>
                   <Link
                     href={getLocalePath('/learn-ecommerce', pathname)}

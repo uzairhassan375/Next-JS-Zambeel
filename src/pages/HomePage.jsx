@@ -13,6 +13,9 @@ import Ticker from "../components/Ticker";
 const BLOG_CARD_WIDTH = 320;
 const BLOG_CARD_GAP = 16;
 const BLOG_SCROLL_STEP = BLOG_CARD_WIDTH + BLOG_CARD_GAP;
+const HOMEPAGE_BLOG_LIMIT = 6;
+const BLOG_CARD_SHADOW =
+  'shadow-[0_4px_8px_rgba(46,59,120,0.06),0_12px_28px_rgba(46,59,120,0.14)] hover:shadow-[0_6px_12px_rgba(46,59,120,0.08),0_16px_36px_rgba(46,59,120,0.18)]';
 
 export default function HomePage({ initialBlogs = [] }) {
   const { t, i18n } = useTranslation();
@@ -21,8 +24,11 @@ export default function HomePage({ initialBlogs = [] }) {
   const currentLanguage = i18n.language || 'en';
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
-  // Use server-passed blogs for first paint so section isn't empty; then replace with full list when loaded
-  const [blogList, setBlogList] = useState(Array.isArray(initialBlogs) ? initialBlogs : []);
+  // Use server-passed blogs for first paint; client refresh keeps the same recent limit
+  const [blogList, setBlogList] = useState(
+    Array.isArray(initialBlogs) ? initialBlogs.slice(0, HOMEPAGE_BLOG_LIMIT) : []
+  );
+  const homepageBlogs = blogList.slice(0, HOMEPAGE_BLOG_LIMIT);
 
   const [numberText, setNumberText] = useState("");
 
@@ -30,13 +36,13 @@ export default function HomePage({ initialBlogs = [] }) {
   const statsRef = useRef(null);
   const blogCarouselRef = useRef(null);
 
-  // Fetch full blog list in background (for carousel). First view already has initialBlogs from server.
+  // Refresh recent blogs in background (same limit as server). First view uses initialBlogs.
   useEffect(() => {
-    fetch('/api/blogs')
+    fetch(`/api/blogs?limit=${HOMEPAGE_BLOG_LIMIT}`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setBlogList(data);
+          setBlogList(data.slice(0, HOMEPAGE_BLOG_LIMIT));
         }
       })
       .catch((err) => {
@@ -210,14 +216,14 @@ export default function HomePage({ initialBlogs = [] }) {
 
 
   const countries = [
-    { name: "UAE", code: "ae", services: ["Dropshipping", "360", "3PL"] },
-    { name: "KSA", code: "sa", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Qatar", code: "qa", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Kuwait", code: "kw", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Oman", code: "om", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Bahrain", code: "bh", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Iraq", code: "iq", services: ["Dropshipping", "360", "3PL"] },
-    { name: "Pakistan", code: "pk", services: ["Dropshipping", "360", "3PL"] },
+    { name: "UAE", code: "ae", services: ["Dropshipping", "3PL", "360", "Amazon"] },
+    { name: "KSA", code: "sa", services: ["Dropshipping", "3PL", "360", "Amazon"] },
+    { name: "Qatar", code: "qa", services: ["Dropshipping", "3PL", "360"] },
+    { name: "Kuwait", code: "kw", services: ["Dropshipping", "3PL", "360"] },
+    { name: "Oman", code: "om", services: ["Dropshipping", "3PL", "360"] },
+    { name: "Bahrain", code: "bh", services: ["Dropshipping", "3PL", "360"] },
+    { name: "Iraq", code: "iq", services: ["Dropshipping", "3PL", "360"] },
+    { name: "Pakistan", code: "pk", services: ["Dropshipping", "3PL", "360"] },
   ];
 
   // Helper function to translate country names
@@ -261,20 +267,20 @@ export default function HomePage({ initialBlogs = [] }) {
 
   const featureCards = [
     {
-      title: t('homepage.featureCards.learnEcommerce.title'),
-      desc: [
-        t('homepage.featureCards.learnEcommerce.desc')
-      ],
-      cta: t('homepage.featureCards.learnEcommerce.cta'),
-      link: "/learn-ecommerce",
-    },
-    {
       title: t('homepage.featureCards.dropshipping.title'),
       desc: [
         t('homepage.featureCards.dropshipping.desc')
       ],
       cta: t('homepage.featureCards.dropshipping.cta'),
       link: "/pages/dropshipping-uae-and-ksa",
+    },
+    {
+      title: t('homepage.featureCards.zambeel3PL.title'),
+      desc: [
+        t('homepage.featureCards.zambeel3PL.desc')
+      ],
+      cta: t('homepage.featureCards.zambeel3PL.cta'),
+      link: "/pages/warehousing-3pl",
     },
     {
       title: t('homepage.featureCards.zambeel360.title'),
@@ -285,12 +291,12 @@ export default function HomePage({ initialBlogs = [] }) {
       link: "/pages/zambeel-360",
     },
     {
-      title: t('homepage.featureCards.zambeel3PL.title'),
+      title: t('homepage.featureCards.amazon.title'),
       desc: [
-        t('homepage.featureCards.zambeel3PL.desc')
+        t('homepage.featureCards.amazon.desc')
       ],
-      cta: t('homepage.featureCards.zambeel3PL.cta'),
-      link: "/pages/warehousing-3pl",
+      cta: t('homepage.featureCards.amazon.cta'),
+      link: "/pages/amazon-services",
     },
   ];
 
@@ -306,6 +312,8 @@ export default function HomePage({ initialBlogs = [] }) {
         return "/pages/zambeel-360";
       case "3PL":
         return "/pages/warehousing-3pl";
+      case "Amazon":
+        return "/pages/amazon-services";
       default:
         return "#";
     }
@@ -320,6 +328,8 @@ export default function HomePage({ initialBlogs = [] }) {
         return t('header.zambeel360');
       case "3PL":
         return t('header.zambeel3PL');
+      case "Amazon":
+        return t('header.amazonServices');
       default:
         return service;
     }
@@ -515,6 +525,7 @@ export default function HomePage({ initialBlogs = [] }) {
                         {service === "3PL" && t('homepage.whereToSell.serviceDescriptions.3PL')}
                         {service === "360" && t('homepage.whereToSell.serviceDescriptions.360')}
                         {service === "Dropshipping" && t('homepage.whereToSell.serviceDescriptions.dropshipping')}
+                        {service === "Amazon" && t('homepage.whereToSell.serviceDescriptions.amazon')}
                       </div>
                     </div>
                     <i className="fa-solid fa-arrow-right text-white text-xs"></i>
@@ -625,6 +636,7 @@ export default function HomePage({ initialBlogs = [] }) {
                         {service === "3PL" && t('homepage.whereToSell.serviceDescriptions.3PL')}
                         {service === "360" && t('homepage.whereToSell.serviceDescriptions.360')}
                         {service === "Dropshipping" && t('homepage.whereToSell.serviceDescriptions.dropshipping')}
+                        {service === "Amazon" && t('homepage.whereToSell.serviceDescriptions.amazon')}
                       </div>
                     </div>
                     <i className="fa-solid fa-arrow-right text-white text-sm transform group-hover:translate-x-1 transition"></i>
@@ -647,9 +659,9 @@ export default function HomePage({ initialBlogs = [] }) {
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[500px] justify-center items-center lg:items-start">
+          <div className="flex flex-col lg:flex-row lg:min-w-0 gap-4 h-auto justify-center items-center lg:items-start">
             {/* Statistics Card - Mobile and Desktop */}
-            <div className="bg-white border border-gray-200 rounded-[48px] p-6 md:p-8 pb-12 md:pb-8 shadow-md flex flex-col justify-between w-full max-w-[1200px] lg:max-w-[320px] lg:w-[320px] lg:h-full mb-6 md:mb-0">
+            <div className="bg-white border border-gray-200 rounded-[48px] p-6 md:p-8 pb-12 md:pb-8 shadow-md flex flex-col justify-between w-full max-w-[1200px] lg:max-w-[320px] lg:w-[320px] lg:min-h-[500px] mb-6 md:mb-0">
               <div className="grid grid-cols-2 lg:flex lg:flex-col gap-4 md:gap-6 lg:gap-10">
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-[#E6E9F5] text-[#344579] flex items-center justify-center text-xl md:text-2xl lg:text-3xl shrink-0">
@@ -698,37 +710,40 @@ export default function HomePage({ initialBlogs = [] }) {
               </div>
             </div>
 
-            {/* Carousel - Desktop only */}
-            <div className="hidden lg:flex flex-col gap-4 h-[500px] justify-center w-full max-w-[830px] mx-auto">
+            {/* Carousel - Desktop only (6 most recent) */}
+            <div className="hidden lg:flex flex-col w-full max-w-[830px] min-w-0 flex-1 mx-auto lg:pb-4">
+              {/* Cards track — only this element scrolls horizontally */}
               <div
                 ref={blogCarouselRef}
-                className="relative overflow-x-auto overflow-y-hidden h-full w-full scroll-smooth [&::-webkit-scrollbar]:hidden"
+                className="w-full min-w-0 overflow-x-auto overflow-y-visible scroll-smooth pb-4 [&::-webkit-scrollbar]:hidden"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                <div className="flex h-full gap-4 pr-4" style={{ width: 'max-content' }}>
-                  {blogList.map((blog) => {
+                <div className="flex w-max items-start gap-4 pr-4 pt-1">
+                  {homepageBlogs.map((blog) => {
                     const isArabic = currentLanguage.startsWith('ar');
                     const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
                     const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
                     const img = isArabic && (blog.imageAr?.trim?.() || '')
                       ? blog.imageAr
                       : (blog.image || '');
+                    const imgUnoptimized =
+                      img.startsWith('http') || img.startsWith('/api') || img.startsWith('data:');
                     return (
                       <Link
                         key={blog.slug}
                         href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                        className="group flex flex-col rounded-[32px] overflow-hidden cursor-pointer h-full shrink-0 bg-white shadow-md hover:shadow-lg transition-shadow"
+                        className={`group flex flex-col rounded-[32px] cursor-pointer shrink-0 bg-white transition-shadow ${BLOG_CARD_SHADOW}`}
                         style={{ width: `${BLOG_CARD_WIDTH}px` }}
                       >
-                        <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
+                        <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-[32px]">
                           {img ? (
                             <Image
                               src={img}
                               alt={title}
                               width={BLOG_CARD_WIDTH}
                               height={200}
-                              className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
-                              unoptimized={img.startsWith('http') || img.startsWith('data:')}
+                              className="w-full h-full object-contain transition duration-500 group-hover:scale-105"
+                              unoptimized={imgUnoptimized}
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
@@ -736,15 +751,13 @@ export default function HomePage({ initialBlogs = [] }) {
                             </div>
                           )}
                         </div>
-                        <div className="flex-1 flex flex-col p-6 justify-between">
-                          <div className="flex-1 flex flex-col">
-                            <h3 className="text-[#1e3a8a] text-lg font-bold mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
-                              {title}
-                            </h3>
-                            <p className="text-gray-700 text-sm leading-relaxed line-clamp-5 flex-1">
-                              {desc}
-                            </p>
-                          </div>
+                        <div className="flex flex-col p-6">
+                          <h3 className="text-[#1e3a8a] text-lg font-bold mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                            {title}
+                          </h3>
+                          <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                            {desc}
+                          </p>
                         </div>
                       </Link>
                     );
@@ -752,8 +765,8 @@ export default function HomePage({ initialBlogs = [] }) {
                 </div>
               </div>
 
-              {/* Desktop: Left arrow | View More (center) | Right arrow */}
-              <div className="hidden lg:flex justify-between items-center w-full max-w-[830px] mx-auto">
+              {/* Controls — sibling below scroll area, never inside overflow */}
+              <div className="flex shrink-0 justify-between items-center w-full mt-4">
                 <button
                   type="button"
                   onClick={() => blogCarouselRef.current?.scrollBy({ left: -BLOG_SCROLL_STEP, behavior: 'smooth' })}
@@ -781,29 +794,31 @@ export default function HomePage({ initialBlogs = [] }) {
           </div>
 
           <div className="lg:hidden">
-            <div className="grid grid-cols-2 gap-4">
-              {blogList.slice(0, 4).map((blog) => {
+            <div className="grid grid-cols-1 gap-4 max-w-md mx-auto w-full">
+              {homepageBlogs.slice(0, 2).map((blog) => {
                 const isArabic = currentLanguage.startsWith('ar');
                 const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
                 const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
                 const img = isArabic && (blog.imageAr?.trim?.() || '')
                   ? blog.imageAr
                   : (blog.image || '');
+                const imgUnoptimized =
+                  img.startsWith('http') || img.startsWith('/api') || img.startsWith('data:');
                 return (
                   <Link
                     key={blog.slug}
                     href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                    className="group flex flex-col rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow"
+                    className={`group flex flex-col rounded-3xl bg-white transition-shadow w-full ${BLOG_CARD_SHADOW}`}
                   >
-                    <div className="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden">
+                    <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-3xl">
                       {img ? (
                         <Image
                           src={img}
                           alt={title}
-                          width={400}
-                          height={250}
-                          unoptimized={img.startsWith('http') || img.startsWith('data:')}
-                          className="w-full h-full object-cover object-top transition duration-500 group-hover:scale-110"
+                          width={640}
+                          height={400}
+                          unoptimized={imgUnoptimized}
+                          className="w-full h-full object-contain transition duration-500 group-hover:scale-105"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
@@ -811,17 +826,15 @@ export default function HomePage({ initialBlogs = [] }) {
                         </div>
                       )}
                     </div>
-                    <div className="flex-1 flex flex-col p-4 justify-between min-h-[140px]">
-                      <div className="flex-1 flex flex-col">
-                        <h3 className="text-[#1e3a8a] text-sm font-bold mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
-                          {title}
-                        </h3>
-                        <p className="text-gray-700 text-[11px] leading-relaxed line-clamp-4 flex-1">
-                          {desc}
-                        </p>
+                    <div className="flex flex-col p-4 sm:p-5">
+                      <h3 className="text-[#1e3a8a] text-base font-bold mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                        {title}
+                      </h3>
+                      <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                        {desc}
+                      </p>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
                 );
               })}
             </div>

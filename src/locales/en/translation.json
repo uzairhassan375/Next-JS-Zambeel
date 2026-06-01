@@ -16,6 +16,7 @@
       "dropshipping": "Dropshipping",
       "zambeel3PL": "Zambeel 3PL",
       "zambeel360": "Zambeel 360",
+      "amazonServices": "Amazon Services",
       "learnEcomm": "Learn E-commerce",
       "usDropshipping": "USA Dropshipping",
       "newBadge": "NEW",
@@ -79,6 +80,11 @@
         "title": "Grow your E-comm with our 3PL service",
         "desc": "Use our automated system where we take care of storage, call confirmation & last-mile delivery",
         "cta": "Zambeel 3PL"
+      },
+      "amazon": {
+        "title": "Sell on Amazon with Zambeel",
+        "desc": "FBA & FBM fulfillment support in UAE and KSA — listings, prep, storage, and delivery handled for you",
+        "cta": "Amazon Services"
       }
     },
     "whereToSell": {
@@ -91,7 +97,8 @@
       "serviceDescriptions": {
         "3PL": "Fast, reliable and fully automated",
         "360": "Build your private label",
-        "dropshipping": "Start selling without buying inventory"
+        "dropshipping": "Start selling without buying inventory",
+        "amazon": "FBA & FBM on Amazon UAE & KSA"
       }
     },
     "whyZambeel": {
@@ -337,6 +344,78 @@
     "deliveryCharges": {
       "title": "3PL Services Delivery Charges",
       "subtitle": "Competitive pricing for all your fulfillment needs"
+    }
+  },
+  "amazon": {
+    "hero": {
+      "title": "Amazon Services",
+      "subtitle": "FBA & FBM fulfillment for Amazon sellers",
+      "carousel": {
+        "fbmFba": "FBM — Fulfilled by Merchant & FBA — Fulfilled by Amazon",
+        "uaeKsa": "Available in UAE and KSA",
+        "scale": "Scale your Amazon business with expert local support"
+      },
+      "availableIn": "Amazon services currently available in"
+    },
+    "models": {
+      "title": "Choose your fulfillment model",
+      "subtitle": "We support both Amazon fulfillment options so you can pick what fits your brand, margins, and growth stage.",
+      "fbm": {
+        "badge": "FBM",
+        "title": "Fulfilled by Merchant",
+        "fullName": "You store inventory — we help you ship",
+        "description": "Ideal when you want control over inventory and branding while outsourcing warehousing, prep, and last-mile delivery to Zambeel.",
+        "points": {
+          "1": "Inventory stored at our UAE / KSA facilities",
+          "2": "Order packing, labeling & dispatch on your behalf",
+          "3": "Faster local delivery to Amazon customers",
+          "4": "Flexible for multi-channel sellers"
+        }
+      },
+      "fba": {
+        "badge": "FBA",
+        "title": "Fulfilled by Amazon",
+        "fullName": "Amazon handles delivery — we handle the prep",
+        "description": "Send inventory to Amazon fulfillment centers with confidence. We manage sourcing support, prep, labeling, and inbound logistics.",
+        "points": {
+          "1": "FNSKU labeling & Amazon-compliant prep",
+          "2": "Inbound shipment coordination to Amazon FCs",
+          "3": "Inventory planning for UAE & KSA marketplaces",
+          "4": "Prime-eligible delivery handled by Amazon"
+        }
+      }
+    },
+    "whyZambeel": {
+      "title": "Why Amazon with Zambeel?",
+      "description": "From listing support to FBA prep and FBM fulfillment, Zambeel helps Amazon sellers in UAE and KSA operate smoothly with local expertise and reliable logistics.",
+      "features": {
+        "listing": "Listing & catalog support",
+        "prep": "FBA prep & labeling",
+        "fba": "Inbound to Amazon FCs",
+        "fbm": "FBM pick, pack & ship"
+      }
+    },
+    "whereToStart": {
+      "title": "How to get started",
+      "description": "Launch or scale your Amazon store in UAE and KSA in a few simple steps with a dedicated Zambeel consultant.",
+      "steps": {
+        "consultation": {
+          "title": "Book a consultation",
+          "desc": "Tell us your products and whether you prefer FBA, FBM, or both. Our team will recommend the right setup."
+        },
+        "chooseModel": {
+          "title": "Choose FBA or FBM",
+          "desc": "We align on fulfillment model, marketplace (Amazon.ae / Amazon.sa), and operational workflow."
+        },
+        "setup": {
+          "title": "Prep & connect",
+          "desc": "We handle prep, labeling, warehousing, and integrations so your catalog is ready to sell."
+        },
+        "launch": {
+          "title": "Launch & scale",
+          "desc": "Go live on Amazon and grow with ongoing inventory, fulfillment, and account support."
+        }
+      }
     }
   },
   "pricing": {
