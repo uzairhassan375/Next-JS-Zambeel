@@ -291,6 +291,14 @@ export default function HomePage({ initialBlogs = [] }) {
       link: "/pages/zambeel-360",
     },
     {
+      title: t('homepage.featureCards.learnEcommerce.title'),
+      desc: [
+        t('homepage.featureCards.learnEcommerce.desc')
+      ],
+      cta: t('homepage.featureCards.learnEcommerce.cta'),
+      link: "/learn-ecommerce",
+    },
+    {
       title: t('homepage.featureCards.amazon.title'),
       desc: [
         t('homepage.featureCards.amazon.desc')
@@ -337,7 +345,7 @@ export default function HomePage({ initialBlogs = [] }) {
 
   return (
     <div className="min-h-[100vh] bg-[#FBFCFE] font-sans flex flex-col items-center ">
-      <main className="w-full max-w-[1200px] px-4 mt-16 mb-8 md:mb-8 flex flex-col items-center relative z-10 mx-auto">
+      <main className="w-full max-w-[1200px] md:max-w-[1280px] px-4 mt-16 mb-8 md:mb-8 flex flex-col items-center relative z-10 mx-auto">
         <div className="absolute top-0 left-[10%] w-40 h-40 bg-[#FFFBEB] rounded-full blur-xl -z-10 rotate-12 transform opacity-80"></div>
         <div className="absolute top-10 right-[15%] w-80 h-80 bg-[#FFFBEB] rounded-full blur-2xl -z-10 opacity-80"></div>
 
@@ -393,8 +401,9 @@ export default function HomePage({ initialBlogs = [] }) {
           <StackedCards />
         </div>
 
-        {/* Desktop Grid */}
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-6 w-full p-2">
+        {/* Desktop Grid — all services in one row */}
+        <div className="hidden md:block w-full md:-mx-2 md:px-0 lg:-mx-4">
+          <div className="grid grid-cols-5 gap-3 lg:gap-4">
           {featureCards.map((card) => {
             const titleWords = card.title.split(' ');
             const firstWord = titleWords[0];
@@ -403,23 +412,23 @@ export default function HomePage({ initialBlogs = [] }) {
             return (
               <div
                 key={card.cta}
-                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-6 py-4 flex flex-col h-full transition-all duration-300 hover:scale-[1.02]"
+                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-4 lg:px-5 py-4 flex flex-col h-full min-w-0 transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex-grow">
-                  <h2 className="text-[#2E3B78] text-xl font-semibold mb-2 leading-tight">
+                  <h2 className="text-[#2E3B78] text-base lg:text-lg font-semibold mb-2 leading-tight">
                     <span className="font-bold">
                       {firstWord}
                     </span>
                     {restOfTitle && ` ${restOfTitle}`}
                   </h2>
-                  <p className="text-[#4A5568] group-hover:text-[#2E3B78] text-sm leading-relaxed mb-4">
+                  <p className="text-[#4A5568] group-hover:text-[#2E3B78] text-xs lg:text-sm leading-relaxed mb-4">
                     {card.desc}
                   </p>
                 </div>
                 {card.link ? (
                   <Link
                     href={card.link}
-                    className="w-full bg-[#2E3B78] group-hover:bg-white text-white group-hover:text-black font-bold py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-3 shadow-lg"
+                    className="w-full bg-[#2E3B78] group-hover:bg-white text-white group-hover:text-black font-bold py-3.5 lg:py-4 text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
                   >
                     <span>{card.cta}</span>
                     <i className="fa-solid fa-arrow-right text-[#FCD64C] group-hover:text-black transition-colors"></i>
@@ -433,6 +442,7 @@ export default function HomePage({ initialBlogs = [] }) {
               </div>
             );
           })}
+          </div>
         </div>
       </main>
 

@@ -29,52 +29,92 @@ const AmazonServicesPage = () => {
   const whyFeatures = [
     {
       id: 1,
-      text: t('amazon.whyZambeel.features.listing'),
+      text: t('amazon.whyZambeel.features.accountManagers'),
       mobileLineW: 'w-[12%]',
       mobileCardMl: 'ml-[12%]',
       icon: (
         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="16" height="16" rx="2" stroke="#1e3a8a" strokeWidth="1.5" />
-          <path d="M8 9H16M8 12H14M8 15H12" stroke="#1e3a8a" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="12" cy="8" r="3" stroke="#1e3a8a" strokeWidth="1.5" />
+          <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#1e3a8a" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       ),
     },
     {
       id: 2,
-      text: t('amazon.whyZambeel.features.prep'),
+      text: t('amazon.whyZambeel.features.fastDelivery'),
       mobileLineW: 'w-[22%]',
       mobileCardMl: 'ml-[22%]',
       icon: (
         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 3L20 7V17L12 21L4 17V7L12 3Z" stroke="#1e3a8a" strokeWidth="1.5" strokeLinejoin="round" />
-          <path d="M12 12L20 7M12 12V21M12 12L4 7" stroke="#1e3a8a" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d="M5 17H19L17 7H7L5 17Z" stroke="#1e3a8a" strokeWidth="1.5" strokeLinejoin="round" />
+          <circle cx="9" cy="19" r="1.5" stroke="#1e3a8a" strokeWidth="1.5" />
+          <circle cx="17" cy="19" r="1.5" stroke="#1e3a8a" strokeWidth="1.5" />
         </svg>
       ),
     },
     {
       id: 3,
-      text: t('amazon.whyZambeel.features.fba'),
+      text: t('amazon.whyZambeel.features.liveInventory'),
       mobileLineW: 'w-[32%]',
       mobileCardMl: 'ml-[32%]',
       icon: (
         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 7H21V17H3V7Z" stroke="#1e3a8a" strokeWidth="1.5" strokeLinejoin="round" />
-          <path d="M3 11H21M7 7V5M17 7V5" stroke="#1e3a8a" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M4 6h16v12H4V6z" stroke="#1e3a8a" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d="M8 14l3-3 2 2 5-5" stroke="#1e3a8a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
     },
     {
       id: 4,
-      text: t('amazon.whyZambeel.features.fbm'),
+      text: t('amazon.whyZambeel.features.chinaSourcing'),
       mobileLineW: 'w-[18%]',
       mobileCardMl: 'ml-[18%]',
       icon: (
         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 17H19L17 7H7L5 17Z" stroke="#1e3a8a" strokeWidth="1.5" strokeLinejoin="round" />
-          <circle cx="9" cy="19" r="1.5" fill="#1e3a8a" />
-          <circle cx="17" cy="19" r="1.5" fill="#1e3a8a" />
+          <circle cx="12" cy="12" r="9" stroke="#1e3a8a" strokeWidth="1.5" />
+          <path d="M3 12h18M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9M12 3c-2.5 2.5-4 5.5-4 9s1.5 6.5 4 9" stroke="#1e3a8a" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       ),
+    },
+  ];
+
+  const desktopWhyFeatures = [
+    {
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="18" r="6" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M10 38C10 32 16 28 24 28C32 28 38 32 38 38" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+      label: t('amazon.whyZambeel.features.accountManagers').replace(/ Account /g, '\nAccount '),
+    },
+    {
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 34C10 35.0609 10.4214 36.0783 11.1716 36.8284C11.9217 37.5786 12.9391 38 14 38C15.0609 38 16.0783 37.5786 16.8284 36.8284C17.5786 36.0783 18 35.0609 18 34C18 32.9391 17.5786 31.9217 16.8284 31.1716C16.0783 30.4214 15.0609 30 14 30C12.9391 30 11.9217 30.4214 11.1716 31.1716C10.4214 31.9217 10 32.9391 10 34Z" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M30 34C30 35.0609 30.4214 36.0783 31.1716 36.8284C31.9217 37.5786 32.9391 38 34 38C35.0609 38 36.0783 37.5786 36.8284 36.8284C37.5786 36.0783 38 35.0609 38 34C38 32.9391 37.5786 31.9217 36.8284 31.1716C36.0783 30.4214 35.0609 30 34 30C32.9391 30 31.9217 30.4214 31.1716 31.1716C30.4214 31.9217 30 32.9391 30 34Z" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M10 34H6V12C6 11.4696 6.21071 10.9609 6.58579 10.5858C6.96086 10.2107 7.46957 10 8 10H26V34M18 34H30M38 34H42V22M42 22H26M42 22L36 12H26" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+      label: t('amazon.whyZambeel.features.fastDelivery').replace(/ /g, '\n'),
+    },
+    {
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="12" width="32" height="24" rx="2" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M16 24L22 30L32 18" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+      label: t('amazon.whyZambeel.features.liveInventory').replace(/ Inventory /g, '\nInventory '),
+    },
+    {
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M6 24h36M24 6c3 3 5 7 5 12s-2 9-5 12M24 6c-3 3-5 7-5 12s2 9 5 12" stroke="#2D3E7E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+      label: t('amazon.whyZambeel.features.chinaSourcing').replace(/ /g, '\n'),
     },
   ];
 
@@ -237,17 +277,21 @@ const AmazonServicesPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="bg-gradient-to-r from-[#FF9900] to-[#E47911] px-6 py-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-white/90">
-                  {t('amazon.models.fbm.badge')}
-                </span>
-                <h3 className="text-xl md:text-2xl font-bold text-white mt-1">{t('amazon.models.fbm.title')}</h3>
-                <p className="text-white/90 text-sm mt-1">{t('amazon.models.fbm.fullName')}</p>
+              <div className="bg-gradient-to-r from-[#FF9900] to-[#E47911] px-6 py-4 md:py-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl md:text-2xl font-bold text-white">{t('amazon.models.fbm.title')}</h3>
+                    <p className="text-white/90 text-sm mt-1">{t('amazon.models.fbm.fullName')}</p>
+                  </div>
+                  <span className="text-lg md:text-2xl font-bold uppercase tracking-wide text-white shrink-0 leading-none">
+                    {t('amazon.models.fbm.badge')}
+                  </span>
+                </div>
               </div>
               <div className="p-6 md:p-8">
                 <p className="text-gray-700 text-sm md:text-base leading-relaxed mb-4">{t('amazon.models.fbm.description')}</p>
                 <ul className="space-y-2">
-                  {[1, 2, 3, 4].map((i) => (
+                  {[1, 2, 3].map((i) => (
                     <li key={i} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
                       <span className="text-[#FF9900] font-bold mt-0.5">✓</span>
                       {t(`amazon.models.fbm.points.${i}`)}
@@ -257,17 +301,21 @@ const AmazonServicesPage = () => {
               </div>
             </div>
             <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="bg-gradient-to-r from-[#232F3E] to-[#37475A] px-6 py-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#FF9900]">
-                  {t('amazon.models.fba.badge')}
-                </span>
-                <h3 className="text-xl md:text-2xl font-bold text-white mt-1">{t('amazon.models.fba.title')}</h3>
-                <p className="text-white/90 text-sm mt-1">{t('amazon.models.fba.fullName')}</p>
+              <div className="bg-gradient-to-r from-[#232F3E] to-[#37475A] px-6 py-4 md:py-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl md:text-2xl font-bold text-white">{t('amazon.models.fba.title')}</h3>
+                    <p className="text-white/90 text-sm mt-1">{t('amazon.models.fba.fullName')}</p>
+                  </div>
+                  <span className="text-lg md:text-2xl font-bold uppercase tracking-wide text-[#FF9900] shrink-0 leading-none">
+                    {t('amazon.models.fba.badge')}
+                  </span>
+                </div>
               </div>
               <div className="p-6 md:p-8">
                 <p className="text-gray-700 text-sm md:text-base leading-relaxed mb-4">{t('amazon.models.fba.description')}</p>
                 <ul className="space-y-2">
-                  {[1, 2, 3, 4].map((i) => (
+                  {[1, 2, 3].map((i) => (
                     <li key={i} className="flex items-start gap-2 text-sm md:text-base text-gray-700">
                       <span className="text-[#FF9900] font-bold mt-0.5">✓</span>
                       {t(`amazon.models.fba.points.${i}`)}
@@ -285,6 +333,7 @@ const AmazonServicesPage = () => {
         mobileTitle={t('amazon.whyZambeel.title')}
         description={t('amazon.whyZambeel.description')}
         features={whyFeatures}
+        desktopFeatures={desktopWhyFeatures}
       />
 
       <Wts

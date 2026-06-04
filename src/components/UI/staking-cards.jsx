@@ -17,7 +17,8 @@ const Card = ({ title, description, index, totalCards, cta, link }) => {
         'rgb(231, 239, 252)',  // First card
         'rgb(255, 249, 230)',  // Second card
         'rgb(253, 232, 233)',  // Third card
-        'rgb(230, 247, 245)'   // Fourth card
+        'rgb(230, 247, 245)',  // Fourth card
+        'rgb(255, 243, 224)'   // Fifth card
     ];
 
     const cardBackgroundColor = cardColors[index] || cardColors[0];
@@ -220,6 +221,14 @@ export const StackedCards = () => {
             color: "rgba(34, 197, 94, 0.8)",
             cta: t('homepage.featureCards.zambeel360.cta'),
             link: "/pages/zambeel-360"
+        },
+        {
+            id: 1,
+            title: t('homepage.featureCards.learnEcommerce.title'),
+            description: t('homepage.featureCards.learnEcommerce.desc'),
+            color: "rgba(99, 102, 241, 0.8)",
+            cta: t('homepage.featureCards.learnEcommerce.cta'),
+            link: "/learn-ecommerce"
         },
         {
             id: 5,

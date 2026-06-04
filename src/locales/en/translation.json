@@ -83,7 +83,7 @@
       },
       "amazon": {
         "title": "Sell on Amazon with Zambeel",
-        "desc": "FBA & FBM fulfillment support in UAE and KSA — listings, prep, storage, and delivery handled for you",
+        "desc": "FBA & FBM fulfillment services in UAE and KSA — prep, storage, and delivery handled for you",
         "cta": "Amazon Services"
       }
     },
@@ -368,8 +368,7 @@
         "points": {
           "1": "Inventory stored at our UAE / KSA facilities",
           "2": "Order packing, labeling & dispatch on your behalf",
-          "3": "Faster local delivery to Amazon customers",
-          "4": "Flexible for multi-channel sellers"
+          "3": "Faster local delivery to Amazon customers"
         }
       },
       "fba": {
@@ -380,19 +379,18 @@
         "points": {
           "1": "FNSKU labeling & Amazon-compliant prep",
           "2": "Inbound shipment coordination to Amazon FCs",
-          "3": "Inventory planning for UAE & KSA marketplaces",
-          "4": "Prime-eligible delivery handled by Amazon"
+          "3": "Inventory planning for UAE & KSA marketplaces"
         }
       }
     },
     "whyZambeel": {
       "title": "Why Amazon with Zambeel?",
-      "description": "From listing support to FBA prep and FBM fulfillment, Zambeel helps Amazon sellers in UAE and KSA operate smoothly with local expertise and reliable logistics.",
+      "description": "Zambeel helps Amazon sellers in UAE and KSA operate smoothly with local expertise and reliable logistics.",
       "features": {
-        "listing": "Listing & catalog support",
-        "prep": "FBA prep & labeling",
-        "fba": "Inbound to Amazon FCs",
-        "fbm": "FBM pick, pack & ship"
+        "accountManagers": "Dedicated Account Managers",
+        "fastDelivery": "Fast Delivery",
+        "liveInventory": "Live Inventory Tracking",
+        "chinaSourcing": "China Sourcing"
       }
     },
     "whereToStart": {
