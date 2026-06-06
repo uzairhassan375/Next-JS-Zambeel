@@ -130,7 +130,7 @@ const Card = ({ title, description, index, totalCards, cta, link }) => {
                             color: '#4a5568',
                             lineHeight: '1.6',
                             marginBottom: '1.5rem',
-                            textAlign: 'center',
+                            textAlign: 'justify',
                             width: '100%'
                         }}>
                             {description}
@@ -199,6 +199,14 @@ export const StackedCards = () => {
 
     const cardData = [
         {
+            id: 1,
+            title: t('homepage.featureCards.learnEcommerce.title'),
+            description: t('homepage.featureCards.learnEcommerce.desc'),
+            color: "rgba(99, 102, 241, 0.8)",
+            cta: t('homepage.featureCards.learnEcommerce.cta'),
+            link: "/learn-ecommerce"
+        },
+        {
             id: 2,
             title: t('homepage.featureCards.dropshipping.title'),
             description: t('homepage.featureCards.dropshipping.desc'),
@@ -221,14 +229,6 @@ export const StackedCards = () => {
             color: "rgba(34, 197, 94, 0.8)",
             cta: t('homepage.featureCards.zambeel360.cta'),
             link: "/pages/zambeel-360"
-        },
-        {
-            id: 1,
-            title: t('homepage.featureCards.learnEcommerce.title'),
-            description: t('homepage.featureCards.learnEcommerce.desc'),
-            color: "rgba(99, 102, 241, 0.8)",
-            cta: t('homepage.featureCards.learnEcommerce.cta'),
-            link: "/learn-ecommerce"
         },
         {
             id: 5,

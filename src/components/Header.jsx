@@ -167,6 +167,12 @@ export default function Header({ theme = "dark" }) {
               <div className="absolute top-full left-0 pt-2 bg-transparent min-w-[260px] z-50">
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
                   <Link
+                    href={getLocalePath('/learn-ecommerce', pathname)}
+                    className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
+                  >
+                    {t('header.learnEcomm')}
+                  </Link>
+                  <Link
                     href={getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
@@ -206,12 +212,6 @@ export default function Header({ theme = "dark" }) {
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.zambeel3PL')}
-                  </Link>
-                  <Link
-                    href={getLocalePath('/learn-ecommerce', pathname)}
-                    className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
-                  >
-                    {t('header.learnEcomm')}
                   </Link>
                   <Link
                     href={getLocalePath('/pages/amazon-services', pathname)}
@@ -538,6 +538,13 @@ export default function Header({ theme = "dark" }) {
               {showServicesDropdown && (
                 <div className="mt-2 pl-4 space-y-2">
                   <Link
+                    href={getLocalePath('/learn-ecommerce', pathname)}
+                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    {t('header.learnEcomm')}
+                  </Link>
+                  <Link
                     href={getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
@@ -581,13 +588,6 @@ export default function Header({ theme = "dark" }) {
                     onClick={() => setShowMobileMenu(false)}
                   >
                     {t('header.zambeel3PL')}
-                  </Link>
-                  <Link
-                    href={getLocalePath('/learn-ecommerce', pathname)}
-                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
-                    onClick={() => setShowMobileMenu(false)}
-                  >
-                    {t('header.learnEcomm')}
                   </Link>
                   <Link
                     href={getLocalePath('/pages/amazon-services', pathname)}

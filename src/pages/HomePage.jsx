@@ -267,6 +267,14 @@ export default function HomePage({ initialBlogs = [] }) {
 
   const featureCards = [
     {
+      title: t('homepage.featureCards.learnEcommerce.title'),
+      desc: [
+        t('homepage.featureCards.learnEcommerce.desc')
+      ],
+      cta: t('homepage.featureCards.learnEcommerce.cta'),
+      link: "/learn-ecommerce",
+    },
+    {
       title: t('homepage.featureCards.dropshipping.title'),
       desc: [
         t('homepage.featureCards.dropshipping.desc')
@@ -289,14 +297,6 @@ export default function HomePage({ initialBlogs = [] }) {
       ],
       cta: t('homepage.featureCards.zambeel360.cta'),
       link: "/pages/zambeel-360",
-    },
-    {
-      title: t('homepage.featureCards.learnEcommerce.title'),
-      desc: [
-        t('homepage.featureCards.learnEcommerce.desc')
-      ],
-      cta: t('homepage.featureCards.learnEcommerce.cta'),
-      link: "/learn-ecommerce",
     },
     {
       title: t('homepage.featureCards.amazon.title'),
@@ -421,7 +421,7 @@ export default function HomePage({ initialBlogs = [] }) {
                     </span>
                     {restOfTitle && ` ${restOfTitle}`}
                   </h2>
-                  <p className="text-[#4A5568] group-hover:text-[#2E3B78] text-xs lg:text-sm leading-relaxed mb-4">
+                  <p className="text-[#4A5568] group-hover:text-[#2E3B78] text-xs lg:text-sm leading-relaxed mb-4 text-justify">
                     {card.desc}
                   </p>
                 </div>
