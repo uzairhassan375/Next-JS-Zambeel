@@ -4,42 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_TICKER_TEXT_AR, DEFAULT_TICKER_TEXT_EN } from '../lib/tickerPages';
+import { startBlinkOnElement, useTickerBlinkSubtree } from '../lib/tickerBlinkRaf';
 
-/** Opacity blink driven by rAF — CSS keyframes often fail inside react-fast-marquee’s animated subtree. */
+/** Opacity blink driven by rAF — CSS keyframes fail inside react-fast-marquee. */
 export function GoldTickerBlinkLead({ children, className = '' }) {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mq.matches) {
-      el.style.opacity = '1';
-      return;
-    }
-
-    const periodMs = 1400;
-    const min = 0.22;
-    const max = 1;
-    const start = performance.now();
-    let frameId;
-    let cancelled = false;
-
-    const tick = (now) => {
-      if (cancelled) return;
-      const t = (now - start) % periodMs;
-      const phase = (t / periodMs) * Math.PI * 2;
-      const o = min + (max - min) * (0.5 + 0.5 * Math.cos(phase));
-      el.style.opacity = String(o);
-      frameId = requestAnimationFrame(tick);
-    };
-
-    frameId = requestAnimationFrame(tick);
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(frameId);
-    };
+    if (!el) return undefined;
+    return startBlinkOnElement(el, { periodMs: 1400, min: 0.22, max: 1 });
   }, []);
 
   return (
@@ -60,7 +34,7 @@ function sanitizeTickerHtml(html) {
 function StyledTickerText({ html, isArabic }) {
   return (
     <span
-      className="inline-block"
+      className="inline-block ticker-content"
       dir={isArabic ? 'rtl' : 'ltr'}
       dangerouslySetInnerHTML={{ __html: sanitizeTickerHtml(html) }}
     />
@@ -70,6 +44,7 @@ function StyledTickerText({ html, isArabic }) {
 export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
   const { i18n } = useTranslation();
   const isArabic = String(i18n.language || 'en').toLowerCase().startsWith('ar');
+  const tickerRootRef = useRef(null);
   const [ticker, setTicker] = useState({
     textEn: DEFAULT_TICKER_TEXT_EN,
     textAr: DEFAULT_TICKER_TEXT_AR,
@@ -97,8 +72,10 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
     ? (ticker.textAr?.trim() || ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_AR)
     : (ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN);
 
+  useTickerBlinkSubtree(tickerRootRef, text);
+
   return (
-    <div className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
+    <div ref={tickerRootRef} className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
       <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
         <span className="mx-6 whitespace-nowrap text-sm md:text-base">
           <StyledTickerText html={text} isArabic={isArabic} />

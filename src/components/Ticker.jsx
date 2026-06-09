@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_TICKER_TEXT_AR, DEFAULT_TICKER_TEXT_EN } from '../lib/tickerPages';
+import { useTickerBlinkSubtree } from '../lib/tickerBlinkRaf';
 function sanitizeTickerHtml(html) {
   if (!html) return '';
   return String(html)
@@ -15,7 +16,7 @@ function sanitizeTickerHtml(html) {
 function TickerHtml({ html, isArabic }) {
   return (
     <span
-      className="inline-block"
+      className="inline-block ticker-content"
       dir={isArabic ? 'rtl' : 'ltr'}
       dangerouslySetInnerHTML={{ __html: sanitizeTickerHtml(html) }}
     />
@@ -39,6 +40,7 @@ export default function Ticker({ pageId = 'home' }) {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const isArabic = String(currentLanguage).toLowerCase().startsWith('ar');
+  const tickerRootRef = useRef(null);
   const [ticker, setTicker] = useState({
     textEn: DEFAULT_TICKER_TEXT_EN,
     textAr: DEFAULT_TICKER_TEXT_AR,
@@ -69,8 +71,11 @@ export default function Ticker({ pageId = 'home' }) {
     return ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN;
   }, [isArabic, ticker.textAr, ticker.textEn]);
 
+  useTickerBlinkSubtree(tickerRootRef, text);
+
   return (
     <div
+      ref={tickerRootRef}
       className="relative z-10 mt-4 w-screen overflow-hidden bg-[#2E3B78] py-2 text-white md:mt-0 md:py-3"
       style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}
     >

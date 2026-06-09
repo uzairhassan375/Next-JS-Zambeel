@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState, useCallback, useLayoutEffect } from 'react';
+import { FONT_FAMILIES } from '../../../lib/editorFonts';
 
 const TEXT_SIZES = [
   { label: 'Small', value: '2' },
@@ -9,8 +10,15 @@ const TEXT_SIZES = [
   { label: 'Extra large', value: '5' },
 ];
 
-const COLORS = [
-  '#000000', '#1e3a8a', '#dc2626', '#16a34a', '#ca8a04', '#9333ea', '#0d9488', '#4f46e5',
+const TEXT_COLORS = [
+  { label: 'Black', value: '#000000' },
+  { label: 'Navy', value: '#1e3a8a' },
+  { label: 'Red', value: '#dc2626' },
+  { label: 'Green', value: '#16a34a' },
+  { label: 'Gold', value: '#ca8a04' },
+  { label: 'Purple', value: '#9333ea' },
+  { label: 'Teal', value: '#0d9488' },
+  { label: 'Indigo', value: '#4f46e5' },
 ];
 
 export default function RichTextEditor({ value = '', onChange, placeholder, dir, className = '' }) {
@@ -19,9 +27,11 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
   const lastEmittedRef = useRef(null);
   const savedRangeRef = useRef(null);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
+  const [showImageUrlDialog, setShowImageUrlDialog] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [linkText, setLinkText] = useState('');
   const [linkTitle, setLinkTitle] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [hasTextSelection, setHasTextSelection] = useState(false);
   const [showAlignDropdown, setShowAlignDropdown] = useState(false);
   const [currentAlign, setCurrentAlign] = useState('justifyLeft');
@@ -30,6 +40,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
   const alignDropdownRef = useRef(null);
   const toolbarRef = useRef(null);
   const linkDialogRef = useRef(null);
+  const imageUrlDialogRef = useRef(null);
   const deselectImageRef = useRef(null);
 
   const deselectImage = useCallback(() => {
@@ -91,7 +102,8 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
       // Don't do anything if clicking on toolbar, dropdown, or link dialog
       if (toolbarRef.current?.contains(event.target) || 
           alignDropdownRef.current?.contains(event.target) ||
-          linkDialogRef.current?.contains(event.target)) {
+          linkDialogRef.current?.contains(event.target) ||
+          imageUrlDialogRef.current?.contains(event.target)) {
         return;
       }
       
@@ -102,6 +114,10 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
       if (showLinkDialog && linkDialogRef.current && !linkDialogRef.current.contains(event.target)) {
         setShowLinkDialog(false);
       }
+
+      if (showImageUrlDialog && imageUrlDialogRef.current && !imageUrlDialogRef.current.contains(event.target)) {
+        setShowImageUrlDialog(false);
+      }
       
       // Deselect image if clicking outside editor (but not on toolbar)
       if (selectedImageRef.current && editorRef.current && !editorRef.current.contains(event.target) && !toolbarRef.current?.contains(event.target)) {
@@ -110,7 +126,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showAlignDropdown, showLinkDialog, isImageSelected]);
+  }, [showAlignDropdown, showLinkDialog, showImageUrlDialog, isImageSelected]);
 
   useEffect(() => {
     const el = editorRef.current;
@@ -256,33 +272,100 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
     emitChange();
   }
 
+  function applyFontFamily(fontFamily) {
+    const el = editorRef.current;
+    if (!el || !fontFamily) return;
+    restoreSelection();
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    const range = selection.getRangeAt(0);
+    if (range.collapsed || !el.contains(range.commonAncestorContainer)) return;
+
+    const span = document.createElement('span');
+    span.style.fontFamily = fontFamily;
+    try {
+      const fragment = range.extractContents();
+      span.appendChild(fragment);
+      range.insertNode(span);
+      selection.removeAllRanges();
+      emitChange();
+    } catch {
+      // ignore invalid selections
+    }
+  }
+
+  function insertImageAtCursor(src) {
+    if (!src) return;
+    restoreSelection();
+    editorRef.current?.focus();
+    document.execCommand('insertImage', false, src);
+    emitChange();
+    setTimeout(() => {
+      const images = editorRef.current?.querySelectorAll('img');
+      if (images && images.length > 0) {
+        const lastImg = images[images.length - 1];
+        lastImg.style.cursor = 'pointer';
+        lastImg.style.maxWidth = '100%';
+        lastImg.style.height = 'auto';
+        lastImg.onclick = null;
+        lastImg.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          selectImage(lastImg);
+        }, true);
+        selectImage(lastImg);
+      }
+    }, 100);
+  }
+
   function handleImageFile(e) {
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith('image/')) return;
     const reader = new FileReader();
-    reader.onload = () => {
-      restoreSelection();
-      editorRef.current?.focus();
-      document.execCommand('insertImage', false, reader.result);
-      emitChange();
-      // Select the inserted image
-      setTimeout(() => {
-        const images = editorRef.current?.querySelectorAll('img');
-        if (images && images.length > 0) {
-          const lastImg = images[images.length - 1];
-          lastImg.style.cursor = 'pointer';
-          lastImg.onclick = null;
-          lastImg.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            selectImage(lastImg);
-          }, true);
-          selectImage(lastImg);
-        }
-      }, 100);
-    };
+    reader.onload = () => insertImageAtCursor(reader.result);
     reader.readAsDataURL(file);
     e.target.value = '';
+  }
+
+  function handleImageUrlClick() {
+    saveSelection();
+    const selectedImage = selectedImageRef.current;
+    if (selectedImage?.src) {
+      setImageUrl(selectedImage.getAttribute('src') || selectedImage.src || '');
+    } else {
+      setImageUrl('');
+    }
+    setShowImageUrlDialog(true);
+  }
+
+  function insertImageFromUrl() {
+    let url = imageUrl.trim();
+    if (!url) {
+      alert('Please enter an image URL');
+      return;
+    }
+    if (
+      !url.startsWith('http://') &&
+      !url.startsWith('https://') &&
+      !url.startsWith('data:') &&
+      !url.startsWith('/')
+    ) {
+      url = `https://${url}`;
+    }
+
+    const selectedImage = selectedImageRef.current;
+    if (selectedImage && editorRef.current?.contains(selectedImage)) {
+      selectedImage.src = url;
+      selectedImage.style.maxWidth = '100%';
+      selectedImage.style.height = 'auto';
+      emitChange();
+      selectImage(selectedImage);
+    } else {
+      insertImageAtCursor(url);
+    }
+
+    setShowImageUrlDialog(false);
+    setImageUrl('');
   }
 
 
@@ -525,17 +608,53 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
           U
         </button>
         <span className="w-px h-6 bg-gray-300 mx-1" />
-        <span className="text-xs text-gray-500 mr-1">Color:</span>
-        {COLORS.map((color) => (
-          <button
-            key={color}
-            type="button"
-            onClick={() => exec('foreColor', color)}
-            className="w-6 h-6 rounded border border-gray-300 hover:ring-2 hover:ring-[#1e3a8a]"
-            style={{ backgroundColor: color }}
-            title={color}
-          />
-        ))}
+        <select
+          defaultValue=""
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            saveSelection();
+          }}
+          onChange={(e) => {
+            const color = e.target.value;
+            if (color) {
+              restoreSelection();
+              exec('foreColor', color);
+            }
+            e.target.value = '';
+          }}
+          className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white text-gray-700 min-w-[110px]"
+          title="Text color (select text first)"
+        >
+          <option value="">Text color</option>
+          {TEXT_COLORS.map((color) => (
+            <option key={color.value} value={color.value}>
+              {color.label}
+            </option>
+          ))}
+        </select>
+        <select
+          defaultValue=""
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            saveSelection();
+          }}
+          onChange={(e) => {
+            const fontFamily = e.target.value;
+            if (fontFamily) {
+              applyFontFamily(fontFamily);
+            }
+            e.target.value = '';
+          }}
+          className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white text-gray-700 min-w-[140px]"
+          title="Font family (select text first)"
+        >
+          <option value="">Font</option>
+          {FONT_FAMILIES.map((font) => (
+            <option key={font.value} value={font.value} style={{ fontFamily: font.value }}>
+              {font.label}
+            </option>
+          ))}
+        </select>
         <span className="w-px h-6 bg-gray-300 mx-1" />
         <span className="text-xs text-gray-500 mr-1">Size:</span>
         <select
@@ -680,9 +799,20 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
           type="button"
           onClick={() => fileInputRef.current?.click()}
           className="p-2 rounded hover:bg-gray-200 text-gray-700 flex items-center gap-1"
-          title="Insert image"
+          title="Upload image from computer"
         >
           🖼️ Image
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageUrlClick();
+          }}
+          className="p-2 rounded hover:bg-gray-200 text-gray-700 flex items-center gap-1 text-xs"
+          title="Insert image from URL (Shopify Files, etc.)"
+        >
+          🔗 Image URL
         </button>
         {/* Image resize controls - only show when image is selected */}
         {isImageSelected && (
@@ -736,25 +866,27 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
           </>
         )}
       </div>
-      {/* Editor */}
-      <div
-        ref={editorRef}
-        contentEditable
-        dir={dir}
-        className="rich-editor-placeholder min-h-[200px] p-4 text-gray-800 prose prose-sm max-w-none focus:outline-none"
-        data-placeholder={placeholder}
-        onInput={emitChange}
-        onBlur={emitChange}
-        onClick={handleImageClick}
-        onMouseDown={(e) => {
-          // Don't interfere with image clicks
-          if (e.target.tagName !== 'IMG') {
-            saveSelection();
-          }
-        }}
-        suppressContentEditableWarning
-        style={{ outline: 'none' }}
-      />
+      {/* Editor — scrollable content area; toolbar stays fixed above */}
+      <div className="max-h-[min(420px,50vh)] overflow-y-auto">
+        <div
+          ref={editorRef}
+          contentEditable
+          dir={dir}
+          className="rich-editor-placeholder min-h-[200px] p-4 text-gray-800 prose prose-sm max-w-none focus:outline-none"
+          data-placeholder={placeholder}
+          onInput={emitChange}
+          onBlur={emitChange}
+          onClick={handleImageClick}
+          onMouseDown={(e) => {
+            // Don't interfere with image clicks
+            if (e.target.tagName !== 'IMG') {
+              saveSelection();
+            }
+          }}
+          suppressContentEditableWarning
+          style={{ outline: 'none' }}
+        />
+      </div>
       <style dangerouslySetInnerHTML={{ __html: `
         .rich-editor-placeholder[contenteditable]:empty:before {
           content: attr(data-placeholder);
@@ -867,6 +999,72 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
                 className="px-4 py-2 bg-[#1e3a8a] text-white rounded-lg hover:bg-[#1e3a8a]/90"
               >
                 Insert Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showImageUrlDialog && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">
+          <div
+            ref={imageUrlDialogRef}
+            className="bg-white border border-gray-300 rounded-lg shadow-lg p-6 min-w-[400px] max-w-[520px] mx-4"
+          >
+            <h3 className="text-lg font-semibold mb-4">
+              {isImageSelected ? 'Update image URL' : 'Insert image from URL'}
+            </h3>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Image URL
+              </label>
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://cdn.shopify.com/s/files/..."
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Paste a Shopify Files URL or any public image link. Upload in Shopify Admin → Settings → Files, copy URL, then paste here.
+              </p>
+            </div>
+
+            {imageUrl.trim() && (
+              <div className="mb-4 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                <p className="text-xs text-gray-600 mb-2 font-medium">Preview:</p>
+                <img
+                  src={imageUrl.trim()}
+                  alt="Preview"
+                  className="max-h-40 max-w-full rounded object-contain mx-auto"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                  onLoad={(e) => {
+                    e.currentTarget.style.display = 'block';
+                  }}
+                />
+              </div>
+            )}
+
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowImageUrlDialog(false);
+                  setImageUrl('');
+                }}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={insertImageFromUrl}
+                className="px-4 py-2 bg-[#1e3a8a] text-white rounded-lg hover:bg-[#1e3a8a]/90"
+              >
+                {isImageSelected ? 'Update image' : 'Insert image'}
               </button>
             </div>
           </div>

@@ -59,30 +59,20 @@
   color: #fcd64c !important;
 }
 
-.ticker-blink {
-  display: inline-block;
-  will-change: opacity, transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  animation: ticker-blink-keyframes 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.ticker-content a,
+.ticker-link {
+  color: #fcd64c;
+  cursor: pointer;
 }
 
-@keyframes ticker-blink-keyframes {
-  0% {
-    opacity: 1;
-  }
-  35% {
-    opacity: 0.75;
-  }
-  50% {
-    opacity: 0.25;
-  }
-  65% {
-    opacity: 0.75;
-  }
-  100% {
-    opacity: 1;
-  }
+.ticker-content a:hover,
+.ticker-link:hover {
+  color: #ffffff;
+}
+
+/* Blink is driven by tickerBlinkRaf.js (rAF). CSS keyframes fail inside react-fast-marquee. */
+.ticker-blink {
+  display: inline-block;
 }
 
 /* Blog content text sizes (from rich editor) */

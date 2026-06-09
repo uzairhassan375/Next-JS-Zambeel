@@ -579,7 +579,9 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content (EN)</label>
-            <p className="text-xs text-gray-500 mb-2">Use the toolbar for bold, italic, color, headings, lists and to insert images.</p>
+            <p className="text-xs text-gray-500 mb-2">
+              Use the toolbar for formatting, fonts, and colors. Insert images via upload, or use Image URL to paste a Shopify Files link (same as cover image).
+            </p>
             <RichTextEditor
               value={form.contentEn}
               onChange={(html) => update('contentEn', html)}
@@ -640,7 +642,9 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content (AR)</label>
-            <p className="text-xs text-gray-500 mb-2">Use the toolbar for bold, italic, color, headings, lists and to insert images.</p>
+            <p className="text-xs text-gray-500 mb-2">
+              Use the toolbar for formatting, fonts, and colors. Insert images via upload, or use Image URL to paste a Shopify Files link (same as cover image).
+            </p>
             <RichTextEditor
               value={form.contentAr}
               onChange={(html) => update('contentAr', html)}

@@ -92,7 +92,7 @@ export default function AdminTickers() {
             </div>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                Select specific words and use toolbar buttons for bold, italic, underline, highlight, or blink.
+                Select text and apply effects (bold, color, font, blink, link). Active effects highlight in blue — click again to turn off.
               </p>
 
               <div className="mt-4">
