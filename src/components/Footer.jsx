@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
+import { BUSINESS_INFO } from "../lib/businessInfo";
 const white_logoImage = "/white_logo.png";
 
 export default function Footer() {
@@ -157,6 +158,12 @@ export default function Footer() {
               <Link href={getLocalePath('/about', pathname)} className="hover:text-white hover:underline">
                 {t('header.aboutUs')}
               </Link>
+            </li>
+            <li className="flex items-start gap-3">
+              <i className="fa-solid fa-location-dot w-4 mt-0.5 shrink-0"></i>
+              <address className="not-italic leading-relaxed" dir="ltr">
+                {BUSINESS_INFO.fullAddress}
+              </address>
             </li>
           </ul>
         </div>

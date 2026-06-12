@@ -2,6 +2,7 @@ import '../index.css';
 import { headers } from 'next/headers';
 import ClientLayout from '../components/layout/ClientLayout';
 import FontAwesomeLoader from '../components/FontAwesomeLoader';
+import LocalBusinessSchema from '../components/seo/LocalBusinessSchema';
 
 export const metadata = {
   title: 'Zambeel',
@@ -22,6 +23,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body suppressHydrationWarning>
+        <LocalBusinessSchema />
         <FontAwesomeLoader />
         <div className="min-h-screen flex flex-col bg-transparent">
           <ClientLayout initialLocale={locale}>
