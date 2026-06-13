@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx next dev -p 5000 -H 0.0.0.0",
+    "dev": "npx next dev -p 3000 -H 0.0.0.0",
     "build": "npx next build",
     "start": "npx next start -p 5000 -H 0.0.0.0",
     "lint": "eslint"
