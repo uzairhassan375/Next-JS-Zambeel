@@ -4,6 +4,15 @@ import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Gem, Crown, Medal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import PricingSection from '../components/PricingSection';
+import AgencyWhySection from '../components/partner_agencies/AgencyWhySection';
+import AgencyFaqSection from '../components/partner_agencies/AgencyFaqSection';
+
+const AGENCY_TIER_TABS = [
+  { key: 'gold', tabLabelKey: 'tabs.gold', Icon: Crown, activeClass: 'bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-[#1a1a2e] shadow-[0_6px_20px_rgba(251,191,36,0.35)]' },
+  { key: 'silver', tabLabelKey: 'tabs.silver', Icon: Medal, activeClass: 'bg-gradient-to-r from-[#cbd5e1] to-[#94a3b8] text-[#1e293b] shadow-[0_6px_20px_rgba(148,163,184,0.35)]' },
+  { key: 'diamond', tabLabelKey: 'tabs.diamond', Icon: Gem, activeClass: 'bg-gradient-to-r from-[#3b82f6] to-[#8b5cf6] text-white shadow-[0_6px_20px_rgba(59,130,246,0.35)]' },
+];
 
 const TIER_COLORS = {
   diamond: { accent: '#3b82f6', card: 'rgba(59, 130, 246, 0.15)', cardStyle: 'solid', label: 'text-[#70DEFF]', headingColor: '#70DEFF', clickDetailsColor: '#70DEFF', TierIcon: Gem, tierIconColor: '#70DEFF' },
@@ -51,10 +60,74 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedTier, setSelectedTier] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [activeAgencyTier, setActiveAgencyTier] = useState('gold');
   const [currentSlide, setCurrentSlide] = useState({ diamond: 0, gold: 0, silver: 0 });
   const [isMobile, setIsMobile] = useState(false);
 
   const companies = useMemo(() => buildCompaniesByTier(agencies, currentLanguage), [agencies, currentLanguage]);
+
+  const agencyPricingPlans = useMemo(
+    () => [
+      {
+        tag: 'FREE',
+        tagTranslationKey: 'partnerAgencies.pricing.plans.free.tag',
+        name: 'Free',
+        nameTranslationKey: 'partnerAgencies.pricing.plans.free.name',
+        monthlyPrice: '$0',
+        yearlyPrice: '$0',
+        pricePeriodTranslationKey: 'partnerAgencies.pricing.plans.free.period',
+        description: '',
+        features: [
+          { translationKey: 'partnerAgencies.pricing.features.affiliateEarningLimited', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.dropshippingMarkets3', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.clientReferral', included: false },
+          { translationKey: 'partnerAgencies.pricing.features.winningProducts', included: false },
+          { translationKey: 'partnerAgencies.pricing.features.prioritySupport', included: false },
+          { translationKey: 'partnerAgencies.pricing.features.socialMediaPromotion', included: false },
+          { translationKey: 'partnerAgencies.pricing.features.validity', included: false },
+        ],
+      },
+      {
+        tag: 'GOLD',
+        tagTranslationKey: 'partnerAgencies.pricing.plans.gold.tag',
+        name: 'Gold',
+        nameTranslationKey: 'partnerAgencies.pricing.plans.gold.name',
+        monthlyPrice: '$120',
+        yearlyPrice: '$120',
+        pricePeriodTranslationKey: 'partnerAgencies.pricing.plans.gold.period',
+        description: '',
+        features: [
+          { translationKey: 'partnerAgencies.pricing.features.affiliateEarningUnlimited', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.dropshippingMarketsAll', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.clientReferral', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.winningProducts', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.prioritySupport', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.socialMediaPromotion', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.validity1Month', included: true },
+        ],
+      },
+      {
+        tag: 'Diamond',
+        tagTranslationKey: 'partnerAgencies.pricing.plans.diamond.tag',
+        name: 'Diamond',
+        nameTranslationKey: 'partnerAgencies.pricing.plans.diamond.name',
+        monthlyPrice: '$499',
+        yearlyPrice: '$499',
+        pricePeriodTranslationKey: 'partnerAgencies.pricing.plans.diamond.period',
+        description: '',
+        features: [
+          { translationKey: 'partnerAgencies.pricing.features.affiliateEarningUnlimited', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.dropshippingMarketsAll', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.clientReferral', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.winningProducts', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.prioritySupport', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.socialMediaPromotion', included: true },
+          { translationKey: 'partnerAgencies.pricing.features.validity6Months', included: true },
+        ],
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
     if (initialAgencies !== undefined) return; // already have server data
@@ -76,20 +149,24 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
   }, []);
 
   useEffect(() => {
+    setCurrentSlide((prev) => ({ ...prev, [activeAgencyTier]: 0 }));
+  }, [activeAgencyTier]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide(prev => {
-        const next = { ...prev };
-        ['diamond', 'gold', 'silver'].forEach(tier => {
-          const list = companies[tier] || [];
-          const perSlide = isMobile ? 2 : 3;
-          const total = Math.ceil(list.length / perSlide);
-          if (total > 1) next[tier] = (prev[tier] + 1) % total;
-        });
-        return next;
+      setCurrentSlide((prev) => {
+        const list = companies[activeAgencyTier] || [];
+        const perSlide = isMobile ? 2 : 3;
+        const total = Math.ceil(list.length / perSlide);
+        if (total <= 1) return prev;
+        return {
+          ...prev,
+          [activeAgencyTier]: (prev[activeAgencyTier] + 1) % total,
+        };
       });
     }, 4000);
     return () => clearInterval(interval);
-  }, [isMobile, companies]);
+  }, [isMobile, companies, activeAgencyTier]);
 
   const getInitials = (name) =>
     name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
@@ -121,16 +198,37 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
     const next = () => goTo(slideIndex + 1);
     const prev = () => goTo(slideIndex - 1 + totalSlides);
 
+    if (list.length === 0) {
+      return (
+        <div className="w-full max-w-6xl mx-auto mb-8 md:mb-10">
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-14 md:py-16 text-center">
+            <div
+              className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+              style={{ backgroundColor: `${colors.accent}25`, color: colors.headingColor }}
+            >
+              {colors.TierIcon && <colors.TierIcon className="w-7 h-7" strokeWidth={1.5} />}
+            </div>
+            <p className="text-white/50 text-sm md:text-base">{c('noAgenciesInTier', 'No agencies in this tier yet.')}</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className="w-full max-w-6xl mx-auto mb-12 md:mb-16">
-        <div className="text-center mb-6">
-          <h3
-            className="text-xl md:text-2xl font-bold mb-1"
-            style={{ fontFamily: 'DM Sans, sans-serif', color: colors.headingColor || undefined }}
+      <div className="w-full max-w-6xl mx-auto mb-8 md:mb-10">
+        <div className="text-center mb-6 md:mb-8">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold mb-3 border"
+            style={{
+              color: colors.headingColor,
+              borderColor: `${colors.accent}40`,
+              backgroundColor: `${colors.accent}15`,
+            }}
           >
+            {colors.TierIcon && <colors.TierIcon className="w-4 h-4" strokeWidth={1.75} />}
             {tierLabel}
-          </h3>
-          <p className="text-white/70 text-sm md:text-base">{subtitle}</p>
+          </div>
+          <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto leading-relaxed">{subtitle}</p>
         </div>
 
         <div className="py-6 md:py-8">
@@ -224,48 +322,146 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
   if (loading) {
     return (
       <div
-        className="min-h-screen overflow-x-hidden flex items-center justify-center"
+        className="min-h-screen overflow-x-hidden flex flex-col items-center justify-center gap-4"
         style={{ background: 'linear-gradient(180deg, #0b0f1a 0%, #0f172a 50%, #0b122a 100%)' }}
       >
-        <p className="text-white/70">{c('loading', 'Loading partners...')}</p>
+        <div className="w-10 h-10 rounded-full border-2 border-[#22d3ee]/30 border-t-[#22d3ee] animate-spin" />
+        <p className="text-white/60 text-sm">{c('loading', 'Loading partners...')}</p>
       </div>
     );
   }
 
   return (
     <div
-      className="min-h-screen overflow-x-hidden"
+      className="min-h-screen overflow-x-hidden relative"
       style={{ background: 'linear-gradient(180deg, #0b0f1a 0%, #0f172a 50%, #0b122a 100%)' }}
     >
-      <section className="relative pt-24 md:pt-28 pb-10 md:pb-12 px-4 md:px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#22d3ee]/40 text-[#22d3ee] text-xs md:text-sm mb-6">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0h.5a2.5 2.5 0 002.5-2.5V3.935M12 12a2 2 0 104 0 2 2 0 00-4 0z" /></svg>
-          {c('trustedWorldwide')}
-        </div>
+      <div className="absolute top-24 left-[10%] w-72 h-72 bg-[#3b82f6]/10 rounded-full blur-3xl pointer-events-none" aria-hidden />
+      <div className="absolute top-[45%] right-0 w-96 h-96 bg-[#8b5cf6]/8 rounded-full blur-3xl pointer-events-none" aria-hidden />
+      <div className="absolute bottom-[20%] left-0 w-80 h-80 bg-[#22d3ee]/5 rounded-full blur-3xl pointer-events-none" aria-hidden />
 
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+      <section className="relative pt-24 md:pt-32 pb-8 md:pb-10 px-4 md:px-6 text-center">
+        <h1
+          className="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 md:mb-6 leading-tight"
+          style={{ fontFamily: 'DM Sans, sans-serif' }}
+        >
           <span className="text-white">{c('globalTitlePrefix')} </span>
-          <span className="bg-gradient-to-r from-[#3b82f6] to-[#a855f7] bg-clip-text text-transparent">{c('globalTitle')}</span>
+          <span className="bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#a855f7] bg-clip-text text-transparent">
+            {c('globalTitle')}
+          </span>
         </h1>
-        <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto mb-8">
+        <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
           {c('globalSubtitle')}
         </p>
-        <a
-          href={currentLanguage === 'ar' ? 'https://forms.gle/jN9ohywiuXwAZ5hQ6' : 'https://forms.gle/TgCpb8KXjxRpKLG39'}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block px-6 py-3 rounded-full font-semibold text-sm md:text-base transition-all hover:opacity-90"
-          style={{ background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)', color: '#fff', fontFamily: 'DM Sans, sans-serif' }}
-        >
-          {c('becomePartner')}
-        </a>
+        <div
+          className="w-24 h-1 mx-auto rounded-full mb-8"
+          style={{ background: 'linear-gradient(90deg, transparent, #22d3ee, transparent)' }}
+        />
+        <p className="inline-flex items-center gap-2 text-[#FCD64C] text-sm md:text-base font-semibold">
+          <span className="w-2 h-2 rounded-full bg-[#FCD64C] animate-pulse" />
+          {c('partnersCount', 'Partners Across 8 Countries')}
+        </p>
       </section>
 
-      <section className="relative pb-16 md:pb-20 px-4 md:px-6">
-        {renderTierSection('diamond', c('diamondPartners'), c('diamondSubtitle'))}
-        {renderTierSection('gold', c('goldPartners'), c('goldSubtitle'))}
-        {renderTierSection('silver', c('silverPartners'), c('silverSubtitle'))}
+      <section className="relative pb-10 md:pb-14 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-center mb-8 md:mb-10">
+            <div className="inline-flex items-center gap-1 p-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+              {AGENCY_TIER_TABS.map(({ key, tabLabelKey, Icon, activeClass }) => {
+                const isActive = activeAgencyTier === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setActiveAgencyTier(key)}
+                    className={`inline-flex items-center gap-2 px-5 md:px-7 py-2.5 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${
+                      isActive
+                        ? activeClass
+                        : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                    }`}
+                    style={{ fontFamily: 'DM Sans, sans-serif' }}
+                  >
+                    <Icon className="w-4 h-4" strokeWidth={isActive ? 2 : 1.75} />
+                    {c(tabLabelKey, key.charAt(0).toUpperCase() + key.slice(1))}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-4 md:p-6">
+            {activeAgencyTier === 'gold' && renderTierSection('gold', c('goldPartners'), c('goldSubtitle'))}
+            {activeAgencyTier === 'silver' && renderTierSection('silver', c('silverPartners'), c('silverSubtitle'))}
+            {activeAgencyTier === 'diamond' && renderTierSection('diamond', c('diamondPartners'), c('diamondSubtitle'))}
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 mt-8 md:mt-10 text-center px-6 py-8 md:py-10">
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, rgba(36,58,134,0.4) 0%, rgba(59,130,246,0.15) 50%, rgba(139,92,246,0.15) 100%)' }}
+              aria-hidden
+            />
+            <div className="relative z-10">
+              <p className="text-white/70 text-sm md:text-base mb-4 max-w-md mx-auto">
+                {c('becomePartnerSubtitle', 'Join our global network and start earning with every merchant you onboard.')}
+              </p>
+              <a
+                href={currentLanguage === 'ar' ? 'https://forms.gle/jN9ohywiuXwAZ5hQ6' : 'https://forms.gle/TgCpb8KXjxRpKLG39'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-sm md:text-base text-white transition-all hover:scale-[1.03] shadow-lg shadow-[#3b82f6]/25"
+                style={{ background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)', fontFamily: 'DM Sans, sans-serif' }}
+              >
+                {c('becomePartner')}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
+
+      <div
+        className="max-w-6xl mx-auto px-4 md:px-6 h-px"
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(34,211,238,0.3), transparent)' }}
+        aria-hidden
+      />
+
+      <AgencyWhySection
+        getCopy={(key, fallback) => t(`partnerAgencies.whyZambeel.${key}`, fallback)}
+      />
+
+      <div
+        className="max-w-6xl mx-auto px-4 md:px-6 h-px"
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(252,214,76,0.25), transparent)' }}
+        aria-hidden
+      />
+
+      <section className="relative pb-4 md:pb-8 pt-4 md:pt-6">
+        <PricingSection
+          title={c('pricing.title', 'Agency Partner Plans')}
+          subtitle={c('pricing.subtitle', 'Choose your plan · Scale your business · Earn cashback rewards')}
+          customPlans={agencyPricingPlans}
+        />
+        <p className="text-center text-white/80 text-sm md:text-base max-w-3xl mx-auto px-4 -mt-2 pb-8">
+          <span className="inline-flex flex-wrap items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+            {c('pricing.cashbackPrefix', 'Earn up to')}{' '}
+            <span className="font-bold text-[#FCD64C]">{c('pricing.cashbackAmount', '25,000 AED')}</span>{' '}
+            {c('pricing.cashbackSuffix', 'in cashback rewards as you grow')} ·{' '}
+            <a
+              href="https://www.myzambeel.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-white hover:text-[#FCD64C] transition-colors"
+            >
+              myzambeel.com
+            </a>
+          </span>
+        </p>
+      </section>
+
+      <AgencyFaqSection
+        getCopy={(key, fallback) => t(`partnerAgencies.faq.${key}`, fallback)}
+      />
 
       {/* Details modal – dark card style */}
       {showModal && selectedCompany && (
@@ -331,12 +527,17 @@ function PartnerCard({ company, accentColor, cardBg, cardStyle = 'solid', TierIc
     <button
       type="button"
       onClick={() => onTap(company)}
-      className="relative w-full text-left rounded-xl p-4 md:p-6 border border-white/10 transition-all hover:border-[#22d3ee]/40 hover:shadow-lg hover:shadow-[#22d3ee]/10 focus:outline-none focus:ring-2 focus:ring-[#22d3ee]/50 flex flex-col md:items-center md:justify-between min-h-0 md:min-h-[180px]"
+      className="group relative w-full text-left rounded-2xl p-4 md:p-6 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:border-[#22d3ee]/40 hover:shadow-xl hover:shadow-[#22d3ee]/10 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#22d3ee]/50 flex flex-col md:items-center md:justify-between min-h-0 md:min-h-[200px]"
       style={cardStyle === 'gradient' ? { background: cardBg } : { backgroundColor: cardBg }}
     >
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{ background: `radial-gradient(circle at 50% 0%, ${accentColor}18, transparent 70%)` }}
+        aria-hidden
+      />
       {TierIcon && tierIconColor && (
-        <div className="absolute top-3 right-3 w-6 h-6 md:w-7 md:h-7" style={{ color: tierIconColor }} aria-hidden>
-          <TierIcon className="w-full h-full" strokeWidth={1.5} />
+        <div className="absolute top-3 right-3 w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-white/5" style={{ color: tierIconColor }} aria-hidden>
+          <TierIcon className="w-4 h-4 md:w-5 md:h-5" strokeWidth={1.5} />
         </div>
       )}
 
@@ -402,9 +603,9 @@ function PartnerCard({ company, accentColor, cardBg, cardStyle = 'solid', TierIc
 
       {/* Click here - below on both */}
       {clickToSeeDetailsLabel && (
-        <span className="mt-3 md:mt-4 text-sm font-medium inline-flex items-center gap-1.5" style={{ color: clickDetailsColor || '#22d3ee' }}>
+        <span className="relative mt-3 md:mt-4 text-sm font-medium inline-flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity" style={{ color: clickDetailsColor || '#22d3ee' }}>
           {clickToSeeDetailsLabel}
-          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          <svg className="w-4 h-4 flex-shrink-0 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </span>
       )}
     </button>

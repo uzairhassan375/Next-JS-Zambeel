@@ -30,7 +30,9 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
     }
   };
   
-  const formattedPrice = formatPrice(priceValue, isLast);
+  const formattedPrice = plan.pricePeriodTranslationKey
+    ? { main: priceValue, period: ` ${t(plan.pricePeriodTranslationKey)}` }
+    : formatPrice(priceValue, isLast);
   
   // Translate plan name and tag
   const planName = plan.nameTranslationKey ? t(plan.nameTranslationKey) : plan.name;

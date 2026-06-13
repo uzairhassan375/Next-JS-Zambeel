@@ -29,8 +29,8 @@
       "whatsapp": "WhatsApp",
       "facebook": "Facebook",
       "linkedin": "LinkedIn",
-      "becomeASupplier": "Become a supplier",
-      "trustedPartners": "Become a Partner",
+      "becomeASupplier": "Become a Supplier",
+      "trustedPartners": "Agency Program",
       "selectLanguage": "Select language",
       "toggleMenu": "Toggle menu",
       "languageEnglish": "English",
@@ -578,6 +578,7 @@
     "globalSubtitle": "A trusted network of high-performing partners, driving growth and innovation across markets.",
     "subtitle": "Connect with trusted partners who can help grow your business",
     "becomePartner": "Become a Partner",
+    "becomePartnerSubtitle": "Join our global network and start earning with every merchant you onboard.",
     "trustedWorldwide": "Trusted Worldwide",
     "ourEsteemedPartners": "Our Esteemed Partners",
     "partnersSubtitle": "Trusted partners helping businesses grow and succeed",
@@ -595,7 +596,124 @@
     "phone": "Phone",
     "website": "Website",
     "clickHereToSeeDetails": "Click here to see details",
-    "loading": "Loading partners..."
+    "loading": "Loading partners...",
+    "agenciesByPlan": "Explore agencies by plan",
+    "noAgenciesInTier": "No agencies in this tier yet.",
+    "tabs": {
+      "gold": "Gold",
+      "silver": "Silver",
+      "diamond": "Diamond"
+    },
+    "whyZambeel": {
+      "badge": "Partner Benefits",
+      "title": "Why with",
+      "titleHighlight": "Zambeel",
+      "subtitle": "Turn your merchant network into recurring revenue with commissions, unified dashboards, and enterprise-grade dropshipping infrastructure.",
+      "portalCta": "Sign up here",
+      "stats": {
+        "earnings": {
+          "value": "25K AED",
+          "label": "Extra income potential / month"
+        },
+        "dashboard": {
+          "value": "1 Account",
+          "label": "Manage all your merchants"
+        },
+        "commission": {
+          "value": "Auto",
+          "label": "Payout per delivered order"
+        }
+      },
+      "features": {
+        "income": {
+          "title": "Up to 25,000 AED extra/month",
+          "desc": "Turn your client base into recurring income."
+        },
+        "dashboard": {
+          "title": "All clients, one account",
+          "desc": "Manage every merchant from a single dashboard."
+        },
+        "commission": {
+          "title": "More delivered = more commission",
+          "desc": "Automatic payout on every delivered order."
+        },
+        "unified": {
+          "title": "Everything in one place",
+          "desc": "Stores, tickets, invoices and orders unified."
+        }
+      }
+    },
+    "pricing": {
+      "title": "Agency Partner Plans",
+      "subtitle": "Choose your plan · Scale your business · Earn cashback rewards",
+      "cashbackPrefix": "Earn up to",
+      "cashbackAmount": "25,000 AED",
+      "cashbackSuffix": "in cashback rewards as you grow",
+      "plans": {
+        "free": {
+          "tag": "FREE",
+          "name": "Free",
+          "period": "No fee"
+        },
+        "gold": {
+          "tag": "GOLD",
+          "name": "Gold",
+          "period": "/month"
+        },
+        "diamond": {
+          "tag": "DIAMOND",
+          "name": "Diamond",
+          "period": "/6 months"
+        }
+      },
+      "features": {
+        "affiliateEarningLimited": "Affiliate earning: Limited",
+        "affiliateEarningUnlimited": "Affiliate earning: Unlimited",
+        "dropshippingMarkets3": "Dropshipping markets: 3 markets",
+        "dropshippingMarketsAll": "Dropshipping markets: All (excl. USA)",
+        "clientReferral": "Client referral from Zambeel",
+        "winningProducts": "Winning products & creatives",
+        "prioritySupport": "Priority support",
+        "socialMediaPromotion": "Social media promotion",
+        "validity1Month": "Validity: 1 month",
+        "validity6Months": "Validity: 6 months",
+        "validity": "Validity"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about joining the Zambeel Agency Program.",
+      "items": {
+        "whoCanApply": {
+          "question": "Who can apply for the Zambeel Agency Program?",
+          "answer": "Marketing agencies, e-commerce consultancies, and freelancers who manage one or more online merchants are eligible."
+        },
+        "commission": {
+          "question": "How is commission calculated?",
+          "answer": "You earn a fixed commission per successfully delivered order across all merchants linked to your Agency ID. Higher monthly volume means higher rates."
+        },
+        "payment": {
+          "question": "When and how do I get paid?",
+          "answer": "Commissions are calculated monthly and paid out within 7 business days of month-end via bank transfer to your registered account."
+        },
+        "documents": {
+          "question": "What documents do I need to apply?",
+          "answer": "For the application, just your agency name, your picture and identity proof."
+        },
+        "approval": {
+          "question": "How long does approval take?",
+          "answer": "Most applications are reviewed within 3-5 business days. We'll email you the decision and next steps."
+        },
+        "multipleMerchants": {
+          "question": "Can I manage multiple merchants under one account?",
+          "answer": "Yes — one Agency Account gives you access to every merchant store you onboard, with consolidated reports."
+        },
+        "setupFee": {
+          "question": "Is there a setup fee or monthly cost?",
+          "answer": "No. Joining the Zambeel Agency Program is free — no setup fees, no subscriptions."
+        }
+      }
+    }
   },
   "superClass": {
     "ticker": "Starts 27th March 2026 · Live Online",
