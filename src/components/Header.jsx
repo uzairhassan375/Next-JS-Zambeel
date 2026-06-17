@@ -231,7 +231,10 @@ export default function Header({ theme = "dark" }) {
           >
             {t('header.dropshippingProducts')}
           </a>
-          <Link href={getLocalePath('/pages/partner-agencies', pathname)} className={`${hoverColor} transition`}>
+          <Link
+            href={getLocalePath('/pages/partner-agencies', pathname)}
+            className="bg-[#FCD64C] text-[#2D3E7E] px-4 py-2 rounded-full font-bold transition hover:brightness-95"
+          >
             {t('header.trustedPartners')}
           </Link>
           <div
@@ -611,7 +614,7 @@ export default function Header({ theme = "dark" }) {
             <Link
               href={getLocalePath('/pages/partner-agencies', pathname)}
               onClick={() => setShowMobileMenu(false)}
-              className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition text-left w-full`}
+              className="inline-block bg-[#FCD64C] text-[#2D3E7E] px-4 py-2 rounded-full text-[15px] font-bold transition hover:brightness-95"
             >
               {t('header.trustedPartners')}
             </Link>

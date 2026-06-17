@@ -6,7 +6,7 @@ const COLLAPSED_HEIGHT = 120; // Height for the collapsed state
 const EXPANDED_HEIGHT = 500; // Fixed height when the card is fully expanded
 
 // --- Pricing Card Component ---
-const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false, isMiddle = false, cardIndex = 0 }) => {
+const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false, isMiddle = false, cardIndex = 0, ctaLabelKey = null, ctaHref = null }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const priceValue = isMonthly ? plan.monthlyPrice : plan.yearlyPrice;
@@ -37,6 +37,18 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
   // Translate plan name and tag
   const planName = plan.nameTranslationKey ? t(plan.nameTranslationKey) : plan.name;
   const planTag = plan.tagTranslationKey ? t(plan.tagTranslationKey) : plan.tag;
+  const buttonLabel = plan.ctaLabelTranslationKey
+    ? t(plan.ctaLabelTranslationKey)
+    : ctaLabelKey
+      ? t(ctaLabelKey)
+      : cardIndex === 0
+        ? t('pricing.buttons.getStarted')
+        : cardIndex === 1
+          ? t('pricing.buttons.buyGold')
+          : cardIndex === 2
+            ? t('pricing.buttons.buyDiamond')
+            : t('pricing.buttons.getStarted');
+  const buttonHref = plan.ctaHref || ctaHref || 'https://portal.myzambeel.com/login';
 
   // Determine card styling based on active state
   const cardHeight = isActive ? 'auto' : `${COLLAPSED_HEIGHT}px`;
@@ -187,7 +199,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
               })}
             </ul>
             <a
-              href="https://portal.myzambeel.com/login"
+              href={buttonHref}
               target="_blank"
               rel="noopener noreferrer"
               className={`w-full font-semibold py-3 rounded-xl shadow-lg hover:opacity-95 transition-all text-base mt-auto transform hover:scale-[1.02] active:scale-95 text-center block ${
@@ -201,7 +213,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
                   : '0 4px 15px rgba(36, 58, 134, 0.4)',
               }}
             >
-              {cardIndex === 0 ? t('pricing.buttons.getStarted') : cardIndex === 1 ? t('pricing.buttons.buyGold') : cardIndex === 2 ? t('pricing.buttons.buyDiamond') : t('pricing.buttons.getStarted')} →
+              {buttonLabel} →
             </a>
           </div>
         </div>

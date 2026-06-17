@@ -573,9 +573,10 @@
   },
   "partnerAgencies": {
     "title": "Partner Network",
-    "globalTitlePrefix": "Our Global",
-    "globalTitle": "Partner Network",
-    "globalSubtitle": "A trusted network of high-performing partners, driving growth and innovation across markets.",
+    "globalTitlePrefix": "Zambeel Marketing Agency",
+    "globalTitle": "Program",
+    "globalSubtitle": "Manage all your clients under one account and earn upto 25,000 AED extra commission",
+    "applyNow": "Apply Now",
     "subtitle": "Connect with trusted partners who can help grow your business",
     "becomePartner": "Become a Partner",
     "becomePartnerSubtitle": "Join our global network and start earning with every merchant you onboard.",
@@ -605,23 +606,23 @@
       "diamond": "Diamond"
     },
     "whyZambeel": {
-      "badge": "Partner Benefits",
+      "badge": "Agency Benefits",
       "title": "Why with",
       "titleHighlight": "Zambeel",
       "subtitle": "Turn your merchant network into recurring revenue with commissions, unified dashboards, and enterprise-grade dropshipping infrastructure.",
       "portalCta": "Sign up here",
       "stats": {
+        "dashboard": {
+          "value": "One Account",
+          "label": "Manage all your clients"
+        },
         "earnings": {
-          "value": "25K AED",
+          "value": "25,000 AED",
           "label": "Extra income potential / month"
         },
-        "dashboard": {
-          "value": "1 Account",
-          "label": "Manage all your merchants"
-        },
-        "commission": {
-          "value": "Auto",
-          "label": "Payout per delivered order"
+        "support": {
+          "value": "Priority Support",
+          "label": "Dedicated Account Manager"
         }
       },
       "features": {
@@ -644,7 +645,7 @@
       }
     },
     "pricing": {
-      "title": "Agency Partner Plans",
+      "title": "Agency Plans",
       "subtitle": "Choose your plan · Scale your business · Earn cashback rewards",
       "cashbackPrefix": "Earn up to",
       "cashbackAmount": "25,000 AED",
@@ -670,7 +671,7 @@
         "affiliateEarningLimited": "Affiliate earning: Limited",
         "affiliateEarningUnlimited": "Affiliate earning: Unlimited",
         "dropshippingMarkets3": "Dropshipping markets: 3 markets",
-        "dropshippingMarketsAll": "Dropshipping markets: All (excl. USA)",
+        "dropshippingMarketsAll": "Dropshipping markets: All",
         "clientReferral": "Client referral from Zambeel",
         "winningProducts": "Winning products & creatives",
         "prioritySupport": "Priority support",

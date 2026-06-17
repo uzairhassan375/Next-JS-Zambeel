@@ -11,7 +11,9 @@ const PricingSection = ({
   title = "Clear Pricing. Great Value.",
   subtitle = "Click on any plan to see full details and features.",
   defaultActiveIndex = null,
-  customPlans = null 
+  customPlans = null,
+  ctaLabelKey = null,
+  ctaHref = null,
 }) => {
   const { t } = useTranslation();
   const [isDesktop, setIsDesktop] = useState(false);
@@ -72,6 +74,8 @@ const PricingSection = ({
                 isLast={idx === plans.length - 1}
                 isMiddle={isMiddle}
                 cardIndex={idx}
+                ctaLabelKey={ctaLabelKey}
+                ctaHref={ctaHref}
               />
               {/* Terms and conditions notice - shown below active card on mobile, hidden on desktop */}
               {!isDesktop && isActiveCard && (
