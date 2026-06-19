@@ -206,18 +206,34 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
       className="min-h-screen overflow-x-hidden relative -mt-20 pt-20"
       style={{ background: PAGE_BG }}
     >
-      <div className="absolute left-[3%] top-[30%] hidden md:block pointer-events-none">
-        <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
-        </svg>
-      </div>
-      <div className="absolute right-[3%] top-[40%] hidden md:block pointer-events-none">
-        <svg width="100" height="110" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
-        </svg>
-      </div>
-
       <section className="relative pt-24 md:pt-28 pb-8 md:pb-10 px-4 md:px-6 text-center overflow-hidden">
+        <div className="absolute left-[3%] top-[50%] hidden md:block pointer-events-none" aria-hidden>
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
+          </svg>
+        </div>
+        <div className="absolute left-[3%] top-[64%] hidden md:block pointer-events-none" aria-hidden>
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
+          </svg>
+        </div>
+        <div className="absolute right-[4%] top-[10%] hidden md:block pointer-events-none" aria-hidden>
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
+          </svg>
+        </div>
+        <div className="absolute right-[4%] top-[25%] hidden md:block pointer-events-none" aria-hidden>
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
+          </svg>
+        </div>
+        <div className="absolute left-1/2 top-[50%] -translate-x-1/2 hidden md:block pointer-events-none" aria-hidden>
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 max-w-6xl mx-auto">
         <h1
           className="text-[28px] md:text-[44px] lg:text-[52px] font-bold mb-5 md:mb-6 leading-tight text-white"
           style={{ fontFamily: 'DM Sans, sans-serif' }}
@@ -238,6 +254,7 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
           {c('applyNow', 'Apply Now')}
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
         </a>
+        </div>
       </section>
 
       <section className="relative pb-10 md:pb-14">

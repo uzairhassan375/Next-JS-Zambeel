@@ -48,7 +48,7 @@ export default function AgencyWhySection({ getCopy }) {
             className="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-3.5 rounded-full font-bold text-sm md:text-base text-[#243a86] bg-[#ffd24c] hover:bg-[#ffc933] transition-all hover:scale-[1.03] shadow-lg"
             style={{ fontFamily: 'DM Sans, sans-serif' }}
           >
-            {c('portalCta', 'Sign up here')}
+            {c('portalCta', 'Apply Now')}
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>

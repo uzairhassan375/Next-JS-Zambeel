@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const FAQ_KEYS = [
@@ -11,13 +11,12 @@ const FAQ_KEYS = [
   'documents',
   'approval',
   'multipleMerchants',
-  'setupFee',
 ];
 
 export default function AgencyFaqSection({ getCopy }) {
   const { t } = useTranslation();
   const c = getCopy || ((key, fallback = '') => t(`partnerAgencies.faq.${key}`, fallback));
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
 
   return (
     <section className="relative px-4 md:px-6 pb-16 md:pb-20">
@@ -34,49 +33,36 @@ export default function AgencyFaqSection({ getCopy }) {
           </p>
         </div>
 
-        <div className="rounded-2xl md:rounded-3xl border border-white/60 bg-white/95 overflow-hidden shadow-xl backdrop-blur-sm">
+        <div className="flex flex-col gap-3 md:gap-4">
           {FAQ_KEYS.map((key, index) => {
             const isOpen = openIndex === index;
-            const isLast = index === FAQ_KEYS.length - 1;
             return (
               <div
                 key={key}
-                className={`${!isLast ? 'border-b border-gray-100' : ''} ${
-                  isOpen ? 'bg-blue-50/50' : ''
-                }`}
+                className="rounded-xl md:rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md"
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                  className={`w-full flex items-center justify-between gap-4 px-5 md:px-6 py-4 md:py-5 text-left transition-colors ${
-                    isOpen
-                      ? 'border-l-2 border-l-[#2E3B78]'
-                      : 'border-l-2 border-l-transparent hover:bg-gray-50'
-                  }`}
+                  className="w-full flex items-center justify-between gap-4 px-5 md:px-6 py-4 md:py-5 text-left"
                   aria-expanded={isOpen}
                 >
                   <span
-                    className={`text-sm md:text-base font-bold leading-snug transition-colors ${
-                      isOpen ? 'text-[#2E3B78]' : 'text-gray-800'
-                    }`}
+                    className="text-sm md:text-base font-semibold text-gray-800 leading-snug"
                     style={{ fontFamily: 'DM Sans, sans-serif' }}
                   >
                     {c(`items.${key}.question`)}
                   </span>
-                  <span
-                    className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center transition-colors ${
-                      isOpen ? 'bg-[#2E3B78]/10 text-[#2E3B78]' : 'bg-gray-100 text-gray-500'
-                    }`}
-                  >
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
+                  <span className="shrink-0 text-gray-700" aria-hidden="true">
+                    {isOpen ? (
+                      <Minus className="w-5 h-5" strokeWidth={2} />
+                    ) : (
+                      <Plus className="w-5 h-5" strokeWidth={2} />
+                    )}
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="px-5 md:px-6 pb-4 md:pb-5 -mt-1 border-l-2 border-l-[#2E3B78]">
+                  <div className="px-5 md:px-6 pb-4 md:pb-5 pt-0">
                     <p className="text-sm md:text-[15px] text-gray-600 leading-relaxed">
                       {c(`items.${key}.answer`)}
                     </p>

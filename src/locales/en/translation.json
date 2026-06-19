@@ -573,7 +573,7 @@
   },
   "partnerAgencies": {
     "title": "Partner Network",
-    "globalTitlePrefix": "Zambeel Marketing Agency",
+    "globalTitlePrefix": "Zambeel Agency",
     "globalTitle": "Program",
     "globalSubtitle": "Manage all your clients under one account and earn upto 25,000 AED extra commission",
     "applyNow": "Apply Now",
@@ -609,7 +609,7 @@
       "badge": "Agency Benefits",
       "title": "Agency Benefits",
       "subtitle": "Turn your merchant network into recurring revenue with commissions, unified dashboards, and enterprise-grade dropshipping infrastructure.",
-      "portalCta": "Sign up here",
+      "portalCta": "Apply Now",
       "stats": {
         "dashboard": {
           "value": "One Account",
