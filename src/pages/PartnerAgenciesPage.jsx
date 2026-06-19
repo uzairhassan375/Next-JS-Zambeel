@@ -160,33 +160,13 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
     setSelectedTier(null);
   };
 
-  const renderTierBadge = (tierKey, tierLabel) => {
-    const colors = TIER_COLORS[tierKey];
-    return (
-      <div className="text-center mb-4 md:mb-6">
-        <div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold border"
-          style={{
-            color: colors.headingColor,
-            borderColor: `${colors.accent}40`,
-            backgroundColor: `${colors.accent}15`,
-          }}
-        >
-          {colors.TierIcon && <colors.TierIcon className="w-4 h-4" strokeWidth={1.75} />}
-          {tierLabel}
-        </div>
-      </div>
-    );
-  };
-
-  const renderTierContent = (tierKey, tierLabel) => {
+  const renderTierContent = (tierKey) => {
     const list = companies[tierKey] || [];
     const colors = TIER_COLORS[tierKey];
 
     if (list.length === 0) {
       return (
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          {renderTierBadge(tierKey, tierLabel)}
           <div className="rounded-2xl border border-gray-200 bg-gray-50 px-6 py-14 md:py-16 text-center">
             <div
               className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center"
@@ -201,14 +181,11 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
     }
 
     return (
-      <>
-        <div className="max-w-6xl mx-auto px-4 md:px-6">{renderTierBadge(tierKey, tierLabel)}</div>
-        <AgencyLogoTicker
-          companies={list}
-          onLogoClick={(company) => openDetails(company, tierKey)}
-          getInitials={getInitials}
-        />
-      </>
+      <AgencyLogoTicker
+        companies={list}
+        onLogoClick={(company) => openDetails(company, tierKey)}
+        getInitials={getInitials}
+      />
     );
   };
 
@@ -290,9 +267,9 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
           </div>
         </div>
 
-        {activeAgencyTier === 'diamond' && renderTierContent('diamond', c('diamondPartners'))}
-        {activeAgencyTier === 'gold' && renderTierContent('gold', c('goldPartners'))}
-        {activeAgencyTier === 'silver' && renderTierContent('silver', c('silverPartners'))}
+        {activeAgencyTier === 'diamond' && renderTierContent('diamond')}
+        {activeAgencyTier === 'gold' && renderTierContent('gold')}
+        {activeAgencyTier === 'silver' && renderTierContent('silver')}
       </section>
 
       <div

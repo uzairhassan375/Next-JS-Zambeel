@@ -23,9 +23,6 @@ export default function AgencyFaqSection({ getCopy }) {
     <section className="relative px-4 md:px-6 pb-16 md:pb-20">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8 md:mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/50 bg-white/90 text-[#2E3B78] text-xs md:text-sm mb-4 shadow-sm">
-            FAQ
-          </div>
           <h2
             className="text-2xl md:text-3xl font-bold text-white mb-2"
             style={{ fontFamily: 'DM Sans, sans-serif' }}

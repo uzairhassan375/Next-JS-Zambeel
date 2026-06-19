@@ -15,15 +15,11 @@ export default function AgencyWhySection({ getCopy }) {
     <section className="relative px-4 md:px-6 py-14 md:py-16 overflow-hidden">
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-8 md:mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/50 bg-white/90 text-[#2E3B78] text-xs md:text-sm mb-5 shadow-sm">
-            {c('badge', 'Agency Benefits')}
-          </div>
           <h2
             className="text-2xl md:text-4xl font-bold text-white mb-4"
             style={{ fontFamily: 'DM Sans, sans-serif' }}
           >
-            {c('title', 'Why with')}{' '}
-            <span className="text-[#FCD64C]">{c('titleHighlight', 'Zambeel')}</span>
+            {c('title', 'Agency Benefits')}
           </h2>
         </div>
 
