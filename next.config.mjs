@@ -41,6 +41,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.myzambeel.com' }],
+        destination: 'https://myzambeel.com/:path*',
+        permanent: true,
+      },
+      {
         source: '/pages/products',
         destination: 'https://products.myzambeel.com',
         permanent: true,
