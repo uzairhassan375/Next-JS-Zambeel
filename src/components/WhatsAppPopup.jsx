@@ -6,6 +6,27 @@ import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import Image from 'next/image';
 const blue_logoImage = '/blue_logo.png';
+const POPUP_STORAGE_KEY = 'zambeel_whatsapp_popup_last_shown';
+const POPUP_INTERVAL_MS = 6 * 60 * 60 * 1000;
+
+function shouldShowPopup() {
+  if (typeof window === 'undefined') return false;
+  try {
+    const lastShown = localStorage.getItem(POPUP_STORAGE_KEY);
+    if (!lastShown) return true;
+    return Date.now() - Number(lastShown) >= POPUP_INTERVAL_MS;
+  } catch {
+    return true;
+  }
+}
+
+function markPopupShown() {
+  try {
+    localStorage.setItem(POPUP_STORAGE_KEY, String(Date.now()));
+  } catch {
+    // ignore storage errors
+  }
+}
 
 export default function WhatsAppPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,9 +36,11 @@ export default function WhatsAppPopup() {
 
 
   useEffect(() => {
-    // Show popup after 2.5 seconds
+    if (!shouldShowPopup()) return undefined;
+
     const timer = setTimeout(() => {
       setIsOpen(true);
+      markPopupShown();
     }, 2500);
 
     return () => clearTimeout(timer);
