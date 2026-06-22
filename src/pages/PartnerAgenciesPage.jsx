@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Image from 'next/image';
 import { Gem, Crown, Medal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PricingSection from '../components/PricingSection';
@@ -63,9 +62,6 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
   const c = (key, fallback = '') => initialCopy?.[key] ?? t(`partnerAgencies.${key}`, fallback);
   const [agencies, setAgencies] = useState(initialAgencies ?? []);
   const [loading, setLoading] = useState(typeof initialAgencies === 'undefined');
-  const [selectedCompany, setSelectedCompany] = useState(null);
-  const [selectedTier, setSelectedTier] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [activeAgencyTier, setActiveAgencyTier] = useState('diamond');
 
   const companies = useMemo(() => buildCompaniesByTier(agencies, currentLanguage), [agencies, currentLanguage]);
@@ -148,18 +144,6 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
   const getInitials = (name) =>
     name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
-  const openDetails = (company, tierKey) => {
-    setSelectedCompany(company);
-    setSelectedTier(tierKey);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedCompany(null);
-    setSelectedTier(null);
-  };
-
   const renderTierContent = (tierKey) => {
     const list = companies[tierKey] || [];
     const colors = TIER_COLORS[tierKey];
@@ -183,7 +167,6 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
     return (
       <AgencyLogoTicker
         companies={list}
-        onLogoClick={(company) => openDetails(company, tierKey)}
         getInitials={getInitials}
       />
     );
@@ -318,61 +301,6 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
       <AgencyFaqSection
         getCopy={(key, fallback) => t(`partnerAgencies.faq.${key}`, fallback)}
       />
-
-      {/* Details modal */}
-      {showModal && selectedCompany && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={closeModal}>
-          <div
-            className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="p-6 md:p-8">
-              <div className="flex justify-between items-start gap-4 mb-6">
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className={`w-16 h-16 md:w-20 md:h-20 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden p-1.5 ${selectedCompany.logo ? 'bg-gray-50 border border-gray-100' : ''}`} style={!selectedCompany.logo ? { backgroundColor: 'rgba(59, 130, 246, 0.15)' } : undefined}>
-                    {selectedCompany.logo ? (
-                      <Image src={selectedCompany.logo} alt={selectedCompany.name} width={80} height={80} className="w-full h-full object-contain" unoptimized={selectedCompany.logo?.startsWith('data:') || selectedCompany.logo?.startsWith('/api/')} />
-                    ) : (
-                      <span className="text-[#2E3B78] font-bold text-lg md:text-xl">{getInitials(selectedCompany.name)}</span>
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <h2 className="text-xl md:text-2xl font-bold text-[#2E3B78] truncate" style={{ fontFamily: 'DM Sans, sans-serif' }}>{selectedCompany.name}</h2>
-                    {selectedCompany.country?.trim() && <p className="text-[#3b82f6] text-sm">{selectedCompany.country}</p>}
-                  </div>
-                </div>
-                <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 text-2xl leading-none p-1">×</button>
-              </div>
-              <div className="space-y-4 text-sm md:text-base">
-                {selectedCompany.description?.trim() && (
-                  <div>
-                    <h3 className="text-[#2E3B78] font-semibold mb-1">{c('about')}</h3>
-                    <p className="text-gray-600 leading-relaxed">{selectedCompany.description.trim()}</p>
-                  </div>
-                )}
-                {selectedCompany.contact?.trim() && (
-                  <div>
-                    <h3 className="text-[#2E3B78] font-semibold mb-1">{c('contact')}</h3>
-                    <p className="text-gray-600">{selectedCompany.contact.trim()}</p>
-                  </div>
-                )}
-                {selectedCompany.phone?.trim() && (
-                  <div>
-                    <h3 className="text-[#2E3B78] font-semibold mb-1">{c('phone')}</h3>
-                    <a href={`tel:${selectedCompany.phone.replace(/\s/g, '')}`} className="text-gray-600 hover:text-[#3b82f6]" dir="ltr">{selectedCompany.phone.trim()}</a>
-                  </div>
-                )}
-                {selectedCompany.website?.trim() && (
-                  <div>
-                    <h3 className="text-[#2E3B78] font-semibold mb-1">{c('website')}</h3>
-                    <a href={selectedCompany.website.startsWith('http') ? selectedCompany.website : `https://${selectedCompany.website}`} target="_blank" rel="noopener noreferrer" className="text-[#3b82f6] hover:underline break-all" dir="ltr">{selectedCompany.website.trim()}</a>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

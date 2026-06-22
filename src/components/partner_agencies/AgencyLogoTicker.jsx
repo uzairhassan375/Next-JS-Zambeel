@@ -1,20 +1,23 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Marquee from 'react-fast-marquee';
 
-export default function AgencyLogoTicker({ companies, onLogoClick, getInitials }) {
+export default function AgencyLogoTicker({ companies, getInitials }) {
+  const [isPaused, setIsPaused] = useState(false);
+
   if (!companies?.length) return null;
 
   return (
     <div className="relative w-full overflow-hidden py-4 md:py-6">
-      <Marquee pauseOnHover speed={40} gradient gradientWidth={64} gradientColor={[45, 62, 126]} autoFill>
-        {companies.map((company) => (
-          <button
-            key={company.id}
-            type="button"
-            onClick={() => onLogoClick(company)}
-            className="group mx-4 md:mx-6 flex w-[110px] md:w-[140px] flex-shrink-0 flex-col items-stretch bg-transparent focus:outline-none"
+      <Marquee play={!isPaused} speed={40} gradient gradientWidth={64} gradientColor={[45, 62, 126]} autoFill>
+        {companies.map((company, index) => (
+          <div
+            key={`${company.id}-${index}`}
+            className="group mx-4 md:mx-6 flex w-[110px] md:w-[140px] flex-shrink-0 flex-col items-stretch"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
             aria-label={company.name}
             title={company.name}
           >
@@ -37,8 +40,11 @@ export default function AgencyLogoTicker({ companies, onLogoClick, getInitials }
                 </span>
               )}
             </span>
-            <span className="h-0.5 w-full rounded-full bg-white/80 transition-colors duration-200 group-hover:bg-white" />
-          </button>
+            <span className="relative block h-0.5 w-full" aria-hidden>
+              <span className="absolute inset-0 rounded-full bg-white/70" />
+              <span className="absolute inset-0 rounded-full bg-white origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </span>
+          </div>
         ))}
       </Marquee>
     </div>
