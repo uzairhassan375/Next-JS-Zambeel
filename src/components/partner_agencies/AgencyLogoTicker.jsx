@@ -10,7 +10,7 @@ export default function AgencyLogoTicker({ companies, getInitials }) {
   if (!companies?.length) return null;
 
   return (
-    <div className="relative mx-0 overflow-hidden rounded-none border-y border-white/10 bg-white/[0.04] px-3 py-5 shadow-[0_10px_40px_rgba(2,6,23,0.22)] backdrop-blur-sm sm:px-4 md:px-6 md:py-6 md:pt-7">
+    <div className="relative mx-0 overflow-hidden rounded-none border-y border-white/10 bg-white/[0.04] px-3 py-2 shadow-[0_10px_40px_rgba(2,6,23,0.22)] backdrop-blur-sm sm:px-4 md:px-6 md:py-3 md:pt-4">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_62%)]" />
       <Marquee play={!isPaused} speed={40} gradient gradientWidth={64} gradientColor={[45, 62, 126]} autoFill>
         {companies.map((company, index) => (
@@ -22,7 +22,7 @@ export default function AgencyLogoTicker({ companies, getInitials }) {
             aria-label={company.name}
             title={company.name}
           >
-            <div className="flex h-[80px] w-full items-center justify-center px-2 pt-0.5 pb-0 transition-all duration-300 group-hover:-translate-y-1">
+            <div className="flex h-[64px] w-full items-center justify-center px-2 pt-0.5 pb-0 transition-all duration-300 group-hover:-translate-y-1">
               {company.logo ? (
                 <Image
                   src={company.logo}
