@@ -190,57 +190,54 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
       style={{ background: PAGE_BG }}
     >
       <section className="relative pt-24 md:pt-28 pb-8 md:pb-10 px-4 md:px-6 text-center overflow-hidden">
-        <div className="absolute left-[3%] top-[50%] hidden md:block pointer-events-none" aria-hidden>
+        <div className="absolute left-[3%] top-[56%] block pointer-events-none opacity-70 scale-75 origin-left md:scale-100 md:opacity-100" aria-hidden>
           <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
           </svg>
         </div>
-        <div className="absolute left-[3%] top-[64%] hidden md:block pointer-events-none" aria-hidden>
+        <div className="absolute left-[3%] top-[76%] block pointer-events-none opacity-70 scale-75 origin-left md:scale-100 md:opacity-100" aria-hidden>
           <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
           </svg>
         </div>
-        <div className="absolute right-[4%] top-[10%] hidden md:block pointer-events-none" aria-hidden>
+        <div className="absolute right-[4%] top-[26%] block pointer-events-none opacity-70 scale-75 origin-right md:scale-100 md:opacity-100" aria-hidden>
           <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
           </svg>
         </div>
-        <div className="absolute right-[4%] top-[25%] hidden md:block pointer-events-none" aria-hidden>
+        <div className="absolute right-[4%] top-[46%] block pointer-events-none opacity-70 scale-75 origin-right md:scale-100 md:opacity-100" aria-hidden>
           <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
           </svg>
         </div>
-        <div className="absolute left-1/2 top-[50%] -translate-x-1/2 hidden md:block pointer-events-none" aria-hidden>
-          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3" />
-          </svg>
-        </div>
-
         <div className="relative z-10 max-w-6xl mx-auto">
-        <h1
-          className="text-[28px] md:text-[44px] lg:text-[52px] font-bold mb-5 md:mb-6 leading-tight text-white"
-          style={{ fontFamily: 'DM Sans, sans-serif' }}
-        >
-          {c('globalTitlePrefix')}{' '}
-          <span className="text-[#FCD64C]">{c('globalTitle')}</span>
-        </h1>
-        <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-          {c('globalSubtitle')}
-        </p>
-        <a
-          href={PARTNER_PORTAL_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-bold text-sm md:text-base text-[#243a86] bg-[#ffd24c] hover:bg-[#ffc933] transition-all hover:scale-[1.03] shadow-lg mb-8"
-          style={{ fontFamily: 'DM Sans, sans-serif' }}
-        >
-          {c('applyNow', 'Apply Now')}
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-        </a>
+          <h3
+            className="text-[26px] md:text-[44px] font-bold text-white mt-8 md:mt-0 mb-4 md:mb-6"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {c('globalTitlePrefix')}{' '}
+            <span className="text-[#FCD64C]">{c('globalTitle')}</span>
+          </h3>
+          <p
+            className="text-[14px] md:text-[20px] font-normal italic text-white/95 max-w-3xl mx-auto mb-4 md:mb-5"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {c('globalSubtitle')}
+          </p>
+          <a
+            href={PARTNER_PORTAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-bold text-sm md:text-base text-[#243a86] bg-[#ffd24c] hover:bg-[#ffc933] transition-all duration-300 shadow-lg mb-8"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {c('applyNow', 'Apply Now')}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
         </div>
       </section>
 
-      <section className="relative pb-10 md:pb-14">
+      <section className="relative pb-10 md:pb-14 pt-8 md:pt-10">
         <div className="max-w-6xl mx-auto px-4 md:px-6 mb-8 md:mb-10">
           <div className="flex justify-center">
             <div className="inline-flex items-center gap-1 p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-white/60 shadow-lg">
