@@ -140,7 +140,7 @@ export default function AdminPartnerAgencyForm({ agencyId, initialData, initialL
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700 mb-1">Logo</label>
-        <p className="text-xs text-gray-500 mb-2">Upload to Cloudinary for fast loading (URL stored in DB). Or choose a file to embed.</p>
+        <p className="text-xs text-gray-500 mb-2">Upload to Cloudinary for fast loading, choose a file to embed, or paste an external image URL from Shopify or another source.</p>
         <div className="flex flex-wrap items-center gap-3">
           {useCloudinary && (
             <CldUploadWidget
@@ -205,6 +205,7 @@ export default function AdminPartnerAgencyForm({ agencyId, initialData, initialL
                 setImageFile(null);
                 setRemoveImage(true);
                 setImagePreview(null);
+                update('logo', '');
                 document.getElementById('agency-logo-file').value = '';
               }}
               className="text-sm text-red-600 hover:underline"
@@ -212,6 +213,22 @@ export default function AdminPartnerAgencyForm({ agencyId, initialData, initialL
               Remove image
             </button>
           )}
+        </div>
+        <div className="mt-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Or paste logo URL</label>
+          <input
+            type="url"
+            value={form.logo || ''}
+            placeholder="https://cdn.shopify.com/..."
+            onChange={(e) => {
+              const nextValue = e.target.value;
+              setImageFile(null);
+              setRemoveImage(false);
+              setImagePreview(nextValue || null);
+              update('logo', nextValue);
+            }}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#1e3a8a]"
+          />
         </div>
         {imagePreview && !removeImage && (
           <div className="mt-2 flex items-center gap-2">
