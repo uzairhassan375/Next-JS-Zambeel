@@ -188,14 +188,14 @@ const SuperClassPage = () => {
       image: '/assets/instructors/2.jpeg'
     },
     {
-      name: 'Ibrahim Ahmed',
+      name: 'Hashim',
       role: t('superClass.instructors.ibrahim.role', { defaultValue: 'Meta & TikTok Marketing Expert' }),
-      image: '/assets/instructors/3.jpeg'
+      image: '/assets/instructors/3.jpg'
     },
     {
-      name: 'Farah Kiran',
+      name: 'Amna',
       role: t('superClass.instructors.farah.role', { defaultValue: 'Shopify Store & Marketing Specialist' }),
-      image: '/assets/instructors/4.jpeg'
+      image: '/assets/instructors/4.jpg'
     }
   ];
 
