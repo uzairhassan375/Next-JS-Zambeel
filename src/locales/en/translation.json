@@ -1073,15 +1073,17 @@
       ]
     },
     "plan49": {
-      "tag": "STANDARD",
-      "name": "Quick Start Plan",
+      "tag": "GOLD",
+      "name": "Gold Plan",
       "price": "$69 / mo",
       "featureList": [
-        "No LLC & Payment Gateway required",
-        "Access to 10,000+ Products",
-        "Live Coaching Session",
-        "Product Sourcing Facility",
-        "Priority Agent Support"
+        "No LLC Required",
+        "Free Payment Merchant Access and Setup",
+        "Senior Dedicated Manager",
+        "Exclusive Winning Products",
+        "Winning Creatives & Strategy",
+        "Product Financing",
+        "WhatsApp Group Access"
       ]
     },
     "plan99": {
