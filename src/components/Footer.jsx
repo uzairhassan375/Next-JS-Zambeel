@@ -85,6 +85,11 @@ export default function Footer() {
                 {t('footer.storeIntel')}
               </a>
             </li>
+            <li>
+              <a href="https://kluck.ai/" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
+                {t('footer.kluckAi')}
+              </a>
+            </li>
           </ul>
         </div>
         <div className="pt-2 md:pl-4 flex flex-col">
