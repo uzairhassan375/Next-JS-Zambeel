@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import PricingSection from "../components/PricingSection.jsx";
 import GoldRiskFreeTickerMarquee from "../components/GoldRiskFreeTickerMarquee.jsx";
+import Ticker from "../components/Ticker.jsx";
 import TrendingProducts from "../components/dropshiping_components/TrendingProducts.jsx"; 
 import Wts from "../components/dropshiping_components/WhereTS.jsx";
 import WhyZambeel from "../components/dropshiping_components/WhyZambeel.jsx";
@@ -216,6 +217,7 @@ const DropshippingPage = () => {
             </div>
           </div>
         </div>
+        <Ticker pageId="dropshipping-usa" variant="yellow" className="mt-6 md:mt-8" />
       </section>
 
       {/* ================= I GRID (Single Large Video Frame) ================= */}

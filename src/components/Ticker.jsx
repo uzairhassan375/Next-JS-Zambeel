@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_TICKER_TEXT_AR, DEFAULT_TICKER_TEXT_EN } from '../lib/tickerPages';
+import { getDefaultTickerItem } from '../lib/tickerPages';
 import { useTickerBlinkSubtree } from '../lib/tickerBlinkRaf';
 function sanitizeTickerHtml(html) {
   if (!html) return '';
@@ -23,38 +23,45 @@ function TickerHtml({ html, isArabic }) {
   );
 }
 
-function TickerStrip({ isArabic, html }) {
+function TickerStrip({ isArabic, html, variant = 'blue' }) {
+  const isYellow = variant === 'yellow';
   return (
-    <div className="mx-6 flex items-center whitespace-nowrap text-sm text-white md:mx-10 md:text-base">
+    <div
+      className={`mx-6 flex items-center whitespace-nowrap text-sm md:mx-10 md:text-base ${
+        isYellow ? 'text-black' : 'text-white'
+      }`}
+    >
       <span className="whitespace-nowrap" dir={isArabic ? 'rtl' : 'ltr'}>
         <TickerHtml isArabic={isArabic} html={html} />
       </span>
-      <span className="mx-4 text-white/60 md:mx-6" aria-hidden>
+      <span className={`mx-4 md:mx-6 ${isYellow ? 'text-black/50' : 'text-white/60'}`} aria-hidden>
         •
       </span>
     </div>
   );
 }
 
-export default function Ticker({ pageId = 'home' }) {
+export default function Ticker({ pageId = 'home', variant = 'blue', className = '' }) {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const isArabic = String(currentLanguage).toLowerCase().startsWith('ar');
   const tickerRootRef = useRef(null);
+  const defaults = getDefaultTickerItem(pageId);
   const [ticker, setTicker] = useState({
-    textEn: DEFAULT_TICKER_TEXT_EN,
-    textAr: DEFAULT_TICKER_TEXT_AR,
+    textEn: defaults.textEn,
+    textAr: defaults.textAr,
   });
 
   useEffect(() => {
     let cancelled = false;
+    const pageDefaults = getDefaultTickerItem(pageId);
     fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`, { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!cancelled && data) {
           setTicker({
-            textEn: String(data.textEn ?? DEFAULT_TICKER_TEXT_EN),
-            textAr: String(data.textAr ?? DEFAULT_TICKER_TEXT_AR),
+            textEn: String(data.textEn ?? pageDefaults.textEn),
+            textAr: String(data.textAr ?? pageDefaults.textAr),
           });
         }
       })
@@ -66,32 +73,36 @@ export default function Ticker({ pageId = 'home' }) {
 
   const text = useMemo(() => {
     if (isArabic) {
-      return ticker.textAr?.trim() || ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_AR;
+      return ticker.textAr?.trim() || ticker.textEn?.trim() || defaults.textAr;
     }
-    return ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN;
-  }, [isArabic, ticker.textAr, ticker.textEn]);
+    return ticker.textEn?.trim() || defaults.textEn;
+  }, [isArabic, ticker.textAr, ticker.textEn, defaults.textAr, defaults.textEn]);
 
   useTickerBlinkSubtree(tickerRootRef, text);
+
+  const isYellow = variant === 'yellow';
 
   return (
     <div
       ref={tickerRootRef}
-      className="relative z-10 mt-4 w-screen overflow-hidden bg-[#2E3B78] py-2 text-white md:mt-0 md:py-3"
+      className={`relative z-10 w-screen overflow-hidden py-2 md:py-3 ${
+        isYellow ? 'bg-[#FCD64C] text-black' : 'bg-[#2E3B78] text-white'
+      } ${className || 'mt-4 md:mt-0'}`}
       style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}
     >
       <Marquee
         key={isArabic ? 'ar' : 'en'}
         speed={50}
         gradient
-        gradientColor={[46, 59, 120]}
+        gradientColor={isYellow ? [252, 214, 76] : [46, 59, 120]}
         gradientWidth={50}
         pauseOnHover
         direction={isArabic ? 'right' : 'left'}
         autoFill
       >
-        <TickerStrip isArabic={isArabic} html={text} />
-        <TickerStrip isArabic={isArabic} html={text} />
-        <TickerStrip isArabic={isArabic} html={text} />
+        <TickerStrip isArabic={isArabic} html={text} variant={variant} />
+        <TickerStrip isArabic={isArabic} html={text} variant={variant} />
+        <TickerStrip isArabic={isArabic} html={text} variant={variant} />
       </Marquee>
     </div>
   );
