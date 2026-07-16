@@ -75,7 +75,7 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
   useTickerBlinkSubtree(tickerRootRef, text);
 
   return (
-    <div ref={tickerRootRef} className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden">
+    <div ref={tickerRootRef} className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden" dir="ltr">
       <Marquee speed={50} gradient={false} pauseOnHover autoFill direction="left">
         <span className="mx-6 whitespace-nowrap text-sm md:text-base">
           <StyledTickerText html={text} isArabic={isArabic} />

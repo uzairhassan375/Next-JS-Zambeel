@@ -89,6 +89,7 @@ export default function Ticker({ pageId = 'home', variant = 'blue', className = 
         isYellow ? 'bg-[#FCD64C] text-black' : 'bg-[#2E3B78] text-white'
       } ${className || 'mt-4 md:mt-0'}`}
       style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}
+      dir="ltr"
     >
       <Marquee
         key={isArabic ? 'ar' : 'en'}
