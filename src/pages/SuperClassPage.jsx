@@ -263,7 +263,7 @@ const SuperClassPage = () => {
       </section>
 
       {/* Moving Ticker with Prominent Background */}
-      <div className="w-screen bg-[#FCD64C] py-3 overflow-hidden" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
+      <div className="w-screen bg-[#FCD64C] py-3 overflow-hidden" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }} dir="ltr">
         <Marquee 
           speed={50} 
           gradient={true} 
@@ -274,7 +274,7 @@ const SuperClassPage = () => {
           autoFill={true}
         >
           {Array.from({ length: 10 }, (_, i) => (
-            <div key={i} className="flex items-center mx-8 whitespace-nowrap text-sm md:text-base">
+            <div key={i} className="flex items-center mx-8 whitespace-nowrap text-sm md:text-base" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
               <span className="text-[#2E3B78] font-semibold" dangerouslySetInnerHTML={{ __html: safeMainTickerHtml }} />
               <span className="mx-8 text-[#2E3B78] opacity-60">•</span>
             </div>
@@ -691,14 +691,14 @@ const SuperClassPage = () => {
           </div>
 
           {/* Price Ticker */}
-          <div className="mt-8 w-screen bg-[#FCD64C] text-[#2E3B78] py-2 overflow-hidden" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
+          <div className="mt-8 w-screen bg-[#FCD64C] text-[#2E3B78] py-2 overflow-hidden" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }} dir="ltr">
             <Marquee 
               speed={40} 
               gradient={false}
               direction={currentLanguage === 'ar' ? 'right' : 'left'}
             >
               {Array.from({ length: 15 }, (_, i) => (
-                <span key={i} className="mx-4 font-bold text-sm md:text-base" dangerouslySetInnerHTML={{ __html: `${safePriceTickerHtml} •` }} />
+                <span key={i} className="mx-4 font-bold text-sm md:text-base inline-block" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'} dangerouslySetInnerHTML={{ __html: `${safePriceTickerHtml} &nbsp;•` }} />
               ))}
             </Marquee>
           </div>
