@@ -232,9 +232,6 @@ const SuperClassPage = () => {
         </div>
         <h1 className="text-[26px] md:text-[44px] font-[700] leading-[100%] tracking-[0.02em] text-center text-white mt-8 md:mt-0 mb-4 md:mb-6 relative z-10" style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: '700' }}>{t('superClass.hero.title', { defaultValue: 'Learn E-commerce' })}</h1>
         <p className="text-[20px] md:text-[30px] font-normal italic leading-[100%] tracking-[0] text-center text-white mb-2 md:mb-3" style={{ fontFamily: 'DM Sans, sans-serif' }}>{t('superClass.hero.subtitle', { defaultValue: "Don't just study e-commerce. Launch it LIVE - Step by Step with E-commerce Experts" })}</p>
-        <p className="text-[14px] md:text-[18px] font-normal leading-relaxed text-center text-white/90 max-w-3xl mx-auto px-4 mb-2" style={{ fontFamily: 'DM Sans, sans-serif' }}>
-          {t('learnEcommerce.hero.description')}
-        </p>
         <div>
           <p className="text-[14px] md:text-[20px] font-normal italic leading-[100%] tracking-[0] text-center text-white/95 max-w-3xl mx-auto px-2 min-h-[30px] md:min-h-[40px] transition-opacity duration-500 mb-2 md:mb-0" style={{ fontFamily: 'DM Sans, sans-serif' }}>
             {carouselTexts[currentTextIndex]}
@@ -691,6 +688,12 @@ const SuperClassPage = () => {
             >
               {t('superClass.cta.joinZambeel', { defaultValue: 'Join the Zambeel Super Class' })}
             </a>
+            <p
+              className="text-base md:text-lg text-[#4A5568] leading-relaxed max-w-3xl mx-auto mt-6 md:mt-8 px-4"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}
+            >
+              {t('learnEcommerce.hero.description')}
+            </p>
           </div>
 
           {/* Price Ticker */}

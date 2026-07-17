@@ -224,12 +224,6 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
           >
             {c('globalSubtitle')}
           </p>
-          <p
-            className="text-[14px] md:text-[18px] font-normal leading-relaxed text-white/90 max-w-3xl mx-auto mb-4 md:mb-5 px-2"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}
-          >
-            {c('seoIntro')}
-          </p>
           <a
             href={PARTNER_PORTAL_URL}
             target="_blank"
@@ -299,6 +293,24 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
           ctaLabelKey="partnerAgencies.applyNow"
           ctaHref={PARTNER_PORTAL_URL}
         />
+      </section>
+
+      <section className="relative z-10 py-10 md:py-12 px-4 md:px-6">
+        <div className="max-w-3xl mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-white/80 px-6 py-8 md:px-10 md:py-10 text-center">
+          <h2
+            className="text-2xl md:text-3xl font-bold text-[#2E3B78] mb-4"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {c('globalTitlePrefix')}{' '}
+            <span className="text-[#F4A623]">{c('globalTitle')}</span>
+          </h2>
+          <p
+            className="text-base md:text-lg text-[#4A5568] leading-relaxed"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {c('seoIntro')}
+          </p>
+        </div>
       </section>
 
       <AgencyFaqSection
