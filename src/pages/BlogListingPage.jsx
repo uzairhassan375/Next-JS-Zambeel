@@ -43,10 +43,13 @@ export default function BlogListingPage({ blogs = [] }) {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1e3a8a] text-center mb-6">
               {t('blog.title', { defaultValue: 'Blogs' })}
             </h1>
-            <p className="text-center text-base sm:text-lg text-gray-700 mb-12 sm:mb-16">
+            <p className="text-center text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 max-w-3xl mx-auto">
               {t('blog.subtitle', {
                 defaultValue: 'Learn more about Zambeel and our services',
               })}
+            </p>
+            <p className="text-center text-sm sm:text-base text-gray-600 mb-12 sm:mb-16 max-w-4xl mx-auto leading-relaxed">
+              {t('blog.intro')}
             </p>
 
             {blogs.length === 0 ? (

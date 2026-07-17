@@ -1,6 +1,7 @@
 import 'server-only';
 import { connectDB } from './db';
 import PageMeta from '../models/PageMeta';
+import { getCanonicalUrl } from './seo';
 
 /** Page IDs used across the site (route path without leading slash; 'home' for /) */
 export const PAGE_IDS = [
@@ -73,9 +74,16 @@ export async function buildMetadataForPage(pageId, locale, fallback) {
     (isAr ? meta?.metaDescriptionAr : meta?.metaDescriptionEn)?.trim() ||
     (isAr ? meta?.metaDescriptionEn : meta?.metaDescriptionAr)?.trim() ||
     fallback.description;
+
+  const page = PAGE_IDS.find((p) => p.id === pageId);
+  const pagePath = page?.path || '/';
+
   return {
     title,
     description,
+    alternates: {
+      canonical: getCanonicalUrl(pagePath, locale),
+    },
     openGraph: {
       title,
       description,

@@ -211,18 +211,24 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
           </svg>
         </div>
         <div className="relative z-10 max-w-6xl mx-auto">
-          <h3
+          <h1
             className="text-[26px] md:text-[44px] font-bold text-white mt-8 md:mt-0 mb-4 md:mb-6"
             style={{ fontFamily: 'DM Sans, sans-serif' }}
           >
             {c('globalTitlePrefix')}{' '}
             <span className="text-[#FCD64C]">{c('globalTitle')}</span>
-          </h3>
+          </h1>
           <p
             className="text-[14px] md:text-[20px] font-normal italic text-white/95 max-w-3xl mx-auto mb-4 md:mb-5"
             style={{ fontFamily: 'DM Sans, sans-serif' }}
           >
             {c('globalSubtitle')}
+          </p>
+          <p
+            className="text-[14px] md:text-[18px] font-normal leading-relaxed text-white/90 max-w-3xl mx-auto mb-4 md:mb-5 px-2"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {c('seoIntro')}
           </p>
           <a
             href={PARTNER_PORTAL_URL}

@@ -179,12 +179,12 @@ const AmazonServicesPage = () => {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
-          <h3
+          <h1
             className="text-[26px] md:text-[44px] font-bold text-white mt-8 md:mt-0 mb-4 md:mb-6"
             style={{ fontFamily: 'DM Sans, sans-serif' }}
           >
             {t('amazon.hero.title')}
-          </h3>
+          </h1>
           <p
             className="text-[20px] md:text-[30px] font-normal italic text-white mb-2 md:mb-3"
             style={{ fontFamily: 'DM Sans, sans-serif' }}

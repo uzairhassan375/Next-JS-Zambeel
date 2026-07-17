@@ -22,6 +22,7 @@ import PartnerAgency from '../../../models/PartnerAgency';
 import { partnerAgenciesForResponse } from '../../../lib/partnerAgencyResponse';
 import { getCachedOrFetch, getCachedPartnerAgencies } from '../../../lib/partnerAgenciesCache';
 import { buildMetadataForPage } from '../../../lib/pageMeta';
+import { buildBlogPostMetadata } from '../../../lib/blogMetadata';
 import enTranslations from '../../../locales/en/translation.json';
 import arTranslations from '../../../locales/ar/translation.json';
 
@@ -65,15 +66,7 @@ export async function generateMetadata({ params }) {
     const parts = routePath.split('/');
     if (parts.length === 2 && parts[0] === 'blog') {
       const blogSlug = parts[1];
-      return {
-        title: `${blogSlug ? blogSlug.replace(/-/g, ' ') : 'مقال المدونة'} - مدونة زمبيل`,
-        description: `اقرأ مقالنا عن ${blogSlug ? blogSlug.replace(/-/g, ' ') : 'التجارة الإلكترونية'}. احصل على رؤى ونصائح حول الدروبشيبينغ وأعمال التجارة الإلكترونية والمزيد.`,
-        openGraph: {
-          title: `${blogSlug ? blogSlug.replace(/-/g, ' ') : 'مقال المدونة'} - مدونة زمبيل`,
-          description: `اقرأ مقالنا عن ${blogSlug ? blogSlug.replace(/-/g, ' ') : 'التجارة الإلكترونية'}. احصل على رؤى ونصائح حول الدروبشيبينغ وأعمال التجارة الإلكترونية والمزيد.`,
-          type: 'article',
-        },
-      };
+      return buildBlogPostMetadata(blogSlug, 'ar');
     }
   }
   

@@ -577,6 +577,7 @@
     "globalTitlePrefix": "Zambeel Agency",
     "globalTitle": "Program",
     "globalSubtitle": "Manage all your clients under one account and earn upto 25,000 AED extra commission",
+    "seoIntro": "The Zambeel Agency Program helps marketing agencies, freelancers, and growth partners onboard merchants across the GCC and beyond. Partners get access to verified suppliers, dropshipping fulfillment, 3PL services, dedicated support, and commission-based earnings while managing multiple client stores from one portal.",
     "applyNow": "Apply Now",
     "subtitle": "Connect with trusted partners who can help grow your business",
     "becomePartner": "Become a Partner",
@@ -989,6 +990,8 @@
   },
   "blog": {
     "title": "Blogs",
+    "subtitle": "Learn more about Zambeel and our services",
+    "intro": "Explore expert guides on dropshipping, 3PL fulfillment, COD selling, product sourcing, and scaling e-commerce across the UAE, KSA, Pakistan, and global markets. Zambeel shares practical strategies, market insights, and step-by-step advice to help sellers launch faster, reduce operational risk, and grow profitably.",
     "backToBlog": "Back to Blog",
     "tiktokDropshippingSaudi": {
       "title": "How to Run a Successful TikTok Dropshipping Business in Saudi Arabia",
