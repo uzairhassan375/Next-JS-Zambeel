@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import { Check } from 'lucide-react';
@@ -10,6 +11,23 @@ export default function USDropshippingPage() {
   const isArabic = pathname?.startsWith('/ar');
   const usaTalkToUsLink =
     'https://wa.me/971568472271?text=Hey!%20I%20want%20to%20start%20dropshipping%20in%20USA%20with%20Zambeel';
+
+  // Scroll to hash target (e.g. #pricing) once async content has settled
+  useEffect(() => {
+    if (isArabic) return;
+    const hash = window.location.hash;
+    if (!hash) return;
+    const id = hash.substring(1);
+    const scrollToTarget = () => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    const timer1 = setTimeout(scrollToTarget, 150);
+    const timer2 = setTimeout(scrollToTarget, 800);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isArabic]);
 
   if (isArabic) {
     return (
@@ -134,7 +152,7 @@ export default function USDropshippingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-8">
+      <section id="pricing" className="mx-auto max-w-7xl px-4 pb-8">
         <h2 className="mb-2 text-center text-2xl font-bold text-white md:text-3xl">
           {t('usDropshipping.packagesTitle')}
         </h2>

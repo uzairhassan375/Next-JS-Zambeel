@@ -31,6 +31,22 @@ const DropshippingPage = () => {
 
     return () => clearInterval(interval);
   }, [carouselTexts.length, t]);
+
+  // Scroll to hash target (e.g. #pricing) once async content (tickers, images) has settled
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const id = hash.substring(1);
+    const scrollToTarget = () => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    const timer1 = setTimeout(scrollToTarget, 150);
+    const timer2 = setTimeout(scrollToTarget, 800);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
   return (
     <div
       className="min-h-screen m-0 p-0 overflow-x-hidden"
@@ -349,7 +365,7 @@ const DropshippingPage = () => {
           {
             label: t('deliveryCharges.orderConfirmation'),
             values: {
-              UAE: "18 AED",
+              UAE: "20 AED",
               KSA: "26 SAR",
               Kuwait: "30 AED",
               Qatar: "25 AED",

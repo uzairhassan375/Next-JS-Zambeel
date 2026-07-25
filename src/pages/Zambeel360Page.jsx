@@ -508,7 +508,7 @@ const Zambeel360Page = () => {
           {
             label: t('deliveryCharges.orderConfirmation'),
             values: {
-              UAE: "18 AED",
+              UAE: "20 AED",
               KSA: "26 SAR",
               Kuwait: "30 AED",
               Qatar: "25 AED",

@@ -45,6 +45,7 @@ const PricingSection = ({
 
   return (
     <section
+      id="pricing"
       className="w-full mx-auto py-8 md:py-8 px-4 sm:px-6 md:px-8"
       style={{
         fontFamily: "Inter, sans-serif",

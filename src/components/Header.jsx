@@ -14,6 +14,8 @@ export default function Header({ theme = "dark" }) {
   const { t, i18n } = useTranslation();
   const [showServicesDropdown, setShowServicesDropdown] = useState(false);
   const [showJoinUsDropdown, setShowJoinUsDropdown] = useState(false);
+  const [showGoldPlanDropdown, setShowGoldPlanDropdown] = useState(false);
+  const [showGoldPlanMobileDropdown, setShowGoldPlanMobileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showWhatsAppSubmenu, setShowWhatsAppSubmenu] = useState(false);
@@ -118,11 +120,14 @@ export default function Header({ theme = "dark" }) {
       if (showJoinUsDropdown && !e.target.closest('.joinus-dropdown')) {
         setShowJoinUsDropdown(false);
       }
+      if (showGoldPlanDropdown && !e.target.closest('.goldplan-dropdown')) {
+        setShowGoldPlanDropdown(false);
+      }
     };
 
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [showLanguageDropdown, showServicesDropdown, showJoinUsDropdown]);
+  }, [showLanguageDropdown, showServicesDropdown, showJoinUsDropdown, showGoldPlanDropdown]);
 
   const isLightTheme = theme === "light";
   const navBgColor = isLightTheme ? "bg-[#E8F0FE]" : "bg-[#2D3E7E]";
@@ -369,14 +374,42 @@ export default function Header({ theme = "dark" }) {
               </div>
             )}
           </div>
-          <a
-            href="https://supplier-portal-zm.vercel.app/login"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${hoverColor} transition`}
+          <div
+            className="relative goldplan-dropdown"
+            onMouseEnter={() => setShowGoldPlanDropdown(true)}
+            onMouseLeave={() => setShowGoldPlanDropdown(false)}
           >
-            {t('header.becomeASupplier')}
-          </a>
+            <button className={`transition flex items-center gap-2 ${showGoldPlanDropdown ? (isLightTheme ? 'text-[#2E3B78]' : 'text-[#FCD64C]') : servicesHoverColor}`}>
+              {t('header.goldSubscriptionPlan')}
+              <svg
+                className={`w-3 h-3 transition-transform duration-200 ${showGoldPlanDropdown ? 'rotate-180' : ''}`}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+            {showGoldPlanDropdown && (
+              <div className="absolute top-full right-0 pt-2 bg-transparent min-w-[160px] z-50">
+                <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+                  <Link
+                    href={`${getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}#pricing`}
+                    className={`block px-4 py-3 text-[#2E3B78] ${dropdownHoverColor} transition text-sm font-medium`}
+                    onClick={() => setShowGoldPlanDropdown(false)}
+                  >
+                    {t('header.gccPlan')}
+                  </Link>
+                  <Link
+                    href={`${getLocalePath('/pages/usa-dropshipping', pathname)}#pricing`}
+                    className={`block px-4 py-3 text-[#2E3B78] ${dropdownHoverColor} transition text-sm font-medium`}
+                    onClick={() => setShowGoldPlanDropdown(false)}
+                  >
+                    {t('header.usaPlan')}
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Language Dropdown */}
@@ -760,15 +793,52 @@ export default function Header({ theme = "dark" }) {
                 </div>
               )}
             </div>
-            <a
-              href="https://supplier-portal-zm.vercel.app/login"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setShowMobileMenu(false)}
-              className={`${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition`}
-            >
-              {t('header.becomeASupplier')}
-            </a>
+            <div className="relative goldplan-dropdown">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowGoldPlanMobileDropdown(!showGoldPlanMobileDropdown);
+                }}
+                className={`w-full flex items-center justify-between ${isLightTheme ? 'text-[#2E3B78]' : 'text-white'} text-[15px] font-medium py-3 ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition`}
+              >
+                <span>{t('header.goldSubscriptionPlan')}</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${showGoldPlanMobileDropdown ? "rotate-180" : ""}`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              {showGoldPlanMobileDropdown && (
+                <div className="mt-2 pl-4 space-y-2">
+                  <Link
+                    href={`${getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}#pricing`}
+                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                    onClick={() => {
+                      setShowGoldPlanMobileDropdown(false);
+                      setShowMobileMenu(false);
+                    }}
+                  >
+                    {t('header.gccPlan')}
+                  </Link>
+                  <Link
+                    href={`${getLocalePath('/pages/usa-dropshipping', pathname)}#pricing`}
+                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                    onClick={() => {
+                      setShowGoldPlanMobileDropdown(false);
+                      setShowMobileMenu(false);
+                    }}
+                  >
+                    {t('header.usaPlan')}
+                  </Link>
+                </div>
+              )}
+            </div>
             <div className={`pt-4 border-t ${isLightTheme ? 'border-[#2E3B78]/20' : 'border-white/20'}`}>
               {/* Language Dropdown for Mobile */}
 
