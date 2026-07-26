@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "./I18nProvider";
-import { getLocalePath } from "../lib/localeUtils";
+import { getLocalePath, getLanguageSwitchPath } from "../lib/localeUtils";
 const white_logoImage = "/white_logo.png";
 const blue_logoImage = "/blue_logo.png";
 
@@ -54,44 +54,11 @@ export default function Header({ theme = "dark" }) {
     return 'https://www.linkedin.com/company/myzambeel/'; // LinkedIn company page
   };
 
+  // The language options are rendered as <Link> so crawlers can follow EN <-> AR;
+  // this only syncs i18n state and closes the dropdown, navigation is the link's job.
   const handleLanguageChange = (lang) => {
     changeLanguage(lang);
     setShowLanguageDropdown(false);
-    
-    // Navigate to the correct route based on language
-    const currentPath = pathname;
-    let newPath = '';
-    
-    if (lang === 'ar') {
-      // Switch to Arabic: add /ar prefix
-      // Check if already on Arabic route
-      if (currentPath.startsWith('/ar')) {
-        // Already on Arabic route, don't change
-        newPath = currentPath;
-      } else if (currentPath === '/') {
-        newPath = '/ar';
-      } else {
-        // Remove leading slash, add /ar prefix
-        const pathWithoutSlash = currentPath.startsWith('/') ? currentPath.slice(1) : currentPath;
-        newPath = `/ar/${pathWithoutSlash}`;
-      }
-    } else {
-      // Switch to English: remove /ar prefix
-      if (currentPath === '/ar') {
-        newPath = '/';
-      } else if (currentPath.startsWith('/ar/')) {
-        // Remove /ar prefix
-        newPath = currentPath.replace(/^\/ar/, '') || '/';
-      } else {
-        // Already on English route
-        newPath = currentPath;
-      }
-    }
-    
-    // Only navigate if path changed
-    if (newPath !== currentPath) {
-      router.push(newPath);
-    }
   };
 
   const handleSectionClick = (sectionId) => {
@@ -433,9 +400,12 @@ export default function Header({ theme = "dark" }) {
               <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </button>
-          {showLanguageDropdown && (
-            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden min-w-[160px] z-50 border border-gray-100">
-              <button
+          {/* Always mounted (hidden when closed) so the EN/AR links stay in the DOM for crawlers */}
+          <div
+            className={`absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden min-w-[160px] z-50 border border-gray-100 ${showLanguageDropdown ? '' : 'hidden'}`}
+          >
+              <Link
+                href={getLanguageSwitchPath(pathname, 'en')}
                 onClick={() => handleLanguageChange('en')}
                 className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition text-left ${currentLanguage === 'en' ? 'bg-blue-50' : ''
                   }`}
@@ -443,8 +413,9 @@ export default function Header({ theme = "dark" }) {
                 <span className={`text-sm font-medium ${currentLanguage === 'en' ? 'text-[#2E3B78]' : 'text-gray-700'}`}>
                   {t('header.languageEnglish')}
                 </span>
-              </button>
-              <button
+              </Link>
+              <Link
+                href={getLanguageSwitchPath(pathname, 'ar')}
                 onClick={() => handleLanguageChange('ar')}
                 className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition text-left ${currentLanguage === 'ar' ? 'bg-blue-50' : ''
                   }`}
@@ -452,9 +423,8 @@ export default function Header({ theme = "dark" }) {
                 <span className={`text-sm font-medium ${currentLanguage === 'ar' ? 'text-[#2E3B78]' : 'text-gray-700'}`}>
                   {t('header.languageArabic')}
                 </span>
-              </button>
-            </div>
-          )}
+              </Link>
+          </div>
         </div>
 
         <div className={`${isLightTheme ? 'bg-white' : 'bg-white'} rounded-full p-[4px] pl-6 hidden md:flex items-center gap-3 shadow-md`}>
@@ -488,9 +458,12 @@ export default function Header({ theme = "dark" }) {
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </button>
-            {showLanguageDropdown && (
-              <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden min-w-[160px] z-50 border border-gray-100">
-                <button
+            {/* Always mounted (hidden when closed) so the EN/AR links stay in the DOM for crawlers */}
+            <div
+              className={`absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden min-w-[160px] z-50 border border-gray-100 ${showLanguageDropdown ? '' : 'hidden'}`}
+            >
+                <Link
+                  href={getLanguageSwitchPath(pathname, 'en')}
                   onClick={() => handleLanguageChange('en')}
                   className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition text-left ${currentLanguage === 'en' ? 'bg-blue-50' : ''
                     }`}
@@ -498,8 +471,9 @@ export default function Header({ theme = "dark" }) {
                   <span className={`text-sm font-medium ${currentLanguage === 'en' ? 'text-[#2E3B78]' : 'text-gray-700'}`}>
                     {t('header.languageEnglish')}
                   </span>
-                </button>
-                <button
+                </Link>
+                <Link
+                  href={getLanguageSwitchPath(pathname, 'ar')}
                   onClick={() => handleLanguageChange('ar')}
                   className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition text-left ${currentLanguage === 'ar' ? 'bg-blue-50' : ''
                     }`}
@@ -507,9 +481,8 @@ export default function Header({ theme = "dark" }) {
                   <span className={`text-sm font-medium ${currentLanguage === 'ar' ? 'text-[#2E3B78]' : 'text-gray-700'}`}>
                     {t('header.languageArabic')}
                   </span>
-                </button>
-              </div>
-            )}
+                </Link>
+            </div>
           </div>
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}

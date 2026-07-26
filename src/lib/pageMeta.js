@@ -1,13 +1,17 @@
 import 'server-only';
 import { connectDB } from './db';
 import PageMeta from '../models/PageMeta';
-import { getCanonicalUrl } from './seo';
+import {
+  getCanonicalUrl,
+  getAlternateLanguages,
+  OG_LOCALES,
+  DEFAULT_OG_IMAGE,
+} from './seo';
 
 /** Page IDs used across the site (route path without leading slash; 'home' for /) */
 export const PAGE_IDS = [
   { id: 'home', label: 'Home', path: '/' },
   { id: 'about', label: 'About', path: '/about' },
-  { id: 'team', label: 'Team', path: '/team' },
   { id: 'blog', label: 'Blog listing', path: '/blog' },
   { id: 'learn-ecommerce', label: 'Learn E-commerce', path: '/learn-ecommerce' },
   { id: 'supplier', label: 'Supplier', path: '/supplier' },
@@ -77,17 +81,30 @@ export async function buildMetadataForPage(pageId, locale, fallback) {
 
   const page = PAGE_IDS.find((p) => p.id === pageId);
   const pagePath = page?.path || '/';
+  const canonical = getCanonicalUrl(pagePath, locale);
 
   return {
     title,
     description,
     alternates: {
-      canonical: getCanonicalUrl(pagePath, locale),
+      canonical,
+      languages: getAlternateLanguages(pagePath),
     },
     openGraph: {
       title,
       description,
       type: 'website',
+      url: canonical,
+      siteName: 'Zambeel',
+      locale: OG_LOCALES[isAr ? 'ar' : 'en'],
+      alternateLocale: OG_LOCALES[isAr ? 'en' : 'ar'],
+      images: [DEFAULT_OG_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [DEFAULT_OG_IMAGE],
     },
   };
 }

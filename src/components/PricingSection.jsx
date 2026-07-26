@@ -14,6 +14,7 @@ const PricingSection = ({
   customPlans = null,
   ctaLabelKey = null,
   ctaHref = null,
+  showTerms = true,
 }) => {
   const { t } = useTranslation();
   const [isDesktop, setIsDesktop] = useState(false);
@@ -61,7 +62,7 @@ const PricingSection = ({
         </p>
 
         {/* Card Layout - Vertical on mobile, horizontal on desktop */}
-        <div className="flex flex-col md:flex-row gap-12 md:gap-6 items-center justify-center w-full max-w-7xl mx-auto relative">
+        <div className="flex flex-col md:flex-row gap-12 md:gap-6 items-center md:items-stretch justify-center w-full max-w-7xl mx-auto relative">
           {plans.map((plan, idx) => {
             const middleIndex = Math.floor(plans.length / 2);
             const isMiddle = idx === middleIndex;
@@ -79,7 +80,7 @@ const PricingSection = ({
                 ctaHref={ctaHref}
               />
               {/* Terms and conditions notice - shown below active card on mobile, hidden on desktop */}
-              {!isDesktop && isActiveCard && (
+              {showTerms && !isDesktop && isActiveCard && (
                 <div className="mt-4 w-full flex items-center justify-center px-4">
                   <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/10">
                     <Info className="w-3.5 h-3.5 shrink-0 text-[#ffd24c]" />
@@ -95,7 +96,7 @@ const PricingSection = ({
         </div>
         
         {/* Terms and conditions notice - shown once for all plans on desktop only */}
-        <div className="hidden md:flex mt-6 md:mt-8 w-full items-center justify-center px-4">
+        <div className={`${showTerms ? 'hidden md:flex' : 'hidden'} mt-6 md:mt-8 w-full items-center justify-center px-4`}>
           <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-lg px-3 py-2 md:px-4 md:py-2.5 border border-white/10">
             <Info className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-[#ffd24c]" />
             <p className="text-xs md:text-sm font-normal text-center text-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>

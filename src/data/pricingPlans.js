@@ -33,7 +33,7 @@ export const pricingPlans = [
     features: [
       { translationKey: "pricing.features.seniorAccountManager", included: true },
       { translationKey: "pricing.features.responseTime30Minutes", included: true },
-      { translationKey: "pricing.features.dropshippingCountries8", included: true },
+      { translationKey: "pricing.features.dropshippingCountries9", included: true },
       { translationKey: "pricing.features.whatsappGroupAccess", included: true },
       { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
       { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -55,7 +55,7 @@ export const pricingPlans = [
     features: [
       { translationKey: "pricing.features.seniorAccountManager", included: true },
       { translationKey: "pricing.features.responseTime30Minutes", included: true },
-      { translationKey: "pricing.features.dropshippingCountries8", included: true },
+      { translationKey: "pricing.features.dropshippingCountries9", included: true },
       { translationKey: "pricing.features.whatsappGroupAccess", included: true },
       { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
       { translationKey: "pricing.features.winningCreativedStrategy", included: true },

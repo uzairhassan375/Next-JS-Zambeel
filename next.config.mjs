@@ -39,7 +39,29 @@ const nextConfig = {
     ],
   },
   async redirects() {
+    // `src/pages/*.jsx` holds the page *components*, but Next also treats src/pages
+    // as the legacy Pages Router, which published /HomePage, /DropshippingPage, ...
+    // as duplicate, title-less, unstyled copies of the real App Router pages.
+    // 301 them onto their canonical URLs so nothing serves duplicate content.
+    const legacyComponentRoutes = [
+      ['/HomePage', '/'],
+      ['/AboutPage', '/about'],
+      ['/BlogListingPage', '/blog'],
+      ['/BlogDetailPage', '/blog'],
+      ['/LearnEcommercePage', '/learn-ecommerce'],
+      ['/SuperClassPage', '/learn-ecommerce'],
+      ['/DropshippingPage', '/pages/dropshipping-uae-and-ksa'],
+      ['/USDropshippingPage', '/pages/usa-dropshipping'],
+      ['/Zambeel360Page', '/pages/zambeel-360'],
+      ['/Zambeel3PLPage', '/pages/warehousing-3pl'],
+      ['/AmazonServicesPage', '/pages/amazon-services'],
+      ['/PartnerAgenciesPage', '/pages/partner-agencies'],
+      ['/RefundReplacementPolicyPage', '/pages/refund-replacement-policy'],
+      ['/TermsOfServicePage', '/pages/terms-of-service'],
+    ].map(([source, destination]) => ({ source, destination, permanent: true }));
+
     return [
+      ...legacyComponentRoutes,
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'myzambeel.com' }],
@@ -47,6 +69,17 @@ const nextConfig = {
         permanent: true,
       },
       
+      // Legacy slug for the USA dropshipping page — 301 so the old URL consolidates
+      {
+        source: '/pages/us-dropshipping',
+        destination: '/pages/usa-dropshipping',
+        permanent: true,
+      },
+      {
+        source: '/ar/pages/us-dropshipping',
+        destination: '/ar/pages/usa-dropshipping',
+        permanent: true,
+      },
       {
         source: '/pages/products',
         destination: 'https://products.myzambeel.com',

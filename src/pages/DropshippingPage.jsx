@@ -10,6 +10,7 @@ import TrendingProducts from "../components/dropshiping_components/TrendingProdu
 import Wts from "../components/dropshiping_components/WhereTS.jsx";
 import WhyZambeel from "../components/dropshiping_components/WhyZambeel.jsx";
 import DeliveryCharges from "../components/DeliveryCharges.jsx";
+import LazyVideo from '../components/LazyVideo';
 
 
 const DropshippingPage = () => {
@@ -56,28 +57,37 @@ const DropshippingPage = () => {
     >
       {/* ================= HERO SECTION ================= */}
       <section className="pb-8 md:pb-8 text-center relative pt-24 md:pt-28 overflow-hidden">
-        {/* Left side SVGs (smaller, flipped) */}
-        <div className="absolute left-[15%] top-[35%] hidden md:block">
-          <svg width="90" height="76" viewBox="0 0 255 217" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'scaleX(-1)' }}>
-            <path d="M115.078 217C173.923 217 255 175.225 255 169.835C218.385 155.012 196.154 -2.57223e-06 153 -4.45854e-06C99.386 -6.80211e-06 1.33141e-05 44.4904 1.33141e-05 44.4904C61.4613 107.826 68.0003 217 115.078 217Z" fill="#F4D03F" fillOpacity="0.3"/>
+        {/* Left side SVGs */}
+        <div className="absolute left-[3%] top-[50%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3"/>
           </svg>
         </div>
-        <div className="absolute left-[15%] top-[50%] hidden md:block">
-          <svg width="90" height="76" viewBox="0 0 255 217" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'scaleX(-1)' }}>
-            <path d="M115.078 217C173.923 217 255 175.225 255 169.835C218.385 155.012 196.154 -2.57223e-06 153 -4.45854e-06C99.386 -6.80211e-06 1.33141e-05 44.4904 1.33141e-05 44.4904C61.4613 107.826 68.0003 217 115.078 217Z" fill="#F4D03F" fillOpacity="0.3"/>
+        <div className="absolute left-[3%] top-[64%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3"/>
           </svg>
         </div>
-        {/* Right side SVGs (bigger) */}
-        <div className="absolute right-[10%] top-[20%] hidden md:block">
-          <svg width="200" height="150" viewBox="0 0 255 217" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M115.078 217C173.923 217 255 175.225 255 169.835C218.385 155.012 196.154 -2.57223e-06 153 -4.45854e-06C99.386 -6.80211e-06 1.33141e-05 44.4904 1.33141e-05 44.4904C61.4613 107.826 68.0003 217 115.078 217Z" fill="#F4D03F" fillOpacity="0.3"/>
+
+        {/* Right side SVGs */}
+        <div className="absolute right-[4%] top-[10%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3"/>
           </svg>
         </div>
-        <div className="absolute right-[10%] top-[50%] hidden md:block">
-          <svg width="200" height="150" viewBox="0 0 255 217" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M115.078 217C173.923 217 255 175.225 255 169.835C218.385 155.012 196.154 -2.57223e-06 153 -4.45854e-06C99.386 -6.80211e-06 1.33141e-05 44.4904 1.33141e-05 44.4904C61.4613 107.826 68.0003 217 115.078 217Z" fill="#F4D03F" fillOpacity="0.3"/>
+        <div className="absolute right-[4%] top-[25%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3"/>
           </svg>
         </div>
+
+        {/* Center SVG */}
+        <div className="absolute left-1/2 top-[50%] transform -translate-x-1/2 hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#F4D03F" fillOpacity="0.3"/>
+          </svg>
+        </div>
+
         <h1 className="text-[26px] md:text-[44px] font-[700] leading-[100%] tracking-[0.02em] text-center text-white mt-8 md:mt-0 mb-4 md:mb-6 relative z-10" style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: '700' }}>{t('dropshipping.hero.title')}</h1>
         <p className="text-[20px] md:text-[30px] font-normal italic leading-[100%] tracking-[0] text-center text-white mb-2 md:mb-3" style={{ fontFamily: 'DM Sans, sans-serif' }}>{t('dropshipping.hero.subtitle')}</p>
         <div>
@@ -110,12 +120,12 @@ const DropshippingPage = () => {
         </div>
         {/* UAE/KSA Box */}
         <div className="px-4 md:px-0 relative z-10">
-          <div className="max-w-md md:max-w-2xl mx-auto">
+          <div className="max-w-md md:max-w-5xl mx-auto">
             <div className="bg-[#d5dce8]/95 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl p-6 md:p-8 lg:p-10">
               <p className="text-[#2c3e5f] text-center text-xs sm:text-sm md:text-base font-semibold mb-6 md:mb-8">
                 {t('dropshipping.hero.availableIn')}
               </p>
-              <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:justify-center md:items-center md:space-x-6 lg:space-x-10">
+              <div className="flex flex-col gap-4 md:gap-x-4 md:gap-y-4 md:flex-row md:flex-wrap md:justify-center md:items-center">
                 <div className="flex justify-center items-center gap-6 md:contents">
                   <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
@@ -228,6 +238,20 @@ const DropshippingPage = () => {
                     </div>
                     <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Iraq')}</span>
                   </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/us.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="USA"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.USA')}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -240,17 +264,11 @@ const DropshippingPage = () => {
       <section className="w-full py-4 md:py-4">
         <div className="max-w-[1150px] mx-auto px-6 sm:px-10 lg:px-12">
           <div className="rounded-xl overflow-hidden">
-            <video
+            <LazyVideo
               className="w-full h-64 md:h-96 object-cover pointer-events-none"
-              autoPlay
-              muted
-              loop
-              playsInline
+              src="/videos/dropshipping.webm"
               poster="https://plus.unsplash.com/premium_photo-1661521056111-73d80cb1fd00?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZHJvcHNoaXBwaW5nfGVufDB8MHwwfHx8MA%3D%3D"
-            >
-              <source src="/videos/dropshipping.webm" type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
+            />
           </div>
         </div>
       </section>
@@ -311,7 +329,7 @@ const DropshippingPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
-              { translationKey: "pricing.features.dropshippingCountries8", included: true },
+              { translationKey: "pricing.features.dropshippingCountries9", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -333,7 +351,7 @@ const DropshippingPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
-              { translationKey: "pricing.features.dropshippingCountries8", included: true },
+              { translationKey: "pricing.features.dropshippingCountries9", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },

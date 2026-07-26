@@ -19,8 +19,7 @@ export default function ClientLayout({ children, initialLocale }) {
 
   // Check for pages that need padding (both English and Arabic routes)
   const shouldHavePadding = pathname === "/" || pathname === "/ar" || 
-    pathname === "/about" || pathname === "/ar/about" ||
-    pathname === "/team" || pathname === "/ar/team";
+    pathname === "/about" || pathname === "/ar/about";
   
   // Check for pages that need light theme (both English and Arabic routes)
   const isLightThemePage = 

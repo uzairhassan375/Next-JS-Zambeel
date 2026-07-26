@@ -1,6 +1,12 @@
 import 'server-only';
 import { getBlogBySlug } from './blog';
-import { getCanonicalUrl, trimSeoTitle } from './seo';
+import {
+  getCanonicalUrl,
+  getAlternateLanguages,
+  getSocialImage,
+  trimSeoTitle,
+  OG_LOCALES,
+} from './seo';
 
 const BLOG_SUFFIX_EN = '| Zambeel';
 const BLOG_SUFFIX_AR = '| زمبيل';
@@ -8,23 +14,40 @@ const BLOG_SUFFIX_AR = '| زمبيل';
 export async function buildBlogPostMetadata(slug, locale = 'en') {
   const isArabic = locale === 'ar';
   const post = await getBlogBySlug(slug);
+  const path = `/blog/${slug}`;
+  const canonical = getCanonicalUrl(path, locale);
+  const alternates = {
+    canonical,
+    languages: getAlternateLanguages(path),
+  };
+  const ogLocale = OG_LOCALES[isArabic ? 'ar' : 'en'];
+  const ogAlternateLocale = OG_LOCALES[isArabic ? 'en' : 'ar'];
 
   if (!post) {
     const title = isArabic ? `مقال المدونة ${BLOG_SUFFIX_AR}` : `Blog Post ${BLOG_SUFFIX_EN}`;
+    const description = isArabic
+      ? 'اقرأ مقالات زمبيل حول الدروبشيبينغ والتجارة الإلكترونية.'
+      : 'Read our blog post.';
+    const image = getSocialImage('');
     return {
       title,
-      description: isArabic
-        ? 'اقرأ مقالات زمبيل حول الدروبشيبينغ والتجارة الإلكترونية.'
-        : 'Read our blog post.',
-      alternates: {
-        canonical: getCanonicalUrl(`/blog/${slug}`, locale),
-      },
+      description,
+      alternates,
       openGraph: {
         title,
-        description: isArabic
-          ? 'اقرأ مقالات زمبيل حول الدروبشيبينغ والتجارة الإلكترونية.'
-          : 'Read our blog post.',
+        description,
         type: 'article',
+        url: canonical,
+        siteName: 'Zambeel',
+        locale: ogLocale,
+        alternateLocale: ogAlternateLocale,
+        images: [image],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [image],
       },
     };
   }
@@ -37,8 +60,10 @@ export async function buildBlogPostMetadata(slug, locale = 'en') {
     ? post.metaDescriptionAr || post.descriptionAr || post.metaDescriptionEn || post.descriptionEn
     : post.metaDescriptionEn || post.descriptionEn || post.metaDescriptionAr || post.descriptionAr;
 
-  const imageUrl =
-    isArabic && (post.imageAr || '').trim() ? post.imageAr : post.image;
+  // Crawlers can't fetch base64 data URIs, so getSocialImage falls back to the site logo
+  const imageUrl = getSocialImage(
+    isArabic && (post.imageAr || '').trim() ? post.imageAr : post.image
+  );
 
   const titleBase =
     trimSeoTitle(metaTitle || slug?.replace(/-/g, ' ') || 'Blog Post');
@@ -51,14 +76,24 @@ export async function buildBlogPostMetadata(slug, locale = 'en') {
   return {
     title,
     description,
-    alternates: {
-      canonical: getCanonicalUrl(`/blog/${slug}`, locale),
-    },
+    alternates,
     openGraph: {
       title,
       description,
       type: 'article',
-      images: imageUrl ? [{ url: imageUrl, alt: titleBase }] : undefined,
+      url: canonical,
+      siteName: 'Zambeel',
+      locale: ogLocale,
+      alternateLocale: ogAlternateLocale,
+      publishedTime: post.createdAt || undefined,
+      modifiedTime: post.updatedAt || post.createdAt || undefined,
+      images: [{ url: imageUrl, alt: titleBase }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
     },
   };
 }

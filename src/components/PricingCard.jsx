@@ -30,9 +30,11 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
     }
   };
   
-  const formattedPrice = plan.pricePeriodTranslationKey
-    ? { main: priceValue, period: ` ${t(plan.pricePeriodTranslationKey)}` }
-    : formatPrice(priceValue, isLast);
+  const formattedPrice = plan.pricePeriod !== undefined
+    ? { main: priceValue, period: plan.pricePeriod }
+    : plan.pricePeriodTranslationKey
+      ? { main: priceValue, period: ` ${t(plan.pricePeriodTranslationKey)}` }
+      : formatPrice(priceValue, isLast);
   
   // Translate plan name and tag
   const planName = plan.nameTranslationKey ? t(plan.nameTranslationKey) : plan.name;
@@ -83,10 +85,11 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
         flex flex-col justify-start
         ${backgroundColor} ${borderColor}
         ${isPremium ? 'md:flex-[1.15] md:max-w-[360px]' : 'md:flex-1 md:max-w-[320px]'}
+        ${isActive ? 'md:h-full' : ''}
         md:hover:scale-105 md:hover:-translate-y-2
       `}
       style={{
-        height: cardHeight,
+        height: isActive ? undefined : cardHeight,
         minHeight: minHeight,
         transform: isActive ? (isPremium ? 'scale(1.05) translateY(-8px)' : 'scale(1.02)') : 'scale(1)',
         boxShadow: isMiddle 
@@ -126,7 +129,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
 
       {/* EXPANDED VIEW (When isActive) - Detailed View */}
       {isActive && (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-1 flex-col w-full">
           {/* TOP SECTION - White Background with Pack Name and Price */}
           <div className="bg-white px-4 pt-16 pb-6 flex flex-col items-center justify-center rounded-t-3xl">
             {/* Name (Plan Name) - Centered */}
@@ -141,7 +144,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
           </div>
           
           {/* BOTTOM SECTION - Background with Description and Features */}
-          <div className={`px-4 pt-2 pb-4 flex flex-col text-left rounded-b-3xl ${isPremium || plan.tag === "GOLD" ? 'bg-[#FFF8DE]' : 'bg-[#DEE2EE]'}`}>
+          <div className={`px-4 pt-2 pb-4 flex flex-1 flex-col text-left rounded-b-3xl ${isPremium || plan.tag === "GOLD" ? 'bg-[#FFF8DE]' : 'bg-[#DEE2EE]'}`}>
             {plan.description && <p className="text-sm mb-6 text-gray-600">{plan.description}</p>}
             <ul className={`mb-8 space-y-3 ${plan.description ? 'pt-2' : 'pt-2'}`}>
               {plan.features.map((feature, i) => {
@@ -161,7 +164,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
                   feature.included &&
                   (feature.translationKey === 'pricing.features.dropshippingCountries3' ||
                     feature.translationKey === 'pricing.features.dropshippingCountries7' ||
-                    feature.translationKey === 'pricing.features.dropshippingCountries8');
+                    feature.translationKey === 'pricing.features.dropshippingCountries9');
                 const isWinningCreativesStrategy = feature.translationKey === 'pricing.features.winningCreativedStrategy';
                 
                 return (

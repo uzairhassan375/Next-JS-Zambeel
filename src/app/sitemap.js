@@ -1,4 +1,4 @@
-import { getAllBlogSlugs } from '../lib/blog';
+import { getAllBlogSlugsWithDates } from '../lib/blog';
 
 // Make sure this exists in your .env file:
 // NEXT_PUBLIC_SITE_URL=https://www.myzambeel.com
@@ -9,7 +9,6 @@ const BASE_URL =
 const STATIC_ROUTES = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' },
   { path: 'about', priority: 0.9, changeFrequency: 'monthly' },
-  { path: 'team', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'blog', priority: 0.9, changeFrequency: 'weekly' },
   { path: 'learn-ecommerce', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'supplier', priority: 0.7, changeFrequency: 'monthly' },
@@ -40,51 +39,51 @@ function buildUrl(path = '', locale = '') {
   return url;
 }
 
+/** hreflang pair for a path, so each entry declares both language versions */
+function languagesFor(path) {
+  return {
+    en: buildUrl(path),
+    ar: buildUrl(path, 'ar'),
+  };
+}
+
 export default async function sitemap() {
   const entries = [];
 
-  // English static pages
+  // Static pages (English + Arabic). No lastModified: these are hand-authored
+  // pages, and stamping "now" on every rebuild makes lastmod meaningless.
   for (const route of STATIC_ROUTES) {
-    entries.push({
-      url: buildUrl(route.path),
-      lastModified: new Date(),
-      changeFrequency: route.changeFrequency,
-      priority: route.priority,
-    });
+    const languages = languagesFor(route.path);
+    for (const locale of ['', 'ar']) {
+      entries.push({
+        url: buildUrl(route.path, locale),
+        changeFrequency: route.changeFrequency,
+        priority: route.priority,
+        alternates: { languages },
+      });
+    }
   }
 
-  // Arabic static pages
-  for (const route of STATIC_ROUTES) {
-    entries.push({
-      url: buildUrl(route.path, 'ar'),
-      lastModified: new Date(),
-      changeFrequency: route.changeFrequency,
-      priority: route.priority,
-    });
-  }
-
-  // Blog posts (English + Arabic)
+  // Blog posts (English + Arabic), with real last-modified dates
   try {
-    const slugs = await getAllBlogSlugs();
+    const posts = await getAllBlogSlugsWithDates();
 
-    const validSlugs = slugs?.filter((s) => s?.slug?.trim());
+    const validPosts = posts?.filter((p) => p?.slug?.trim());
 
-    for (const { slug } of validSlugs || []) {
+    for (const { slug, lastModified } of validPosts || []) {
       const safeSlug = encodeURIComponent(slug);
+      const path = `blog/${safeSlug}`;
+      const languages = languagesFor(path);
 
-      entries.push({
-        url: buildUrl(`blog/${safeSlug}`),
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      });
-
-      entries.push({
-        url: buildUrl(`blog/${safeSlug}`, 'ar'),
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      });
+      for (const locale of ['', 'ar']) {
+        entries.push({
+          url: buildUrl(path, locale),
+          lastModified: lastModified ? new Date(lastModified) : undefined,
+          changeFrequency: 'weekly',
+          priority: 0.7,
+          alternates: { languages },
+        });
+      }
     }
   } catch (error) {
     console.error('Sitemap: Failed to fetch blog slugs', error);

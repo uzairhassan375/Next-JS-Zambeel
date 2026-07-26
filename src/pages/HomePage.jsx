@@ -224,15 +224,19 @@ export default function HomePage({ initialBlogs = [] }) {
     { name: "Bahrain", code: "bh", services: ["Dropshipping", "3PL", "360"] },
     { name: "Iraq", code: "iq", services: ["Dropshipping", "3PL", "360"] },
     { name: "Pakistan", code: "pk", services: ["Dropshipping", "3PL", "360"] },
+    { name: "USA", code: "us", services: ["Dropshipping", "3PL", "360"] },
   ];
 
   // Helper function to translate country names
-  const translateCountryName = (countryName) => {
-    if (countryName === "Qatar") {
-      return currentLanguage === 'ar' ? t('countries.Qatar') : "QTR"; // Special case for Qatar display
-    }
-    return t(`countries.${countryName}`);
-  };
+  const translateCountryName = (countryName) => t(`countries.${countryName}`);
+
+  // Short code shown under each flag tile (UAE, KSA, QTR, KWT, ...)
+  const getCountryCode = (countryName) =>
+    t(`countryCodes.${countryName}`, { defaultValue: translateCountryName(countryName) });
+
+  // Full country name shown under the "Where do you want to sell?" heading
+  const getCountryFullName = (countryName) =>
+    t(`countryFullNames.${countryName}`, { defaultValue: translateCountryName(countryName) });
 
   const reviews = [
     {
@@ -312,7 +316,11 @@ export default function HomePage({ initialBlogs = [] }) {
   const selectedCountryData = countries.find((c) => c.name === selectedCountry);
 
   // Helper function to get route for service
-  const getServiceRoute = (service) => {
+  const getServiceRoute = (service, country = selectedCountry) => {
+    // USA services all live on the USA dropshipping page
+    if (country === "USA") {
+      return "/pages/usa-dropshipping";
+    }
     switch (service) {
       case "Dropshipping":
         return "/pages/dropshipping-uae-and-ksa";
@@ -509,7 +517,7 @@ export default function HomePage({ initialBlogs = [] }) {
                   {t('homepage.whereToSell.title')}
                 </h2>
                 <h3 className="text-[#B91C1C] font-bold text-xs tracking-widest uppercase">
-                  {translateCountryName(selectedCountry)}
+                  {getCountryFullName(selectedCountry)}
                 </h3>
               </div>
               <p className="text-[#4A5568] text-xs leading-relaxed mb-5">
@@ -610,7 +618,7 @@ export default function HomePage({ initialBlogs = [] }) {
                       />
                     </div>
                     <span className="text-[10px] font-bold text-[#2E3B78]">
-                      {translateCountryName(country.name)}
+                      {getCountryCode(country.name)}
                     </span>
                   </div>
                 ))}
@@ -621,7 +629,7 @@ export default function HomePage({ initialBlogs = [] }) {
                 {t('homepage.whereToSell.title')}
               </h2>
               <h3 className="text-[#B91C1C] font-bold text-sm tracking-widest uppercase mb-4">
-                {translateCountryName(selectedCountry)}
+                {getCountryFullName(selectedCountry)}
               </h3>
               <p className="text-[#4A5568] text-sm lg:text-base leading-relaxed mb-4">
                 {t('homepage.whereToSell.description.full', {
@@ -679,7 +687,7 @@ export default function HomePage({ initialBlogs = [] }) {
                   </div>
                   <div>
                     <h4 className="font-bold text-[#2E3B78] text-base md:text-lg lg:text-xl">
-                      8
+                      9
                     </h4>
                     <span className="text-xs md:text-sm lg:text-base text-gray-500">{t('homepage.whyZambeel.stats.countriesCovered')}</span>
                   </div>

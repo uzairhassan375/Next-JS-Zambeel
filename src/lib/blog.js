@@ -86,3 +86,23 @@ export async function getAllBlogSlugs() {
   const docs = await Blog.find({ status: { $ne: 'draft' } }).select('slug').lean();
   return docs.map((d) => ({ slug: String(d.slug || d._id?.toString() || '') }));
 }
+
+/**
+ * Return blog slugs with their last-modified dates, for sitemap <lastmod>.
+ * Kept separate from getAllBlogSlugs() because generateStaticParams() needs
+ * objects whose keys match the route params exactly.
+ * @returns {Promise<Array<{ slug: string, lastModified: string|null }>>}
+ */
+export async function getAllBlogSlugsWithDates() {
+  await connectDB();
+  const docs = await Blog.find({ status: { $ne: 'draft' } })
+    .select('slug updatedAt createdAt')
+    .lean();
+  return docs.map((d) => {
+    const modified = d.updatedAt || d.createdAt || null;
+    return {
+      slug: String(d.slug || d._id?.toString() || ''),
+      lastModified: modified instanceof Date ? modified.toISOString() : modified || null,
+    };
+  });
+}

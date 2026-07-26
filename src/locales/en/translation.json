@@ -52,7 +52,7 @@
     "blog": "Blogs",
     "email": "zambeelsupport@myzambeel.com",
     "phone": "+971 56 847 2271",
-    "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman, Bahrain and Iraq."
+    "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman, Bahrain, Iraq and USA."
   },
   "homepage": {
     "hero": {
@@ -97,7 +97,7 @@
         "full": "Selling in {{country}} gives you full access to all our services. If you want to know more about our services and how you can benefit from them click on one of the three services to begin.",
         "noDropshipping": "Selling in {{country}} gives you access to all our services except dropshipping. If you want to know more about our services and how you can benefit from them click on one of the three services to begin."
       },
-      "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman, Bahrain and Iraq.",
+      "seoDescription": "We Enable Brands, Sellers and Dropshippers from Across the Globe to Start and Grow Dropshipping Business in UAE, KSA, Kuwait, Qatar, Pakistan, Oman, Bahrain, Iraq and USA.",
       "serviceDescriptions": {
         "3PL": "Fast, reliable and fully automated",
         "360": "Build your private label",
@@ -204,10 +204,6 @@
         }
       }
     }
-  },
-  "team": {
-    "title": "Meet the Team",
-    "subtitle": "The team behind Zambeel's mission to simplify e-commerce."
   },
   "dropshipping": {
     "hero": {
@@ -450,7 +446,7 @@
       "discountedProductPrices": "Discounted product prices",
       "dropshippingCountries3": "Dropshipping in 3 countries",
       "dropshippingCountries7": "Dropshipping in 7 countries",
-      "dropshippingCountries8": "Dropshipping in 8 countries",
+      "dropshippingCountries9": "Dropshipping in 9 countries",
       "seniorAccountManager": "Senior Dedicated Manager",
       "responseTime30Minutes": "Response time: On Priority Basis",
       "exclusiveWinningProduct": "Exclusive Winning Product",
@@ -510,7 +506,30 @@
     "Pakistan": "Pakistan",
     "Oman": "Oman",
     "Bahrain": "Bahrain",
-    "Iraq": "Iraq"
+    "Iraq": "Iraq",
+    "USA": "USA"
+  },
+  "countryCodes": {
+    "UAE": "UAE",
+    "KSA": "KSA",
+    "Qatar": "QTR",
+    "Kuwait": "KWT",
+    "Oman": "OMN",
+    "Bahrain": "BHR",
+    "Iraq": "IRQ",
+    "Pakistan": "PAK",
+    "USA": "USA"
+  },
+  "countryFullNames": {
+    "UAE": "United Arab Emirates",
+    "KSA": "Saudi Arabia",
+    "Qatar": "Qatar",
+    "Kuwait": "Kuwait",
+    "Oman": "Oman",
+    "Bahrain": "Bahrain",
+    "Iraq": "Iraq",
+    "Pakistan": "Pakistan",
+    "USA": "United States of America"
   },
   "trendingProducts": {
     "sold": "sold",

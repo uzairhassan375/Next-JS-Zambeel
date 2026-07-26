@@ -40,6 +40,28 @@ export function getLocalePath(path, currentPathname) {
 }
 
 /**
+ * Get the equivalent path in the other language, so the language switcher can
+ * render a real crawlable <a href> instead of a JS-only handler.
+ * @param {string} pathname - Current pathname from usePathname()
+ * @param {'en' | 'ar'} lang - Target language
+ * @returns {string} - Path for the same page in `lang`
+ */
+export function getLanguageSwitchPath(pathname, lang) {
+  const currentPath = pathname || '/';
+
+  if (lang === 'ar') {
+    if (currentPath.startsWith('/ar')) return currentPath;
+    if (currentPath === '/') return '/ar';
+    const pathWithoutSlash = currentPath.startsWith('/') ? currentPath.slice(1) : currentPath;
+    return `/ar/${pathWithoutSlash}`;
+  }
+
+  if (currentPath === '/ar') return '/';
+  if (currentPath.startsWith('/ar/')) return currentPath.replace(/^\/ar/, '') || '/';
+  return currentPath;
+}
+
+/**
  * Get current locale from pathname
  * @param {string} pathname - Current pathname
  * @returns {'en' | 'ar'} - Current locale

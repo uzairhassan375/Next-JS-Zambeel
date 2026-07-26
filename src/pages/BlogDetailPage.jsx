@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect } from 'react';
 import { getLocalePath } from '../lib/localeUtils';
 
@@ -140,11 +141,21 @@ export default function BlogDetailPage({ post }) {
 
             {img ? (
               <div className="w-full rounded-lg overflow-hidden shadow-lg mb-8">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                {/* Article hero = LCP element: sized, eager and priority-loaded.
+                    Remote/base64 sources bypass the optimizer (same rule as the listing). */}
+                <Image
                   src={img}
                   alt={title}
+                  width={1200}
+                  height={675}
+                  sizes="(max-width: 896px) 100vw, 896px"
+                  priority
                   className="w-full h-auto block"
+                  unoptimized={
+                    img.startsWith('http') ||
+                    img.startsWith('/api') ||
+                    img.startsWith('data:')
+                  }
                 />
               </div>
             ) : null}

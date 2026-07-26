@@ -159,22 +159,34 @@ const AmazonServicesPage = () => {
     >
       {/* Hero */}
       <section className="pb-8 md:pb-8 text-center relative pt-24 md:pt-28 overflow-hidden">
-        <div className="absolute left-[10%] top-[30%] hidden md:block opacity-40">
-          <svg width="120" height="100" viewBox="0 0 255 217" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M115.078 217C173.923 217 255 175.225 255 169.835C218.385 155.012 196.154 0 153 0C99.386 0 0 44.4904 0 44.4904C61.4613 107.826 68.0003 217 115.078 217Z"
-              fill="#FF9900"
-              fillOpacity="0.35"
-            />
+        {/* Left side SVGs */}
+        <div className="absolute left-[3%] top-[50%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#FF9900" fillOpacity="0.3"/>
           </svg>
         </div>
-        <div className="absolute right-[8%] top-[20%] hidden md:block opacity-40">
-          <svg width="140" height="110" viewBox="0 0 255 217" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M115.078 217C173.923 217 255 175.225 255 169.835C218.385 155.012 196.154 0 153 0C99.386 0 0 44.4904 0 44.4904C61.4613 107.826 68.0003 217 115.078 217Z"
-              fill="#FF9900"
-              fillOpacity="0.35"
-            />
+        <div className="absolute left-[3%] top-[64%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#FF9900" fillOpacity="0.3"/>
+          </svg>
+        </div>
+
+        {/* Right side SVGs */}
+        <div className="absolute right-[4%] top-[10%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#FF9900" fillOpacity="0.3"/>
+          </svg>
+        </div>
+        <div className="absolute right-[4%] top-[25%] hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#FF9900" fillOpacity="0.3"/>
+          </svg>
+        </div>
+
+        {/* Center SVG */}
+        <div className="absolute left-1/2 top-[50%] transform -translate-x-1/2 hidden md:block">
+          <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-1.68109e-06 55.9593C-4.18271e-06 84.5745 20.406 124 23.039 124C30.2799 106.195 106 95.3848 106 74.4002C106 48.3289 84.2674 5.72947e-06 84.2674 5.72947e-06C53.3291 29.8871 3.20237e-07 33.0668 -1.68109e-06 55.9593Z" fill="#FF9900" fillOpacity="0.3"/>
           </svg>
         </div>
 

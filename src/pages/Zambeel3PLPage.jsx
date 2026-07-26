@@ -8,6 +8,7 @@ import PricingSection from '../components/PricingSection';
 import WhyZambeel from '../components/dropshiping_components/WhyZambeel';
 import Wts from '../components/dropshiping_components/WhereTS';
 import DeliveryCharges from '../components/DeliveryCharges';
+import LazyVideo from '../components/LazyVideo';
 const connectionImg = '/assets/images/connection.png';
 const databaseImg = '/assets/images/database.png';
 const frameImg = '/assets/images/frame1.png';
@@ -209,12 +210,12 @@ const Zambeel3PLPage = () => {
               </a>
             </div>
           </div>
-          <div className="max-w-md md:max-w-2xl mx-auto">
+          <div className="max-w-md md:max-w-5xl mx-auto">
             <div className="bg-[#d5dce8]/95 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl p-6 md:p-8 lg:p-10">
               <p className="text-[#2c3e5f] text-center text-xs sm:text-sm md:text-base font-semibold mb-6 md:mb-8">
                 {t('zambeel3PL.hero.availableIn')}
               </p>
-              <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:justify-center md:items-center md:space-x-6 lg:space-x-10">
+              <div className="flex flex-col gap-4 md:gap-x-4 md:gap-y-4 md:flex-row md:flex-wrap md:justify-center md:items-center">
                 <div className="flex justify-center items-center gap-6 md:contents">
                   <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
@@ -327,6 +328,20 @@ const Zambeel3PLPage = () => {
                     </div>
                     <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.Iraq')}</span>
                   </div>
+                  <div className="flex flex-col items-center transform hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-2 md:mb-3">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-gray-200">
+                        <Image
+                          src="https://flagcdn.com/w160/us.png"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover"
+                          alt="USA"
+                        />
+                      </div>
+                    </div>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-[#2c3e5f] font-semibold">{t('countries.USA')}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -338,17 +353,11 @@ const Zambeel3PLPage = () => {
       <section className="w-full py-4 md:py-4">
         <div className="max-w-[1150px] mx-auto px-6 sm:px-10 lg:px-12">
           <div className="rounded-xl overflow-hidden">
-            <video
+            <LazyVideo
               className="w-full h-64 md:h-96 object-cover pointer-events-none"
-              autoPlay
-              muted
-              loop
-              playsInline
+              src="/videos/3pl-landscape.webm"
               poster="https://plus.unsplash.com/premium_photo-1749423089108-9ab9871fb9e2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGhpcmQlMjBwYXJ0JTIwbG9naXN0aWNzfGVufDB8MHwwfHx8MA%3D%3D"
-            >
-              <source src="/videos/3pl-landscape.webm" type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
+            />
           </div>
         </div>
       </section>
@@ -517,7 +526,7 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
-              { translationKey: "pricing.features.dropshippingCountries8", included: true },
+              { translationKey: "pricing.features.dropshippingCountries9", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },
@@ -539,7 +548,7 @@ const Zambeel3PLPage = () => {
             features: [
               { translationKey: "pricing.features.seniorAccountManager", included: true },
               { translationKey: "pricing.features.responseTime30Minutes", included: true },
-              { translationKey: "pricing.features.dropshippingCountries8", included: true },
+              { translationKey: "pricing.features.dropshippingCountries9", included: true },
               { translationKey: "pricing.features.whatsappGroupAccess", included: true },
               { translationKey: "pricing.features.exclusiveWinningProduct", included: true },
               { translationKey: "pricing.features.winningCreativedStrategy", included: true },

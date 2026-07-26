@@ -6,7 +6,6 @@ import AboutPage from '../../../pages/AboutPage';
 import BlogListingPage from '../../../pages/BlogListingPage';
 import BlogDetailPage from '../../../pages/BlogDetailPage';
 import SuperClassPage from '../../../pages/SuperClassPage';
-import TeamPage from '../../../pages/TeamPage';
 import SupplierWrapper from './SupplierWrapper';
 import PartnerAgenciesPage from '../../../pages/PartnerAgenciesPage';
 import DropshippingPage from '../../../pages/DropshippingPage';
@@ -23,6 +22,8 @@ import { partnerAgenciesForResponse } from '../../../lib/partnerAgencyResponse';
 import { getCachedOrFetch, getCachedPartnerAgencies } from '../../../lib/partnerAgenciesCache';
 import { buildMetadataForPage } from '../../../lib/pageMeta';
 import { buildBlogPostMetadata } from '../../../lib/blogMetadata';
+import ArticleSchema from '../../../components/seo/ArticleSchema';
+import BreadcrumbSchema from '../../../components/seo/BreadcrumbSchema';
 import enTranslations from '../../../locales/en/translation.json';
 import arTranslations from '../../../locales/ar/translation.json';
 
@@ -44,7 +45,6 @@ const routeMap = {
   'about': AboutPage,
   'blog': BlogListingPage,
   'learn-ecommerce': SuperClassPage,
-  'team': TeamPage,
   'supplier': SupplierWrapper,
   'pages/dropshipping-uae-and-ksa': DropshippingPage,
   'pages/usa-dropshipping': USDropshippingPage,
@@ -81,11 +81,6 @@ export async function generateMetadata({ params }) {
       return buildMetadataForPage('about', 'ar', {
         title: `${translations.about.title} - زمبيل`,
         description: translations.about.description || 'تعرف على زمبيل ومهمتنا في تبسيط التجارة الإلكترونية',
-      });
-    case 'team':
-      return buildMetadataForPage('team', 'ar', {
-        title: `${translations.team.title} - زمبيل`,
-        description: translations.team.subtitle || 'تعرف على الفريق وراء مهمة زمبيل في تبسيط التجارة الإلكترونية',
       });
     case 'pages/dropshipping-uae-and-ksa':
       return buildMetadataForPage('pages/dropshipping-uae-and-ksa', 'ar', {
@@ -145,10 +140,11 @@ export async function generateMetadata({ params }) {
         description: translations.partnerAgencies?.subtitle || 'تواصل مع الشركاء الموثوقين الذين يمكنهم مساعدتك في تنمية أعمالك',
       });
     default:
-      return buildMetadataForPage('home', 'ar', {
-        title: 'زمبيل - منصة واحدة لتجارتك الإلكترونية',
-        description: translations.footer.seoDescription || 'حلول زمبيل للتجارة الإلكترونية',
-      });
+      // Unknown route: this render calls notFound(), so keep it out of the index
+      return {
+        title: 'الصفحة غير موجودة - زمبيل',
+        robots: { index: false, follow: false },
+      };
   }
 }
 
@@ -167,9 +163,20 @@ export default async function ArabicPage({ params }) {
       const post = await getBlogBySlug(blogSlug);
       if (!post) notFound();
       return (
-        <Suspense fallback={<PageFallback />}>
-          <BlogDetailPage post={post} />
-        </Suspense>
+        <>
+          <ArticleSchema post={post} locale="ar" />
+          <BreadcrumbSchema
+            locale="ar"
+            items={[
+              { name: arTranslations.header?.home || 'الرئيسية', path: '/' },
+              { name: arTranslations.blog?.title || 'المدونة', path: '/blog' },
+              { name: post.titleAr || post.titleEn || post.slug, path: `/blog/${post.slug}` },
+            ]}
+          />
+          <Suspense fallback={<PageFallback />}>
+            <BlogDetailPage post={post} />
+          </Suspense>
+        </>
       );
     }
   }
@@ -188,15 +195,8 @@ export default async function ArabicPage({ params }) {
   const PageComponent = routeMap[routePath];
   
   if (!PageComponent) {
-    // 404 - route not found
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-[#2E3B78] mb-4">404</h1>
-          <p className="text-lg text-gray-600">Page not found</p>
-        </div>
-      </div>
-    );
+    // Real 404 (status code + not-found UI), not a soft 404 with a 200 status
+    notFound();
   }
   
   // Homepage: pass initial blogs so they show immediately without client fetch
