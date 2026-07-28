@@ -195,8 +195,7 @@ const Card = ({ title, description, index, totalCards, cta, link }) => {
 
 export const StackedCards = () => {
     const containerRef = useRef(null);
-    const { t, i18n } = useTranslation();
-    const isArabicUi = String(i18n.language || 'en').toLowerCase().startsWith('ar');
+    const { t } = useTranslation();
 
     const cardData = [
         {
@@ -238,20 +237,7 @@ export const StackedCards = () => {
             color: "rgba(255, 153, 0, 0.85)",
             cta: t('homepage.featureCards.amazon.cta'),
             link: "/pages/amazon-services"
-        },
-        // USA dropshipping page is English-only for now (same as the header nav)
-        ...(isArabicUi
-            ? []
-            : [
-                {
-                    id: 6,
-                    title: t('homepage.featureCards.usaDropshipping.title'),
-                    description: t('homepage.featureCards.usaDropshipping.desc'),
-                    color: "rgba(59, 130, 246, 0.8)",
-                    cta: t('homepage.featureCards.usaDropshipping.cta'),
-                    link: "/pages/usa-dropshipping"
-                }
-            ])
+        }
     ];
 
     useEffect(() => {
