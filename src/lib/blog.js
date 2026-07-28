@@ -1,7 +1,14 @@
 import 'server-only';
 import { connectDB } from './db';
 import Blog from '../models/Blog';
+import HomepageBlogSelection from '../models/HomepageBlogSelection';
 import { blogForResponse, blogsForResponse } from './blogResponse';
+import {
+  HOMEPAGE_MOBILE_LIMIT,
+  HOMEPAGE_SELECTION_KEY,
+  HOMEPAGE_WEB_LIMIT,
+  pickSelectedBlogs,
+} from './homepageBlogs';
 
 /**
  * Convert Mongoose document to plain JSON-serializable object.
@@ -62,6 +69,28 @@ export async function getBlogsForHomepage(limit = 6) {
     .limit(limit)
     .lean();
   return blogs.map(serializeBlog);
+}
+
+/**
+ * Resolve the blogs the homepage should show. Server-only.
+ * Admins pick these in /admin/blogs/homepage; when a list is empty we fall
+ * back to the most recent blogs so the homepage is never blank.
+ * @returns {Promise<{web: Array, mobile: Array}>}
+ */
+export async function getHomepageBlogSelection() {
+  await connectDB();
+  const [selection, blogs] = await Promise.all([
+    HomepageBlogSelection.findOne({ key: HOMEPAGE_SELECTION_KEY }).lean(),
+    Blog.find({ status: { $ne: 'draft' } })
+      .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
+      .sort({ sortOrder: 1, createdAt: -1 })
+      .lean(),
+  ]);
+  const serialized = blogs.map(serializeBlog);
+  return {
+    web: pickSelectedBlogs(serialized, selection?.webSlugs, HOMEPAGE_WEB_LIMIT),
+    mobile: pickSelectedBlogs(serialized, selection?.mobileSlugs, HOMEPAGE_MOBILE_LIMIT),
+  };
 }
 
 /**

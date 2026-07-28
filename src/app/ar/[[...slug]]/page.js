@@ -15,7 +15,7 @@ import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
 import AmazonServicesPage from '../../../pages/AmazonServicesPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 import TermsOfServicePage from '../../../pages/TermsOfServicePage';
-import { getBlogBySlug, getBlogs, getBlogsForHomepage } from '../../../lib/blog';
+import { getBlogBySlug, getBlogs, getHomepageBlogSelection } from '../../../lib/blog';
 import { connectDB } from '../../../lib/db';
 import PartnerAgency from '../../../models/PartnerAgency';
 import { partnerAgenciesForResponse } from '../../../lib/partnerAgencyResponse';
@@ -199,12 +199,12 @@ export default async function ArabicPage({ params }) {
     notFound();
   }
   
-  // Homepage: pass initial blogs so they show immediately without client fetch
+  // Homepage: pass the admin-selected blogs so they show immediately without client fetch
   if (routePath === '' && PageComponent === HomePage) {
-    const initialBlogs = await getBlogsForHomepage(6);
+    const { web, mobile } = await getHomepageBlogSelection();
     return (
       <Suspense fallback={<PageFallback />}>
-        <HomePage initialBlogs={initialBlogs} />
+        <HomePage initialBlogs={web} initialMobileBlogs={mobile} />
       </Suspense>
     );
   }

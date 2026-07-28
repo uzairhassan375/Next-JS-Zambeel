@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
+import { HOMEPAGE_MOBILE_LIMIT, HOMEPAGE_WEB_LIMIT } from "../lib/homepageBlogs";
 const blue_logoImage = "/blue_logo.png";
 import { StackedCards } from "../components/UI/staking-cards";
 import Ticker from "../components/Ticker";
@@ -13,22 +14,27 @@ import Ticker from "../components/Ticker";
 const BLOG_CARD_WIDTH = 320;
 const BLOG_CARD_GAP = 16;
 const BLOG_SCROLL_STEP = BLOG_CARD_WIDTH + BLOG_CARD_GAP;
-const HOMEPAGE_BLOG_LIMIT = 6;
 const BLOG_CARD_SHADOW =
   'shadow-[0_4px_8px_rgba(46,59,120,0.06),0_12px_28px_rgba(46,59,120,0.14)] hover:shadow-[0_6px_12px_rgba(46,59,120,0.08),0_16px_36px_rgba(46,59,120,0.18)]';
 
-export default function HomePage({ initialBlogs = [] }) {
+export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] }) {
   const { t, i18n } = useTranslation();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentLanguage = i18n.language || 'en';
+  const isArabicUi = String(currentLanguage).toLowerCase().startsWith('ar');
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
-  // Use server-passed blogs for first paint; client refresh keeps the same recent limit
-  const [blogList, setBlogList] = useState(
-    Array.isArray(initialBlogs) ? initialBlogs.slice(0, HOMEPAGE_BLOG_LIMIT) : []
+  // Blogs the admin picked for the homepage (see /admin/blogs/homepage).
+  // Server-passed for first paint, refreshed on the client below.
+  const [webBlogList, setWebBlogList] = useState(
+    Array.isArray(initialBlogs) ? initialBlogs.slice(0, HOMEPAGE_WEB_LIMIT) : []
   );
-  const homepageBlogs = blogList.slice(0, HOMEPAGE_BLOG_LIMIT);
+  const [mobileBlogList, setMobileBlogList] = useState(
+    Array.isArray(initialMobileBlogs) ? initialMobileBlogs.slice(0, HOMEPAGE_MOBILE_LIMIT) : []
+  );
+  const homepageBlogs = webBlogList.slice(0, HOMEPAGE_WEB_LIMIT);
+  const homepageMobileBlogs = mobileBlogList.slice(0, HOMEPAGE_MOBILE_LIMIT);
 
   const [numberText, setNumberText] = useState("");
 
@@ -36,13 +42,16 @@ export default function HomePage({ initialBlogs = [] }) {
   const statsRef = useRef(null);
   const blogCarouselRef = useRef(null);
 
-  // Refresh recent blogs in background (same limit as server). First view uses initialBlogs.
+  // Refresh the homepage selection in the background. First view uses the server-passed lists.
   useEffect(() => {
-    fetch(`/api/blogs?limit=${HOMEPAGE_BLOG_LIMIT}`)
+    fetch('/api/homepage-blogs')
       .then((r) => r.json())
       .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setBlogList(data.slice(0, HOMEPAGE_BLOG_LIMIT));
+        if (Array.isArray(data?.web) && data.web.length > 0) {
+          setWebBlogList(data.web.slice(0, HOMEPAGE_WEB_LIMIT));
+        }
+        if (Array.isArray(data?.mobile) && data.mobile.length > 0) {
+          setMobileBlogList(data.mobile.slice(0, HOMEPAGE_MOBILE_LIMIT));
         }
       })
       .catch((err) => {
@@ -310,6 +319,19 @@ export default function HomePage({ initialBlogs = [] }) {
       cta: t('homepage.featureCards.amazon.cta'),
       link: "/pages/amazon-services",
     },
+    // USA dropshipping page is English-only for now (same as the header nav)
+    ...(isArabicUi
+      ? []
+      : [
+        {
+          title: t('homepage.featureCards.usaDropshipping.title'),
+          desc: [
+            t('homepage.featureCards.usaDropshipping.desc')
+          ],
+          cta: t('homepage.featureCards.usaDropshipping.cta'),
+          link: "/pages/usa-dropshipping",
+        },
+      ]),
   ];
 
 
@@ -410,8 +432,9 @@ export default function HomePage({ initialBlogs = [] }) {
         </div>
 
         {/* Desktop Grid — all services in one row */}
-        <div className="hidden md:block w-full md:-mx-2 md:px-0 lg:-mx-4">
-          <div className="grid grid-cols-5 gap-3 lg:gap-4">
+        {/* Wider than the main container so six cards still get room */}
+        <div className="hidden md:block self-center w-[min(93vw,1450px)] max-w-[calc(100vw-2rem)]">
+          <div className={`grid gap-2.5 lg:gap-3 ${featureCards.length > 5 ? 'grid-cols-3 lg:grid-cols-6' : 'grid-cols-5'}`}>
           {featureCards.map((card) => {
             const titleWords = card.title.split(' ');
             const firstWord = titleWords[0];
@@ -420,7 +443,7 @@ export default function HomePage({ initialBlogs = [] }) {
             return (
               <div
                 key={card.cta}
-                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-4 lg:px-5 py-4 flex flex-col h-full min-w-0 transition-all duration-300 hover:scale-[1.02]"
+                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-3.5 lg:px-4 py-4 flex flex-col h-full min-w-0 transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex-grow">
                   <h2 className="text-[#2E3B78] text-base lg:text-lg font-semibold mb-2 leading-tight">
@@ -677,7 +700,7 @@ export default function HomePage({ initialBlogs = [] }) {
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:min-w-0 gap-4 h-auto justify-center items-center lg:items-start">
+          <div className="flex flex-col lg:flex-row lg:min-w-0 gap-4 h-auto justify-center items-center lg:items-stretch">
             {/* Statistics Card - Mobile and Desktop */}
             <div className="bg-white border border-gray-200 rounded-[48px] p-6 md:p-8 pb-12 md:pb-8 shadow-md flex flex-col justify-between w-full max-w-[1200px] lg:max-w-[320px] lg:w-[320px] lg:min-h-[500px] mb-6 md:mb-0">
               <div className="grid grid-cols-2 lg:flex lg:flex-col gap-4 md:gap-6 lg:gap-10">
@@ -729,14 +752,15 @@ export default function HomePage({ initialBlogs = [] }) {
             </div>
 
             {/* Carousel - Desktop only (6 most recent) */}
-            <div className="hidden lg:flex flex-col w-full max-w-[830px] min-w-0 flex-1 mx-auto lg:pb-4">
-              {/* Cards track — only this element scrolls horizontally */}
+            {/* Framed panel so the cards read as one box next to the stats card */}
+            <div className="hidden lg:flex flex-col justify-between w-full max-w-[830px] min-w-0 flex-1 lg:min-h-[500px] bg-white border border-gray-200 rounded-[48px] shadow-md p-6">
+              {/* Cards track — only this element scrolls horizontally (no radius here: it would clip the tiles) */}
               <div
                 ref={blogCarouselRef}
-                className="w-full min-w-0 overflow-x-auto overflow-y-visible scroll-smooth pb-4 [&::-webkit-scrollbar]:hidden"
+                className="w-full min-w-0 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                <div className="flex w-max items-start gap-4 pr-4 pt-1">
+                <div className="flex w-max items-start gap-4 px-1 py-2">
                   {homepageBlogs.map((blog) => {
                     const isArabic = currentLanguage.startsWith('ar');
                     const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
@@ -750,17 +774,17 @@ export default function HomePage({ initialBlogs = [] }) {
                       <Link
                         key={blog.slug}
                         href={getLocalePath(`/blog/${blog.slug}`, pathname)}
-                        className={`group flex flex-col rounded-[32px] cursor-pointer shrink-0 bg-white transition-shadow ${BLOG_CARD_SHADOW}`}
+                        className="group flex flex-col rounded-2xl cursor-pointer shrink-0 bg-white border border-[#2E3B78]/60 overflow-hidden"
                         style={{ width: `${BLOG_CARD_WIDTH}px` }}
                       >
-                        <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-[32px]">
+                        <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden">
                           {img ? (
                             <Image
                               src={img}
                               alt={title}
                               width={BLOG_CARD_WIDTH}
                               height={200}
-                              className="w-full h-full object-contain transition duration-500 group-hover:scale-105"
+                              className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
                               unoptimized={imgUnoptimized}
                             />
                           ) : (
@@ -784,7 +808,7 @@ export default function HomePage({ initialBlogs = [] }) {
               </div>
 
               {/* Controls — sibling below scroll area, never inside overflow */}
-              <div className="flex shrink-0 justify-between items-center w-full mt-4">
+              <div className="flex shrink-0 justify-between items-center w-full mt-6">
                 <button
                   type="button"
                   onClick={() => blogCarouselRef.current?.scrollBy({ left: -BLOG_SCROLL_STEP, behavior: 'smooth' })}
@@ -813,7 +837,7 @@ export default function HomePage({ initialBlogs = [] }) {
 
           <div className="lg:hidden">
             <div className="grid grid-cols-1 gap-4 max-w-md mx-auto w-full">
-              {homepageBlogs.slice(0, 2).map((blog) => {
+              {homepageMobileBlogs.map((blog) => {
                 const isArabic = currentLanguage.startsWith('ar');
                 const title = isArabic && blog.titleAr ? blog.titleAr : (blog.titleEn || blog.slug);
                 const desc = isArabic && blog.descriptionAr ? blog.descriptionAr : (blog.descriptionEn || '');
@@ -836,7 +860,7 @@ export default function HomePage({ initialBlogs = [] }) {
                           width={640}
                           height={400}
                           unoptimized={imgUnoptimized}
-                          className="w-full h-full object-contain transition duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">

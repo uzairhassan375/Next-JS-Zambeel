@@ -32,7 +32,7 @@
       "becomeASupplier": "Become a Supplier",
       "trustedPartners": "Agency Program",
       "goldSubscriptionPlan": "Gold Subscription Plan",
-      "gccPlan": "GCC Plan",
+      "gccPlan": "Gulf Plan",
       "usaPlan": "USA Plan",
       "selectLanguage": "Select language",
       "toggleMenu": "Toggle menu",
@@ -89,6 +89,11 @@
         "title": "Sell on Amazon with Zambeel",
         "desc": "FBA & FBM fulfillment services in UAE and KSA — prep, storage, and delivery handled for you",
         "cta": "Amazon Services"
+      },
+      "usaDropshipping": {
+        "title": "Start dropshipping in the USA",
+        "desc": "Sell in the United States without registering an LLC or a US bank account — Zambeel handles it",
+        "cta": "USA Dropshipping"
       }
     },
     "whereToSell": {

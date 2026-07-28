@@ -1,4 +1,5 @@
 import AdminBlogList from './AdminBlogList';
+import BlogsTabs from './BlogsTabs';
 import SeedBlogsButton from './SeedBlogsButton';
 
 export default function AdminBlogsPage() {
@@ -17,6 +18,7 @@ export default function AdminBlogsPage() {
             </a>
           </div>
         </div>
+        <BlogsTabs />
         <AdminBlogList />
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import HomePage from '../pages/HomePage';
-import { getBlogsForHomepage } from '../lib/blog';
+import { getHomepageBlogSelection } from '../lib/blog';
 import { buildMetadataForPage } from '../lib/pageMeta';
 import enTranslations from '../locales/en/translation.json';
 import arTranslations from '../locales/ar/translation.json';
@@ -29,11 +29,11 @@ export async function generateMetadata() {
 }
 
 export default async function Home() {
-  // Fetch first 6 blogs on the server so they appear immediately (no client wait)
-  const initialBlogs = await getBlogsForHomepage(6);
+  // Fetch the admin-selected homepage blogs on the server (no client wait)
+  const { web, mobile } = await getHomepageBlogSelection();
   return (
     <Suspense fallback={<HomePageFallback />}>
-      <HomePage initialBlogs={initialBlogs} />
+      <HomePage initialBlogs={web} initialMobileBlogs={mobile} />
     </Suspense>
   );
 }
