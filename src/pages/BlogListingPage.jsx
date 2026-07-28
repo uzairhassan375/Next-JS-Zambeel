@@ -81,10 +81,10 @@ export default function BlogListingPage({ blogs = [] }) {
                       )}
                     </div>
                     <div className="p-4 sm:p-6 flex-1 flex flex-col">
-                      <h3 className="text-lg sm:text-xl font-bold text-[#1e3a8a] mb-2 group-hover:text-[#FCD64C] transition-colors">
+                      <h3 className="text-lg sm:text-xl font-bold leading-7 min-h-[3.5rem] text-[#1e3a8a] mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
                         {getTitle(blog)}
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-700 line-clamp-2">
+                      <p className="text-sm sm:text-base leading-6 min-h-[3rem] text-gray-700 line-clamp-2">
                         {getDesc(blog)}
                       </p>
                     </div>

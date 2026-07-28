@@ -12,6 +12,8 @@ import { StackedCards } from "../components/UI/staking-cards";
 import Ticker from "../components/Ticker";
 
 const BLOG_CARD_WIDTH = 320;
+// Cards are a fixed box so short and long excerpts render identically.
+const BLOG_CARD_HEIGHT = 380;
 const BLOG_CARD_GAP = 16;
 const BLOG_SCROLL_STEP = BLOG_CARD_WIDTH + BLOG_CARD_GAP;
 const BLOG_CARD_SHADOW =
@@ -22,7 +24,6 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentLanguage = i18n.language || 'en';
-  const isArabicUi = String(currentLanguage).toLowerCase().startsWith('ar');
   const [selectedCountry, setSelectedCountry] = useState("UAE");
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   // Blogs the admin picked for the homepage (see /admin/blogs/homepage).
@@ -319,19 +320,6 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
       cta: t('homepage.featureCards.amazon.cta'),
       link: "/pages/amazon-services",
     },
-    // USA dropshipping page is English-only for now (same as the header nav)
-    ...(isArabicUi
-      ? []
-      : [
-        {
-          title: t('homepage.featureCards.usaDropshipping.title'),
-          desc: [
-            t('homepage.featureCards.usaDropshipping.desc')
-          ],
-          cta: t('homepage.featureCards.usaDropshipping.cta'),
-          link: "/pages/usa-dropshipping",
-        },
-      ]),
   ];
 
 
@@ -432,8 +420,8 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         </div>
 
         {/* Desktop Grid — all services in one row */}
-        {/* Wider than the main container so six cards still get room */}
-        <div className="hidden md:block self-center w-[min(93vw,1450px)] max-w-[calc(100vw-2rem)]">
+        {/* Capped to the page container width so the cards stay narrow */}
+        <div className="hidden md:block self-center w-[min(93vw,1200px)] max-w-[calc(100vw-2rem)]">
           <div className={`grid gap-2.5 lg:gap-3 ${featureCards.length > 5 ? 'grid-cols-3 lg:grid-cols-6' : 'grid-cols-5'}`}>
           {featureCards.map((card) => {
             const titleWords = card.title.split(' ');
@@ -443,7 +431,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
             return (
               <div
                 key={card.cta}
-                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-3.5 lg:px-4 py-4 flex flex-col h-full min-w-0 transition-all duration-300 hover:scale-[1.02]"
+                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-3.5 lg:px-4 py-4 flex flex-col h-full min-h-[215px] lg:min-h-[235px] min-w-0 transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex-grow">
                   <h2 className="text-[#2E3B78] text-base lg:text-lg font-semibold mb-2 leading-tight">
@@ -753,7 +741,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
 
             {/* Carousel - Desktop only (6 most recent) */}
             {/* Framed panel so the cards read as one box next to the stats card */}
-            <div className="hidden lg:flex flex-col justify-between w-full max-w-[830px] min-w-0 flex-1 lg:min-h-[500px] bg-white border border-gray-200 rounded-[48px] shadow-md p-6">
+            <div className="hidden lg:flex flex-col justify-between w-full max-w-[864px] min-w-0 flex-1 lg:min-h-[500px] bg-white border border-gray-200 rounded-[48px] shadow-md p-6">
               {/* Cards track — only this element scrolls horizontally (no radius here: it would clip the tiles) */}
               <div
                 ref={blogCarouselRef}
@@ -775,9 +763,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                         key={blog.slug}
                         href={getLocalePath(`/blog/${blog.slug}`, pathname)}
                         className="group flex flex-col rounded-2xl cursor-pointer shrink-0 bg-white border border-[#2E3B78]/60 overflow-hidden"
-                        style={{ width: `${BLOG_CARD_WIDTH}px` }}
+                        style={{ width: `${BLOG_CARD_WIDTH}px`, height: `${BLOG_CARD_HEIGHT}px` }}
                       >
-                        <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <div className="relative w-full shrink-0 aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden">
                           {img ? (
                             <Image
                               src={img}
@@ -793,8 +781,8 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                             </div>
                           )}
                         </div>
-                        <div className="flex flex-col p-6">
-                          <h3 className="text-[#1e3a8a] text-lg font-bold mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                        <div className="flex flex-1 min-h-0 flex-col p-6">
+                          <h3 className="text-[#1e3a8a] text-lg font-bold leading-7 min-h-[3.5rem] mb-2 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
                             {title}
                           </h3>
                           <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
@@ -851,8 +839,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                     key={blog.slug}
                     href={getLocalePath(`/blog/${blog.slug}`, pathname)}
                     className={`group flex flex-col rounded-3xl bg-white transition-shadow w-full ${BLOG_CARD_SHADOW}`}
+                    style={{ height: `${BLOG_CARD_HEIGHT}px` }}
                   >
-                    <div className="relative w-full aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-3xl">
+                    <div className="relative w-full shrink-0 aspect-[16/10] bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-3xl">
                       {img ? (
                         <Image
                           src={img}
@@ -868,8 +857,8 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                         </div>
                       )}
                     </div>
-                    <div className="flex flex-col p-4 sm:p-5">
-                      <h3 className="text-[#1e3a8a] text-base font-bold mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
+                    <div className="flex flex-1 min-h-0 flex-col p-4 sm:p-5">
+                      <h3 className="text-[#1e3a8a] text-base font-bold leading-6 min-h-[3rem] mb-1.5 group-hover:text-[#FCD64C] transition-colors line-clamp-2">
                         {title}
                       </h3>
                       <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
@@ -893,9 +882,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         </div>
       </section>
 
-      <div className="w-full blue-gradient-bg flex justify-center">
-        <div className="max-w-[1400px] w-full mx-auto px-4 py-8 md:py-8 space-y-12 md:space-y-6">
-          <div ref={statsRef} className="max-w-6xl mx-auto bg-white rounded-[2rem] md:rounded-[3rem] px-6 py-10 md:p-8 shadow-2xl text-center">
+      <div className="w-full blue-gradient-bg px-4 flex justify-center">
+        <div className="max-w-[1200px] w-full mx-auto py-8 md:py-8 space-y-12 md:space-y-6">
+          <div ref={statsRef} className="w-full mx-auto bg-white rounded-[2rem] md:rounded-[3rem] px-6 py-10 md:p-8 shadow-2xl text-center">
             <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-8 md:mb-6">
               {t('homepage.network.title')}
             </h2>
@@ -942,7 +931,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
             </div>
           </div>
 
-          <div id="reviews" className="max-w-6xl mx-auto md:bg-white md:rounded-[3rem] px-0 md:py-4 md:shadow-2xl overflow-hidden">
+          <div id="reviews" className="w-full mx-auto md:bg-white md:rounded-[3rem] px-0 md:py-4 md:shadow-2xl overflow-hidden">
             <div className="px-4 mb-6 md:mb-4">
               <h2 className="text-center text-xl md:text-3xl font-bold text-white md:text-gray-900">
                 {t('homepage.reviews.title')}
