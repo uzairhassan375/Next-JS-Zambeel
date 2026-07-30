@@ -244,7 +244,7 @@ export const StackedCards = () => {
             description: t('homepage.featureCards.amazon.desc'),
             color: "rgba(255, 153, 0, 0.85)",
             cta: t('homepage.featureCards.amazon.cta'),
-            link: "/pages/amazon-services"
+            link: "/pages/amazon-usa"
         }
     ];
 

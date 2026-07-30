@@ -54,7 +54,8 @@ const nextConfig = {
       ['/USDropshippingPage', '/pages/usa-dropshipping'],
       ['/Zambeel360Page', '/pages/zambeel-360'],
       ['/Zambeel3PLPage', '/pages/warehousing-3pl'],
-      ['/AmazonServicesPage', '/pages/amazon-services'],
+      ['/AmazonUsaPage', '/pages/amazon-usa'],
+      ['/AmazonServicesPage', '/pages/amazon-usa'],
       ['/PartnerAgenciesPage', '/pages/partner-agencies'],
       ['/RefundReplacementPolicyPage', '/pages/refund-replacement-policy'],
       ['/TermsOfServicePage', '/pages/terms-of-service'],
@@ -78,6 +79,17 @@ const nextConfig = {
       {
         source: '/ar/pages/us-dropshipping',
         destination: '/ar/pages/usa-dropshipping',
+        permanent: true,
+      },
+      // Legacy slug for Amazon USA page
+      {
+        source: '/pages/amazon-services',
+        destination: '/pages/amazon-usa',
+        permanent: true,
+      },
+      {
+        source: '/ar/pages/amazon-services',
+        destination: '/ar/pages/amazon-usa',
         permanent: true,
       },
       {

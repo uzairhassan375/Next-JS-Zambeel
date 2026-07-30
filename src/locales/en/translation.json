@@ -16,7 +16,7 @@
     "dropshipping": "Gulf Dropshipping",
     "zambeel3PL": "Zambeel 3PL",
     "zambeel360": "Zambeel 360",
-    "amazonServices": "Amazon Services",
+    "amazonServices": "Amazon USA",
     "learnEcomm": "Learn E-commerce",
     "usDropshipping": "USA Dropshipping",
     "newBadge": "NEW",
@@ -32,8 +32,9 @@
     "becomeASupplier": "Become a Supplier",
     "trustedPartners": "Agency Program",
     "goldSubscriptionPlan": "Gold Subscription Plan",
-    "gccPlan": "Gulf Plan",
-    "usaPlan": "USA Plan",
+    "gccPlan": "Gulf Dropshipping Plan",
+    "usaPlan": "USA Dropshipping Plan",
+    "amazonUsaPlan": "USA Amazon Plan",
     "selectLanguage": "Select language",
     "toggleMenu": "Toggle menu",
     "languageEnglish": "English",
@@ -66,7 +67,7 @@
     "featureCards": {
       "learnEcommerce": {
         "title": "Learn E-commerce with Zambeel",
-        "desc": "Learn to Start, Build & Grow your E-commerce business from scratch",
+        "desc": "Learn to Start, Build & Grow your E-commerce business from scratch with guidance and proven strategies.",
         "cta": "Learn E-commerce",
         "mobileTitle": "Learn E-comm"
       },
@@ -76,7 +77,7 @@
         "cta": "Gulf Dropshipping"
       },
       "zambeel360": {
-        "title": "Build your private label with Zambeel 360",
+        "title": "Build your private label with Zambeel",
         "desc": "We handle the entire process — sourcing, customs clearance, and delivery to our warehouse",
         "cta": "China Sourcing"
       },
@@ -86,9 +87,9 @@
         "cta": "Zambeel 3PL"
       },
       "amazon": {
-        "title": "Sell on Amazon with Zambeel",
-        "desc": "FBA & FBM fulfillment services in UAE and KSA — prep, storage, and delivery handled for you",
-        "cta": "Amazon Services"
+        "title": "Amazon USA Gold Plan",
+        "desc": "A 6-step growth roadmap for USA marketplace sellers.",
+        "cta": "Amazon USA"
       },
       "usaDropshipping": {
         "title": "Start dropshipping in the USA",
@@ -112,7 +113,7 @@
         "3PL": "Fast, reliable and fully automated",
         "360": "Build your private label",
         "dropshipping": "Start selling without buying inventory",
-        "amazon": "FBA & FBM on Amazon UAE & KSA"
+        "amazon": "Winning products & PPC on Amazon USA"
       }
     },
     "whyZambeel": {
@@ -358,72 +359,73 @@
     }
   },
   "amazon": {
+    "metaTitle": "Amazon USA Gold Plan | Scale on Amazon.com | Zambeel",
+    "metaDescription": "Launch and scale on Amazon.com with Zambeel's Gold Plan. A 6-step roadmap, winning products, PPC optimization & senior consultant support — $399 for 3 months.",
     "hero": {
-      "title": "Amazon Services",
-      "subtitle": "FBA & FBM fulfillment for Amazon sellers",
+      "title": "Amazon USA Gold Plan",
+      "subtitle": "A 6-step growth roadmap for USA marketplace sellers.",
       "carousel": {
-        "fbmFba": "FBM — Fulfilled by Merchant & FBA — Fulfilled by Amazon",
-        "uaeKsa": "Available in UAE and KSA",
-        "scale": "Scale your Amazon business with expert local support"
+        "winningProducts": "Earning dollars from Business setup to Scaling.",
+        "ppcCampaigns": "Backed by a senior Amazon consultant.",
+        "setupToScale": "Dedicated support at every step of your journey."
       },
-      "availableIn": "Amazon services currently available in"
+      "availableIn": "Amazon USA Gold Plan built for sellers in"
     },
-    "models": {
-      "title": "Choose your fulfillment model",
-      "subtitle": "We support both Amazon fulfillment options so you can pick what fits your brand, margins, and growth stage.",
-      "fbm": {
-        "badge": "FBM",
-        "title": "Fulfilled by Merchant",
-        "fullName": "You store inventory — we help you ship",
-        "description": "Ideal when you want control over inventory and branding while outsourcing warehousing, prep, and last-mile delivery to Zambeel.",
-        "points": {
-          "1": "Inventory stored at our UAE / KSA facilities",
-          "2": "Order packing, labeling & dispatch on your behalf",
-          "3": "Faster local delivery to Amazon customers"
-        }
-      },
-      "fba": {
-        "badge": "FBA",
-        "title": "Fulfilled by Amazon",
-        "fullName": "Amazon handles delivery — we handle the prep",
-        "description": "Send inventory to Amazon fulfillment centers with confidence. We manage sourcing support, prep, labeling, and inbound logistics.",
-        "points": {
-          "1": "FNSKU labeling & Amazon-compliant prep",
-          "2": "Inbound shipment coordination to Amazon FCs",
-          "3": "Inventory planning for UAE & KSA marketplaces"
-        }
-      }
-    },
-    "whyZambeel": {
-      "title": "Why Amazon with Zambeel?",
-      "description": "Zambeel helps Amazon sellers in UAE and KSA operate smoothly with local expertise and reliable logistics.",
-      "features": {
-        "accountManagers": "Dedicated Account Managers",
-        "fastDelivery": "Fast Delivery",
-        "liveInventory": "Live Inventory Tracking",
-        "chinaSourcing": "China Sourcing"
-      }
-    },
-    "whereToStart": {
-      "title": "How to get started",
-      "description": "Launch or scale your Amazon store in UAE and KSA in a few simple steps with a dedicated Zambeel consultant.",
+    "goldPlan": {
+      "sectionHeading": "The Gold Plan",
+      "sectionSubtitle": "One plan built for Amazon USA — from your first listing to a scaled business.",
+      "badge": "Gold",
+      "priceAmount": "$399",
+      "price": "$399 USD",
+      "period": "USD · for 3 Months",
+      "title": "The Gold Plan",
+      "whatWeDo": "What We Do",
+      "featuresLabel": "Features",
+      "description": "A 6-step growth plan. Every seller moves through the same proven roadmap, from market research to a scaled, self-sustaining Amazon business.",
       "steps": {
-        "consultation": {
-          "title": "Book a consultation",
-          "desc": "Tell us your products and whether you prefer FBA, FBM, or both. Our team will recommend the right setup."
+        "1": {
+          "title": "Choosing the Right Market",
+          "desc": "We identify where demand is strongest for your category before you commit a single dollar."
         },
-        "chooseModel": {
-          "title": "Choose FBA or FBM",
-          "desc": "We align on fulfillment model, marketplace (Amazon.ae / Amazon.sa), and operational workflow."
+        "2": {
+          "title": "Seller Account Setup",
+          "desc": "Your Amazon seller account is set up correctly and fully compliant from day one."
         },
-        "setup": {
-          "title": "Prep & connect",
-          "desc": "We handle prep, labeling, warehousing, and integrations so your catalog is ready to sell."
+        "3": {
+          "title": "Selecting Your Business Model",
+          "desc": "We match FBA, FBM, or private label to your actual budget and experience, not a generic template."
         },
-        "launch": {
-          "title": "Launch & scale",
-          "desc": "Go live on Amazon and grow with ongoing inventory, fulfillment, and account support."
+        "4": {
+          "title": "Product Research & Listing Optimization",
+          "desc": "Proven products, sourced and built into listings designed to convert browsers into buyers."
+        },
+        "5": {
+          "title": "Ad Campaign Strategy & Optimization",
+          "desc": "PPC campaigns structured to protect your margin, not just chase visibility."
+        },
+        "6": {
+          "title": "Scaling for Sustainable Growth",
+          "desc": "Budget and catalog expand only once performance data proves it's the right time."
         }
+      },
+      "seniorConsultant": {
+        "title": "Senior Consultant",
+        "desc": "A dedicated Amazon Business Consultant guiding your strategy."
+      },
+      "dedicatedSupport": {
+        "title": "Dedicated Support",
+        "desc": "A responsive support system for every step of the journey."
+      },
+      "cta": "Get the Gold Plan"
+    },
+    "whyItMatters": {
+      "eyebrow": "Why It Matters",
+      "title": "Why A Guided Plan Makes The Difference",
+      "points": {
+        "1": "Business model chosen without weighing budget or experience",
+        "2": "PPC campaigns launched without a tested structure",
+        "3": "Ad spend increased before listings are ready to convert",
+        "4": "Scaling attempted before campaigns are actually optimized"
       }
     }
   },

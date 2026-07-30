@@ -71,7 +71,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href={getLocalePath('/pages/amazon-services', pathname)} className="hover:text-white hover:underline">
+              <Link href={getLocalePath('/pages/amazon-usa', pathname)} className="hover:text-white hover:underline">
                 {t('header.amazonServices')}
               </Link>
             </li>

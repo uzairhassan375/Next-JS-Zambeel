@@ -16,7 +16,7 @@ const STATIC_ROUTES = [
   { path: 'pages/usa-dropshipping', priority: 0.85, changeFrequency: 'monthly' },
   { path: 'pages/zambeel-360', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'pages/warehousing-3pl', priority: 0.9, changeFrequency: 'monthly' },
-  { path: 'pages/amazon-services', priority: 0.9, changeFrequency: 'monthly' },
+  { path: 'pages/amazon-usa', priority: 0.9, changeFrequency: 'monthly' },
   { path: 'pages/partner-agencies', priority: 0.8, changeFrequency: 'monthly' },
   { path: 'pages/refund-replacement-policy', priority: 0.5, changeFrequency: 'yearly' },
   { path: 'pages/terms-of-service', priority: 0.5, changeFrequency: 'yearly' },

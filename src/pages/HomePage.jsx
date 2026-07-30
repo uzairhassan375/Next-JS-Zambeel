@@ -7,9 +7,10 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
 import { HOMEPAGE_MOBILE_LIMIT, HOMEPAGE_WEB_LIMIT } from "../lib/homepageBlogs";
-const blue_logoImage = "/blue_logo.png";
 import { StackedCards } from "../components/UI/staking-cards";
 import Ticker from "../components/Ticker";
+
+const blue_logoImage = "/blue_logo.png";
 
 const BLOG_CARD_WIDTH = 320;
 // Cards are a fixed box so short and long excerpts render identically.
@@ -320,7 +321,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         t('homepage.featureCards.amazon.desc')
       ],
       cta: t('homepage.featureCards.amazon.cta'),
-      link: "/pages/amazon-services",
+      link: "/pages/amazon-usa",
     },
   ];
 
@@ -341,7 +342,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
       case "3PL":
         return "/pages/warehousing-3pl";
       case "Amazon":
-        return "/pages/amazon-services";
+        return "/pages/amazon-usa";
       default:
         return "#";
     }
@@ -429,7 +430,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
             className="grid gap-2 lg:gap-3 items-stretch"
             style={{
               gridTemplateColumns: featureCards
-                .map((card) => (card.links ? '1.5fr' : '1fr'))
+                .map((card) => (card.links ? '1.62fr' : '0.98fr'))
                 .join(' '),
             }}
           >
@@ -470,9 +471,10 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                       <Link
                         key={item.link}
                         href={item.link}
-                        className="flex-1 min-w-0 bg-[#FCD64C] hover:bg-white text-[#2E3B78] font-bold py-3 text-xs lg:text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 shadow-lg px-3 whitespace-nowrap"
+                        className="group/drop-btn flex-1 min-w-0 bg-[#FCD64C] hover:bg-white text-[#2E3B78] font-bold py-3 text-xs lg:text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg px-3 whitespace-nowrap"
                       >
                         <span>{item.cta}</span>
+                        <i className="fa-solid fa-arrow-right text-[#2E3B78] shrink-0 transition-colors" />
                       </Link>
                     ))}
                   </div>

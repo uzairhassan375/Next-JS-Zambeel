@@ -1,8 +1,20 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { attachTickerBlinkRaf } from '../../../lib/tickerBlinkRaf';
 import { FONT_FAMILIES } from '../../../lib/editorFonts';
+import {
+  applyColorToRange,
+  detectBlinkInRange,
+  detectColorInRange,
+  detectLinkInRange,
+  getSelectionColor,
+  normalizeColor,
+  removeBlinkInSelection,
+  removeColorFromRange,
+  removeFontInRange,
+  wrapSelectionWithNode,
+} from './tickerEditorUtils';
 
 const TICKER_COLORS = [
   { label: 'Yellow', value: '#fcd64c' },
@@ -14,6 +26,15 @@ const TICKER_COLORS = [
   { label: 'Purple', value: '#a855f7' },
   { label: 'Black', value: '#000000' },
 ];
+
+const INITIAL_ACTIVE_EFFECTS = {
+  bold: false,
+  italic: false,
+  underline: false,
+  blink: false,
+  link: false,
+  color: false,
+};
 
 function readLinkStyles(link) {
   if (!link || link.tagName !== 'A') {
@@ -51,123 +72,21 @@ function applyLinkStyles(link, { showUnderline, underlineColor }) {
   }
 }
 
-const INITIAL_ACTIVE_EFFECTS = {
-  bold: false,
-  italic: false,
-  underline: false,
-  blink: false,
-  link: false,
-  color: false,
-};
-
-function getRangeAnchor(range) {
-  const node = range.commonAncestorContainer;
-  return node.nodeType === 3 ? node.parentElement : node;
-}
-
-function getDepth(node) {
-  let depth = 0;
-  let current = node;
-  while (current?.parentElement) {
-    depth += 1;
-    current = current.parentElement;
-  }
-  return depth;
-}
-
-function unwrapElement(el) {
-  const parent = el.parentNode;
-  if (!parent) return;
-  while (el.firstChild) {
-    parent.insertBefore(el.firstChild, el);
-  }
-  parent.removeChild(el);
-}
-
-function detectBlinkInRange(range, container) {
-  const anchor = getRangeAnchor(range);
-  if (!anchor || !container.contains(anchor)) return false;
-  if (anchor.classList?.contains('ticker-blink') || anchor.closest('.ticker-blink')) return true;
-  return Array.from(container.querySelectorAll('.ticker-blink')).some((el) => range.intersectsNode(el));
-}
-
-function detectLinkInRange(range) {
-  const anchor = getRangeAnchor(range);
-  if (!anchor) return false;
-  return anchor.tagName === 'A' || !!anchor.closest('a');
-}
-
-function detectColorInRange(range, container) {
-  const anchor = getRangeAnchor(range);
-  if (!anchor || !container.contains(anchor)) return false;
-  let el = anchor;
-  while (el && container.contains(el)) {
-    if (el.tagName === 'SPAN' && el.style.color && !el.classList.contains('ticker-blink')) {
-      return true;
-    }
-    if (el === container) break;
-    el = el.parentElement;
-  }
-  return Array.from(container.querySelectorAll('span[style*="color"]')).some(
-    (span) => !span.classList.contains('ticker-blink') && range.intersectsNode(span)
-  );
-}
-
-function removeBlinkInSelection(container, range) {
-  const blinks = Array.from(container.querySelectorAll('.ticker-blink')).filter((el) =>
-    range.intersectsNode(el)
-  );
-  blinks.sort((a, b) => getDepth(b) - getDepth(a));
-  blinks.forEach(unwrapElement);
-  return blinks.length > 0;
-}
-
-function removeColorInSelection(container, range) {
-  const spans = Array.from(container.querySelectorAll('span[style*="color"]')).filter(
-    (span) => !span.classList.contains('ticker-blink') && range.intersectsNode(span)
-  );
-  spans.sort((a, b) => getDepth(b) - getDepth(a));
-  spans.forEach((span) => {
-    span.style.removeProperty('color');
-    if (!span.style.cssText.trim() && span.classList.length === 0) {
-      unwrapElement(span);
-    }
-  });
-  return spans.length > 0;
-}
-
 function activeBtnClass(isActive) {
-  return isActive
-    ? 'bg-[#1e3a8a] text-white border-[#1e3a8a]'
-    : 'hover:bg-gray-100';
+  return isActive ? 'bg-[#1e3a8a] text-white border-[#1e3a8a]' : 'hover:bg-gray-100';
 }
 
-function wrapSelectionWithNode(containerEl, nodeFactory) {
-  const selection = window.getSelection();
-  if (!selection || selection.rangeCount === 0) return false;
-  const range = selection.getRangeAt(0);
-  if (range.collapsed) return false;
-  if (!containerEl.contains(range.commonAncestorContainer)) return false;
-
-  const wrapper = nodeFactory();
-  try {
-    const fragment = range.extractContents();
-    wrapper.appendChild(fragment);
-    range.insertNode(wrapper);
-    selection.removeAllRanges();
-    return true;
-  } catch {
-    return false;
-  }
+function preventToolbarFocusLoss(event) {
+  event.preventDefault();
 }
 
 export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   const editorRef = useRef(null);
+  const previewRef = useRef(null);
   const toolbarRef = useRef(null);
   const linkDialogRef = useRef(null);
   const savedRangeRef = useRef(null);
   const lastEmittedRef = useRef(null);
-  const [selectedColor, setSelectedColor] = useState('#fcd64c');
   const [selectedFont, setSelectedFont] = useState(FONT_FAMILIES[0].value);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
@@ -176,6 +95,8 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   const [linkUnderlineColor, setLinkUnderlineColor] = useState('#fcd64c');
   const [hasTextSelection, setHasTextSelection] = useState(false);
   const [activeEffects, setActiveEffects] = useState(INITIAL_ACTIVE_EFFECTS);
+  const [selectionColor, setSelectionColor] = useState(null);
+  const [previewHtml, setPreviewHtml] = useState(value || '');
 
   function resetLinkDialog() {
     setLinkUrl('');
@@ -184,98 +105,104 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
     setLinkUnderlineColor('#fcd64c');
   }
 
-  function emitChange() {
+  const emitChange = useCallback(() => {
     if (editorRef.current) {
       const html = editorRef.current.innerHTML;
       lastEmittedRef.current = html;
+      setPreviewHtml(html);
       onChange(html);
     }
-  }
+  }, [onChange]);
 
-  function refreshActiveEffects() {
+  const saveSelection = useCallback(() => {
+    const sel = document.getSelection();
+    if (!sel?.rangeCount || !editorRef.current?.contains(sel.anchorNode)) return;
+    savedRangeRef.current = sel.getRangeAt(0).cloneRange();
+  }, []);
+
+  const restoreSelection = useCallback(() => {
+    if (!savedRangeRef.current || !editorRef.current) return false;
+    const sel = document.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRangeRef.current);
+    editorRef.current.focus();
+    return true;
+  }, []);
+
+  const getWorkingRange = useCallback(() => {
+    restoreSelection();
+    const sel = document.getSelection();
+    if (!sel?.rangeCount) return null;
+    const range = sel.getRangeAt(0);
+    if (!editorRef.current?.contains(range.commonAncestorContainer)) return null;
+    return range;
+  }, [restoreSelection]);
+
+  const refreshActiveEffects = useCallback(() => {
     const el = editorRef.current;
     if (!el) return;
-    setTimeout(() => {
+
+    requestAnimationFrame(() => {
       const sel = document.getSelection();
       if (!sel?.rangeCount || !el.contains(sel.anchorNode)) {
+        setHasTextSelection(false);
         setActiveEffects(INITIAL_ACTIVE_EFFECTS);
+        setSelectionColor(null);
         return;
       }
+
       const range = sel.getRangeAt(0);
+      const selectedText = range.toString().trim();
       const isOnLink = detectLinkInRange(range);
+      const hasColor = detectColorInRange(range, el);
+      const currentColor = getSelectionColor(range, el);
+
+      setHasTextSelection(selectedText.length > 0 || isOnLink);
+      setSelectionColor(currentColor);
       setActiveEffects({
         bold: document.queryCommandState('bold'),
         italic: document.queryCommandState('italic'),
         underline: document.queryCommandState('underline'),
         blink: detectBlinkInRange(range, el),
         link: isOnLink,
-        color: detectColorInRange(range, el),
+        color: hasColor,
       });
-    }, 0);
-  }
-
-  function saveSelection() {
-    const sel = document.getSelection();
-    if (!sel.rangeCount || !editorRef.current?.contains(sel.anchorNode)) return;
-    savedRangeRef.current = sel.getRangeAt(0).cloneRange();
-  }
-
-  function restoreSelection() {
-    if (!savedRangeRef.current || !editorRef.current) return;
-    const sel = document.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(savedRangeRef.current);
-    editorRef.current.focus();
-  }
+    });
+  }, []);
 
   useEffect(() => {
     const el = editorRef.current;
     if (!el) return;
     if (value !== lastEmittedRef.current && el.innerHTML !== value) {
       el.innerHTML = value || '';
+      setPreviewHtml(value || '');
     }
     return attachTickerBlinkRaf(el);
   }, [value]);
 
   useEffect(() => {
+    if (!previewRef.current) return undefined;
+    return attachTickerBlinkRaf(previewRef.current);
+  }, [previewHtml, value]);
+
+  useEffect(() => {
     const el = editorRef.current;
     if (!el) return;
 
-    const checkSelection = () => {
-      const sel = document.getSelection();
-      if (sel.rangeCount > 0 && el.contains(sel.anchorNode)) {
-        const range = sel.getRangeAt(0);
-        const selectedText = range.toString().trim();
-        const isOnLink = detectLinkInRange(range);
-        setHasTextSelection(selectedText.length > 0 || isOnLink);
-        setActiveEffects({
-          bold: document.queryCommandState('bold'),
-          italic: document.queryCommandState('italic'),
-          underline: document.queryCommandState('underline'),
-          blink: detectBlinkInRange(range, el),
-          link: isOnLink,
-          color: detectColorInRange(range, el),
-        });
-      } else {
-        setHasTextSelection(false);
-        setActiveEffects(INITIAL_ACTIVE_EFFECTS);
-      }
-    };
+    const checkSelection = () => refreshActiveEffects();
 
-    const handleClick = () => setTimeout(checkSelection, 10);
-
-    el.addEventListener('mouseup', handleClick);
+    el.addEventListener('mouseup', checkSelection);
     el.addEventListener('keyup', checkSelection);
     el.addEventListener('select', checkSelection);
-    el.addEventListener('click', handleClick);
+    el.addEventListener('click', checkSelection);
 
     return () => {
-      el.removeEventListener('mouseup', handleClick);
+      el.removeEventListener('mouseup', checkSelection);
       el.removeEventListener('keyup', checkSelection);
       el.removeEventListener('select', checkSelection);
-      el.removeEventListener('click', handleClick);
+      el.removeEventListener('click', checkSelection);
     };
-  }, []);
+  }, [refreshActiveEffects]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -294,31 +221,49 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   }, [showLinkDialog]);
 
   function runSimple(command) {
-    restoreSelection();
     editorRef.current?.focus();
+    restoreSelection();
     document.execCommand(command, false);
     emitChange();
     refreshActiveEffects();
   }
 
-  function applyTextColor(color) {
+  function handleApplyColor(color) {
     const el = editorRef.current;
     if (!el) return;
-    restoreSelection();
-    const ok = wrapSelectionWithNode(el, () => {
-      const span = document.createElement('span');
-      span.style.color = color;
-      return span;
-    });
-    if (ok) {
+    editorRef.current.focus();
+    const range = getWorkingRange();
+    if (!range || range.collapsed) return;
+
+    const applied = applyColorToRange(range, color);
+    if (applied) {
       emitChange();
       attachTickerBlinkRaf(el);
+      saveSelection();
+      refreshActiveEffects();
+    }
+  }
+
+  function handleRemoveColor() {
+    const el = editorRef.current;
+    if (!el) return;
+    editorRef.current.focus();
+    const range = getWorkingRange();
+    if (!range || range.collapsed) return;
+
+    const removed = removeColorFromRange(range);
+    if (removed) {
+      emitChange();
+      attachTickerBlinkRaf(el);
+      saveSelection();
+      refreshActiveEffects();
     }
   }
 
   function applyFontFamily(fontFamily) {
     const el = editorRef.current;
     if (!el || !fontFamily) return;
+    editorRef.current.focus();
     restoreSelection();
     const ok = wrapSelectionWithNode(el, () => {
       const span = document.createElement('span');
@@ -328,24 +273,23 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
     if (ok) {
       emitChange();
       attachTickerBlinkRaf(el);
+      saveSelection();
+      refreshActiveEffects();
     }
   }
 
-  function toggleTextColor(color) {
+  function handleRemoveFont() {
     const el = editorRef.current;
     if (!el) return;
-    restoreSelection();
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-    const range = selection.getRangeAt(0);
-    if (range.collapsed) return;
+    editorRef.current.focus();
+    const range = getWorkingRange();
+    if (!range || range.collapsed) return;
 
-    if (detectColorInRange(range, el)) {
-      removeColorInSelection(el, range);
+    const removed = removeFontInRange(range);
+    if (removed) {
       emitChange();
-      refreshActiveEffects();
-    } else {
-      applyTextColor(color);
+      attachTickerBlinkRaf(el);
+      saveSelection();
       refreshActiveEffects();
     }
   }
@@ -353,6 +297,7 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   function toggleBlink() {
     const el = editorRef.current;
     if (!el) return;
+    editorRef.current.focus();
     restoreSelection();
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0) return;
@@ -373,6 +318,7 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
       if (ok) {
         emitChange();
         attachTickerBlinkRaf(el);
+        saveSelection();
         refreshActiveEffects();
       }
     }
@@ -381,16 +327,20 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   function clearSelectedFormatting() {
     const el = editorRef.current;
     if (!el) return;
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-    const range = selection.getRangeAt(0);
-    if (range.collapsed) return;
-    if (!el.contains(range.commonAncestorContainer)) return;
+    editorRef.current.focus();
+    const range = getWorkingRange();
+    if (!range || range.collapsed) return;
 
-    const selectedText = range.toString();
+    const plainText = range.toString();
     range.deleteContents();
-    range.insertNode(document.createTextNode(selectedText));
-    selection.removeAllRanges();
+    range.insertNode(document.createTextNode(plainText));
+
+    const selection = window.getSelection();
+    if (selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
     emitChange();
     refreshActiveEffects();
   }
@@ -512,127 +462,163 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
     resetLinkDialog();
   }
 
+  const previewContent = previewHtml || value || '';
+
   return (
     <div className="relative border border-gray-300 rounded-lg overflow-hidden bg-white">
       <div
         ref={toolbarRef}
-        className="flex flex-wrap gap-2 p-2 border-b border-gray-200 bg-gray-50"
-        onMouseDown={(e) => {
-          e.stopPropagation();
-          saveSelection();
-        }}
+        className="flex flex-col gap-2 p-2 border-b border-gray-200 bg-gray-50"
+        onMouseDown={saveSelection}
       >
-        <button
-          type="button"
-          onClick={() => runSimple('bold')}
-          className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.bold)}`}
-          title={activeEffects.bold ? 'Remove bold' : 'Apply bold'}
-        >
-          Bold
-        </button>
-        <button
-          type="button"
-          onClick={() => runSimple('italic')}
-          className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.italic)}`}
-          title={activeEffects.italic ? 'Remove italic' : 'Apply italic'}
-        >
-          Italic
-        </button>
-        <button
-          type="button"
-          onClick={() => runSimple('underline')}
-          className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.underline)}`}
-          title={activeEffects.underline ? 'Remove underline' : 'Apply underline'}
-        >
-          Underline
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleLinkClick();
-          }}
-          disabled={!hasTextSelection}
-          className={`px-2 py-1 text-xs border rounded flex items-center gap-1 ${
-            !hasTextSelection
-              ? 'text-gray-400 cursor-not-allowed opacity-50'
-              : activeBtnClass(activeEffects.link)
-          }`}
-          title={
-            !hasTextSelection
-              ? 'Select text to create a link'
-              : activeEffects.link
-                ? 'Edit or remove link'
-                : 'Insert link'
-          }
-        >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-            />
-          </svg>
-          Link
-        </button>
-        <select
-          value={selectedColor}
-          onChange={(e) => setSelectedColor(e.target.value)}
-          className="px-2 py-1 text-xs border rounded bg-white min-w-[100px]"
-          title="Choose text color"
-        >
-          {TICKER_COLORS.map((color) => (
-            <option key={color.value} value={color.value}>
-              {color.label}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          onClick={() => toggleTextColor(selectedColor)}
-          className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.color)}`}
-          title={activeEffects.color ? 'Remove color' : 'Apply color'}
-        >
-          {activeEffects.color ? 'Remove Color' : 'Apply Color'}
-        </button>
-        <select
-          value={selectedFont}
-          onChange={(e) => setSelectedFont(e.target.value)}
-          className="px-2 py-1 text-xs border rounded bg-white min-w-[130px]"
-          title="Choose font"
-          style={{ fontFamily: selectedFont }}
-        >
-          {FONT_FAMILIES.map((font) => (
-            <option key={font.value} value={font.value} style={{ fontFamily: font.value }}>
-              {font.label}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          onClick={() => applyFontFamily(selectedFont)}
-          className="px-2 py-1 text-xs border rounded hover:bg-gray-100"
-          title="Apply font to selected text"
-        >
-          Apply Font
-        </button>
-        <button
-          type="button"
-          onClick={toggleBlink}
-          className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.blink)}`}
-          title={activeEffects.blink ? 'Remove blink' : 'Apply blink'}
-        >
-          {activeEffects.blink ? 'Unblink' : 'Blink'}
-        </button>
-        <button
-          type="button"
-          onClick={clearSelectedFormatting}
-          className="px-2 py-1 text-xs border rounded hover:bg-gray-100"
-        >
-          Clear
-        </button>
+        <div className="flex flex-wrap gap-2 items-center">
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={() => runSimple('bold')}
+            className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.bold)}`}
+            title={activeEffects.bold ? 'Remove bold' : 'Apply bold'}
+          >
+            Bold
+          </button>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={() => runSimple('italic')}
+            className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.italic)}`}
+            title={activeEffects.italic ? 'Remove italic' : 'Apply italic'}
+          >
+            Italic
+          </button>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={() => runSimple('underline')}
+            className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.underline)}`}
+            title={activeEffects.underline ? 'Remove underline' : 'Apply underline'}
+          >
+            Underline
+          </button>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={handleLinkClick}
+            disabled={!hasTextSelection}
+            className={`px-2 py-1 text-xs border rounded flex items-center gap-1 ${
+              !hasTextSelection
+                ? 'text-gray-400 cursor-not-allowed opacity-50'
+                : activeBtnClass(activeEffects.link)
+            }`}
+            title={
+              !hasTextSelection
+                ? 'Select text to create a link'
+                : activeEffects.link
+                  ? 'Edit or remove link'
+                  : 'Insert link'
+            }
+          >
+            Link
+          </button>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={toggleBlink}
+            className={`px-2 py-1 text-xs border rounded ${activeBtnClass(activeEffects.blink)}`}
+            title={activeEffects.blink ? 'Remove blink' : 'Apply blink'}
+          >
+            {activeEffects.blink ? 'Unblink' : 'Blink'}
+          </button>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={clearSelectedFormatting}
+            className="px-2 py-1 text-xs border rounded hover:bg-gray-100"
+            title="Clear all formatting from selection"
+          >
+            Clear
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-2 items-center">
+          <div className="flex flex-wrap gap-1.5">
+            {TICKER_COLORS.map((color) => {
+              const isActive = normalizeColor(selectionColor) === normalizeColor(color.value);
+              return (
+                <button
+                  key={color.value}
+                  type="button"
+                  onMouseDown={preventToolbarFocusLoss}
+                  onClick={() => handleApplyColor(color.value)}
+                  disabled={!hasTextSelection}
+                  className={`h-7 w-7 rounded-full border-2 transition-transform ${
+                    !hasTextSelection ? 'opacity-40 cursor-not-allowed' : 'hover:scale-110'
+                  } ${isActive ? 'border-[#1e3a8a] ring-2 ring-[#1e3a8a]/30' : 'border-gray-300'}`}
+                  style={{ backgroundColor: color.value }}
+                  title={color.label}
+                  aria-label={color.label}
+                />
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={handleRemoveColor}
+            disabled={!hasTextSelection || !activeEffects.color}
+            className={`px-2 py-1 text-xs border rounded ${
+              !hasTextSelection || !activeEffects.color
+                ? 'opacity-40 cursor-not-allowed'
+                : 'hover:bg-red-50 text-red-700 border-red-200'
+            }`}
+            title="Remove color from highlighted text"
+          >
+            Remove Color
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="text-xs font-medium text-gray-600">Font</span>
+          <select
+            value={selectedFont}
+            onMouseDown={preventToolbarFocusLoss}
+            onChange={(e) => setSelectedFont(e.target.value)}
+            className="px-2 py-1 text-xs border rounded bg-white min-w-[130px]"
+            title="Choose font"
+            style={{ fontFamily: selectedFont }}
+          >
+            {FONT_FAMILIES.map((font) => (
+              <option key={font.value} value={font.value} style={{ fontFamily: font.value }}>
+                {font.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={() => applyFontFamily(selectedFont)}
+            disabled={!hasTextSelection}
+            className={`px-2 py-1 text-xs border rounded ${
+              !hasTextSelection ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-100'
+            }`}
+            title="Apply font to selected text"
+          >
+            Apply Font
+          </button>
+          <button
+            type="button"
+            onMouseDown={preventToolbarFocusLoss}
+            onClick={handleRemoveFont}
+            disabled={!hasTextSelection}
+            className={`px-2 py-1 text-xs border rounded ${
+              !hasTextSelection ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-100'
+            }`}
+            title="Remove custom font from selected text"
+          >
+            Remove Font
+          </button>
+        </div>
       </div>
+
       <div
         ref={editorRef}
         contentEditable
@@ -640,18 +626,37 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
         dir={dir}
         className="ticker-editor min-h-[100px] p-3 text-sm focus:outline-none"
         onInput={emitChange}
-        onMouseDown={saveSelection}
+        onMouseUp={saveSelection}
+        onKeyUp={saveSelection}
       />
+
+      <div className="border-t border-gray-200 bg-[#2E3B78] px-3 py-2">
+        <p className="text-[10px] uppercase tracking-wide text-white/60 mb-1">Live preview</p>
+        <div className="overflow-x-auto text-sm text-white [-ms-overflow-style:none] [scrollbar-width:thin]">
+          <span
+            ref={previewRef}
+            className="inline-block min-w-max whitespace-nowrap py-0.5 ticker-content"
+            dir={dir}
+            dangerouslySetInnerHTML={{ __html: previewContent }}
+          />
+        </div>
+      </div>
+
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .ticker-editor a,
-        .ticker-editor .ticker-link {
+        .ticker-editor {
+          line-height: 1.6;
+        }
+        .ticker-editor a span[style*="color"],
+        .ticker-editor .ticker-link span[style*="color"] {
+          text-decoration: inherit;
+        }
+        .ticker-editor a:not(:has(span[style*="color"])) {
           color: #2563eb;
           cursor: pointer;
         }
-        .ticker-editor a:hover,
-        .ticker-editor .ticker-link:hover {
+        .ticker-editor a:hover:not(:has(span[style*="color"])) {
           color: #1d4ed8;
         }
       `,
@@ -675,9 +680,6 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
                 placeholder="http:// or /pages/..."
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Use http:// for external links or / for internal pages
-              </p>
             </div>
 
             <div className="mb-4">
@@ -689,7 +691,6 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
                 placeholder="Used for accessibility and SEO"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
               />
-              <p className="text-xs text-gray-500 mt-1">Used for accessibility and SEO</p>
             </div>
 
             <div className="mb-4">

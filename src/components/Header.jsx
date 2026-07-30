@@ -186,7 +186,7 @@ export default function Header({ theme = "dark" }) {
                     {t('header.zambeel3PL')}
                   </Link>
                   <Link
-                    href={getLocalePath('/pages/amazon-services', pathname)}
+                    href={getLocalePath('/pages/amazon-usa', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.amazonServices')}
@@ -357,7 +357,7 @@ export default function Header({ theme = "dark" }) {
               </svg>
             </button>
             {showGoldPlanDropdown && (
-              <div className="absolute top-full right-0 pt-2 bg-transparent min-w-[160px] z-50">
+              <div className="absolute top-full right-0 pt-2 bg-transparent min-w-[220px] z-50">
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
                   <Link
                     href={`${getLocalePath('/pages/dropshipping-uae-and-ksa', pathname)}#pricing`}
@@ -372,6 +372,13 @@ export default function Header({ theme = "dark" }) {
                     onClick={() => setShowGoldPlanDropdown(false)}
                   >
                     {t('header.usaPlan')}
+                  </Link>
+                  <Link
+                    href={`${getLocalePath('/pages/amazon-usa', pathname)}#pricing`}
+                    className={`block px-4 py-3 text-[#2E3B78] ${dropdownHoverColor} transition text-sm font-medium`}
+                    onClick={() => setShowGoldPlanDropdown(false)}
+                  >
+                    {t('header.amazonUsaPlan')}
                   </Link>
                 </div>
               </div>
@@ -599,7 +606,7 @@ export default function Header({ theme = "dark" }) {
                     {t('header.zambeel3PL')}
                   </Link>
                   <Link
-                    href={getLocalePath('/pages/amazon-services', pathname)}
+                    href={getLocalePath('/pages/amazon-usa', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
                     onClick={() => setShowMobileMenu(false)}
                   >
@@ -808,6 +815,16 @@ export default function Header({ theme = "dark" }) {
                     }}
                   >
                     {t('header.usaPlan')}
+                  </Link>
+                  <Link
+                    href={`${getLocalePath('/pages/amazon-usa', pathname)}#pricing`}
+                    className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
+                    onClick={() => {
+                      setShowGoldPlanMobileDropdown(false);
+                      setShowMobileMenu(false);
+                    }}
+                  >
+                    {t('header.amazonUsaPlan')}
                   </Link>
                 </div>
               )}

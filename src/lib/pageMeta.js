@@ -19,7 +19,7 @@ export const PAGE_IDS = [
   { id: 'pages/usa-dropshipping', label: 'USA Dropshipping', path: '/pages/usa-dropshipping' },
   { id: 'pages/zambeel-360', label: 'Zambeel 360', path: '/pages/zambeel-360' },
   { id: 'pages/warehousing-3pl', label: 'Warehousing 3PL', path: '/pages/warehousing-3pl' },
-  { id: 'pages/amazon-services', label: 'Amazon Services', path: '/pages/amazon-services' },
+  { id: 'pages/amazon-usa', label: 'Amazon USA', path: '/pages/amazon-usa' },
   { id: 'pages/partner-agencies', label: 'Partner Agencies', path: '/pages/partner-agencies' },
   { id: 'pages/refund-replacement-policy', label: 'Refund & Replacement Policy', path: '/pages/refund-replacement-policy' },
   { id: 'pages/terms-of-service', label: 'Terms of Service', path: '/pages/terms-of-service' },

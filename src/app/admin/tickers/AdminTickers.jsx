@@ -92,7 +92,7 @@ export default function AdminTickers() {
             </div>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                Select text and apply effects (bold, color, font, blink, link). Active effects highlight in blue — click again to turn off.
+                Highlight text first, then apply formatting. Use color swatches or Apply Color. Remove Color clears only the text color from your selection. Save when done.
               </p>
 
               <div className="mt-4">

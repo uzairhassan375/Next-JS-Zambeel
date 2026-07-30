@@ -59,14 +59,14 @@
   color: #fcd64c !important;
 }
 
-.ticker-content a,
-.ticker-link {
+.ticker-content a:not(:has(span[style*='color'])),
+.ticker-link:not(:has(span[style*='color'])) {
   color: #fcd64c;
   cursor: pointer;
 }
 
-.ticker-content a:hover,
-.ticker-link:hover {
+.ticker-content a:hover:not(:has(span[style*='color'])),
+.ticker-link:hover:not(:has(span[style*='color'])) {
   color: #ffffff;
 }
 

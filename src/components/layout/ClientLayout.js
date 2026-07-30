@@ -27,7 +27,7 @@ export default function ClientLayout({ children, initialLocale }) {
     pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/ar/pages/dropshipping-uae-and-ksa" ||
     pathname === "/pages/usa-dropshipping" || pathname === "/ar/pages/usa-dropshipping" ||
     pathname === "/pages/warehousing-3pl" || pathname === "/ar/pages/warehousing-3pl" ||
-    pathname === "/pages/amazon-services" || pathname === "/ar/pages/amazon-services" ||
+    pathname === "/pages/amazon-usa" || pathname === "/ar/pages/amazon-usa" ||
     pathname === "/pages/partner-agencies" || pathname === "/ar/pages/partner-agencies" ||
     pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce";
 

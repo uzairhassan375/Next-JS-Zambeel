@@ -12,7 +12,7 @@ import DropshippingPage from '../../../pages/DropshippingPage';
 import USDropshippingPage from '../../../pages/USDropshippingPage';
 import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
-import AmazonServicesPage from '../../../pages/AmazonServicesPage';
+import AmazonUsaPage from '../../../pages/AmazonUsaPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 import TermsOfServicePage from '../../../pages/TermsOfServicePage';
 import { getBlogBySlug, getBlogs, getHomepageBlogSelection } from '../../../lib/blog';
@@ -50,7 +50,7 @@ const routeMap = {
   'pages/usa-dropshipping': USDropshippingPage,
   'pages/zambeel-360': Zambeel360Page,
   'pages/warehousing-3pl': Zambeel3PLPage,
-  'pages/amazon-services': AmazonServicesPage,
+  'pages/amazon-usa': AmazonUsaPage,
   'pages/refund-replacement-policy': RefundReplacementPolicyPage,
   'pages/terms-of-service': TermsOfServicePage,
   'pages/partner-agencies': PartnerAgenciesPage,
@@ -104,10 +104,10 @@ export async function generateMetadata({ params }) {
         title: `${translations.zambeel3PL.hero.title} - ${translations.zambeel3PL.hero.subtitle} | زمبيل`,
         description: translations.zambeel3PL.whyZambeel.description || 'احصل على خدمات التخزين وإدارة المخزون والتنفيذ الفعال مع خدمة زمبيل 3PL',
       });
-    case 'pages/amazon-services':
-      return buildMetadataForPage('pages/amazon-services', 'ar', {
-        title: `${translations.amazon.hero.title} - ${translations.amazon.hero.subtitle} | زمبيل`,
-        description: translations.amazon.whyZambeel.description || 'خدمات FBA و FBM لبائعي أمازون في الإمارات والسعودية',
+    case 'pages/amazon-usa':
+      return buildMetadataForPage('pages/amazon-usa', 'ar', {
+        title: translations.amazon.metaTitle || `${translations.amazon.hero.title} - ${translations.amazon.hero.subtitle} | زمبيل`,
+        description: translations.amazon.metaDescription || translations.amazon.goldPlan.description,
       });
     case 'learn-ecommerce': {
       const title = translations.superClass?.hero?.title || translations.learnEcommerce?.hero?.title || 'تعلم التجارة الإلكترونية';
