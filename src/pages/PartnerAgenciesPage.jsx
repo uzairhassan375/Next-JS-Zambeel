@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Gem, Crown, Medal } from 'lucide-react';
+import { Gem, Crown, Medal, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PricingSection from '../components/PricingSection';
 import AgencyWhySection from '../components/partner_agencies/AgencyWhySection';
@@ -237,7 +237,7 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
         </div>
       </section>
 
-      <section className="relative pb-10 md:pb-14 pt-8 md:pt-10">
+      <section className="relative pb-4 md:pb-5 pt-8 md:pt-10">
         <div className="max-w-6xl mx-auto px-4 md:px-6 mb-8 md:mb-10">
           <div className="flex justify-center">
             <div className="inline-flex items-center gap-1 p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-white/60 shadow-lg">
@@ -268,6 +268,20 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
         {activeAgencyTier === 'gold' && renderTierContent('gold')}
         {activeAgencyTier === 'silver' && renderTierContent('silver')}
       </section>
+
+      {/* Disclaimer — sits between the agency ticker and the divider line */}
+      {/* Wider than the page container so the sentence fits on a single line on desktop */}
+      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 pb-6 md:pb-8">
+        <p className="flex items-start xl:items-center justify-center gap-2 text-white/90 text-xs xl:text-[13px] font-bold italic leading-relaxed text-center xl:text-left">
+          <Info className="w-4 h-4 shrink-0 mt-0.5 xl:mt-0" strokeWidth={2.5} aria-hidden />
+          <span className="xl:whitespace-nowrap">
+            {c(
+              'agencyDisclaimer',
+              'Important: Before selecting your marketing agency do your own research & take your business decision wisely. Zambeel will not be responsible for your deal and transactions with any agency'
+            )}
+          </span>
+        </p>
+      </div>
 
       <div
         className="max-w-6xl mx-auto px-4 md:px-6 h-px"

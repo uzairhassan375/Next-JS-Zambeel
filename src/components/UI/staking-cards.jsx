@@ -215,6 +215,14 @@ export const StackedCards = () => {
             link: "/pages/dropshipping-uae-and-ksa"
         },
         {
+            id: 6,
+            title: t('homepage.featureCards.usaDropshipping.title'),
+            description: t('homepage.featureCards.usaDropshipping.desc'),
+            color: "rgba(59, 130, 246, 0.8)",
+            cta: t('homepage.featureCards.usaDropshipping.cta'),
+            link: "/pages/usa-dropshipping"
+        },
+        {
             id: 4,
             title: t('homepage.featureCards.zambeel3PL.title'),
             description: t('homepage.featureCards.zambeel3PL.desc'),

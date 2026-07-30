@@ -11,34 +11,34 @@
     "talkToAgent": "Talk to our agent",
     "learnMore": "Learn more"
   },
-    "header": {
-      "services": "Services",
-      "dropshipping": "Dropshipping",
-      "zambeel3PL": "Zambeel 3PL",
-      "zambeel360": "Zambeel 360",
-      "amazonServices": "Amazon Services",
-      "learnEcomm": "Learn E-commerce",
-      "usDropshipping": "USA Dropshipping",
-      "newBadge": "NEW",
-      "dropshippingProducts": "Dropshipping Products",
-      "whereCanYouSell": "Where can you sell?",
-      "whyZambeel": "Why Zambeel?",
-      "ourTeam": "Our Team",
-      "aboutUs": "About Us",
-      "joinUs": "Join Our Community",
-      "whatsapp": "WhatsApp",
-      "facebook": "Facebook",
-      "linkedin": "LinkedIn",
-      "becomeASupplier": "Become a Supplier",
-      "trustedPartners": "Agency Program",
-      "goldSubscriptionPlan": "Gold Subscription Plan",
-      "gccPlan": "Gulf Plan",
-      "usaPlan": "USA Plan",
-      "selectLanguage": "Select language",
-      "toggleMenu": "Toggle menu",
-      "languageEnglish": "English",
-      "languageArabic": "العربية"
-    },
+  "header": {
+    "services": "Services",
+    "dropshipping": "Gulf Dropshipping",
+    "zambeel3PL": "Zambeel 3PL",
+    "zambeel360": "Zambeel 360",
+    "amazonServices": "Amazon Services",
+    "learnEcomm": "Learn E-commerce",
+    "usDropshipping": "USA Dropshipping",
+    "newBadge": "NEW",
+    "dropshippingProducts": "Dropshipping Products",
+    "whereCanYouSell": "Where can you sell?",
+    "whyZambeel": "Why Zambeel?",
+    "ourTeam": "Our Team",
+    "aboutUs": "About Us",
+    "joinUs": "Join Our Community",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "linkedin": "LinkedIn",
+    "becomeASupplier": "Become a Supplier",
+    "trustedPartners": "Agency Program",
+    "goldSubscriptionPlan": "Gold Subscription Plan",
+    "gccPlan": "Gulf Plan",
+    "usaPlan": "USA Plan",
+    "selectLanguage": "Select language",
+    "toggleMenu": "Toggle menu",
+    "languageEnglish": "English",
+    "languageArabic": "العربية"
+  },
   "footer": {
     "tagline": "One Platform to Learn, Start, Build and Grow your E-commerce Business Profitably.",
     "services": "Services",
@@ -73,7 +73,7 @@
       "dropshipping": {
         "title": "Start E-comm without buying inventory",
         "desc": "Sell winning products from anywhere in the world on Cash on Delivery",
-        "cta": "Dropshipping"
+        "cta": "Gulf Dropshipping"
       },
       "zambeel360": {
         "title": "Build your private label with Zambeel 360",
@@ -94,6 +94,11 @@
         "title": "Start dropshipping in the USA",
         "desc": "Sell in the United States without registering an LLC or a US bank account — Zambeel handles it",
         "cta": "USA Dropshipping"
+      },
+      "dropshippingCombined": {
+        "title": "Start E-comm without buying inventory",
+        "desc": "Sell winning products on Cash on Delivery in the Gulf, or dropship in the USA without an LLC or US bank account",
+        "badge": "Most Popular"
       }
     },
     "whereToSell": {
@@ -348,7 +353,8 @@
     },
     "deliveryCharges": {
       "title": "3PL Services Delivery Charges",
-      "subtitle": "Competitive pricing for all your fulfillment needs"
+      "subtitle": "Competitive pricing for all your fulfillment needs",
+      "stockMovementNote": "1 AED per unit will be charged on inbound or outbound of 3PL stock from/to warehouse"
     }
   },
   "amazon": {
@@ -606,6 +612,7 @@
     "globalSubtitle": "Manage all your clients under one account and earn upto 25,000 AED extra commission",
     "seoIntro": "The Zambeel Agency Program helps marketing agencies, freelancers, and growth partners onboard merchants across the GCC and beyond. Partners get access to verified suppliers, dropshipping fulfillment, 3PL services, dedicated support, and commission-based earnings while managing multiple client stores from one portal.",
     "applyNow": "Apply Now",
+    "agencyDisclaimer": "Important: Before selecting your marketing agency do your own research & take your business decision wisely. Zambeel will not be responsible for your deal and transactions with any agency",
     "subtitle": "Connect with trusted partners who can help grow your business",
     "becomePartner": "Become a Partner",
     "becomePartnerSubtitle": "Join our global network and start earning with every merchant you onboard.",

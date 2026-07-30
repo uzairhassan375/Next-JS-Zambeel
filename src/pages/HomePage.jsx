@@ -289,20 +289,22 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
       link: "/learn-ecommerce",
     },
     {
-      title: t('homepage.featureCards.dropshipping.title'),
-      desc: [
-        t('homepage.featureCards.dropshipping.desc')
-      ],
-      cta: t('homepage.featureCards.dropshipping.cta'),
-      link: "/pages/dropshipping-uae-and-ksa",
-    },
-    {
       title: t('homepage.featureCards.zambeel3PL.title'),
       desc: [
         t('homepage.featureCards.zambeel3PL.desc')
       ],
       cta: t('homepage.featureCards.zambeel3PL.cta'),
       link: "/pages/warehousing-3pl",
+    },
+    {
+      title: t('homepage.featureCards.dropshippingCombined.title'),
+      desc: [
+        t('homepage.featureCards.dropshippingCombined.desc')
+      ],
+      links: [
+        { cta: t('homepage.featureCards.dropshipping.cta'), link: "/pages/dropshipping-uae-and-ksa" },
+        { cta: t('homepage.featureCards.usaDropshipping.cta'), link: "/pages/usa-dropshipping" },
+      ],
     },
     {
       title: t('homepage.featureCards.zambeel360.title'),
@@ -346,10 +348,11 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
   };
 
   // Helper function to get display name for service
-  const getServiceDisplayName = (service) => {
+  const getServiceDisplayName = (service, country = selectedCountry) => {
     switch (service) {
       case "Dropshipping":
-        return t('header.dropshipping');
+        // "Dropshipping" is branded per-region: Gulf everywhere except the USA
+        return country === "USA" ? t('header.usDropshipping') : t('header.dropshipping');
       case "360":
         return t('header.zambeel360');
       case "3PL":
@@ -420,34 +423,63 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         </div>
 
         {/* Desktop Grid — all services in one row */}
-        {/* Capped to the page container width so the cards stay narrow */}
-        <div className="hidden md:block self-center w-[min(93vw,1200px)] max-w-[calc(100vw-2rem)]">
-          <div className={`grid gap-2.5 lg:gap-3 ${featureCards.length > 5 ? 'grid-cols-3 lg:grid-cols-6' : 'grid-cols-5'}`}>
+        {/* Breaks out past the page container so the cards get width instead of height */}
+        <div className="hidden md:block self-center w-[min(92vw,1520px)] max-w-[calc(100vw-1.5rem)]">
+          <div
+            className="grid gap-2 lg:gap-3 items-stretch"
+            style={{
+              gridTemplateColumns: featureCards
+                .map((card) => (card.links ? '1.5fr' : '1fr'))
+                .join(' '),
+            }}
+          >
           {featureCards.map((card) => {
             const titleWords = card.title.split(' ');
             const firstWord = titleWords[0];
             const restOfTitle = titleWords.slice(1).join(' ');
+            const isFeatured = Boolean(card.links);
 
             return (
               <div
-                key={card.cta}
-                className="group card-hover bg-[#E7EFFC] rounded-[32px] px-3.5 lg:px-4 py-4 flex flex-col h-full min-h-[215px] lg:min-h-[235px] min-w-0 transition-all duration-300 hover:scale-[1.02]"
+                key={card.link || card.title}
+                className={
+                  isFeatured
+                    ? "group card-hover relative bg-gradient-to-br from-[#2E3B78] to-[#1F2B5C] rounded-[28px] px-5 lg:px-7 py-6 flex flex-col h-full min-h-[210px] lg:min-h-[230px] min-w-0 transition-all duration-300 hover:scale-[1.03] shadow-[0_8px_24px_rgba(46,59,120,0.35)] ring-2 ring-[#FCD64C] z-10 scale-[1.03]"
+                    : "group card-hover bg-[#E7EFFC] rounded-[28px] px-4 lg:px-5 py-4 flex flex-col h-full min-h-[189px] lg:min-h-[200px] min-w-0 transition-all duration-300 hover:scale-[1.02]"
+                }
               >
+                {isFeatured && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FCD64C] text-[#2E3B78] text-[11px] font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+                    {t('homepage.featureCards.dropshippingCombined.badge')}
+                  </span>
+                )}
                 <div className="flex-grow">
-                  <h2 className="text-[#2E3B78] text-base lg:text-lg font-semibold mb-2 leading-tight">
+                  <h2 className={`text-base lg:text-xl font-semibold mb-2 leading-tight ${isFeatured ? 'text-white' : 'text-[#2E3B78]'}`}>
                     <span className="font-bold">
                       {firstWord}
                     </span>
                     {restOfTitle && ` ${restOfTitle}`}
                   </h2>
-                  <p className="text-[#4A5568] group-hover:text-[#2E3B78] text-xs lg:text-sm leading-relaxed mb-4 text-justify">
+                  <p className={`text-xs lg:text-sm leading-relaxed mb-3 text-justify ${isFeatured ? 'text-white/85' : 'text-[#4A5568] group-hover:text-[#2E3B78]'}`}>
                     {card.desc}
                   </p>
                 </div>
-                {card.link ? (
+                {card.links ? (
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    {card.links.map((item) => (
+                      <Link
+                        key={item.link}
+                        href={item.link}
+                        className="flex-1 min-w-0 bg-[#FCD64C] hover:bg-white text-[#2E3B78] font-bold py-3 text-xs lg:text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 shadow-lg px-3 whitespace-nowrap"
+                      >
+                        <span>{item.cta}</span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : card.link ? (
                   <Link
                     href={card.link}
-                    className="w-full bg-[#2E3B78] group-hover:bg-white text-white group-hover:text-black font-bold py-3.5 lg:py-4 text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
+                    className="w-full bg-[#2E3B78] group-hover:bg-white text-white group-hover:text-black font-bold py-3 text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
                   >
                     <span>{card.cta}</span>
                     <i className="fa-solid fa-arrow-right text-[#FCD64C] group-hover:text-black transition-colors"></i>
