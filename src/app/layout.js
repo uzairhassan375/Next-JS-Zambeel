@@ -13,9 +13,14 @@ export const metadata = {
   title: 'Zambeel',
   description: 'Zambeel E-commerce Solutions',
   icons: {
-    icon: '/favicon.webp',
-    shortcut: '/favicon.webp',
-    apple: '/favicon.webp',
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon-48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon.png', sizes: '200x200', type: 'image/png' },
+      { url: '/favicon.webp', sizes: '200x200', type: 'image/webp' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon-192.png',
   },
   openGraph: {
     siteName: 'Zambeel',
