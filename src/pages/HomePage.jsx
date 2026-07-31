@@ -455,13 +455,13 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                   </span>
                 )}
                 <div className="flex-grow">
-                  <h2 className={`text-base lg:text-xl font-semibold mb-2 leading-tight ${isFeatured ? 'text-white' : 'text-[#2E3B78]'}`}>
+                  <h2 className={`text-base lg:text-xl font-semibold mb-2 leading-tight ${isFeatured ? 'text-white text-center' : 'text-[#2E3B78]'}`}>
                     <span className="font-bold">
                       {firstWord}
                     </span>
                     {restOfTitle && ` ${restOfTitle}`}
                   </h2>
-                  <p className={`text-xs lg:text-sm leading-relaxed mb-3 text-justify ${isFeatured ? 'text-white/85' : 'text-[#4A5568] group-hover:text-[#2E3B78]'}`}>
+                  <p className={`text-xs lg:text-sm leading-relaxed mb-3 ${isFeatured ? 'text-white/85 text-center' : 'text-[#4A5568] group-hover:text-[#2E3B78] text-justify'}`}>
                     {card.desc}
                   </p>
                 </div>
