@@ -38,6 +38,20 @@ const nextConfig = {
       },
     ],
   },
+  async headers() {
+    const xmlHeaders = [
+      {
+        key: 'Content-Type',
+        value: 'text/xml; charset=utf-8',
+      },
+    ];
+
+    return [
+      { source: '/sitemap.xml', headers: xmlHeaders },
+      { source: '/sitemap_pages_1.xml', headers: xmlHeaders },
+      { source: '/sitemap_blogs_1.xml', headers: xmlHeaders },
+    ];
+  },
   async redirects() {
     // `src/pages/*.jsx` holds the page *components*, but Next also treats src/pages
     // as the legacy Pages Router, which published /HomePage, /DropshippingPage, ...
@@ -62,6 +76,16 @@ const nextConfig = {
     ].map(([source, destination]) => ({ source, destination, permanent: true }));
 
     return [
+      {
+        source: '/sitemap',
+        destination: '/sitemap.xml',
+        permanent: true,
+      },
+      {
+        source: '/ar/sitemap',
+        destination: '/sitemap.xml',
+        permanent: true,
+      },
       ...legacyComponentRoutes,
       {
         source: '/:path*',

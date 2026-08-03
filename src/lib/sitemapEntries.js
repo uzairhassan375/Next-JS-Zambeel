@@ -1,9 +1,12 @@
-import { getAllBlogSlugsWithDates } from '../lib/blog';
+import { getAllBlogSlugsWithDates } from './blog';
 
-// Make sure this exists in your .env file:
-// NEXT_PUBLIC_SITE_URL=https://www.myzambeel.com
-const BASE_URL =
+export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://www.myzambeel.com';
+
+export const SITEMAP_CHILDREN = {
+  pages: 'sitemap_pages_1.xml',
+  blogs: 'sitemap_blogs_1.xml',
+};
 
 /** Static routes (exclude admin & api) */
 const STATIC_ROUTES = [
@@ -22,11 +25,8 @@ const STATIC_ROUTES = [
   { path: 'pages/terms-of-service', priority: 0.5, changeFrequency: 'yearly' },
 ];
 
-/**
- * Safe URL builder (does NOT break https://)
- */
 function buildUrl(path = '', locale = '') {
-  let url = BASE_URL.replace(/\/$/, ''); // remove trailing slash only
+  let url = SITE_URL.replace(/\/$/, '');
 
   if (locale) {
     url += `/${locale}`;
@@ -39,35 +39,40 @@ function buildUrl(path = '', locale = '') {
   return url;
 }
 
-/** hreflang pair for a path, so each entry declares both language versions */
+function sitemapUrl(filename) {
+  return `${SITE_URL.replace(/\/$/, '')}/${filename}`;
+}
+
+/** hreflang alternates per Google multilingual sitemap guidance */
 function languagesFor(path) {
+  const en = buildUrl(path);
+  const ar = buildUrl(path, 'ar');
   return {
-    en: buildUrl(path),
-    ar: buildUrl(path, 'ar'),
+    en,
+    ar,
+    'x-default': en,
   };
 }
 
-export default async function sitemap() {
+function entriesForRoute(route) {
+  const languages = languagesFor(route.path);
+  return ['', 'ar'].map((locale) => ({
+    url: buildUrl(route.path, locale),
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
+    alternates: { languages },
+  }));
+}
+
+export function getPageSitemapEntries() {
+  return STATIC_ROUTES.flatMap((route) => entriesForRoute(route));
+}
+
+export async function getBlogSitemapEntries() {
   const entries = [];
 
-  // Static pages (English + Arabic). No lastModified: these are hand-authored
-  // pages, and stamping "now" on every rebuild makes lastmod meaningless.
-  for (const route of STATIC_ROUTES) {
-    const languages = languagesFor(route.path);
-    for (const locale of ['', 'ar']) {
-      entries.push({
-        url: buildUrl(route.path, locale),
-        changeFrequency: route.changeFrequency,
-        priority: route.priority,
-        alternates: { languages },
-      });
-    }
-  }
-
-  // Blog posts (English + Arabic), with real last-modified dates
   try {
     const posts = await getAllBlogSlugsWithDates();
-
     const validPosts = posts?.filter((p) => p?.slug?.trim());
 
     for (const { slug, lastModified } of validPosts || []) {
@@ -90,4 +95,37 @@ export default async function sitemap() {
   }
 
   return entries;
+}
+
+function latestModifiedDate(entries) {
+  let latest = null;
+
+  for (const entry of entries) {
+    if (!entry.lastModified) continue;
+    const date = entry.lastModified instanceof Date
+      ? entry.lastModified
+      : new Date(entry.lastModified);
+    if (Number.isNaN(date.getTime())) continue;
+    if (!latest || date > latest) latest = date;
+  }
+
+  return latest;
+}
+
+export async function getSitemapIndexEntries() {
+  const blogEntries = await getBlogSitemapEntries();
+  const blogLastModified = latestModifiedDate(blogEntries);
+
+  const sitemaps = [
+    { loc: sitemapUrl(SITEMAP_CHILDREN.pages) },
+  ];
+
+  if (blogEntries.length > 0) {
+    sitemaps.push({
+      loc: sitemapUrl(SITEMAP_CHILDREN.blogs),
+      lastModified: blogLastModified,
+    });
+  }
+
+  return sitemaps;
 }
