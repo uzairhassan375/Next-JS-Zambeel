@@ -200,11 +200,11 @@ export const StackedCards = () => {
     const cardData = [
         {
             id: 1,
-            title: t('homepage.featureCards.learnEcommerce.title'),
-            description: t('homepage.featureCards.learnEcommerce.desc'),
-            color: "rgba(99, 102, 241, 0.8)",
-            cta: t('homepage.featureCards.learnEcommerce.cta'),
-            link: "/learn-ecommerce"
+            title: t('homepage.featureCards.usaDropshipping.title'),
+            description: t('homepage.featureCards.usaDropshipping.desc'),
+            color: "rgba(59, 130, 246, 0.8)",
+            cta: t('homepage.featureCards.usaDropshipping.cta'),
+            link: "/pages/usa-dropshipping"
         },
         {
             id: 2,
@@ -215,12 +215,12 @@ export const StackedCards = () => {
             link: "/pages/dropshipping-uae-and-ksa"
         },
         {
-            id: 6,
-            title: t('homepage.featureCards.usaDropshipping.title'),
-            description: t('homepage.featureCards.usaDropshipping.desc'),
-            color: "rgba(59, 130, 246, 0.8)",
-            cta: t('homepage.featureCards.usaDropshipping.cta'),
-            link: "/pages/usa-dropshipping"
+            id: 3,
+            title: t('homepage.featureCards.learnEcommerce.title'),
+            description: t('homepage.featureCards.learnEcommerce.desc'),
+            color: "rgba(99, 102, 241, 0.8)",
+            cta: t('homepage.featureCards.learnEcommerce.cta'),
+            link: "/learn-ecommerce"
         },
         {
             id: 4,
@@ -231,7 +231,7 @@ export const StackedCards = () => {
             link: "/pages/warehousing-3pl"
         },
         {
-            id: 3,
+            id: 5,
             title: t('homepage.featureCards.zambeel360.title'),
             description: t('homepage.featureCards.zambeel360.desc'),
             color: "rgba(34, 197, 94, 0.8)",
@@ -239,7 +239,7 @@ export const StackedCards = () => {
             link: "/pages/zambeel-360"
         },
         {
-            id: 5,
+            id: 6,
             title: t('homepage.featureCards.amazon.title'),
             description: t('homepage.featureCards.amazon.desc'),
             color: "rgba(255, 153, 0, 0.85)",
