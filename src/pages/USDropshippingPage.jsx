@@ -39,14 +39,17 @@ export default function USDropshippingPage() {
             'linear-gradient(186.57deg, rgba(89, 10, 10, 0.75) 5.1%, rgba(31, 46, 100, 0.96) 12.51%, rgba(48, 41, 90, 0.9) 31.86%, rgba(125, 20, 20, 0.79) 47.98%, rgba(75, 72, 147, 0.92) 63.78%, #4A61C4 81.76%)',
         }}
       >
-        <p
-          className="text-[clamp(3rem,12vw,7rem)] font-bold text-white tracking-tight leading-none animate-pulse"
+        <h1
+          className="text-[clamp(2rem,8vw,4rem)] font-bold text-white tracking-tight leading-tight animate-pulse"
           style={{ fontFamily: 'DM Sans, sans-serif' }}
         >
           {t('usDropshipping.comingSoon')}
-        </p>
+        </h1>
         <p className="mt-8 max-w-lg text-lg text-white/85 md:text-xl">
           {t('usDropshipping.comingSoonSub')}
+        </p>
+        <p className="mt-6 max-w-2xl text-sm text-white/75 md:text-base leading-relaxed">
+          {t('usDropshipping.seoIntro')}
         </p>
       </div>
     );

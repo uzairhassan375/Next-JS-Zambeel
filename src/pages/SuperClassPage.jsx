@@ -40,7 +40,7 @@ const SuperClassPage = () => {
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/api/tickers?pageId=learn-ecommerce-main', { cache: 'no-store' })
+    fetch('/api/tickers?pageId=learn-ecommerce-main')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!cancelled && data) {
@@ -58,7 +58,7 @@ const SuperClassPage = () => {
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/api/tickers?pageId=learn-ecommerce-price', { cache: 'no-store' })
+    fetch('/api/tickers?pageId=learn-ecommerce-price')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!cancelled && data) {

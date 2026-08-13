@@ -217,6 +217,7 @@
     }
   },
   "dropshipping": {
+    "metaTitle": "Gulf Dropshipping UAE & KSA | Zambeel",
     "hero": {
       "title": "Zambeel Dropshipping",
       "subtitle": "Start Dropshipping in Largest COD Markets",
@@ -252,6 +253,7 @@
     }
   },
   "zambeel360": {
+    "metaTitle": "Zambeel 360 | Source from China | Zambeel",
     "hero": {
       "title": "Zambeel 360",
       "subtitle": "Source anything from China",
@@ -305,6 +307,7 @@
     }
   },
   "zambeel3PL": {
+    "metaTitle": "Zambeel 3PL Warehousing | Zambeel",
     "hero": {
       "title": "Zambeel 3PL",
       "subtitle": "Get warehousing, inventory management & efficient fulfillment",
@@ -573,6 +576,9 @@
     "joinNow": "Join Now!"
   },
   "learnEcommerce": {
+    "metaTitle": "Learn E-commerce | Zambeel SuperClass",
+    "metaDescription": "Weekly live masterclasses on product research, ads, store setup, and scaling e-commerce in GCC and global markets.",
+    "seoIntro": "Learn e-commerce with Zambeel through live masterclasses covering product research, store setup, ads, and scaling across GCC and global markets.",
     "hero": {
       "title": "Learn E-commerce with Zambeel",
       "description": "We offer master ecommerce class every week in which we help you to understand and learn ecommerce"
@@ -600,7 +606,8 @@
     },
     "supplier": {
       "title": "Become a Supplier",
-      "description": "Join our supplier network and grow your business with Zambeel. We are preparing something special for you!"
+      "description": "Join our supplier network and grow your business with Zambeel. We are preparing something special for you!",
+      "seoIntro": "Zambeel is building a supplier network for verified products across GCC, USA, and global COD markets. Register interest to partner on sourcing, quality control, and fulfillment for dropshipping and 3PL merchants."
     },
     "trustedPartners": {
       "title": "Trusted Partners",
@@ -608,6 +615,7 @@
     }
   },
   "partnerAgencies": {
+    "metaTitle": "Partner Agencies | Zambeel",
     "title": "Partner Network",
     "globalTitlePrefix": "Zambeel Agency",
     "globalTitle": "Program",
@@ -1081,8 +1089,9 @@
   "usDropshipping": {
     "comingSoon": "Coming soon",
     "comingSoonSub": "The US dropshipping page is being prepared.",
-    "metaTitle": "US Dropshipping — Zambeel",
+    "metaTitle": "USA Dropshipping | Zambeel",
     "metaDescription": "Zambeel is launching US dropshipping. Start selling in the United States without company registration or a US bank account. Packages and early access.",
+    "seoIntro": "Zambeel USA dropshipping helps sellers launch in the United States without LLC registration or a US bank account — with product sourcing, fulfillment, and scaling support.",
     "welcomeTitle": "Zambeel is live in USA",
     "talkToUs": "Talk to us",
     "tagline": "Start ecommerce journey without registering LLC and Bank Account but with ZAMBEEL only.",

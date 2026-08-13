@@ -21,7 +21,7 @@ const setCookie = (name, value, days = 365) => {
   document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
 };
 
-const ComingSoon = ({ title, description, cookieName = 'supplier_countdown_target' }) => {
+const ComingSoon = ({ title, description, seoIntro, cookieName = 'supplier_countdown_target' }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
   const isRTL = currentLanguage === 'ar';
@@ -135,6 +135,14 @@ const ComingSoon = ({ title, description, cookieName = 'supplier_countdown_targe
         >
           {description}
         </p>
+        {seoIntro ? (
+          <p
+            className="text-sm md:text-base text-white/75 mb-12 max-w-3xl mx-auto leading-relaxed"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {seoIntro}
+          </p>
+        ) : null}
 
         {/* Countdown Timer */}
         <div className="grid grid-cols-4 gap-4 md:gap-6 max-w-2xl mx-auto mb-12">

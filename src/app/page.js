@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import HomePage from '../pages/HomePage';
-import { getHomepageBlogSelection } from '../lib/blog';
+import { getCachedHomepageBlogSelection } from '../lib/blog';
 import { buildMetadataForPage } from '../lib/pageMeta';
 import enTranslations from '../locales/en/translation.json';
 import arTranslations from '../locales/ar/translation.json';
@@ -28,9 +28,11 @@ export async function generateMetadata() {
   return buildMetadataForPage('home', locale, fallback);
 }
 
+export const revalidate = 60;
+
 export default async function Home() {
-  // Fetch the admin-selected homepage blogs on the server (no client wait)
-  const { web, mobile } = await getHomepageBlogSelection();
+  // Cached admin-selected homepage blogs (60s) — fast TTFB, fresh within a minute.
+  const { web, mobile } = await getCachedHomepageBlogSelection();
   return (
     <Suspense fallback={<HomePageFallback />}>
       <HomePage initialBlogs={web} initialMobileBlogs={mobile} />

@@ -1,4 +1,5 @@
 import 'server-only';
+import { unstable_cache } from 'next/cache';
 import { connectDB } from './db';
 import Blog from '../models/Blog';
 import HomepageBlogSelection from '../models/HomepageBlogSelection';
@@ -9,6 +10,7 @@ import {
   HOMEPAGE_WEB_LIMIT,
   pickSelectedBlogs,
 } from './homepageBlogs';
+import { CONTENT_CACHE_SECONDS, HOMEPAGE_BLOGS_CACHE_TAG } from './contentCache';
 
 /**
  * Convert Mongoose document to plain JSON-serializable object.
@@ -91,6 +93,15 @@ export async function getHomepageBlogSelection() {
     web: pickSelectedBlogs(serialized, selection?.webSlugs, HOMEPAGE_WEB_LIMIT),
     mobile: pickSelectedBlogs(serialized, selection?.mobileSlugs, HOMEPAGE_MOBILE_LIMIT),
   };
+}
+
+/** Cached homepage blog lists — 60s server-side revalidation. */
+export async function getCachedHomepageBlogSelection() {
+  return unstable_cache(
+    getHomepageBlogSelection,
+    ['homepage-blog-selection'],
+    { revalidate: CONTENT_CACHE_SECONDS, tags: [HOMEPAGE_BLOGS_CACHE_TAG] },
+  )();
 }
 
 /**

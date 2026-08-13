@@ -52,7 +52,7 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`, { cache: 'no-store' })
+    fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!cancelled && data) {

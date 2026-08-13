@@ -15,7 +15,7 @@ import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
 import AmazonUsaPage from '../../../pages/AmazonUsaPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 import TermsOfServicePage from '../../../pages/TermsOfServicePage';
-import { getBlogBySlug, getBlogs, getHomepageBlogSelection } from '../../../lib/blog';
+import { getBlogBySlug, getBlogs, getCachedHomepageBlogSelection } from '../../../lib/blog';
 import { connectDB } from '../../../lib/db';
 import PartnerAgency from '../../../models/PartnerAgency';
 import { partnerAgenciesForResponse } from '../../../lib/partnerAgencyResponse';
@@ -84,39 +84,44 @@ export async function generateMetadata({ params }) {
       });
     case 'pages/dropshipping-uae-and-ksa':
       return buildMetadataForPage('pages/dropshipping-uae-and-ksa', 'ar', {
-        title: `${translations.dropshipping.hero.title} - ${translations.dropshipping.hero.subtitle} | زمبيل`,
+        title: translations.dropshipping?.metaTitle || 'دروبشيبينغ الخليج | زمبيل',
         description: translations.dropshipping.whyZambeel.description || 'ابدأ البيع دون عناء إدارة المخزون أو تسجيل الأعمال مع زمبيل دروبشيبينغ',
       });
     case 'pages/usa-dropshipping':
       return buildMetadataForPage('pages/usa-dropshipping', 'ar', {
-        title: `${translations.header?.usDropshipping || 'USA Dropshipping'} | زمبيل`,
+        title: translations.usDropshipping?.metaTitle || 'دروبشيبينغ أمريكا | زمبيل',
         description:
+          translations.usDropshipping?.metaDescription ||
           translations.usDropshipping?.comingSoonSub ||
           'صفحة دروبشيبينغ الولايات المتحدة قيد الإعداد.',
       });
     case 'pages/zambeel-360':
       return buildMetadataForPage('pages/zambeel-360', 'ar', {
-        title: `${translations.zambeel360.hero.title} - ${translations.zambeel360.hero.subtitle} | زمبيل`,
+        title: translations.zambeel360?.metaTitle || 'زمبيل 360 | زمبيل',
         description: translations.zambeel360.whatIs.description || 'توفير منتجات عالية الجودة من الصين مع زمبيل 360 - خدمة كاملة من التوريد إلى التوصيل',
       });
     case 'pages/warehousing-3pl':
       return buildMetadataForPage('pages/warehousing-3pl', 'ar', {
-        title: `${translations.zambeel3PL.hero.title} - ${translations.zambeel3PL.hero.subtitle} | زمبيل`,
+        title: translations.zambeel3PL?.metaTitle || 'زمبيل 3PL | زمبيل',
         description: translations.zambeel3PL.whyZambeel.description || 'احصل على خدمات التخزين وإدارة المخزون والتنفيذ الفعال مع خدمة زمبيل 3PL',
       });
     case 'pages/amazon-usa':
       return buildMetadataForPage('pages/amazon-usa', 'ar', {
-        title: translations.amazon.metaTitle || `${translations.amazon.hero.title} - ${translations.amazon.hero.subtitle} | زمبيل`,
+        title: translations.amazon.metaTitle || 'خطة أمازون USA | زمبيل',
         description: translations.amazon.metaDescription || translations.amazon.goldPlan.description,
       });
     case 'learn-ecommerce': {
-      const title = translations.superClass?.hero?.title || translations.learnEcommerce?.hero?.title || 'تعلم التجارة الإلكترونية';
-      const description = translations.learnEcommerce?.hero?.description || translations.superClass?.hero?.subtitle || 'تعلم التجارة الإلكترونية مع زمبيل - فصول متقدمة لمساعدتك على فهم وتعلم التجارة الإلكترونية';
-      return buildMetadataForPage('learn-ecommerce', 'ar', { title: `${title} - زمبيل`, description });
+      return buildMetadataForPage('learn-ecommerce', 'ar', {
+        title: translations.learnEcommerce?.metaTitle || 'تعلم التجارة الإلكترونية | زمبيل',
+        description:
+          translations.learnEcommerce?.metaDescription ||
+          translations.learnEcommerce?.hero?.description ||
+          'تعلم التجارة الإلكترونية مع زمبيل - فصول متقدمة لمساعدتك على فهم وتعلم التجارة الإلكترونية',
+      });
     }
     case 'blog':
       return buildMetadataForPage('blog', 'ar', {
-        title: 'المدونة - رؤى ونصائح التجارة الإلكترونية | زمبيل',
+        title: 'المدونة | نصائح التجارة الإلكترونية | زمبيل',
         description: 'اقرأ أحدث رؤى ونصائح التجارة الإلكترونية ودلائل زمبيل. تعلم عن الدروبشيبينغ وخدمات 3PL وتوريد المنتجات والمزيد.',
       });
     case 'pages/refund-replacement-policy':
@@ -131,12 +136,14 @@ export async function generateMetadata({ params }) {
       });
     case 'supplier':
       return buildMetadataForPage('supplier', 'ar', {
-        title: `${translations.comingSoon?.supplier?.title || 'كن مورداً'} - زمبيل`,
+        title: translations.comingSoon?.supplier?.title
+          ? `${translations.comingSoon.supplier.title} | زمبيل`
+          : 'كن مورداً | زمبيل',
         description: translations.comingSoon?.supplier?.description || 'انضم إلى شبكة الموردين لدينا ونمّي أعمالك مع زمبيل. نحن نعد شيئًا خاصًا لك!',
       });
     case 'pages/partner-agencies':
       return buildMetadataForPage('pages/partner-agencies', 'ar', {
-        title: `${translations.partnerAgencies?.title || 'وكالات الشركاء'} - زمبيل`,
+        title: translations.partnerAgencies?.metaTitle || 'وكالات الشركاء | زمبيل',
         description: translations.partnerAgencies?.subtitle || 'تواصل مع الشركاء الموثوقين الذين يمكنهم مساعدتك في تنمية أعمالك',
       });
     default:
@@ -201,7 +208,7 @@ export default async function ArabicPage({ params }) {
   
   // Homepage: pass the admin-selected blogs so they show immediately without client fetch
   if (routePath === '' && PageComponent === HomePage) {
-    const { web, mobile } = await getHomepageBlogSelection();
+    const { web, mobile } = await getCachedHomepageBlogSelection();
     return (
       <Suspense fallback={<PageFallback />}>
         <HomePage initialBlogs={web} initialMobileBlogs={mobile} />

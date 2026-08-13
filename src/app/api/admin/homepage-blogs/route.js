@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { connectDB } from '../../../../lib/db';
 import { getAdminSession } from '../../../../lib/adminAuth';
 import Blog from '../../../../models/Blog';
 import HomepageBlogSelection from '../../../../models/HomepageBlogSelection';
+import { HOMEPAGE_BLOGS_CACHE_TAG } from '../../../../lib/contentCache';
 import {
   HOMEPAGE_MOBILE_LIMIT,
   HOMEPAGE_SELECTION_KEY,
@@ -76,6 +78,7 @@ export async function PUT(request) {
       { key: HOMEPAGE_SELECTION_KEY, webSlugs, mobileSlugs },
       { upsert: true, new: true }
     );
+    revalidateTag(HOMEPAGE_BLOGS_CACHE_TAG);
     return NextResponse.json({ ok: true, webSlugs, mobileSlugs });
   } catch (e) {
     console.error('PUT /api/admin/homepage-blogs', e);

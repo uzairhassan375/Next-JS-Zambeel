@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getHomepageBlogSelection } from '../../../lib/blog';
+import { getCachedHomepageBlogSelection } from '../../../lib/blog';
+import { PUBLIC_JSON_CACHE_HEADERS } from '../../../lib/contentCache';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 // Public: the blogs the homepage shows, already split per viewport.
 export async function GET() {
   try {
-    const selection = await getHomepageBlogSelection();
-    return NextResponse.json(selection);
+    const selection = await getCachedHomepageBlogSelection();
+    return NextResponse.json(selection, { headers: PUBLIC_JSON_CACHE_HEADERS });
   } catch (e) {
     console.error('GET /api/homepage-blogs', e);
     return NextResponse.json({ error: 'Failed to fetch homepage blogs' }, { status: 500 });

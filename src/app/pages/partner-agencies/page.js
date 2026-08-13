@@ -14,7 +14,7 @@ export async function generateMetadata() {
   const translations = locale === 'ar' ? arTranslations : enTranslations;
   const title = translations.partnerAgencies?.title || 'Partner Agencies';
   const description = translations.partnerAgencies?.subtitle || 'Connect with trusted partners who can help grow your business.';
-  const fallback = { title: `${title} - Zambeel`, description };
+  const fallback = { title: translations.partnerAgencies?.metaTitle || 'Partner Agencies | Zambeel', description };
   return buildMetadataForPage('pages/partner-agencies', locale, fallback);
 }
 

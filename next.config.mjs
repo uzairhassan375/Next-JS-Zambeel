@@ -86,6 +86,22 @@ const nextConfig = {
         destination: '/sitemap.xml',
         permanent: true,
       },
+      {
+        source: '/pages/contact-us',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/ar/pages/contact-us',
+        destination: '/ar/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/dropshipping-in-qatar-the-complete-remote-sellers-market-guide',
+        destination:
+          '/ar/blog/dropshipping-in-qatar-the-complete-remote-seller-s-market-guide',
+        permanent: true,
+      },
       ...legacyComponentRoutes,
       {
         source: '/:path*',

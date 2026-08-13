@@ -10,7 +10,7 @@ export async function generateMetadata() {
   const translations = locale === 'ar' ? arTranslations : enTranslations;
   const t = translations.amazon || {};
   const fallback = {
-    title: t.metaTitle || `${t.hero?.title} - ${t.hero?.subtitle} | Zambeel`,
+    title: t.metaTitle || 'Amazon USA Gold Plan | Zambeel',
     description: t.metaDescription || t.goldPlan?.description,
   };
   return buildMetadataForPage('pages/amazon-usa', locale, fallback);

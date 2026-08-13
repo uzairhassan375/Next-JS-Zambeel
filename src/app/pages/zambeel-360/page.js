@@ -9,7 +9,7 @@ export async function generateMetadata() {
   const locale = headersList.get('x-locale') || 'en';
   const translations = locale === 'ar' ? arTranslations : enTranslations;
   const fallback = {
-    title: `${translations.zambeel360.hero.title} - ${translations.zambeel360.hero.subtitle} | Zambeel`,
+    title: translations.zambeel360?.metaTitle || 'Zambeel 360 | Source from China | Zambeel',
     description: translations.zambeel360.whatIs.description || 'Source high quality products from China with Zambeel 360 - full service from sourcing to delivery',
   };
   return buildMetadataForPage('pages/zambeel-360', locale, fallback);

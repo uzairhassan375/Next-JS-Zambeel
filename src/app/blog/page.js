@@ -9,8 +9,9 @@ export async function generateMetadata() {
   const headersList = await headers();
   const locale = headersList.get('x-locale') || 'en';
   const fallback = {
-    title: 'Blog - E-commerce Insights & Tips | Zambeel',
-    description: 'Read the latest e-commerce insights, tips, and guides from Zambeel. Learn about dropshipping, 3PL services, product sourcing, and more.',
+    title: 'Blog | Dropshipping & Ecommerce Tips | Zambeel',
+    description:
+      'Expert guides on dropshipping, 3PL, COD markets, and scaling e-commerce in the UAE, KSA, and worldwide.',
   };
   return buildMetadataForPage('blog', locale, fallback);
 }

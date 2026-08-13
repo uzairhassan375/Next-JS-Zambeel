@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { connectDB } from '../../../../lib/db';
 import { getAdminSession } from '../../../../lib/adminAuth';
 import TickerSetting from '../../../../models/TickerSetting';
 import { TICKER_PAGES, getDefaultTickerItem } from '../../../../lib/tickerPages';
+import { TICKERS_CACHE_TAG } from '../../../../lib/contentCache';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,6 +68,8 @@ export async function PUT(request) {
       },
       { upsert: true, new: true }
     );
+    revalidateTag(TICKERS_CACHE_TAG);
+    revalidateTag(`ticker-${body.pageId}`);
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error('PUT /api/admin/tickers', e);

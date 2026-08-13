@@ -55,7 +55,7 @@ export default function Ticker({ pageId = 'home', variant = 'blue', className = 
   useEffect(() => {
     let cancelled = false;
     const pageDefaults = getDefaultTickerItem(pageId);
-    fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`, { cache: 'no-store' })
+    fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!cancelled && data) {

@@ -10,6 +10,7 @@ export default function SupplierClient() {
     <ComingSoon
       title={t('comingSoon.supplier.title') || 'Become a Supplier'}
       description={t('comingSoon.supplier.description') || 'Join our supplier network and grow your business with Zambeel. We are preparing something special for you!'}
+      seoIntro={t('comingSoon.supplier.seoIntro')}
     />
   );
 }

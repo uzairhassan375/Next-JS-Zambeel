@@ -10,7 +10,7 @@ export async function generateMetadata() {
   const translations = locale === 'ar' ? arTranslations : enTranslations;
   const title = translations.comingSoon?.supplier?.title || 'Become a Supplier';
   const description = translations.comingSoon?.supplier?.description || 'Join our supplier network and grow your business with Zambeel. We are preparing something special for you!';
-  const fallback = { title: `${title} - Zambeel`, description };
+  const fallback = { title: 'Become a Supplier | Zambeel', description };
   return buildMetadataForPage('supplier', locale, fallback);
 }
 

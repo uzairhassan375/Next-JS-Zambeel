@@ -8,7 +8,7 @@ export async function generateMetadata() {
   const locale = headersList.get('x-locale') || 'en';
   const t = enTranslations?.usDropshipping || {};
   const fallback = {
-    title: t.metaTitle || 'USA Dropshipping — Zambeel',
+    title: t.metaTitle || 'USA Dropshipping | Zambeel',
     description:
       t.metaDescription ||
       'Zambeel USA dropshipping — start without US company registration or bank account.',
