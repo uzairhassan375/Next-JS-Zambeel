@@ -286,7 +286,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         defaultValue: t('homepage.featureCards.learnEcommerce.title'),
       }),
       desc: [
-        t('homepage.featureCards.learnEcommerce.desc')
+        t('homepage.featureCards.learnEcommerce.desktopDesc', {
+          defaultValue: t('homepage.featureCards.learnEcommerce.desc'),
+        })
       ],
       cta: t('homepage.featureCards.learnEcommerce.cta'),
       link: "/learn-ecommerce",
@@ -312,7 +314,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
     {
       title: t('homepage.featureCards.zambeel360.title'),
       desc: [
-        t('homepage.featureCards.zambeel360.desc')
+        t('homepage.featureCards.zambeel360.desktopDesc', {
+          defaultValue: t('homepage.featureCards.zambeel360.desc'),
+        })
       ],
       cta: t('homepage.featureCards.zambeel360.cta'),
       link: "/pages/zambeel-360",

@@ -69,6 +69,7 @@
         "title": "Learn E-commerce with Zambeel",
         "desktopTitle": "Learn E-comm with Zambeel",
         "desc": "Learn to Start, Build & Grow your E-commerce business from scratch with guidance and proven strategies.",
+        "desktopDesc": "Learn to Start, Build & Grow your E-commerce business from scratch with guidance and proven strategies",
         "cta": "Learn E-commerce",
         "mobileTitle": "Learn E-comm"
       },
@@ -80,6 +81,7 @@
       "zambeel360": {
         "title": "Build your private label with Zambeel",
         "desc": "We handle the entire process, including sourcing, customs clearance, and delivery to our warehouse.",
+        "desktopDesc": "We handle the entire process, including sourcing, customs clearance, and delivery to our warehouse",
         "cta": "China Sourcing"
       },
       "zambeel3PL": {
@@ -100,7 +102,7 @@
       },
       "dropshippingCombined": {
         "title": "Start E-comm without buying inventory",
-        "desc": "Sell winning products on Cash on Delivery in the Gulf, or dropship in the USA without an LLC or US bank account",
+        "desc": "Sell winning products in the United States and Gulf without buying inventory and an LLC",
         "badge": "Most Popular"
       }
     },
