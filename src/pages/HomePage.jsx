@@ -282,7 +282,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
 
   const featureCards = [
     {
-      title: t('homepage.featureCards.learnEcommerce.title'),
+      title: t('homepage.featureCards.learnEcommerce.desktopTitle', {
+        defaultValue: t('homepage.featureCards.learnEcommerce.title'),
+      }),
       desc: [
         t('homepage.featureCards.learnEcommerce.desc')
       ],

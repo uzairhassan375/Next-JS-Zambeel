@@ -224,7 +224,9 @@ export const StackedCards = () => {
         },
         {
             id: 4,
-            title: t('homepage.featureCards.zambeel3PL.title'),
+            title: t('homepage.featureCards.zambeel3PL.mobileTitle', {
+                defaultValue: t('homepage.featureCards.zambeel3PL.title'),
+            }),
             description: t('homepage.featureCards.zambeel3PL.desc'),
             color: "rgba(251, 146, 60, 0.8)",
             cta: t('homepage.featureCards.zambeel3PL.cta'),

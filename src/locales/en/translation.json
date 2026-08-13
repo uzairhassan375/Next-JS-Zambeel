@@ -67,13 +67,14 @@
     "featureCards": {
       "learnEcommerce": {
         "title": "Learn E-commerce with Zambeel",
+        "desktopTitle": "Learn E-comm with Zambeel",
         "desc": "Learn to Start, Build & Grow your E-commerce business from scratch with guidance and proven strategies.",
         "cta": "Learn E-commerce",
         "mobileTitle": "Learn E-comm"
       },
       "dropshipping": {
-        "title": "Start E-commerce without buying inventory in Gulf",
-        "desc": "Sell winning products from anywhere in the world on Cash on Delivery",
+        "title": "Start E-commerce in the Gulf",
+        "desc": "Sell winning products in the Gulf without buying inventory and an LLC.",
         "cta": "Gulf Dropshipping"
       },
       "zambeel360": {
@@ -83,6 +84,7 @@
       },
       "zambeel3PL": {
         "title": "Grow your E-comm with our 3PL service",
+        "mobileTitle": "Grow your E-commerce with our 3PL service",
         "desc": "Use our automated system where we take care of storage, call confirmation & last-mile delivery",
         "cta": "Zambeel 3PL"
       },
@@ -92,8 +94,8 @@
         "cta": "Amazon USA"
       },
       "usaDropshipping": {
-        "title": "Start E-commerce without LLC in the USA",
-        "desc": "Sell in the United States without registering an LLC or a US bank account — Zambeel handles it",
+        "title": "Start E-commerce in the USA",
+        "desc": "Sell winning products in the United States without buying inventory and an LLC.",
         "cta": "USA Dropshipping"
       },
       "dropshippingCombined": {
