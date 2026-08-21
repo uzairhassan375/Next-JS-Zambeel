@@ -111,3 +111,49 @@
 .blog-link {
   display: inline;
 }
+
+/* Blog CTA buttons inserted from admin editor — override default link styles */
+.blog-content .blog-cta-wrap,
+.prose .blog-cta-wrap {
+  margin: 1.25rem 0;
+}
+
+.blog-content a.blog-cta-btn,
+.prose a.blog-cta-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background-color: var(--cta-bg-color, #2E3B78) !important;
+  color: var(--cta-text-color, #ffffff) !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  padding: 12px 28px;
+  border-radius: 9999px !important;
+  line-height: 1.2;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.blog-content a.blog-cta-btn:hover,
+.prose a.blog-cta-btn:hover,
+.blog-content a.blog-cta-btn:visited,
+.prose a.blog-cta-btn:visited {
+  background-color: var(--cta-bg-color, #2E3B78) !important;
+  color: var(--cta-text-color, #ffffff) !important;
+  text-decoration: none !important;
+  opacity: 0.92;
+}
+
+.blog-content a.blog-cta-btn span,
+.prose a.blog-cta-btn span {
+  color: var(--cta-text-color, #ffffff) !important;
+}
+
+.blog-content a.blog-cta-btn .blog-cta-icon,
+.prose a.blog-cta-btn .blog-cta-icon {
+  color: var(--cta-icon-color, #FCD64C) !important;
+  text-decoration: none !important;
+  flex-shrink: 0;
+}
