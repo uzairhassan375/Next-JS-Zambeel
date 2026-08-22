@@ -356,8 +356,8 @@ const Zambeel360Page = () => {
         <div className="max-w-[1150px] mx-auto px-6 sm:px-10 lg:px-12">
           <div className="rounded-xl overflow-hidden">
             <LazyVideo
-              className="w-full h-64 md:h-96 object-cover pointer-events-none"
-              src="/videos/360-zambeel.webm"
+              className="w-full h-64 md:h-96 object-fill pointer-events-none"
+              src="/videos/360-zambeel.webm?v=20260822"
               poster="https://plus.unsplash.com/premium_photo-1683984171269-04c84ee23234?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGVjb21tZXJjZXxlbnwwfDB8MHx8fDA%3D"
             />
           </div>

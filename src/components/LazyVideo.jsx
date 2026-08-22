@@ -39,7 +39,7 @@ export default function LazyVideo({ src, poster, className = '', type = 'video/w
 
     observer.observe(video);
     return () => observer.disconnect();
-  }, []);
+  }, [src]);
 
   return (
     <video
