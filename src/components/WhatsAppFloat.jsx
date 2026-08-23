@@ -2,19 +2,22 @@
 
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { track } from '../lib/analytics';
 
 export default function WhatsAppFloat() {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || 'en';
 
   const getWhatsAppLink = () => {
-    // Support phone number: +971 56 847 2271
-    // Format: remove spaces, plus sign, and use wa.me format
     const phoneNumber = '971568472271';
     return `https://wa.me/${phoneNumber}`;
   };
 
   const handleClick = () => {
+    track('whatsapp_contact_clicked', {
+      language: currentLanguage,
+      placement: 'floating_button',
+    });
     window.open(getWhatsAppLink(), '_blank', 'noopener,noreferrer');
   };
 

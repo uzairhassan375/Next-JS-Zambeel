@@ -5,6 +5,7 @@ import { Dialog } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import Image from 'next/image';
+import { track } from '../lib/analytics';
 const blue_logoImage = '/blue_logo.png';
 const POPUP_STORAGE_KEY = 'zambeel_whatsapp_popup_last_shown';
 const POPUP_INTERVAL_MS = 6 * 60 * 60 * 1000;
@@ -53,6 +54,11 @@ export default function WhatsAppPopup() {
   };
 
   const handleJoinNow = () => {
+    track('community_channel_join_clicked', {
+      channel: 'whatsapp',
+      language: currentLanguage,
+      placement: 'promotional_popup',
+    });
     window.open(getWhatsAppLink(), '_blank', 'noopener,noreferrer');
   };
 
@@ -69,10 +75,20 @@ export default function WhatsAppPopup() {
   };
 
   const handleInstagramClick = () => {
+    track('social_profile_clicked', {
+      platform: 'instagram',
+      language: currentLanguage,
+      placement: 'promotional_popup',
+    });
     window.open(getInstagramLink(), '_blank', 'noopener,noreferrer');
   };
 
   const handleFacebookClick = () => {
+    track('social_profile_clicked', {
+      platform: 'facebook',
+      language: currentLanguage,
+      placement: 'promotional_popup',
+    });
     window.open(getFacebookLink(), '_blank', 'noopener,noreferrer');
   };
 

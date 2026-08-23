@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { trackButtonClick } from '../../lib/analytics';
 
 // Import your image assets
 const connectionImg = '/assets/images/connection.png';
@@ -88,6 +89,13 @@ const Wts = ({
   const finalSteps = steps || defaultSteps;
   
   const handleButtonClick = () => {
+    const href = buttonLink || 'https://portal.myzambeel.com/login';
+    trackButtonClick({
+      name: buttonText || 'where_to_start_cta',
+      href,
+      page: 'where_to_start',
+      location: 'cta',
+    });
     if (buttonLink) {
       // Check if it's an external link (http/https)
       if (buttonLink.startsWith('http://') || buttonLink.startsWith('https://')) {

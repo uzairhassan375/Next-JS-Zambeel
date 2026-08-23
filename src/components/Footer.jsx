@@ -6,14 +6,24 @@ import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
 import { BUSINESS_INFO } from "../lib/businessInfo";
+import { trackButtonClick } from "../lib/analytics";
 const white_logoImage = "/white_logo.png";
 
 export default function Footer() {
   const { t } = useTranslation();
   const pathname = usePathname();
   const isArabicSite = pathname?.startsWith('/ar');
+  const handleFooterClick = (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href') || '';
+    const label = (link.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 80) || href;
+    // Footer links count as button clicks — keep navbar_clicked for header only
+    trackButtonClick({ name: label, href, page: 'footer', location: 'footer' });
+  };
+
   return (
-    <footer className="max-w-6xl mx-auto text-white pb-8 md:pb-12 pt-8 md:pt-12 px-6 md:px-16">
+    <footer onClick={handleFooterClick} className="max-w-6xl mx-auto text-white pb-8 md:pb-12 pt-8 md:pt-12 px-6 md:px-16">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-6 text-sm items-start">
         <div className="space-y-5 flex flex-col">
           <Image

@@ -1,5 +1,6 @@
 import { Check, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { track } from '../lib/analytics';
 
 // --- Constants ---
 const COLLAPSED_HEIGHT = 120; // Height for the collapsed state
@@ -51,6 +52,17 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
             ? t('pricing.buttons.buyDiamond')
             : t('pricing.buttons.getStarted');
   const buttonHref = plan.ctaHref || ctaHref || 'https://portal.myzambeel.com/login';
+
+  const handleCtaClick = () => {
+    track('pricing_plan_cta_clicked', {
+      plan_index: cardIndex,
+      plan_tier: plan.tag || 'unlabeled',
+      plan_name: planName,
+      billing_period: isMonthly ? 'monthly' : 'yearly',
+      language: currentLanguage,
+      href: buttonHref,
+    });
+  };
 
   // Determine card styling based on active state
   const cardHeight = isActive ? 'auto' : `${COLLAPSED_HEIGHT}px`;
@@ -203,6 +215,7 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
             </ul>
             <a
               href={buttonHref}
+              onClick={handleCtaClick}
               target="_blank"
               rel="noopener noreferrer"
               className={`w-full font-semibold py-3 rounded-xl shadow-lg hover:opacity-95 transition-all text-base mt-auto transform hover:scale-[1.02] active:scale-95 text-center block ${

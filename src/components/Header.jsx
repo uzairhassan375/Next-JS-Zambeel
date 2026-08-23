@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "./I18nProvider";
 import { getLocalePath, getLanguageSwitchPath } from "../lib/localeUtils";
+import { trackNavClick, trackLanguageSwitch, navKeyFromHref } from "../lib/analytics";
 const white_logoImage = "/white_logo.png";
 const blue_logoImage = "/blue_logo.png";
 
@@ -54,11 +55,37 @@ export default function Header({ theme = "dark" }) {
     return 'https://www.linkedin.com/company/myzambeel/'; // LinkedIn company page
   };
 
-  // The language options are rendered as <Link> so crawlers can follow EN <-> AR;
-  // this only syncs i18n state and closes the dropdown, navigation is the link's job.
   const handleLanguageChange = (lang) => {
+    trackLanguageSwitch({ from: currentLanguage, to: lang });
     changeLanguage(lang);
     setShowLanguageDropdown(false);
+  };
+
+  // Capture every navbar link click (desktop + mobile) as navbar_clicked
+  const handleNavClick = (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    // Language switch is tracked in handleLanguageChange
+    if (link.closest('.language-dropdown')) return;
+
+    const href = link.getAttribute('href') || '';
+    const label = (link.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 80) || href;
+    const area = showMobileMenu ? 'mobile' : 'desktop';
+    const isExternal =
+      href.includes('portal.myzambeel.com') ||
+      href.includes('whatsapp.com') ||
+      href.includes('facebook.com') ||
+      href.includes('linkedin.com') ||
+      href.includes('products.myzambeel.com') ||
+      href.startsWith('http');
+
+    trackNavClick({
+      item: label,
+      href,
+      area,
+      link_type: isExternal ? 'external' : 'internal',
+      nav_key: navKeyFromHref(href),
+    });
   };
 
   const handleSectionClick = (sectionId) => {
@@ -107,9 +134,15 @@ export default function Header({ theme = "dark" }) {
 
   return (
     <>
-      <nav className={`w-[96%] max-w-[1400px] ${navBgColor} rounded-full px-4 md:px-5 py-2.5 flex justify-between items-center shadow-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 mx-auto`}>
+      <nav
+        className={`w-[96%] max-w-[1400px] ${navBgColor} rounded-full px-4 md:px-5 py-2.5 flex justify-between items-center shadow-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 mx-auto`}
+        onClick={handleNavClick}
+      >
         <div className="flex items-center gap-3 pl-4">
-          <Link href={getLocalePath('/', pathname)} className="mt-1">
+          <Link
+            href={getLocalePath('/', pathname)}
+            className="mt-1"
+          >
             <Image
               src={logoImage}
               alt="Zambeel Logo"
@@ -527,7 +560,10 @@ export default function Header({ theme = "dark" }) {
 
       {/* Mobile Menu */}
       {showMobileMenu && (
-        <div className={`lg:hidden fixed top-20 left-1/2 transform -translate-x-1/2 w-[96%] max-w-[1400px] ${isLightTheme ? 'bg-[#E8F0FE]' : 'bg-[#2D3E7E]'} rounded-2xl shadow-2xl z-40 mt-2 overflow-hidden`}>
+        <div
+          className={`lg:hidden fixed top-20 left-1/2 transform -translate-x-1/2 w-[96%] max-w-[1400px] ${isLightTheme ? 'bg-[#E8F0FE]' : 'bg-[#2D3E7E]'} rounded-2xl shadow-2xl z-40 mt-2 overflow-hidden`}
+          onClick={handleNavClick}
+        >
           <div className="flex flex-col p-6 space-y-4">
             <div className="relative services-dropdown">
               <button

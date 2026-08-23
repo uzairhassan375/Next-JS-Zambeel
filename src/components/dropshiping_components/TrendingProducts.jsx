@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { trackButtonClick } from "../../lib/analytics";
 
 const TrendingProducts = () => {
   const { t } = useTranslation();
@@ -267,6 +268,7 @@ const TrendingProducts = () => {
               href="https://portal.myzambeel.com/login"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackButtonClick({ name: 'view_all_products', href: 'https://portal.myzambeel.com/login', page: 'trending_products', location: 'cta' })}
               className="inline-flex items-center bg-[#FCD64C] text-[#243a86] px-8 py-3 rounded-full font-bold text-base hover:bg-[#ffc933] transition-colors"
               style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.25)" }}
             >

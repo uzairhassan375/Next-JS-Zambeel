@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Ticker from '../components/Ticker';
 import AmazonUsaGoldPlan from '../components/amazon/AmazonUsaGoldPlan';
 import AmazonUsaWhyItMatters from '../components/amazon/AmazonUsaWhyItMatters';
+import { trackButtonClick } from '../lib/analytics';
 
 const AMAZON_USA_WHATSAPP =
   'https://wa.me/971568472271?text=Hey!%20I%20want%20to%20start%20Amazon%20USA%20(Gold%20Plan)%20with%20Zambeel.%20Please%20assign%20me%20an%20account%20manager';
@@ -119,7 +120,7 @@ const AmazonUsaPage = () => {
               href={AMAZON_USA_WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg"
+              onClick={() => trackButtonClick({ name: 'talk_to_agent', href: AMAZON_USA_WHATSAPP, page: 'amazon_usa', location: 'hero' })} className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg"
             >
               {t('common.talkToAgent')}
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

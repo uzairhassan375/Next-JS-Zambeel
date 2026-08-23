@@ -61,10 +61,12 @@ export default function AdminGuard({ children }) {
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden">
-      {/* Sidebar: fixed height, scrollable nav, footer always visible */}
       <aside className="w-64 h-screen bg-[#1e3a8a] text-white flex flex-col shrink-0 overflow-hidden">
         <div className="p-5 border-b border-white/20 shrink-0">
-          <Link href="/admin/blogs" className="text-xl font-bold tracking-tight">
+          <Link
+            href="/admin/blogs"
+            className="text-xl font-bold tracking-tight"
+          >
             Zambeel Admin
           </Link>
           <p className="text-xs text-blue-200 mt-1">Content dashboard</p>
@@ -75,13 +77,17 @@ export default function AdminGuard({ children }) {
           </p>
           <ul className="space-y-1">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || (item.href !== '/admin/blogs' && pathname.startsWith(item.href));
+              const isActive =
+                pathname === item.href ||
+                (item.href !== '/admin/blogs' && pathname.startsWith(item.href));
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                      isActive ? 'bg-white/20 text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white'
+                      isActive
+                        ? 'bg-white/20 text-white'
+                        : 'text-blue-100 hover:bg-white/10 hover:text-white'
                     }`}
                   >
                     {item.label}
@@ -117,10 +123,7 @@ export default function AdminGuard({ children }) {
           </button>
         </div>
       </aside>
-      {/* Main content */}
-      <main className="flex-1 min-h-0 overflow-auto">
-        {children}
-      </main>
+      <main className="flex-1 min-h-0 overflow-auto">{children}</main>
     </div>
   );
 }

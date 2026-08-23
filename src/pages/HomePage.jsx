@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { trackButtonClick } from "../lib/analytics";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { getLocalePath } from "../lib/localeUtils";
@@ -477,6 +478,14 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                       <Link
                         key={item.link}
                         href={item.link}
+                        onClick={() =>
+                          trackButtonClick({
+                            name: 'homepage_service_cta',
+                            href: item.link,
+                            page: 'home',
+                            location: 'feature_cards',
+                          })
+                        }
                         className="group/drop-btn flex-1 min-w-0 bg-[#FCD64C] hover:bg-white text-[#2E3B78] font-bold py-3 text-xs lg:text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg px-3 whitespace-nowrap"
                       >
                         <span>{item.cta}</span>
@@ -487,6 +496,14 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                 ) : card.link ? (
                   <Link
                     href={card.link}
+                    onClick={() =>
+                      trackButtonClick({
+                        name: 'homepage_service_cta',
+                        href: card.link,
+                        page: 'home',
+                        location: 'feature_cards',
+                      })
+                    }
                     className="w-full bg-[#2E3B78] group-hover:bg-white text-white group-hover:text-black font-bold py-3 text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
                   >
                     <span>{card.cta}</span>

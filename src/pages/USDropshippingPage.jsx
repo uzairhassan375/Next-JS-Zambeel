@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import { Check } from 'lucide-react';
 import PricingSection from '../components/PricingSection';
+import { trackButtonClick } from '../lib/analytics';
 
 export default function USDropshippingPage() {
   const { t } = useTranslation();
@@ -98,7 +99,7 @@ export default function USDropshippingPage() {
       href={usaTalkToUsLink}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#ffd24c] px-8 py-3.5 text-base font-bold text-[#243a86] shadow-lg transition hover:brightness-95 md:text-lg ${className}`}
+      onClick={() => trackButtonClick({ name: 'talk_to_us', href: usaTalkToUsLink, page: 'usa_dropshipping', location: 'hero' })} className={`inline-flex items-center justify-center gap-2 rounded-full bg-[#ffd24c] px-8 py-3.5 text-base font-bold text-[#243a86] shadow-lg transition hover:brightness-95 md:text-lg ${className}`}
     >
       <i className="fa-brands fa-whatsapp text-xl" aria-hidden />
       {t('usDropshipping.talkToUs')}

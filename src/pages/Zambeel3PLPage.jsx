@@ -9,6 +9,7 @@ import WhyZambeel from '../components/dropshiping_components/WhyZambeel';
 import Wts from '../components/dropshiping_components/WhereTS';
 import DeliveryCharges from '../components/DeliveryCharges';
 import LazyVideo from '../components/LazyVideo';
+import { trackButtonClick } from '../lib/analytics';
 const connectionImg = '/assets/images/connection.png';
 const databaseImg = '/assets/images/database.png';
 const frameImg = '/assets/images/frame1.png';
@@ -204,7 +205,7 @@ const Zambeel3PLPage = () => {
                 href="https://wa.me/971568472271?text=I%20want%20to%20start%20with%20Zambeel%20360%20or%20Zambeel%203PL.%20Please%20assign%20me%20an%20account%20manager"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg inline-block"
+                onClick={() => trackButtonClick({ name: 'talk_to_agent', href: 'whatsapp_3pl', page: 'zambeel3pl', location: 'hero' })} className="bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg inline-block"
               >
                 {t('common.talkToAgent')}
               </a>
