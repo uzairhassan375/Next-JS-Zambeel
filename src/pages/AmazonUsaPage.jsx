@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Ticker from '../components/Ticker';
+import AmazonUsaPlatforms from '../components/amazon/AmazonUsaPlatforms';
+import AmazonUsaHowItWorks from '../components/amazon/AmazonUsaHowItWorks';
 import AmazonUsaGoldPlan from '../components/amazon/AmazonUsaGoldPlan';
 import AmazonUsaWhyItMatters from '../components/amazon/AmazonUsaWhyItMatters';
 import { trackButtonClick } from '../lib/analytics';
@@ -12,20 +14,6 @@ const AMAZON_USA_WHATSAPP =
 
 const AmazonUsaPage = () => {
   const { t } = useTranslation();
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-
-  const carouselTexts = [
-    t('amazon.hero.carousel.winningProducts'),
-    t('amazon.hero.carousel.ppcCampaigns'),
-    t('amazon.hero.carousel.setupToScale'),
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % carouselTexts.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [carouselTexts.length]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -51,7 +39,7 @@ const AmazonUsaPage = () => {
       }}
     >
       {/* Hero */}
-      <section className="pb-8 md:pb-8 text-center relative pt-24 md:pt-28 overflow-hidden">
+      <section className="pb-10 md:pb-12 text-center relative pt-24 md:pt-28 overflow-hidden px-4">
         {/* Left side SVGs */}
         <div className="absolute left-[3%] top-[50%] hidden md:block">
           <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,47 +71,71 @@ const AmazonUsaPage = () => {
           </svg>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+        <div className="max-w-4xl mx-auto px-4 md:px-6 relative z-10">
+          {/* Top Title */}
           <h1
-            className="text-[26px] md:text-[44px] font-bold text-white mt-8 md:mt-0 mb-4 md:mb-6"
+            className="text-[28px] sm:text-[38px] md:text-[52px] lg:text-[58px] font-extrabold text-white mt-4 md:mt-0 tracking-tight leading-[1.15]"
             style={{ fontFamily: 'DM Sans, sans-serif' }}
           >
             {t('amazon.hero.title')}
           </h1>
-          <p
-            className="text-[20px] md:text-[30px] font-normal italic text-white mb-2 md:mb-3"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}
-          >
-            {t('amazon.hero.subtitle')}
-          </p>
-          <p
-            className="text-[14px] md:text-[20px] font-normal italic text-white/95 max-w-3xl mx-auto min-h-[30px] md:min-h-[40px] transition-opacity duration-500 mb-2"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}
-          >
-            {carouselTexts[currentTextIndex]}
-          </p>
-          <div className="flex justify-center gap-2 mb-4">
-            {carouselTexts.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setCurrentTextIndex(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentTextIndex ? 'w-7 md:w-8 h-2 bg-[#ffd24c]' : 'w-2 h-2 bg-white/40'
-                }`}
-                aria-label={`Slide ${index + 1}`}
-              />
-            ))}
+
+          {/* Divider: AND THE BEST PART */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 max-w-sm md:max-w-md mx-auto my-2 md:my-3">
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/40 to-white/70" />
+            <span
+              className="text-[9px] sm:text-[10px] md:text-xs font-bold tracking-[0.22em] text-[#ffd24c] uppercase select-none"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}
+            >
+              {t('amazon.hero.bestPart')}
+            </span>
+            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-white/40 to-white/70" />
           </div>
-          <div className="flex justify-center mb-8">
+
+          {/* Large Highlight: No LLC required */}
+          <h2
+            className="text-[26px] sm:text-[34px] md:text-[44px] lg:text-[50px] font-extrabold text-white/80 tracking-tight leading-[1.1] mb-4 md:mb-6 drop-shadow-sm"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {t('amazon.hero.noLlc')}
+          </h2>
+
+          {/* Subtitle / Description */}
+          <p
+            className="text-[15px] sm:text-base md:text-[19px] font-normal text-white/90 max-w-2xl mx-auto leading-relaxed mb-6 md:mb-8"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}
+          >
+            {t('amazon.hero.description')}
+          </p>
+
+          {/* Badges / Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-8">
+            <div className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/25 bg-white/10 text-white text-sm md:text-base font-semibold backdrop-blur-md shadow-sm transition hover:bg-white/15">
+              {t('amazon.hero.pillNoLlc')}
+            </div>
+            <div className="inline-flex items-center justify-center px-6 py-2.5 rounded-full border border-white/25 bg-white/10 text-white text-sm md:text-base font-semibold backdrop-blur-md shadow-sm transition hover:bg-white/15">
+              {t('amazon.hero.pillNoBank')}
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex justify-center mb-6">
             <a
               href={AMAZON_USA_WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackButtonClick({ name: 'talk_to_agent', href: AMAZON_USA_WHATSAPP, page: 'amazon_usa', location: 'hero' })} className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg"
+              onClick={() =>
+                trackButtonClick({
+                  name: 'talk_to_agent',
+                  href: AMAZON_USA_WHATSAPP,
+                  page: 'amazon_usa',
+                  location: 'hero',
+                })
+              }
+              className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3.5 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg"
             >
               {t('common.talkToAgent')}
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 ml-2 rtl:rotate-180 rtl:mr-2 rtl:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
@@ -132,6 +144,10 @@ const AmazonUsaPage = () => {
       </section>
 
       <Ticker pageId="amazon-usa" variant="yellow" className="mt-0" />
+
+      <AmazonUsaPlatforms />
+
+      <AmazonUsaHowItWorks />
 
       <AmazonUsaGoldPlan ctaHref={AMAZON_USA_WHATSAPP} />
       <AmazonUsaWhyItMatters ctaHref={AMAZON_USA_WHATSAPP} />

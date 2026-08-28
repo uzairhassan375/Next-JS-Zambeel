@@ -369,7 +369,12 @@
     "metaTitle": "Amazon USA Gold Plan | Scale on Amazon.com | Zambeel",
     "metaDescription": "Launch and scale on Amazon.com with Zambeel's Gold Plan. A 6-step roadmap, winning products, PPC optimization & senior consultant support — $399 for 3 months.",
     "hero": {
-      "title": "Amazon USA Gold Plan",
+      "title": "Zambeel is live in USA",
+      "bestPart": "AND THE BEST PART",
+      "noLlc": "No LLC required",
+      "description": "Start your ecommerce journey in the United States without registering a company or a bank account — with Zambeel only.",
+      "pillNoLlc": "No LLC registration",
+      "pillNoBank": "No US bank account",
       "subtitle": "A 6-step growth roadmap for USA marketplace sellers.",
       "carousel": {
         "winningProducts": "Earning dollars from Business setup to Scaling.",
@@ -377,6 +382,12 @@
         "setupToScale": "Dedicated support at every step of your journey."
       },
       "availableIn": "Amazon USA Gold Plan built for sellers in"
+    },
+    "platforms": {
+      "eyebrow": "WHERE YOU CAN SELL",
+      "title": "Sell on 5 platforms with one Zambeel account",
+      "subtitle": "Choose the marketplace you already know, or list on all five and multiply your reach.",
+      "cardHeader": "SELL ZAMBEEL PRODUCTS ON"
     },
     "goldPlan": {
       "sectionHeading": "The Gold Plan",
@@ -433,6 +444,33 @@
         "2": "PPC campaigns launched without a tested structure",
         "3": "Ad spend increased before listings are ready to convert",
         "4": "Scaling attempted before campaigns are actually optimized"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "How It Works",
+      "title": "Four steps, start to delivery",
+      "subtitle": "This is the entire process — and it does not change based on where you sell.",
+      "steps": {
+        "1": {
+          "label": "Step 01",
+          "title": "Choose a product",
+          "description": "Browse our catalogue and pick any item. Images, descriptions and pricing are ready for you."
+        },
+        "2": {
+          "label": "Step 02",
+          "title": "Put it on your store",
+          "description": "List it on Shopify, Amazon, eBay, Etsy or Walmart and set your own selling price."
+        },
+        "3": {
+          "label": "Step 03",
+          "title": "Customer places an order",
+          "description": "Someone buys from you. You simply forward that order to Zambeel."
+        },
+        "4": {
+          "label": "Step 04",
+          "title": "We deliver it for you",
+          "description": "We pack, ship and share the tracking. The parcel reaches your customer, you keep the profit."
+        }
       }
     }
   },
