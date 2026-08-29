@@ -1097,8 +1097,44 @@
     "metaDescription": "Zambeel is launching US dropshipping. Start selling in the United States without company registration or a US bank account. Packages and early access.",
     "seoIntro": "Zambeel USA dropshipping helps sellers launch in the United States without LLC registration or a US bank account — with product sourcing, fulfillment, and scaling support.",
     "welcomeTitle": "Zambeel is live in USA",
+    "bestPartLabel": "And the best part",
+    "noLlcRequired": "No LLC required",
     "talkToUs": "Talk to us",
-    "tagline": "Start ecommerce journey without registering LLC and Bank Account but with ZAMBEEL only.",
+    "tagline": "Start your ecommerce journey in the United States without registering a company or a bank account — with Zambeel only.",
+    "badgeNoLlc": "No LLC registration",
+    "badgeNoBankAccount": "No US bank account",
+    "trustProducts": "10,000+ Products",
+    "trustSupport": "Priority Agent Support",
+    "trustFulfillment": "Fast Fulfillment",
+    "platformsEyebrow": "Where you can sell",
+    "platformsTitle": "Sell on 5 platforms with one Zambeel account",
+    "platformsClosingLine": "One dashboard. One team. Five marketplaces.",
+    "viewProducts": "Browse Dropshipping Products",
+    "platformsSubtitle": "Choose the marketplace you already know, or list on all five and multiply your reach.",
+    "howItWorksEyebrow": "How it works",
+    "howItWorksTitle": "Four steps, start to delivery",
+    "howItWorksSubtitle": "This is the entire process — and it does not change based on where you sell.",
+    "step1": {
+      "label": "Step 01",
+      "title": "Choose a product",
+      "description": "Browse our catalogue and pick any item. Images, descriptions and pricing are ready for you."
+    },
+    "step2": {
+      "label": "Step 02",
+      "title": "Put it on your store",
+      "description": "List it on Shopify, Amazon, eBay, Etsy or Walmart and set your own selling price."
+    },
+    "step3": {
+      "label": "Step 03",
+      "title": "Customer places an order",
+      "description": "Someone buys from you. You simply forward that order to Zambeel."
+    },
+    "step4": {
+      "label": "Step 04",
+      "title": "We deliver it for you",
+      "description": "We pack, ship and share the tracking. The parcel reaches your customer, you keep the profit."
+    },
+    "platformsCardTitle": "Sell Zambeel products on",
     "servicesTitle": "Launch, Scale, Deliver — All with Zambeel",
     "serviceDropshipping": {
       "title": "For Dropshipping",
@@ -1135,7 +1171,7 @@
         "Senior Dedicated Manager",
         "Exclusive Winning Products",
         "Winning Creatives & Strategy",
-        "Product Financing",
+        "Payout in Local Bank Account",
         "WhatsApp Group Access"
       ]
     },
