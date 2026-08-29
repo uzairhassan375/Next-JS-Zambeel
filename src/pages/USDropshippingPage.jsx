@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
-import { Check } from 'lucide-react';
+import Marquee from 'react-fast-marquee';
 import PricingSection from '../components/PricingSection';
+import Ticker from '../components/Ticker.jsx';
 import { trackButtonClick } from '../lib/analytics';
 
 export default function USDropshippingPage() {
@@ -56,23 +57,20 @@ export default function USDropshippingPage() {
     );
   }
 
-  const usServices = [
-    {
-      key: 'dropshipping',
-      title: t('usDropshipping.serviceDropshipping.title'),
-      description: t('usDropshipping.serviceDropshipping.description'),
-    },
-    {
-      key: '360',
-      title: t('usDropshipping.serviceZambeel360.title'),
-      description: t('usDropshipping.serviceZambeel360.description'),
-    },
-    {
-      key: '3pl',
-      title: t('usDropshipping.serviceZambeel3PL.title'),
-      description: t('usDropshipping.serviceZambeel3PL.description'),
-    },
+  const platforms = [
+    { name: 'Shopify', colorClass: 'text-[#96BF48]' },
+    { name: 'Amazon', colorClass: 'text-[#E58E26]' },
+    { name: 'eBay', colorClass: 'text-[#C0392B]' },
+    { name: 'Etsy', colorClass: 'text-[#D35400]' },
+    { name: 'Walmart', colorClass: 'text-[#2E5FDB]' },
   ];
+
+  const steps = ['step1', 'step2', 'step3', 'step4'].map((stepKey) => ({
+    key: stepKey,
+    label: t(`usDropshipping.${stepKey}.label`),
+    title: t(`usDropshipping.${stepKey}.title`),
+    description: t(`usDropshipping.${stepKey}.description`),
+  }));
 
   const planKeys = ['planFree', 'plan49', 'plan99'];
 
@@ -114,7 +112,7 @@ export default function USDropshippingPage() {
           'linear-gradient(186.57deg, rgba(89, 10, 10, 0.75) 5.1%, rgba(31, 46, 100, 0.958277) 12.51%, rgba(48, 41, 90, 0.897201) 31.86%, rgba(125, 20, 20, 0.793286) 47.98%, rgba(75, 72, 147, 0.918182) 63.78%, #4A61C4 81.76%)',
       }}
     >
-      <section className="relative overflow-hidden px-4 pb-10 pt-24 text-center md:pt-28">
+      <section className="relative overflow-hidden px-4 pb-16 pt-24 text-center md:pt-28">
         {/* Left side SVGs */}
         <div className="absolute left-[3%] top-[50%] hidden md:block">
           <svg width="80" height="93" viewBox="0 0 106 124" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,40 +146,127 @@ export default function USDropshippingPage() {
 
 
         <h1
-          className="relative z-10 mx-auto mb-4 max-w-4xl text-[28px] font-bold leading-tight text-white md:text-5xl"
+          className="relative z-10 mx-auto mb-3 max-w-4xl text-[34px] font-bold leading-tight text-white md:text-6xl"
           style={{ fontFamily: 'DM Sans, sans-serif' }}
         >
           {t('usDropshipping.welcomeTitle')}
         </h1>
+
+        <div className="relative z-10 mx-auto mb-2 flex max-w-md items-center justify-center gap-4">
+          <span className="h-px flex-1 bg-white/30" />
+          <span className="shrink-0 text-xs font-semibold uppercase tracking-widest text-[#FCD64C] md:text-sm">
+            {t('usDropshipping.bestPartLabel')}
+          </span>
+          <span className="h-px flex-1 bg-white/30" />
+        </div>
+
+        <p
+          className="relative z-10 mx-auto mb-6 max-w-4xl text-[24px] font-bold leading-tight text-white/60 md:text-4xl"
+          style={{ fontFamily: 'DM Sans, sans-serif' }}
+        >
+          {t('usDropshipping.noLlcRequired')}
+        </p>
+
         <p className="relative z-10 mx-auto mb-8 max-w-2xl text-base text-white/90 md:text-xl md:leading-relaxed">
           {t('usDropshipping.tagline')}
         </p>
-        <div className="relative z-10 flex justify-center">
+
+        <div className="relative z-10 mx-auto mb-8 flex max-w-lg flex-wrap items-center justify-center gap-3">
+          <span className="rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm md:text-base">
+            {t('usDropshipping.badgeNoLlc')}
+          </span>
+          <span className="rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm md:text-base">
+            {t('usDropshipping.badgeNoBankAccount')}
+          </span>
+        </div>
+
+        <div className="relative z-10 mb-2 flex justify-center">
           <TalkButton />
+        </div>
+
+        <Ticker pageId="dropshipping-usa" variant="yellow" className="mt-6 md:mt-8" />
+      </section>
+
+      <section className="px-4 py-12 md:py-16">
+        <div className="mx-auto max-w-[1200px] overflow-hidden rounded-[2rem] shadow-2xl md:rounded-[3rem]">
+          <div className="bg-white px-6 pb-10 pt-10 text-center md:px-12 md:pt-12">
+            <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[#2E5FDB] md:text-sm">
+              {t('usDropshipping.platformsEyebrow')}
+            </p>
+            <h2 className="mx-auto mb-4 max-w-3xl text-3xl font-extrabold leading-tight text-[#2E3B78] md:text-5xl">
+              {t('usDropshipping.platformsTitle')}
+            </h2>
+            <p className="mx-auto mb-14 max-w-2xl text-base text-[#2E3B78]/70 md:text-lg">
+              {t('usDropshipping.platformsSubtitle')}
+            </p>
+
+            <div className="hidden sm:mx-auto sm:grid sm:max-w-5xl sm:grid-cols-3 sm:gap-5 md:grid-cols-5">
+              {platforms.map(({ name, colorClass }) => (
+                <div
+                  key={name}
+                  className="flex items-center justify-center rounded-2xl border border-[#2E3B78]/10 bg-[#F5F7FC] px-4 py-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                >
+                  <span className={`text-base font-extrabold md:text-lg ${colorClass}`}>{name}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="-mx-6 sm:hidden">
+              <Marquee speed={40} gradient gradientColor={[255, 255, 255]} gradientWidth={40} pauseOnHover autoFill>
+                {platforms.map(({ name, colorClass }) => (
+                  <div
+                    key={name}
+                    className="mx-2.5 flex items-center justify-center rounded-2xl border border-[#2E3B78]/10 bg-[#F5F7FC] px-6 py-6 shadow-sm"
+                  >
+                    <span className={`whitespace-nowrap text-base font-extrabold ${colorClass}`}>{name}</span>
+                  </div>
+                ))}
+              </Marquee>
+            </div>
+          </div>
+
+          <div className="bg-gray-200 px-6 py-10 text-center md:px-12">
+            <p className="mx-auto mb-6 max-w-xl text-sm font-semibold text-[#2E3B78]/70 md:text-base">
+              {t('usDropshipping.platformsClosingLine')}
+            </p>
+
+            <a
+              href="https://products.myzambeel.com/collections/all-usa-products"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackButtonClick({ name: 'view_products', href: 'https://products.myzambeel.com/collections/all-usa-products', page: 'usa_dropshipping', location: 'platforms' })}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2E3B78] px-8 py-3.5 text-base font-bold text-white shadow-lg transition hover:brightness-110 md:text-lg"
+            >
+              {t('usDropshipping.viewProducts')}
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-12">
-        <div className="rounded-3xl border border-white/15 bg-white/95 p-8 shadow-2xl backdrop-blur-sm md:p-12">
-          <h2 className="mb-6 text-center text-2xl font-bold text-[#2E3B78] md:text-3xl">
-            {t('usDropshipping.servicesTitle')}
+      <section className="px-4 py-12 md:py-16">
+        <div className="mx-auto max-w-[1200px] rounded-[2rem] bg-white px-6 py-10 text-center shadow-2xl md:rounded-[3rem] md:p-12">
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[#2E5FDB] md:text-sm">
+            {t('usDropshipping.howItWorksEyebrow')}
+          </p>
+          <h2 className="mx-auto mb-4 max-w-3xl text-3xl font-extrabold leading-tight text-[#2E3B78] md:text-5xl">
+            {t('usDropshipping.howItWorksTitle')}
           </h2>
-          <ul className="mx-auto grid max-w-5xl gap-4 text-left text-[#2E3B78]/90 md:grid-cols-3">
-            {usServices.map((item) => (
-              <li
-                key={item.key}
-                className="flex flex-col gap-3 rounded-2xl border border-[#2E3B78]/10 bg-[#E8F0FE]/60 px-4 py-4 text-sm md:px-5 md:py-5 md:text-base"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#2E3B78] text-xs text-[#FCD64C]">
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                  </span>
-                  <span className="font-bold text-[#2E3B78]">{item.title}</span>
-                </div>
-                <p className="pl-9 text-[#2E3B78]/85 leading-snug">{item.description}</p>
-              </li>
+          <p className="mx-auto mb-14 max-w-2xl text-base text-[#2E3B78]/70 md:text-lg">
+            {t('usDropshipping.howItWorksSubtitle')}
+          </p>
+
+          <div className="mx-auto grid max-w-6xl gap-8 text-left sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((step) => (
+              <div key={step.key} className="flex flex-col">
+                <span className="mb-4 h-0.5 w-full bg-[#2E5FDB]" />
+                <span className="mb-2 text-xs font-bold uppercase tracking-widest text-[#2E5FDB]">
+                  {step.label}
+                </span>
+                <h3 className="mb-2 text-lg font-extrabold text-[#2E3B78] md:text-xl">{step.title}</h3>
+                <p className="text-sm leading-relaxed text-[#2E3B78]/70 md:text-base">{step.description}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
