@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
+import Marquee from 'react-fast-marquee';
 import PricingSection from '../components/PricingSection';
 import Ticker from '../components/Ticker.jsx';
 import { trackButtonClick } from '../lib/analytics';
@@ -199,7 +200,7 @@ export default function USDropshippingPage() {
               {t('usDropshipping.platformsSubtitle')}
             </p>
 
-            <div className="mx-auto grid max-w-5xl grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-5">
+            <div className="hidden sm:mx-auto sm:grid sm:max-w-5xl sm:grid-cols-3 sm:gap-5 md:grid-cols-5">
               {platforms.map(({ name, colorClass }) => (
                 <div
                   key={name}
@@ -208,6 +209,19 @@ export default function USDropshippingPage() {
                   <span className={`text-base font-extrabold md:text-lg ${colorClass}`}>{name}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="-mx-6 sm:hidden">
+              <Marquee speed={40} gradient gradientColor={[255, 255, 255]} gradientWidth={40} pauseOnHover autoFill>
+                {platforms.map(({ name, colorClass }) => (
+                  <div
+                    key={name}
+                    className="mx-2.5 flex items-center justify-center rounded-2xl border border-[#2E3B78]/10 bg-[#F5F7FC] px-6 py-6 shadow-sm"
+                  >
+                    <span className={`whitespace-nowrap text-base font-extrabold ${colorClass}`}>{name}</span>
+                  </div>
+                ))}
+              </Marquee>
             </div>
           </div>
 
