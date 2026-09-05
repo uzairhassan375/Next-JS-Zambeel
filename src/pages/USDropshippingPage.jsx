@@ -72,7 +72,7 @@ export default function USDropshippingPage() {
     description: t(`usDropshipping.${stepKey}.description`),
   }));
 
-  const planKeys = ['planFree', 'plan49', 'plan99'];
+  const planKeys = ['planFree', 'plan49', 'planDiamond'];
 
   // Same card UI as the Dropshipping / 3PL / 360 pages, fed with the USA content
   const usPlans = planKeys.map((planKey) => {

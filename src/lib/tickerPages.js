@@ -13,8 +13,8 @@ export const TICKER_PAGES = [
   { id: 'amazon-usa', label: 'Amazon USA', path: '/pages/amazon-usa' },
 ];
 
-export const DEFAULT_TICKER_TEXT_EN = "Try Gold subscription Risk-FREE — achieve a small monthly target and we'll return your $69.";
-export const DEFAULT_TICKER_TEXT_AR = 'جرّب اشتراك Gold بدون مخاطر — حقّق هدفًا شهريًا صغيرًا وسنُعيد لك مبلغ 69 دولارًا.';
+export const DEFAULT_TICKER_TEXT_EN = "Try Gold subscription Risk-FREE — achieve a small monthly target and we'll return your $79.";
+export const DEFAULT_TICKER_TEXT_AR = 'جرّب اشتراك Gold بدون مخاطر — حقّق هدفًا شهريًا صغيرًا وسنُعيد لك مبلغ 79 دولارًا.';
 
 const USA_PRODUCTS_URL_EN = 'https://products.myzambeel.com/collections/all-usa-products';
 const USA_PRODUCTS_URL_AR = 'https://products.myzambeel.com/ar/collections/all-usa-products';

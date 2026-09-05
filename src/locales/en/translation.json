@@ -477,7 +477,7 @@
   "pricing": {
     "goldRiskFreeTickerLead": "Try Gold subscription Risk-FREE",
     "goldRiskFreeTickerMiddle": " — achieve a small monthly target and we'll",
-    "goldRiskFreeTickerRefund": "return your $69.",
+    "goldRiskFreeTickerRefund": "return your $79.",
     "plans": {
       "free": {
         "tag": "FREE",
@@ -1202,7 +1202,7 @@
     "plan49": {
       "tag": "GOLD",
       "name": "Gold Plan",
-      "price": "$69 / mo",
+      "price": "$79 / mo",
       "featureList": [
         "No LLC Required",
         "Free Payment Merchant Access and Setup",
@@ -1213,16 +1213,18 @@
         "WhatsApp Group Access"
       ]
     },
-    "plan99": {
-      "tag": "PREMIUM",
-      "name": "Shopify Store Creation",
-      "price": "$99 / mo",
+    "planDiamond": {
+      "tag": "Diamond",
+      "name": "Diamond Plan",
+      "price": "$299 / 4 months",
       "featureList": [
-        "5 Product Uploads (multi-product testing)",
-        "Enhanced Product Page Layout",
-        "Trust Badges + Social Proof Integration",
-        "Upsell / Cross-Sell Setup",
-        "Cart Optimization (sticky add-to-cart / quick buy)"
+        "No LLC Required",
+        "Free Payment Merchant Access and Setup",
+        "Senior Dedicated Manager",
+        "Exclusive Winning Products",
+        "Winning Creatives & Strategy",
+        "Payout in Local Bank Account",
+        "WhatsApp Group Access"
       ]
     },
     "popular": "Popular"

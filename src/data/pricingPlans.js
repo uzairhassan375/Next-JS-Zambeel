@@ -27,8 +27,8 @@ export const pricingPlans = [
     tagTranslationKey: "pricing.plans.gold.tag",
     name: "For Beginners",
     nameTranslationKey: "pricing.plans.gold.name",
-    monthlyPrice: "$69",
-    yearlyPrice: "$207",
+    monthlyPrice: "$79",
+    yearlyPrice: "$237",
     description: "",
     features: [
       { translationKey: "pricing.features.seniorAccountManager", included: true },

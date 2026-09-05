@@ -14,15 +14,15 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
   
   // Format price based on language
   const formatPrice = (price, isLast) => {
-    // Extract number from price string (e.g., "$69" -> "69")
+    // Extract number from price string (e.g., "$79" -> "79")
     const number = price.replace('$', '');
     const isArabic = currentLanguage === 'ar';
     
     if (isLast) {
-      // 6 months plan
+      // 4 months plan (Diamond)
       return isArabic 
-        ? { main: `$${number}`, period: ' / 6 أشهر' }
-        : { main: price, period: '/6 months' };
+        ? { main: `$${number}`, period: ' / 4 أشهر' }
+        : { main: price, period: '/4 months' };
     } else {
       // Monthly plan
       return isArabic 
