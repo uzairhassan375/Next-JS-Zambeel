@@ -3,14 +3,11 @@ import { revalidateTag } from 'next/cache';
 import { connectDB } from '../../../../lib/db';
 import { getAdminSession } from '../../../../lib/adminAuth';
 import TickerSetting from '../../../../models/TickerSetting';
-import { TICKER_PAGES, getDefaultTickerItem } from '../../../../lib/tickerPages';
+import { TICKER_PAGES, mergeTickerFields } from '../../../../lib/tickerPages';
+import { normalizeTickerStyle } from '../../../../lib/tickerStyle';
 import { TICKERS_CACHE_TAG } from '../../../../lib/contentCache';
 
 export const dynamic = 'force-dynamic';
-
-function toBoolean(value) {
-  return value === true;
-}
 
 export async function GET() {
   const isAdmin = await getAdminSession();
@@ -21,22 +18,7 @@ export async function GET() {
     await connectDB();
     const docs = await TickerSetting.find({}).lean();
     const byPageId = Object.fromEntries(docs.map((doc) => [doc.pageId, doc]));
-    const list = TICKER_PAGES.map((page) => {
-      const defaults = getDefaultTickerItem(page.id);
-      const saved = byPageId[page.id] || {};
-      return {
-        ...defaults,
-        pageId: page.id,
-        label: page.label,
-        path: page.path,
-        textEn: saved.textEn ?? defaults.textEn,
-        textAr: saved.textAr ?? defaults.textAr,
-        isBold: toBoolean(saved.isBold),
-        isUnderline: toBoolean(saved.isUnderline),
-        isHighlight: toBoolean(saved.isHighlight),
-        isBlink: toBoolean(saved.isBlink),
-      };
-    });
+    const list = TICKER_PAGES.map((page) => mergeTickerFields(page.id, byPageId[page.id] || {}));
     return NextResponse.json(list);
   } catch (e) {
     console.error('GET /api/admin/tickers', e);
@@ -56,15 +38,19 @@ export async function PUT(request) {
     if (!body.pageId || !validIds.has(body.pageId)) {
       return NextResponse.json({ error: 'Invalid pageId' }, { status: 400 });
     }
+
+    const style = normalizeTickerStyle(body, body.pageId);
+
     await TickerSetting.findOneAndUpdate(
       { pageId: body.pageId },
       {
         textEn: String(body.textEn ?? ''),
         textAr: String(body.textAr ?? ''),
-        isBold: toBoolean(body.isBold),
-        isUnderline: toBoolean(body.isUnderline),
-        isHighlight: toBoolean(body.isHighlight),
-        isBlink: toBoolean(body.isBlink),
+        isBold: body.isBold === true,
+        isUnderline: body.isUnderline === true,
+        isHighlight: body.isHighlight === true,
+        isBlink: body.isBlink === true,
+        ...style,
       },
       { upsert: true, new: true }
     );

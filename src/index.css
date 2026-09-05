@@ -75,6 +75,64 @@
   display: inline-block;
 }
 
+/* Ticker bar attention effects (admin-configurable) */
+@keyframes ticker-bar-pulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+}
+
+@keyframes ticker-bar-glow {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: inset 0 0 28px 0 rgba(255, 255, 255, 0.28);
+  }
+}
+
+@keyframes ticker-bar-shine {
+  0% {
+    background-position: -120% 0;
+  }
+  100% {
+    background-position: 220% 0;
+  }
+}
+
+.ticker-bar-pulse {
+  animation: ticker-bar-pulse 1.6s ease-in-out infinite;
+}
+
+.ticker-bar-glow {
+  animation: ticker-bar-glow 2s ease-in-out infinite;
+}
+
+.ticker-bar-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.ticker-bar-shine::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: ticker-bar-shine 2.8s linear infinite;
+}
+
 /* Blog content text sizes (from rich editor) */
 .blog-content font[size="2"] { font-size: 0.875rem; }
 .blog-content font[size="3"] { font-size: 1rem; }

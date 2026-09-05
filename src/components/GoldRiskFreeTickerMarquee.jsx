@@ -1,10 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_TICKER_TEXT_AR, DEFAULT_TICKER_TEXT_EN } from '../lib/tickerPages';
+import { getDefaultTickerItem } from '../lib/tickerPages';
 import { startBlinkOnElement, useTickerBlinkSubtree } from '../lib/tickerBlinkRaf';
+import {
+  barEffectClass,
+  fontScaleClass,
+  normalizeTickerStyle,
+} from '../lib/tickerStyle';
 
 /** Opacity blink driven by rAF — CSS keyframes fail inside react-fast-marquee. */
 export function GoldTickerBlinkLead({ children, className = '' }) {
@@ -45,20 +50,20 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
   const { i18n } = useTranslation();
   const isArabic = String(i18n.language || 'en').toLowerCase().startsWith('ar');
   const tickerRootRef = useRef(null);
-  const [ticker, setTicker] = useState({
-    textEn: DEFAULT_TICKER_TEXT_EN,
-    textAr: DEFAULT_TICKER_TEXT_AR,
-  });
+  const defaults = getDefaultTickerItem(pageId);
+  const [ticker, setTicker] = useState(defaults);
 
   useEffect(() => {
     let cancelled = false;
+    const pageDefaults = getDefaultTickerItem(pageId);
     fetch(`/api/tickers?pageId=${encodeURIComponent(pageId)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!cancelled && data) {
           setTicker({
-            textEn: String(data.textEn ?? DEFAULT_TICKER_TEXT_EN),
-            textAr: String(data.textAr ?? DEFAULT_TICKER_TEXT_AR),
+            ...pageDefaults,
+            ...data,
+            ...normalizeTickerStyle(data, pageId),
           });
         }
       })
@@ -68,26 +73,40 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
     };
   }, [pageId]);
 
+  const style = useMemo(() => normalizeTickerStyle(ticker, pageId), [ticker, pageId]);
+
   const text = isArabic
-    ? (ticker.textAr?.trim() || ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_AR)
-    : (ticker.textEn?.trim() || DEFAULT_TICKER_TEXT_EN);
+    ? ticker.textAr?.trim() || ticker.textEn?.trim() || defaults.textAr
+    : ticker.textEn?.trim() || defaults.textEn;
 
   useTickerBlinkSubtree(tickerRootRef, text);
 
   return (
-    <div ref={tickerRootRef} className="w-full bg-[#FCD64C] text-black py-2 overflow-hidden" dir="ltr">
+    <div
+      ref={tickerRootRef}
+      className={`w-full overflow-hidden py-2 ${barEffectClass(style.barEffect)}`}
+      style={{ backgroundColor: style.barColor, color: style.textColor }}
+      dir="ltr"
+    >
       <Marquee
-        key={isArabic ? 'ar' : 'en'}
-        speed={50}
-        gradient={false}
-        pauseOnHover
+        key={`${isArabic ? 'ar' : 'en'}-${style.speed}`}
+        speed={style.speed}
+        gradient={style.showGradient}
+        pauseOnHover={style.pauseOnHover}
         autoFill
         direction={isArabic ? 'right' : 'left'}
       >
-        <span className="mx-6 whitespace-nowrap text-sm md:text-base">
+        <span
+          className={`mx-6 whitespace-nowrap ${fontScaleClass(style.fontScale)} ${
+            style.uppercase ? 'uppercase tracking-wide' : ''
+          }`}
+        >
+          {style.emojiPrefix ? <span className="me-2">{style.emojiPrefix}</span> : null}
           <StyledTickerText html={text} isArabic={isArabic} />
         </span>
-        <span className="mx-6 text-black/60">•</span>
+        <span className="mx-6 opacity-60" aria-hidden>
+          {style.separator || '•'}
+        </span>
       </Marquee>
     </div>
   );
