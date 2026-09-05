@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Marquee from 'react-fast-marquee';
+import { useTickerBlinkSubtree } from '../../../lib/tickerBlinkRaf';
 import { getTickerPageGroups } from '../../../lib/tickerPages';
 import {
   TICKER_BAR_EFFECTS,
@@ -28,65 +29,79 @@ function sanitizePreviewHtml(html) {
 }
 
 function LivePreview({ draft, lang }) {
+  const previewRootRef = useRef(null);
   const style = normalizeTickerStyle(draft, draft.pageId);
   const html =
     lang === 'ar'
       ? draft.textAr?.trim() || draft.textEn?.trim() || 'Ticker preview'
       : draft.textEn?.trim() || 'Ticker preview';
   const gradientRgb = hexToRgbArray(style.barColor);
+  useTickerBlinkSubtree(previewRootRef, html);
 
   return (
     <div
-      className={`w-full overflow-hidden rounded-lg py-2.5 ${barEffectClass(style.barEffect)}`}
+      ref={previewRootRef}
+      className={`w-full rounded-lg py-2.5 ${barEffectClass(style.barEffect)}`}
       style={{ backgroundColor: style.barColor, color: style.textColor }}
       dir="ltr"
     >
-      <Marquee
-        key={`preview-${style.speed}-${style.barColor}-${lang}`}
-        speed={style.speed}
-        gradient={style.showGradient}
-        gradientColor={gradientRgb}
-        gradientWidth={40}
-        pauseOnHover={style.pauseOnHover}
-        direction={lang === 'ar' ? 'right' : 'left'}
-        autoFill
-      >
-        <span
-          className={`mx-5 inline-flex items-center whitespace-nowrap ${fontScaleClass(style.fontScale)} ${
-            style.uppercase ? 'uppercase tracking-wide' : ''
-          }`}
-          dir={lang === 'ar' ? 'rtl' : 'ltr'}
+      <div className="ticker-bar-content rounded-lg">
+        <Marquee
+          key={`preview-${style.speed}-${style.barColor}-${style.textColor}-${style.barEffect}-${lang}`}
+          speed={style.speed}
+          gradient={style.showGradient}
+          gradientColor={gradientRgb}
+          gradientWidth={40}
+          pauseOnHover={style.pauseOnHover}
+          direction={lang === 'ar' ? 'right' : 'left'}
+          autoFill
         >
-          {style.emojiPrefix ? <span className="me-2">{style.emojiPrefix}</span> : null}
           <span
-            className="ticker-content"
-            dangerouslySetInnerHTML={{ __html: sanitizePreviewHtml(html) }}
-          />
-          <span className="mx-4 opacity-60" aria-hidden>
-            {style.separator || '•'}
+            className={`mx-5 inline-flex items-center whitespace-nowrap ${fontScaleClass(style.fontScale)} ${
+              style.uppercase ? 'uppercase tracking-wide' : ''
+            }`}
+            dir={lang === 'ar' ? 'rtl' : 'ltr'}
+            style={{ color: style.textColor }}
+          >
+            {style.emojiPrefix ? <span className="me-2">{style.emojiPrefix}</span> : null}
+            <span
+              className="ticker-content"
+              style={{ color: style.textColor }}
+              dangerouslySetInnerHTML={{ __html: sanitizePreviewHtml(html) }}
+            />
+            <span className="mx-4 opacity-60" aria-hidden>
+              {style.separator || '•'}
+            </span>
           </span>
-        </span>
-      </Marquee>
+        </Marquee>
+      </div>
     </div>
   );
 }
 
-function ColorField({ label, value, onChange, presets }) {
+function ColorField({ label, value, onChange, presets, hint }) {
+  const hex = normalizeHexColor(value);
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium text-gray-700">{label}</label>
       <div className="flex flex-wrap items-center gap-2">
         <input
           type="color"
-          value={normalizeHexColor(value)}
+          value={hex}
           onChange={(e) => onChange(e.target.value)}
           className="h-9 w-12 cursor-pointer rounded border border-gray-200 bg-white p-0.5"
           aria-label={label}
         />
         <input
           type="text"
-          value={normalizeHexColor(value)}
-          onChange={(e) => onChange(e.target.value)}
+          defaultValue={hex}
+          key={hex}
+          onBlur={(e) => onChange(normalizeHexColor(e.target.value, hex))}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.currentTarget.blur();
+            }
+          }}
           className="w-28 rounded-lg border border-gray-300 px-2 py-1.5 font-mono text-xs"
           maxLength={7}
         />
@@ -97,7 +112,7 @@ function ColorField({ label, value, onChange, presets }) {
             title={p.label}
             onClick={() => onChange(p.value)}
             className={`h-7 w-7 rounded-full border-2 transition ${
-              normalizeHexColor(value) === normalizeHexColor(p.value)
+              hex === normalizeHexColor(p.value)
                 ? 'border-gray-800 scale-110'
                 : 'border-white shadow ring-1 ring-gray-200'
             }`}
@@ -105,6 +120,7 @@ function ColorField({ label, value, onChange, presets }) {
           />
         ))}
       </div>
+      {hint ? <p className="mt-1.5 text-xs text-gray-500">{hint}</p> : null}
     </div>
   );
 }
@@ -142,23 +158,21 @@ function EditorSheet({ draft, onChange, onClose, onSave, saving, error }) {
   }, [onClose]);
 
   function setField(field, value) {
-    onChange({ ...draft, [field]: value });
+    onChange((prev) => ({ ...prev, [field]: value }));
   }
 
   function setBarColor(color) {
     const barColor = normalizeHexColor(color);
-    const next = { ...draft, barColor };
-    // Auto-adjust text if still on a default contrasting pair
-    const prevContrast = contrastTextColor(draft.barColor);
-    if (
-      !draft.textColor ||
-      normalizeHexColor(draft.textColor) === normalizeHexColor(prevContrast) ||
-      normalizeHexColor(draft.textColor) === '#FFFFFF' ||
-      normalizeHexColor(draft.textColor) === '#000000'
-    ) {
-      next.textColor = contrastTextColor(barColor);
-    }
-    onChange(next);
+    onChange((prev) => {
+      const next = { ...prev, barColor };
+      const prevContrast = contrastTextColor(prev.barColor);
+      const currentText = normalizeHexColor(prev.textColor, prevContrast);
+      // Only auto-flip text when it still matches the previous auto-contrast color
+      if (currentText === normalizeHexColor(prevContrast)) {
+        next.textColor = contrastTextColor(barColor);
+      }
+      return next;
+    });
   }
 
   return (
@@ -260,6 +274,7 @@ function EditorSheet({ draft, onChange, onClose, onSave, saving, error }) {
               label="Text color"
               value={draft.textColor}
               onChange={(c) => setField('textColor', normalizeHexColor(c))}
+              hint="Default color for ticker text and links. Colors you apply to selected words in the content editor override this."
               presets={[
                 { label: 'White', value: '#FFFFFF' },
                 { label: 'Black', value: '#000000' },

@@ -36,11 +36,12 @@ function sanitizeTickerHtml(html) {
     .replace(/\son\w+='[^']*'/gi, '');
 }
 
-function StyledTickerText({ html, isArabic }) {
+function StyledTickerText({ html, isArabic, textColor }) {
   return (
     <span
       className="inline-block ticker-content"
       dir={isArabic ? 'rtl' : 'ltr'}
+      style={textColor ? { color: textColor } : undefined}
       dangerouslySetInnerHTML={{ __html: sanitizeTickerHtml(html) }}
     />
   );
@@ -84,30 +85,33 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
   return (
     <div
       ref={tickerRootRef}
-      className={`w-full overflow-hidden py-2 ${barEffectClass(style.barEffect)}`}
+      className={`w-full py-2 ${barEffectClass(style.barEffect)}`}
       style={{ backgroundColor: style.barColor, color: style.textColor }}
       dir="ltr"
     >
-      <Marquee
-        key={`${isArabic ? 'ar' : 'en'}-${style.speed}`}
-        speed={style.speed}
-        gradient={style.showGradient}
-        pauseOnHover={style.pauseOnHover}
-        autoFill
-        direction={isArabic ? 'right' : 'left'}
-      >
-        <span
-          className={`mx-6 whitespace-nowrap ${fontScaleClass(style.fontScale)} ${
-            style.uppercase ? 'uppercase tracking-wide' : ''
-          }`}
+      <div className="ticker-bar-content">
+        <Marquee
+          key={`${isArabic ? 'ar' : 'en'}-${style.speed}-${style.textColor}`}
+          speed={style.speed}
+          gradient={style.showGradient}
+          pauseOnHover={style.pauseOnHover}
+          autoFill
+          direction={isArabic ? 'right' : 'left'}
         >
-          {style.emojiPrefix ? <span className="me-2">{style.emojiPrefix}</span> : null}
-          <StyledTickerText html={text} isArabic={isArabic} />
-        </span>
-        <span className="mx-6 opacity-60" aria-hidden>
-          {style.separator || '•'}
-        </span>
-      </Marquee>
+          <span
+            className={`mx-6 whitespace-nowrap ${fontScaleClass(style.fontScale)} ${
+              style.uppercase ? 'uppercase tracking-wide' : ''
+            }`}
+            style={{ color: style.textColor }}
+          >
+            {style.emojiPrefix ? <span className="me-2">{style.emojiPrefix}</span> : null}
+            <StyledTickerText html={text} isArabic={isArabic} textColor={style.textColor} />
+          </span>
+          <span className="mx-6 opacity-60" aria-hidden>
+            {style.separator || '•'}
+          </span>
+        </Marquee>
+      </div>
     </div>
   );
 }

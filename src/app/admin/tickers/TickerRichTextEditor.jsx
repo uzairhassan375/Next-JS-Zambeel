@@ -82,7 +82,6 @@ function preventToolbarFocusLoss(event) {
 
 export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   const editorRef = useRef(null);
-  const previewRef = useRef(null);
   const toolbarRef = useRef(null);
   const linkDialogRef = useRef(null);
   const savedRangeRef = useRef(null);
@@ -96,7 +95,7 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
   const [hasTextSelection, setHasTextSelection] = useState(false);
   const [activeEffects, setActiveEffects] = useState(INITIAL_ACTIVE_EFFECTS);
   const [selectionColor, setSelectionColor] = useState(null);
-  const [previewHtml, setPreviewHtml] = useState(value || '');
+  const [darkCanvas, setDarkCanvas] = useState(true);
 
   function resetLinkDialog() {
     setLinkUrl('');
@@ -109,7 +108,6 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
     if (editorRef.current) {
       const html = editorRef.current.innerHTML;
       lastEmittedRef.current = html;
-      setPreviewHtml(html);
       onChange(html);
     }
   }, [onChange]);
@@ -175,15 +173,9 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
     if (!el) return;
     if (value !== lastEmittedRef.current && el.innerHTML !== value) {
       el.innerHTML = value || '';
-      setPreviewHtml(value || '');
     }
     return attachTickerBlinkRaf(el);
   }, [value]);
-
-  useEffect(() => {
-    if (!previewRef.current) return undefined;
-    return attachTickerBlinkRaf(previewRef.current);
-  }, [previewHtml, value]);
 
   useEffect(() => {
     const el = editorRef.current;
@@ -462,8 +454,6 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
     resetLinkDialog();
   }
 
-  const previewContent = previewHtml || value || '';
-
   return (
     <div className="relative border border-gray-300 rounded-lg overflow-hidden bg-white">
       <div
@@ -543,6 +533,9 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
           <div className="flex flex-wrap gap-1.5">
             {TICKER_COLORS.map((color) => {
               const isActive = normalizeColor(selectionColor) === normalizeColor(color.value);
+              const isLight =
+                normalizeColor(color.value) === '#ffffff' ||
+                normalizeColor(color.value) === '#fcd64c';
               return (
                 <button
                   key={color.value}
@@ -550,16 +543,36 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
                   onMouseDown={preventToolbarFocusLoss}
                   onClick={() => handleApplyColor(color.value)}
                   disabled={!hasTextSelection}
-                  className={`h-7 w-7 rounded-full border-2 transition-transform ${
+                  className={`relative h-7 w-7 rounded-full border-2 transition-transform ${
                     !hasTextSelection ? 'opacity-40 cursor-not-allowed' : 'hover:scale-110'
-                  } ${isActive ? 'border-[#1e3a8a] ring-2 ring-[#1e3a8a]/30' : 'border-gray-300'}`}
-                  style={{ backgroundColor: color.value }}
+                  } ${isActive ? 'border-[#1e3a8a] ring-2 ring-[#1e3a8a]/30' : 'border-gray-400'}`}
+                  style={{
+                    backgroundColor: color.value,
+                    boxShadow: isLight ? 'inset 0 0 0 1px rgba(0,0,0,0.2)' : undefined,
+                  }}
                   title={color.label}
                   aria-label={color.label}
-                />
+                >
+                  {normalizeColor(color.value) === '#ffffff' ? (
+                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-gray-500">
+                      W
+                    </span>
+                  ) : null}
+                </button>
               );
             })}
           </div>
+          {activeEffects.color && selectionColor ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2 py-0.5 text-[11px] text-gray-600">
+              Selected
+              <span
+                className="inline-block h-3.5 w-3.5 rounded-full border border-gray-400"
+                style={{ backgroundColor: selectionColor }}
+                title={selectionColor}
+              />
+              <span className="font-mono text-[10px]">{normalizeColor(selectionColor)}</span>
+            </span>
+          ) : null}
           <button
             type="button"
             onMouseDown={preventToolbarFocusLoss}
@@ -574,6 +587,30 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
           >
             Remove Color
           </button>
+          <div className="ms-auto flex items-center gap-1 rounded-lg border border-gray-200 p-0.5 text-[11px]">
+            <button
+              type="button"
+              onMouseDown={preventToolbarFocusLoss}
+              onClick={() => setDarkCanvas(true)}
+              className={`rounded-md px-2 py-1 ${
+                darkCanvas ? 'bg-[#1e3a8a] text-white' : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              title="Dark canvas — easier to see white/yellow text"
+            >
+              Dark canvas
+            </button>
+            <button
+              type="button"
+              onMouseDown={preventToolbarFocusLoss}
+              onClick={() => setDarkCanvas(false)}
+              className={`rounded-md px-2 py-1 ${
+                !darkCanvas ? 'bg-[#1e3a8a] text-white' : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              title="Light canvas — easier to see black text"
+            >
+              Light canvas
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
@@ -624,23 +661,13 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
         contentEditable
         suppressContentEditableWarning
         dir={dir}
-        className="ticker-editor min-h-[100px] p-3 text-sm focus:outline-none"
+        className={`ticker-editor min-h-[100px] p-3 text-sm focus:outline-none ${
+          darkCanvas ? 'ticker-editor--dark' : 'ticker-editor--light'
+        }`}
         onInput={emitChange}
         onMouseUp={saveSelection}
         onKeyUp={saveSelection}
       />
-
-      <div className="border-t border-gray-200 bg-[#2E3B78] px-3 py-2">
-        <p className="text-[10px] uppercase tracking-wide text-white/60 mb-1">Live preview</p>
-        <div className="overflow-x-auto text-sm text-white [-ms-overflow-style:none] [scrollbar-width:thin]">
-          <span
-            ref={previewRef}
-            className="inline-block min-w-max whitespace-nowrap py-0.5 ticker-content"
-            dir={dir}
-            dangerouslySetInnerHTML={{ __html: previewContent }}
-          />
-        </div>
-      </div>
 
       <style
         dangerouslySetInnerHTML={{
@@ -648,15 +675,30 @@ export default function TickerRichTextEditor({ value, onChange, dir = 'ltr' }) {
         .ticker-editor {
           line-height: 1.6;
         }
+        .ticker-editor--dark {
+          background-color: #2e3b78;
+          color: #ffffff;
+        }
+        .ticker-editor--light {
+          background-color: #ffffff;
+          color: #111827;
+        }
         .ticker-editor a span[style*="color"],
         .ticker-editor .ticker-link span[style*="color"] {
           text-decoration: inherit;
         }
-        .ticker-editor a:not(:has(span[style*="color"])) {
+        .ticker-editor--dark a:not(:has(span[style*="color"])) {
+          color: #fcd64c;
+          cursor: pointer;
+        }
+        .ticker-editor--dark a:hover:not(:has(span[style*="color"])) {
+          color: #ffffff;
+        }
+        .ticker-editor--light a:not(:has(span[style*="color"])) {
           color: #2563eb;
           cursor: pointer;
         }
-        .ticker-editor a:hover:not(:has(span[style*="color"])) {
+        .ticker-editor--light a:hover:not(:has(span[style*="color"])) {
           color: #1d4ed8;
         }
       `,

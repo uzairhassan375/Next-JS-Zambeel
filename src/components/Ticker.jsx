@@ -20,11 +20,12 @@ function sanitizeTickerHtml(html) {
     .replace(/\son\w+='[^']*'/gi, '');
 }
 
-function TickerHtml({ html, isArabic }) {
+function TickerHtml({ html, isArabic, textColor }) {
   return (
     <span
       className="inline-block ticker-content"
       dir={isArabic ? 'rtl' : 'ltr'}
+      style={textColor ? { color: textColor } : undefined}
       dangerouslySetInnerHTML={{ __html: sanitizeTickerHtml(html) }}
     />
   );
@@ -40,7 +41,7 @@ function TickerStrip({ isArabic, html, textColor, separator, fontScale, uppercas
     >
       <span className="whitespace-nowrap" dir={isArabic ? 'rtl' : 'ltr'}>
         {emojiPrefix ? <span className="me-2">{emojiPrefix}</span> : null}
-        <TickerHtml isArabic={isArabic} html={html} />
+        <TickerHtml isArabic={isArabic} html={html} textColor={textColor} />
       </span>
       <span className="mx-4 opacity-60 md:mx-6" aria-hidden>
         {separator || '•'}
@@ -103,7 +104,7 @@ export default function Ticker({ pageId = 'home', variant = 'blue', className = 
   return (
     <div
       ref={tickerRootRef}
-      className={`relative z-10 w-screen overflow-hidden py-2 md:py-3 ${barEffectClass(
+      className={`relative z-10 w-screen py-2 md:py-3 ${barEffectClass(
         style.barEffect
       )} ${className || 'mt-4 md:mt-0'}`}
       style={{
@@ -114,44 +115,46 @@ export default function Ticker({ pageId = 'home', variant = 'blue', className = 
       }}
       dir="ltr"
     >
-      <Marquee
-        key={`${isArabic ? 'ar' : 'en'}-${style.speed}-${style.showGradient}`}
-        speed={style.speed}
-        gradient={style.showGradient}
-        gradientColor={gradientRgb}
-        gradientWidth={50}
-        pauseOnHover={style.pauseOnHover}
-        direction={isArabic ? 'right' : 'left'}
-        autoFill
-      >
-        <TickerStrip
-          isArabic={isArabic}
-          html={text}
-          textColor={textColor}
-          separator={style.separator}
-          fontScale={style.fontScale}
-          uppercase={style.uppercase}
-          emojiPrefix={style.emojiPrefix}
-        />
-        <TickerStrip
-          isArabic={isArabic}
-          html={text}
-          textColor={textColor}
-          separator={style.separator}
-          fontScale={style.fontScale}
-          uppercase={style.uppercase}
-          emojiPrefix={style.emojiPrefix}
-        />
-        <TickerStrip
-          isArabic={isArabic}
-          html={text}
-          textColor={textColor}
-          separator={style.separator}
-          fontScale={style.fontScale}
-          uppercase={style.uppercase}
-          emojiPrefix={style.emojiPrefix}
-        />
-      </Marquee>
+      <div className="ticker-bar-content">
+        <Marquee
+          key={`${isArabic ? 'ar' : 'en'}-${style.speed}-${style.showGradient}-${textColor}`}
+          speed={style.speed}
+          gradient={style.showGradient}
+          gradientColor={gradientRgb}
+          gradientWidth={50}
+          pauseOnHover={style.pauseOnHover}
+          direction={isArabic ? 'right' : 'left'}
+          autoFill
+        >
+          <TickerStrip
+            isArabic={isArabic}
+            html={text}
+            textColor={textColor}
+            separator={style.separator}
+            fontScale={style.fontScale}
+            uppercase={style.uppercase}
+            emojiPrefix={style.emojiPrefix}
+          />
+          <TickerStrip
+            isArabic={isArabic}
+            html={text}
+            textColor={textColor}
+            separator={style.separator}
+            fontScale={style.fontScale}
+            uppercase={style.uppercase}
+            emojiPrefix={style.emojiPrefix}
+          />
+          <TickerStrip
+            isArabic={isArabic}
+            html={text}
+            textColor={textColor}
+            separator={style.separator}
+            fontScale={style.fontScale}
+            uppercase={style.uppercase}
+            emojiPrefix={style.emojiPrefix}
+          />
+        </Marquee>
+      </div>
     </div>
   );
 }

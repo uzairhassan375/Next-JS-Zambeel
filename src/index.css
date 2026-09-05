@@ -61,13 +61,15 @@
 
 .ticker-content a:not(:has(span[style*='color'])),
 .ticker-link:not(:has(span[style*='color'])) {
-  color: #fcd64c;
+  color: inherit;
   cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .ticker-content a:hover:not(:has(span[style*='color'])),
 .ticker-link:hover:not(:has(span[style*='color'])) {
-  color: #ffffff;
+  opacity: 0.85;
 }
 
 /* Blink is driven by tickerBlinkRaf.js (rAF). CSS keyframes fail inside react-fast-marquee. */
@@ -75,62 +77,104 @@
   display: inline-block;
 }
 
-/* Ticker bar attention effects (admin-configurable) */
-@keyframes ticker-bar-pulse {
+/* Ticker bar attention effects (admin-configurable)
+   Overlays sit above the bar background; content stays above overlays via .ticker-bar-content.
+   Outer glow needs the effect root to NOT use overflow:hidden (clip the marquee inside instead). */
+@keyframes ticker-pulse-flash {
   0%,
   100% {
-    filter: brightness(1);
+    opacity: 0;
   }
   50% {
-    filter: brightness(1.12);
+    opacity: 1;
   }
 }
 
-@keyframes ticker-bar-glow {
+@keyframes ticker-glow-outer {
   0%,
   100% {
-    box-shadow: inset 0 0 0 0 transparent;
+    box-shadow:
+      0 0 0 0 rgba(252, 214, 76, 0),
+      0 0 0 0 rgba(46, 59, 120, 0),
+      inset 0 0 0 0 rgba(255, 255, 255, 0);
   }
   50% {
-    box-shadow: inset 0 0 28px 0 rgba(255, 255, 255, 0.28);
+    box-shadow:
+      0 0 22px 4px rgba(252, 214, 76, 0.85),
+      0 0 14px 2px rgba(46, 59, 120, 0.45),
+      inset 0 0 18px 2px rgba(255, 255, 255, 0.55);
   }
 }
 
-@keyframes ticker-bar-shine {
+@keyframes ticker-shine-sweep {
   0% {
-    background-position: -120% 0;
+    transform: translateX(-130%) skewX(-18deg);
   }
   100% {
-    background-position: 220% 0;
+    transform: translateX(320%) skewX(-18deg);
   }
 }
 
-.ticker-bar-pulse {
-  animation: ticker-bar-pulse 1.6s ease-in-out infinite;
+.ticker-bar-pulse,
+.ticker-bar-glow,
+.ticker-bar-shine {
+  position: relative;
+  isolation: isolate;
+}
+
+.ticker-bar-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ticker-bar-pulse::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  animation: ticker-pulse-flash 1.15s ease-in-out infinite;
 }
 
 .ticker-bar-glow {
-  animation: ticker-bar-glow 2s ease-in-out infinite;
+  animation: ticker-glow-outer 1.35s ease-in-out infinite;
 }
 
-.ticker-bar-shine {
-  position: relative;
-  overflow: hidden;
+.ticker-bar-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.22);
+  animation: ticker-pulse-flash 1.35s ease-in-out infinite;
 }
 
 .ticker-bar-shine::after {
   content: '';
-  pointer-events: none;
   position: absolute;
-  inset: 0;
-  background-image: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.35) 50%,
-    transparent 60%
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  z-index: 3;
+  width: 42%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 25%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 100%
   );
-  background-size: 200% 100%;
-  animation: ticker-bar-shine 2.8s linear infinite;
+  animation: ticker-shine-sweep 2.1s ease-in-out infinite;
 }
 
 /* Blog content text sizes (from rich editor) */

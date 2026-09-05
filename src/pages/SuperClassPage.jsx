@@ -278,7 +278,7 @@ const SuperClassPage = () => {
 
       {/* Moving Ticker with Prominent Background */}
       <div
-        className={`w-screen py-3 overflow-hidden ${barEffectClass(mainTickerStyle.barEffect)}`}
+        className={`w-screen py-3 ${barEffectClass(mainTickerStyle.barEffect)}`}
         style={{
           marginLeft: 'calc(-50vw + 50%)',
           marginRight: 'calc(-50vw + 50%)',
@@ -287,36 +287,38 @@ const SuperClassPage = () => {
         }}
         dir="ltr"
       >
-        <Marquee
-          key={`main-${mainTickerStyle.speed}-${mainTickerStyle.barColor}`}
-          speed={mainTickerStyle.speed}
-          gradient={mainTickerStyle.showGradient}
-          gradientColor={hexToRgbArray(mainTickerStyle.barColor)}
-          gradientWidth={50}
-          pauseOnHover={mainTickerStyle.pauseOnHover}
-          direction={currentLanguage === 'ar' ? 'right' : 'left'}
-          autoFill={true}
-        >
-          {Array.from({ length: 10 }, (_, i) => (
-            <div
-              key={i}
-              className={`flex items-center mx-8 whitespace-nowrap font-semibold ${fontScaleClass(mainTickerStyle.fontScale)} ${
-                mainTickerStyle.uppercase ? 'uppercase tracking-wide' : ''
-              }`}
-              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-              style={{ color: mainTickerStyle.textColor }}
-            >
-              {mainTickerStyle.emojiPrefix ? (
-                <span className="me-2">{mainTickerStyle.emojiPrefix}</span>
-              ) : null}
-              <span
-                className="ticker-content"
-                dangerouslySetInnerHTML={{ __html: safeMainTickerHtml }}
-              />
-              <span className="mx-8 opacity-60">{mainTickerStyle.separator || '•'}</span>
-            </div>
-          ))}
-        </Marquee>
+        <div className="ticker-bar-content">
+          <Marquee
+            key={`main-${mainTickerStyle.speed}-${mainTickerStyle.barColor}-${mainTickerStyle.barEffect}`}
+            speed={mainTickerStyle.speed}
+            gradient={mainTickerStyle.showGradient}
+            gradientColor={hexToRgbArray(mainTickerStyle.barColor)}
+            gradientWidth={50}
+            pauseOnHover={mainTickerStyle.pauseOnHover}
+            direction={currentLanguage === 'ar' ? 'right' : 'left'}
+            autoFill={true}
+          >
+            {Array.from({ length: 10 }, (_, i) => (
+              <div
+                key={i}
+                className={`flex items-center mx-8 whitespace-nowrap font-semibold ${fontScaleClass(mainTickerStyle.fontScale)} ${
+                  mainTickerStyle.uppercase ? 'uppercase tracking-wide' : ''
+                }`}
+                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                style={{ color: mainTickerStyle.textColor }}
+              >
+                {mainTickerStyle.emojiPrefix ? (
+                  <span className="me-2">{mainTickerStyle.emojiPrefix}</span>
+                ) : null}
+                <span
+                  className="ticker-content"
+                  dangerouslySetInnerHTML={{ __html: safeMainTickerHtml }}
+                />
+                <span className="mx-8 opacity-60">{mainTickerStyle.separator || '•'}</span>
+              </div>
+            ))}
+          </Marquee>
+        </div>
       </div>
 
       {/* Who is this class for Section */}
@@ -735,7 +737,7 @@ const SuperClassPage = () => {
 
           {/* Price Ticker */}
           <div
-            className={`mt-8 w-screen py-2 overflow-hidden ${barEffectClass(priceTickerStyle.barEffect)}`}
+            className={`mt-8 w-screen py-2 ${barEffectClass(priceTickerStyle.barEffect)}`}
             style={{
               marginLeft: 'calc(-50vw + 50%)',
               marginRight: 'calc(-50vw + 50%)',
@@ -744,35 +746,37 @@ const SuperClassPage = () => {
             }}
             dir="ltr"
           >
-            <Marquee
-              key={`price-${priceTickerStyle.speed}-${priceTickerStyle.barColor}`}
-              speed={priceTickerStyle.speed}
-              gradient={priceTickerStyle.showGradient}
-              gradientColor={hexToRgbArray(priceTickerStyle.barColor)}
-              pauseOnHover={priceTickerStyle.pauseOnHover}
-              direction={currentLanguage === 'ar' ? 'right' : 'left'}
-              autoFill
-            >
-              {Array.from({ length: 15 }, (_, i) => (
-                <span
-                  key={i}
-                  className={`mx-4 font-bold inline-block ${fontScaleClass(priceTickerStyle.fontScale)} ${
-                    priceTickerStyle.uppercase ? 'uppercase tracking-wide' : ''
-                  }`}
-                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-                  style={{ color: priceTickerStyle.textColor }}
-                >
-                  {priceTickerStyle.emojiPrefix ? (
-                    <span className="me-2">{priceTickerStyle.emojiPrefix}</span>
-                  ) : null}
+            <div className="ticker-bar-content">
+              <Marquee
+                key={`price-${priceTickerStyle.speed}-${priceTickerStyle.barColor}-${priceTickerStyle.barEffect}`}
+                speed={priceTickerStyle.speed}
+                gradient={priceTickerStyle.showGradient}
+                gradientColor={hexToRgbArray(priceTickerStyle.barColor)}
+                pauseOnHover={priceTickerStyle.pauseOnHover}
+                direction={currentLanguage === 'ar' ? 'right' : 'left'}
+                autoFill
+              >
+                {Array.from({ length: 15 }, (_, i) => (
                   <span
-                    className="ticker-content"
-                    dangerouslySetInnerHTML={{ __html: safePriceTickerHtml }}
-                  />
-                  <span className="ms-4 opacity-60">{priceTickerStyle.separator || '•'}</span>
-                </span>
-              ))}
-            </Marquee>
+                    key={i}
+                    className={`mx-4 font-bold inline-block ${fontScaleClass(priceTickerStyle.fontScale)} ${
+                      priceTickerStyle.uppercase ? 'uppercase tracking-wide' : ''
+                    }`}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    style={{ color: priceTickerStyle.textColor }}
+                  >
+                    {priceTickerStyle.emojiPrefix ? (
+                      <span className="me-2">{priceTickerStyle.emojiPrefix}</span>
+                    ) : null}
+                    <span
+                      className="ticker-content"
+                      dangerouslySetInnerHTML={{ __html: safePriceTickerHtml }}
+                    />
+                    <span className="ms-4 opacity-60">{priceTickerStyle.separator || '•'}</span>
+                  </span>
+                ))}
+              </Marquee>
+            </div>
           </div>
         </div>
       </section>
