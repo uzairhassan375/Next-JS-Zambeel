@@ -79,7 +79,7 @@
 
 /* Ticker bar attention effects (admin-configurable)
    Overlays sit above the bar background; content stays above overlays via .ticker-bar-content.
-   Outer glow needs the effect root to NOT use overflow:hidden (clip the marquee inside instead). */
+   Shine must NOT use transform/skew — that expands scroll width and makes the page stretch. */
 @keyframes ticker-pulse-flash {
   0%,
   100% {
@@ -90,28 +90,12 @@
   }
 }
 
-@keyframes ticker-glow-outer {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 0 rgba(252, 214, 76, 0),
-      0 0 0 0 rgba(46, 59, 120, 0),
-      inset 0 0 0 0 rgba(255, 255, 255, 0);
-  }
-  50% {
-    box-shadow:
-      0 0 22px 4px rgba(252, 214, 76, 0.85),
-      0 0 14px 2px rgba(46, 59, 120, 0.45),
-      inset 0 0 18px 2px rgba(255, 255, 255, 0.55);
-  }
-}
-
 @keyframes ticker-shine-sweep {
   0% {
-    transform: translateX(-130%) skewX(-18deg);
+    background-position: -60% 0;
   }
   100% {
-    transform: translateX(320%) skewX(-18deg);
+    background-position: 160% 0;
   }
 }
 
@@ -120,6 +104,8 @@
 .ticker-bar-shine {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
+  contain: paint;
 }
 
 .ticker-bar-content {
@@ -144,7 +130,20 @@
 }
 
 .ticker-bar-glow {
-  animation: ticker-glow-outer 1.35s ease-in-out infinite;
+  /* Inset-only glow so it can’t paint over sticky cards above */
+  animation: ticker-glow-inset 1.35s ease-in-out infinite;
+}
+
+@keyframes ticker-glow-inset {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 22px 4px rgba(255, 255, 255, 0.55),
+      inset 0 0 8px 1px rgba(252, 214, 76, 0.45);
+  }
 }
 
 .ticker-bar-glow::before {
@@ -160,21 +159,23 @@
 .ticker-bar-shine::after {
   content: '';
   position: absolute;
-  top: -10%;
-  bottom: -10%;
-  left: 0;
+  inset: 0;
   z-index: 3;
-  width: 42%;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
+  background-image: linear-gradient(
+    105deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.15) 25%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 45%,
     rgba(255, 255, 255, 0.85) 50%,
-    rgba(255, 255, 255, 0.15) 75%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 60%,
     transparent 100%
   );
-  animation: ticker-shine-sweep 2.1s ease-in-out infinite;
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: -60% 0;
+  animation: ticker-shine-sweep 2.1s linear infinite;
 }
 
 /* Blog content text sizes (from rich editor) */

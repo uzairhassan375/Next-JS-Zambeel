@@ -67,3 +67,13 @@ export function trackButtonClick({ name, href, page, location }) {
     location: location || undefined,
   });
 }
+
+/** Any link inside a site ticker (e.g. Try Kluck AI, Click here, future links). */
+export function trackTickerLinkClick({ href, linkText, pageId }) {
+  track('ticker_link_clicked', {
+    href: href || undefined,
+    link_text: linkText || undefined,
+    ticker_page_id: pageId || undefined,
+    location: 'ticker',
+  });
+}

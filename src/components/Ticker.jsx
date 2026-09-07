@@ -5,6 +5,7 @@ import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
 import { getDefaultTickerItem } from '../lib/tickerPages';
 import { useTickerBlinkSubtree } from '../lib/tickerBlinkRaf';
+import { useTickerLinkTracking } from '../lib/tickerLinkTracking';
 import {
   barEffectClass,
   fontScaleClass,
@@ -93,6 +94,7 @@ export default function Ticker({ pageId = 'home', variant = 'blue', className = 
   }, [isArabic, ticker.textAr, ticker.textEn, defaults.textAr, defaults.textEn]);
 
   useTickerBlinkSubtree(tickerRootRef, text);
+  useTickerLinkTracking(tickerRootRef, pageId);
 
   // Fallback while loading: respect legacy variant prop
   const barColor =
@@ -104,7 +106,7 @@ export default function Ticker({ pageId = 'home', variant = 'blue', className = 
   return (
     <div
       ref={tickerRootRef}
-      className={`relative z-10 w-screen py-2 md:py-3 ${barEffectClass(
+      className={`relative z-0 w-screen py-2 md:py-3 ${barEffectClass(
         style.barEffect
       )} ${className || 'mt-4 md:mt-0'}`}
       style={{

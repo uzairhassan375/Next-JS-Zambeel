@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Marquee from 'react-fast-marquee';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import ComingSoon from "../components/ComingSoon";
+import { useTickerLinkTracking } from '../lib/tickerLinkTracking';
 import {
   barEffectClass,
   fontScaleClass,
@@ -19,6 +20,8 @@ const SuperClassPage = () => {
   const currentLanguage = i18n.language || 'en';
   const isRTL = currentLanguage === 'ar';
   const registerLink = 'https://docs.google.com/forms/d/e/1FAIpQLSeA4WTKzxanXcM4inCxjpGsimihwMlbQh50dK1UMSjUhPEzYQ/viewform';
+  const mainTickerRef = useRef(null);
+  const priceTickerRef = useRef(null);
 
   // Text carousel state - MUST be declared before any conditional returns
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
@@ -32,6 +35,9 @@ const SuperClassPage = () => {
   const [priceTickerStyle, setPriceTickerStyle] = useState(() =>
     normalizeTickerStyle({}, 'learn-ecommerce-price')
   );
+
+  useTickerLinkTracking(mainTickerRef, 'learn-ecommerce-main');
+  useTickerLinkTracking(priceTickerRef, 'learn-ecommerce-price');
   
   const carouselTexts = [
     t('superClass.hero.carousel.productHunting', { defaultValue: 'Product Hunting' }),
@@ -278,6 +284,7 @@ const SuperClassPage = () => {
 
       {/* Moving Ticker with Prominent Background */}
       <div
+        ref={mainTickerRef}
         className={`w-screen py-3 ${barEffectClass(mainTickerStyle.barEffect)}`}
         style={{
           marginLeft: 'calc(-50vw + 50%)',
@@ -737,6 +744,7 @@ const SuperClassPage = () => {
 
           {/* Price Ticker */}
           <div
+            ref={priceTickerRef}
             className={`mt-8 w-screen py-2 ${barEffectClass(priceTickerStyle.barEffect)}`}
             style={{
               marginLeft: 'calc(-50vw + 50%)',

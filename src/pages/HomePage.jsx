@@ -426,7 +426,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
 
 
         {/* Mobile Staking Cards */}
-        <div className="md:hidden w-full relative min-h-[100vh]">
+        <div className="md:hidden w-full relative z-20 min-h-[100vh]">
           <StackedCards />
         </div>
 
@@ -522,7 +522,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         </div>
       </main>
 
-      <Ticker pageId="home" />
+      <Ticker pageId="home" className="mt-16 md:mt-0" />
 
       <section id="where-to-sell" className="w-full lg:bg-[#FDE8E9] pt-2 pb-0 md:pt-8 md:pb-8 px-4 flex justify-center">
         <div className="max-w-[1200px] w-full mx-auto bg-white rounded-[2.5rem] p-6 lg:px-12 lg:py-6">

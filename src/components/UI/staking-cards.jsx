@@ -74,7 +74,8 @@ const Card = ({ title, description, index, totalCards, cta, link }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 position: 'sticky',
-                top: `calc(${viewportCenter} - ${cardHalfHeight}px)`
+                top: `calc(${viewportCenter} - ${cardHalfHeight}px)`,
+                zIndex: index + 1,
             }}
         >
             <div

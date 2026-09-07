@@ -5,6 +5,7 @@ import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
 import { getDefaultTickerItem } from '../lib/tickerPages';
 import { startBlinkOnElement, useTickerBlinkSubtree } from '../lib/tickerBlinkRaf';
+import { useTickerLinkTracking } from '../lib/tickerLinkTracking';
 import {
   barEffectClass,
   fontScaleClass,
@@ -81,6 +82,7 @@ export default function GoldRiskFreeTickerMarquee({ pageId = 'dropshipping' }) {
     : ticker.textEn?.trim() || defaults.textEn;
 
   useTickerBlinkSubtree(tickerRootRef, text);
+  useTickerLinkTracking(tickerRootRef, pageId);
 
   return (
     <div
