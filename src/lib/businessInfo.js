@@ -1,13 +1,17 @@
 export const BUSINESS_INFO = {
   name: 'MyZambeel',
+  legalName: 'Tazah technologies PTE LTD',
+  licenseNumber: '202131566W',
   url: 'https://www.myzambeel.com',
   logo: 'https://www.myzambeel.com/blue_logo.png',
-  streetAddress: '160 Robinson Rd, #14-04 Singapore Business Federation Center',
+  streetAddress: '160 ROBINSON ROAD, #14-04, SINGAPORE BUSINESS FEDERATION CENTER',
   addressLocality: 'Singapore',
   postalCode: '068914',
   addressCountry: 'SG',
   fullAddress:
-    '160 Robinson Rd, #14-04 Singapore Business Federation Center, Singapore 068914',
+    '160 ROBINSON ROAD, #14-04, SINGAPORE BUSINESS FEDERATION CENTER, SINGAPORE 068914',
+  warehouseAddress:
+    '17440 West Little York Rd, SUITE A, Houston, Texas 77084, United States of America',
   // Public profiles, mirroring the links in Footer.jsx
   sameAs: [
     'https://www.instagram.com/zambeel.ecommerce',
