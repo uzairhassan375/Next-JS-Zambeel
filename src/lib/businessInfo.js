@@ -1,6 +1,6 @@
 export const BUSINESS_INFO = {
   name: 'MyZambeel',
-  legalName: 'Tazah technologies PTE LTD',
+  legalName: 'Tazah Technologies PTE LTD',
   licenseNumber: '202131566W',
   url: 'https://www.myzambeel.com',
   logo: 'https://www.myzambeel.com/blue_logo.png',
