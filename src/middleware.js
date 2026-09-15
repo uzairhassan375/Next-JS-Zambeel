@@ -21,6 +21,16 @@ export function middleware(request) {
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-locale', locale);
+  requestHeaders.set('x-pathname', `${pathname}${url.search || ''}`);
+
+  const host = request.headers.get('x-forwarded-host') || hostname || SITE_HOST;
+  const proto =
+    request.headers.get('x-forwarded-proto') ||
+    (hostname.includes('localhost') ? 'http' : 'https');
+  requestHeaders.set(
+    'x-event-source-url',
+    `${proto}://${host}${pathname}${url.search || ''}`
+  );
 
   return NextResponse.next({
     request: {
