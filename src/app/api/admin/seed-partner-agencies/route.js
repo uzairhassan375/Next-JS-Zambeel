@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAdminSession } from '../../../../lib/adminAuth';
-import { connectDB } from '../../../../lib/db';
+import { withDB } from '../../../../lib/db';
 import PartnerAgency from '../../../../models/PartnerAgency';
 
 export const dynamic = 'force-dynamic';
@@ -13,13 +13,14 @@ export async function POST() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    await connectDB();
-    const existing = await PartnerAgency.countDocuments();
-    return NextResponse.json({
-      ok: true,
-      message: 'Partner agencies are managed in the admin dashboard. No seed data. Add or edit from the list.',
-      inserted: 0,
-      total: existing,
+    return await withDB(async () => {
+      const existing = await PartnerAgency.countDocuments();
+      return NextResponse.json({
+        ok: true,
+        message: 'Partner agencies are managed in the admin dashboard. No seed data. Add or edit from the list.',
+        inserted: 0,
+        total: existing,
+      });
     });
   } catch (e) {
     console.error('POST /api/admin/seed-partner-agencies', e);

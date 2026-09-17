@@ -1,5 +1,5 @@
 import 'server-only';
-import { connectDB } from './db';
+import { withDB } from './db';
 import PageMeta from '../models/PageMeta';
 import {
   getCanonicalUrl,
@@ -32,15 +32,16 @@ export const PAGE_IDS = [
  */
 export async function getPageMeta(pageId) {
   if (!pageId) return null;
-  await connectDB();
-  const doc = await PageMeta.findOne({ pageId }).lean();
-  if (!doc) return null;
-  return {
-    metaTitleEn: doc.metaTitleEn || '',
-    metaTitleAr: doc.metaTitleAr || '',
-    metaDescriptionEn: doc.metaDescriptionEn || '',
-    metaDescriptionAr: doc.metaDescriptionAr || '',
-  };
+  return withDB(async () => {
+    const doc = await PageMeta.findOne({ pageId }).lean();
+    if (!doc) return null;
+    return {
+      metaTitleEn: doc.metaTitleEn || '',
+      metaTitleAr: doc.metaTitleAr || '',
+      metaDescriptionEn: doc.metaDescriptionEn || '',
+      metaDescriptionAr: doc.metaDescriptionAr || '',
+    };
+  });
 }
 
 /**
@@ -48,16 +49,17 @@ export async function getPageMeta(pageId) {
  * @returns {Promise<Array<{ pageId, metaTitleEn, metaTitleAr, metaDescriptionEn, metaDescriptionAr }>>}
  */
 export async function getAllPageMeta() {
-  await connectDB();
-  const docs = await PageMeta.find({}).lean();
-  const byId = Object.fromEntries(docs.map((d) => [d.pageId, d]));
-  return PAGE_IDS.map(({ id }) => ({
-    pageId: id,
-    metaTitleEn: byId[id]?.metaTitleEn ?? '',
-    metaTitleAr: byId[id]?.metaTitleAr ?? '',
-    metaDescriptionEn: byId[id]?.metaDescriptionEn ?? '',
-    metaDescriptionAr: byId[id]?.metaDescriptionAr ?? '',
-  }));
+  return withDB(async () => {
+    const docs = await PageMeta.find({}).lean();
+    const byId = Object.fromEntries(docs.map((d) => [d.pageId, d]));
+    return PAGE_IDS.map(({ id }) => ({
+      pageId: id,
+      metaTitleEn: byId[id]?.metaTitleEn ?? '',
+      metaTitleAr: byId[id]?.metaTitleAr ?? '',
+      metaDescriptionEn: byId[id]?.metaDescriptionEn ?? '',
+      metaDescriptionAr: byId[id]?.metaDescriptionAr ?? '',
+    }));
+  });
 }
 
 /**

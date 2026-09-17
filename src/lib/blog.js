@@ -1,6 +1,6 @@
 import 'server-only';
 import { unstable_cache } from 'next/cache';
-import { connectDB } from './db';
+import { withDB } from './db';
 import Blog from '../models/Blog';
 import HomepageBlogSelection from '../models/HomepageBlogSelection';
 import { blogForResponse, blogsForResponse } from './blogResponse';
@@ -48,13 +48,14 @@ function serializeBlog(doc) {
  * @returns {Promise<Array>} Blogs sorted by createdAt desc, with image as base64 string.
  */
 export async function getBlogs() {
-  await connectDB();
-  // Only fetch fields needed for listing page - exclude large content fields
-  const blogs = await Blog.find({ status: { $ne: 'draft' } })
-    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
-    .sort({ sortOrder: 1, createdAt: -1 })
-    .lean();
-  return blogs.map(serializeBlog);
+  return withDB(async () => {
+    // Only fetch fields needed for listing page - exclude large content fields
+    const blogs = await Blog.find({ status: { $ne: 'draft' } })
+      .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
+      .sort({ sortOrder: 1, createdAt: -1 })
+      .lean();
+    return blogs.map(serializeBlog);
+  });
 }
 
 /**
@@ -64,13 +65,14 @@ export async function getBlogs() {
  * @returns {Promise<Array>} Blogs with minimal fields, sorted by createdAt desc.
  */
 export async function getBlogsForHomepage(limit = 6) {
-  await connectDB();
-  const blogs = await Blog.find({ status: { $ne: 'draft' } })
-    .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
-    .sort({ sortOrder: 1, createdAt: -1 })
-    .limit(limit)
-    .lean();
-  return blogs.map(serializeBlog);
+  return withDB(async () => {
+    const blogs = await Blog.find({ status: { $ne: 'draft' } })
+      .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
+      .sort({ sortOrder: 1, createdAt: -1 })
+      .limit(limit)
+      .lean();
+    return blogs.map(serializeBlog);
+  });
 }
 
 /**
@@ -80,19 +82,20 @@ export async function getBlogsForHomepage(limit = 6) {
  * @returns {Promise<{web: Array, mobile: Array}>}
  */
 export async function getHomepageBlogSelection() {
-  await connectDB();
-  const [selection, blogs] = await Promise.all([
-    HomepageBlogSelection.findOne({ key: HOMEPAGE_SELECTION_KEY }).lean(),
-    Blog.find({ status: { $ne: 'draft' } })
-      .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
-      .sort({ sortOrder: 1, createdAt: -1 })
-      .lean(),
-  ]);
-  const serialized = blogs.map(serializeBlog);
-  return {
-    web: pickSelectedBlogs(serialized, selection?.webSlugs, HOMEPAGE_WEB_LIMIT),
-    mobile: pickSelectedBlogs(serialized, selection?.mobileSlugs, HOMEPAGE_MOBILE_LIMIT),
-  };
+  return withDB(async () => {
+    const [selection, blogs] = await Promise.all([
+      HomepageBlogSelection.findOne({ key: HOMEPAGE_SELECTION_KEY }).lean(),
+      Blog.find({ status: { $ne: 'draft' } })
+        .select('slug titleEn titleAr descriptionEn descriptionAr image imageAr sortOrder createdAt updatedAt')
+        .sort({ sortOrder: 1, createdAt: -1 })
+        .lean(),
+    ]);
+    const serialized = blogs.map(serializeBlog);
+    return {
+      web: pickSelectedBlogs(serialized, selection?.webSlugs, HOMEPAGE_WEB_LIMIT),
+      mobile: pickSelectedBlogs(serialized, selection?.mobileSlugs, HOMEPAGE_MOBILE_LIMIT),
+    };
+  });
 }
 
 /** Cached homepage blog lists — 60s server-side revalidation. */
@@ -111,10 +114,11 @@ export async function getCachedHomepageBlogSelection() {
  */
 export async function getBlogBySlug(slug) {
   if (!slug) return null;
-  await connectDB();
-  const blog = await Blog.findOne({ slug, status: { $ne: 'draft' } }).lean();
-  if (!blog) return null;
-  return serializeBlog(blog);
+  return withDB(async () => {
+    const blog = await Blog.findOne({ slug, status: { $ne: 'draft' } }).lean();
+    if (!blog) return null;
+    return serializeBlog(blog);
+  });
 }
 
 /**
@@ -122,9 +126,10 @@ export async function getBlogBySlug(slug) {
  * @returns {Promise<Array<{ slug: string }>>}
  */
 export async function getAllBlogSlugs() {
-  await connectDB();
-  const docs = await Blog.find({ status: { $ne: 'draft' } }).select('slug').lean();
-  return docs.map((d) => ({ slug: String(d.slug || d._id?.toString() || '') }));
+  return withDB(async () => {
+    const docs = await Blog.find({ status: { $ne: 'draft' } }).select('slug').lean();
+    return docs.map((d) => ({ slug: String(d.slug || d._id?.toString() || '') }));
+  });
 }
 
 /**
@@ -134,15 +139,16 @@ export async function getAllBlogSlugs() {
  * @returns {Promise<Array<{ slug: string, lastModified: string|null }>>}
  */
 export async function getAllBlogSlugsWithDates() {
-  await connectDB();
-  const docs = await Blog.find({ status: { $ne: 'draft' } })
-    .select('slug updatedAt createdAt')
-    .lean();
-  return docs.map((d) => {
-    const modified = d.updatedAt || d.createdAt || null;
-    return {
-      slug: String(d.slug || d._id?.toString() || ''),
-      lastModified: modified instanceof Date ? modified.toISOString() : modified || null,
-    };
+  return withDB(async () => {
+    const docs = await Blog.find({ status: { $ne: 'draft' } })
+      .select('slug updatedAt createdAt')
+      .lean();
+    return docs.map((d) => {
+      const modified = d.updatedAt || d.createdAt || null;
+      return {
+        slug: String(d.slug || d._id?.toString() || ''),
+        lastModified: modified instanceof Date ? modified.toISOString() : modified || null,
+      };
+    });
   });
 }

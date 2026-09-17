@@ -37,3 +37,54 @@ export async function connectDB() {
     throw error;
   }
 }
+
+function isTransientMongoError(error) {
+  const name = String(error?.name || '');
+  const message = String(error?.message || '').toLowerCase();
+  const transientNames = [
+    'MongoServerSelectionError',
+    'MongoStalePrimaryError',
+    'MongoNetworkError',
+    'MongoTopologyClosedError',
+    'MongoNotConnectedError',
+    'MongoExpiredSessionError',
+  ];
+
+  if (transientNames.includes(name)) return true;
+
+  return (
+    message.includes('stale') ||
+    message.includes('primary') ||
+    message.includes('topology') ||
+    message.includes('server selection') ||
+    message.includes('connection') ||
+    message.includes('not connected') ||
+    message.includes('econnrefused') ||
+    message.includes('econnreset')
+  );
+}
+
+function resetCachedConnection() {
+  cached.conn = null;
+  cached.promise = null;
+}
+
+/**
+ * Run a DB query with one automatic reconnect+retry on transient
+ * connection/topology failures (e.g. Atlas replica set election).
+ */
+export async function withDB(queryFn) {
+  await connectDB();
+
+  try {
+    return await queryFn();
+  } catch (error) {
+    if (!isTransientMongoError(error)) {
+      throw error;
+    }
+
+    resetCachedConnection();
+    await connectDB();
+    return await queryFn();
+  }
+}

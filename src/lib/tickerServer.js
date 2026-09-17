@@ -1,21 +1,23 @@
 import 'server-only';
 import { unstable_cache } from 'next/cache';
-import { connectDB } from './db';
+import { withDB } from './db';
 import TickerSetting from '../models/TickerSetting';
 import { TICKER_PAGES, mergeTickerFields } from './tickerPages';
 import { CONTENT_CACHE_SECONDS, TICKERS_CACHE_TAG } from './contentCache';
 
 async function fetchTickerByPageId(pageId) {
-  await connectDB();
-  const doc = await TickerSetting.findOne({ pageId }).lean();
-  return mergeTickerFields(pageId, doc || {});
+  return withDB(async () => {
+    const doc = await TickerSetting.findOne({ pageId }).lean();
+    return mergeTickerFields(pageId, doc || {});
+  });
 }
 
 async function fetchAllTickers() {
-  await connectDB();
-  const docs = await TickerSetting.find({}).lean();
-  const byPageId = Object.fromEntries(docs.map((doc) => [doc.pageId, doc]));
-  return TICKER_PAGES.map((page) => mergeTickerFields(page.id, byPageId[page.id] || {}));
+  return withDB(async () => {
+    const docs = await TickerSetting.find({}).lean();
+    const byPageId = Object.fromEntries(docs.map((doc) => [doc.pageId, doc]));
+    return TICKER_PAGES.map((page) => mergeTickerFields(page.id, byPageId[page.id] || {}));
+  });
 }
 
 export async function getCachedTickerByPageId(pageId) {

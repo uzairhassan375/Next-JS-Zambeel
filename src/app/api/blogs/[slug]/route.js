@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '../../../../lib/db';
+import { withDB } from '../../../../lib/db';
 import Blog from '../../../../models/Blog';
 import { getAdminSession } from '../../../../lib/adminAuth';
 import { blogForResponse } from '../../../../lib/blogResponse';
@@ -37,30 +37,32 @@ export async function GET(request, { params }) {
     const { searchParams } = new URL(request.url);
     const wantsAdmin = searchParams.get('admin') === 'true';
     const isAdmin = wantsAdmin ? await getAdminSession() : false;
-    await connectDB();
-    // Explicitly exclude imageFile field to avoid Buffer serialization issues
-    // Make sure to include meta fields in the response
-    const query = { slug };
-    if (!isAdmin) {
-      query.status = { $ne: 'draft' };
-    }
-    const blog = await Blog.findOne(query).select('-imageFile').lean();
-    if (!blog) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
-    
-    // Ensure meta fields exist (for old blogs that might not have them)
-    const blogWithMeta = {
-      ...blog,
-      metaTitleEn: blog.metaTitleEn || '',
-      metaTitleAr: blog.metaTitleAr || '',
-      metaDescriptionEn: blog.metaDescriptionEn || '',
-      metaDescriptionAr: blog.metaDescriptionAr || '',
-    };
 
-    return NextResponse.json(blogForResponse(blogWithMeta), {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
-        Pragma: 'no-cache',
-      },
+    return await withDB(async () => {
+      // Explicitly exclude imageFile field to avoid Buffer serialization issues
+      // Make sure to include meta fields in the response
+      const query = { slug };
+      if (!isAdmin) {
+        query.status = { $ne: 'draft' };
+      }
+      const blog = await Blog.findOne(query).select('-imageFile').lean();
+      if (!blog) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
+
+      // Ensure meta fields exist (for old blogs that might not have them)
+      const blogWithMeta = {
+        ...blog,
+        metaTitleEn: blog.metaTitleEn || '',
+        metaTitleAr: blog.metaTitleAr || '',
+        metaDescriptionEn: blog.metaDescriptionEn || '',
+        metaDescriptionAr: blog.metaDescriptionAr || '',
+      };
+
+      return NextResponse.json(blogForResponse(blogWithMeta), {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+          Pragma: 'no-cache',
+        },
+      });
     });
   } catch (e) {
     console.error('GET /api/blogs/[slug]', e);
@@ -75,7 +77,7 @@ export async function PUT(request, { params }) {
   }
   try {
     const { slug: currentSlug } = await params;
-    const [_, body] = await Promise.all([connectDB(), request.json()]);
+    const body = await request.json();
     const {
       slug: newSlug,
       titleEn,
@@ -96,19 +98,10 @@ export async function PUT(request, { params }) {
 
     // Normalize new slug
     const normalizedNewSlug = newSlug ? newSlug.trim().toLowerCase().replace(/\s+/g, '-') : currentSlug;
-    
-    // Check if slug is being changed
-    if (normalizedNewSlug !== currentSlug) {
-      // Check if new slug already exists
-      const existing = await Blog.findOne({ slug: normalizedNewSlug });
-      if (existing && existing.slug !== currentSlug) {
-        return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 });
-      }
-    }
-    
+
     // Build the update object - ALWAYS include meta fields
     const $set = {};
-    
+
     // Set regular fields if provided
     if (titleEn != null) $set.titleEn = titleEn;
     if (titleAr != null) $set.titleAr = titleAr;
@@ -118,7 +111,7 @@ export async function PUT(request, { params }) {
     if (contentAr != null) $set.contentAr = contentAr;
     if (status != null) $set.status = normalizeStatus(status);
     if (sortOrder != null) $set.sortOrder = normalizeSortOrder(sortOrder);
-    
+
     // ALWAYS set meta fields - explicitly convert to string, never skip them
     // Even if empty, we want to save them to the database
     $set.metaTitleEn = String(metaTitleEn ?? '');
@@ -130,7 +123,7 @@ export async function PUT(request, { params }) {
     if (normalizedNewSlug !== currentSlug) {
       $set.slug = normalizedNewSlug;
     }
-    
+
     // Handle image updates - image fields are base64 strings or external URLs
     if (image !== undefined) {
       if (image && image.startsWith('data:image/')) {
@@ -155,31 +148,42 @@ export async function PUT(request, { params }) {
     }
     // If imageAr is not provided, keep existing Arabic image (don't modify imageAr field)
 
-    // Explicitly exclude imageFile field and also unset it if it exists
-    // Use runValidators to ensure schema validation runs
-    // Use setDefaultsOnInsert to ensure defaults are applied
-    const updateResult = await Blog.findOneAndUpdate(
-      { slug: currentSlug },
-      { 
-        $set: $set,
-        $unset: { imageFile: 1 }
-      },
-      { 
-        new: true, 
-        runValidators: true, 
-        upsert: false,
-        setDefaultsOnInsert: true,
-        strict: false
+    return await withDB(async () => {
+      // Check if slug is being changed
+      if (normalizedNewSlug !== currentSlug) {
+        // Check if new slug already exists
+        const existing = await Blog.findOne({ slug: normalizedNewSlug });
+        if (existing && existing.slug !== currentSlug) {
+          return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 });
+        }
       }
-    );
-    
-    if (!updateResult) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
-    
-    // Convert to plain object
-    const blog = updateResult.toObject ? updateResult.toObject() : updateResult;
-    delete blog.imageFile;
 
-    return NextResponse.json(blogForResponse(blog));
+      // Explicitly exclude imageFile field and also unset it if it exists
+      // Use runValidators to ensure schema validation runs
+      // Use setDefaultsOnInsert to ensure defaults are applied
+      const updateResult = await Blog.findOneAndUpdate(
+        { slug: currentSlug },
+        {
+          $set: $set,
+          $unset: { imageFile: 1 },
+        },
+        {
+          new: true,
+          runValidators: true,
+          upsert: false,
+          setDefaultsOnInsert: true,
+          strict: false,
+        }
+      );
+
+      if (!updateResult) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
+
+      // Convert to plain object
+      const blog = updateResult.toObject ? updateResult.toObject() : updateResult;
+      delete blog.imageFile;
+
+      return NextResponse.json(blogForResponse(blog));
+    });
   } catch (e) {
     console.error('PUT /api/blogs/[slug]', e);
     return NextResponse.json({ error: 'Failed to update blog' }, { status: 500 });
@@ -193,10 +197,11 @@ export async function DELETE(request, { params }) {
   }
   try {
     const { slug } = await params;
-    await connectDB();
-    const blog = await Blog.findOneAndDelete({ slug }).lean();
-    if (!blog) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
-    return NextResponse.json({ deleted: true });
+    return await withDB(async () => {
+      const blog = await Blog.findOneAndDelete({ slug }).lean();
+      if (!blog) return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
+      return NextResponse.json({ deleted: true });
+    });
   } catch (e) {
     console.error('DELETE /api/blogs/[slug]', e);
     return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 });

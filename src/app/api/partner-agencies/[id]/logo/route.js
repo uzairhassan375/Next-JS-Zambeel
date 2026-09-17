@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import { connectDB } from '../../../../../lib/db';
+import { withDB } from '../../../../../lib/db';
 import PartnerAgency from '../../../../../models/PartnerAgency';
 import { getAdminSession } from '../../../../../lib/adminAuth';
 
@@ -20,10 +20,11 @@ export async function GET(request, { params }) {
     if (!isValidObjectId(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
-    await connectDB();
-    const doc = await PartnerAgency.findById(id).select('logo').lean();
-    if (!doc) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
-    return NextResponse.json({ logo: doc.logo || '' });
+    return await withDB(async () => {
+      const doc = await PartnerAgency.findById(id).select('logo').lean();
+      if (!doc) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
+      return NextResponse.json({ logo: doc.logo || '' });
+    });
   } catch (e) {
     console.error('GET /api/partner-agencies/[id]/logo', e);
     return NextResponse.json({ error: 'Failed to fetch logo' }, { status: 500 });

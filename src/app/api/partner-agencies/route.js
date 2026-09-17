@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '../../../lib/db';
+import { withDB } from '../../../lib/db';
 import PartnerAgency from '../../../models/PartnerAgency';
 import { getAdminSession } from '../../../lib/adminAuth';
 import { partnerAgenciesForResponse, partnerAgencyForResponse } from '../../../lib/partnerAgencyResponse';
@@ -30,39 +30,41 @@ export async function GET(request) {
     const isAdminList = searchParams.get('admin') === 'true';
 
     if (isAdminList) {
-      const [isAdmin] = await Promise.all([getAdminSession(), connectDB()]);
+      const isAdmin = await getAdminSession();
       if (!isAdmin) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
-      // Exclude logo (can be large base64) so admin list loads fast
-      const agencies = await PartnerAgency.find({})
-        .select('-logo')
-        .sort({ tier: 1, order: 1, createdAt: 1 })
-        .lean();
-      return NextResponse.json(partnerAgenciesForResponse(agencies));
-    }
-
-    await connectDB();
-
-    // Public: serve from cache; refetch if any agency was updated/deleted (count or updatedAt changed)
-    const agencies = await getCachedOrFetch(
-      async () => {
-        const list = await PartnerAgency.find({})
+      return await withDB(async () => {
+        // Exclude logo (can be large base64) so admin list loads fast
+        const agencies = await PartnerAgency.find({})
+          .select('-logo')
           .sort({ tier: 1, order: 1, createdAt: 1 })
           .lean();
-        return partnerAgenciesForResponse(list);
-      },
-      async (cacheTimestamp) => {
-        const [latest, count] = await Promise.all([
-          PartnerAgency.findOne().sort({ updatedAt: -1 }).select('updatedAt').lean(),
-          PartnerAgency.countDocuments(),
-        ]);
-        const cached = getCachedPartnerAgencies();
-        const cachedCount = Array.isArray(cached) ? cached.length : 0;
-        if (count !== cachedCount) return true; // add or delete
-        if (!latest || !latest.updatedAt) return false;
-        return new Date(latest.updatedAt).getTime() > cacheTimestamp;
-      }
+        return NextResponse.json(partnerAgenciesForResponse(agencies));
+      });
+    }
+
+    // Public: serve from cache; refetch if any agency was updated/deleted (count or updatedAt changed)
+    const agencies = await withDB(async () =>
+      getCachedOrFetch(
+        async () => {
+          const list = await PartnerAgency.find({})
+            .sort({ tier: 1, order: 1, createdAt: 1 })
+            .lean();
+          return partnerAgenciesForResponse(list);
+        },
+        async (cacheTimestamp) => {
+          const [latest, count] = await Promise.all([
+            PartnerAgency.findOne().sort({ updatedAt: -1 }).select('updatedAt').lean(),
+            PartnerAgency.countDocuments(),
+          ]);
+          const cached = getCachedPartnerAgencies();
+          const cachedCount = Array.isArray(cached) ? cached.length : 0;
+          if (count !== cachedCount) return true; // add or delete
+          if (!latest || !latest.updatedAt) return false;
+          return new Date(latest.updatedAt).getTime() > cacheTimestamp;
+        }
+      )
     );
     return NextResponse.json(agencies, {
       headers: { 'Cache-Control': PUBLIC_CACHE_CONTROL },
@@ -74,7 +76,7 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const [isAdmin, , body] = await Promise.all([getAdminSession(), connectDB(), request.json()]);
+  const [isAdmin, body] = await Promise.all([getAdminSession(), request.json()]);
   if (!isAdmin) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -110,37 +112,40 @@ export async function POST(request) {
     }
 
     const requestedOrder = typeof order === 'number' ? order : 0;
-    // If another agency in same tier already has this order, give it the next available order (so new one gets requested order)
-    const existingWithOrder = await PartnerAgency.findOne({ tier, order: requestedOrder }).lean();
-    if (existingWithOrder) {
-      const maxOrderDoc = await PartnerAgency.findOne({ tier }).sort({ order: -1 }).select('order').lean();
-      const nextOrder = (maxOrderDoc?.order ?? 0) + 1;
-      await PartnerAgency.findByIdAndUpdate(existingWithOrder._id, { $set: { order: nextOrder } });
-    }
 
-    const doc = {
-      tier,
-      order: requestedOrder,
-      nameEn: (nameEn ?? '').toString(),
-      nameAr: (nameAr ?? '').toString(),
-      countryEn: (countryEn ?? '').toString(),
-      countryAr: (countryAr ?? '').toString(),
-      descriptionEn: (descriptionEn ?? '').toString(),
-      descriptionAr: (descriptionAr ?? '').toString(),
-      contact: (contact ?? '').toString(),
-      phone: (phone ?? '').toString(),
-      website: (website ?? '').toString(),
-      logo: logo ?? '',
-    };
+    return await withDB(async () => {
+      // If another agency in same tier already has this order, give it the next available order (so new one gets requested order)
+      const existingWithOrder = await PartnerAgency.findOne({ tier, order: requestedOrder }).lean();
+      if (existingWithOrder) {
+        const maxOrderDoc = await PartnerAgency.findOne({ tier }).sort({ order: -1 }).select('order').lean();
+        const nextOrder = (maxOrderDoc?.order ?? 0) + 1;
+        await PartnerAgency.findByIdAndUpdate(existingWithOrder._id, { $set: { order: nextOrder } });
+      }
 
-    const agency = await PartnerAgency.create(doc);
-    if (!agency || !agency._id) {
-      console.error('POST /api/partner-agencies: create() did not return a document with _id');
-      return NextResponse.json({ error: 'Failed to save partner agency' }, { status: 500 });
-    }
-    invalidatePartnerAgenciesCache();
-    const obj = agency.toObject ? agency.toObject() : agency;
-    return NextResponse.json(partnerAgencyForResponse(obj));
+      const doc = {
+        tier,
+        order: requestedOrder,
+        nameEn: (nameEn ?? '').toString(),
+        nameAr: (nameAr ?? '').toString(),
+        countryEn: (countryEn ?? '').toString(),
+        countryAr: (countryAr ?? '').toString(),
+        descriptionEn: (descriptionEn ?? '').toString(),
+        descriptionAr: (descriptionAr ?? '').toString(),
+        contact: (contact ?? '').toString(),
+        phone: (phone ?? '').toString(),
+        website: (website ?? '').toString(),
+        logo: logo ?? '',
+      };
+
+      const agency = await PartnerAgency.create(doc);
+      if (!agency || !agency._id) {
+        console.error('POST /api/partner-agencies: create() did not return a document with _id');
+        return NextResponse.json({ error: 'Failed to save partner agency' }, { status: 500 });
+      }
+      invalidatePartnerAgenciesCache();
+      const obj = agency.toObject ? agency.toObject() : agency;
+      return NextResponse.json(partnerAgencyForResponse(obj));
+    });
   } catch (e) {
     console.error('POST /api/partner-agencies', e);
     return NextResponse.json(

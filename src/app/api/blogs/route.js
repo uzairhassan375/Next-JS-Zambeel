@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '../../../lib/db';
+import { withDB } from '../../../lib/db';
 import Blog from '../../../models/Blog';
 import { getAdminSession } from '../../../lib/adminAuth';
 import { blogsForResponse, blogForResponse } from '../../../lib/blogResponse';
@@ -33,25 +33,25 @@ function normalizeSortOrder(value) {
 
 export async function GET(request) {
   try {
-    await connectDB();
-    // Check if this is an admin request (for admin dashboard)
     const { searchParams } = new URL(request.url);
     const isAdminList = searchParams.get('admin') === 'true';
-    
-    if (isAdminList) {
-      // For admin list: include image so we can show a thumbnail + URL.
-      // Strip base64 data URIs to keep the list payload small (legacy blogs);
-      // those blogs still have full base64 in the edit form (single-doc fetch).
-      const blogs = await Blog.find({})
-        .select('slug titleEn status sortOrder image createdAt updatedAt')
-        .sort({ sortOrder: 1, createdAt: -1 })
-        .lean();
-      const safeBlogs = blogs.map((b) => ({
-        ...b,
-        image: typeof b.image === 'string' && b.image.startsWith('data:') ? '' : b.image || '',
-      }));
-      return NextResponse.json(blogsForResponse(safeBlogs));
-    } else {
+
+    return await withDB(async () => {
+      if (isAdminList) {
+        // For admin list: include image so we can show a thumbnail + URL.
+        // Strip base64 data URIs to keep the list payload small (legacy blogs);
+        // those blogs still have full base64 in the edit form (single-doc fetch).
+        const blogs = await Blog.find({})
+          .select('slug titleEn status sortOrder image createdAt updatedAt')
+          .sort({ sortOrder: 1, createdAt: -1 })
+          .lean();
+        const safeBlogs = blogs.map((b) => ({
+          ...b,
+          image: typeof b.image === 'string' && b.image.startsWith('data:') ? '' : b.image || '',
+        }));
+        return NextResponse.json(blogsForResponse(safeBlogs));
+      }
+
       // For public blog listing: fetch title, description, image (no content)
       // Optional ?limit=N for homepage / faster first load
       const limitParam = searchParams.get('limit');
@@ -62,7 +62,7 @@ export async function GET(request) {
       if (limit > 0) query.limit(limit);
       const blogs = await query.lean();
       return NextResponse.json(blogsForResponse(blogs));
-    }
+    });
   } catch (e) {
     console.error('GET /api/blogs', e);
     return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 });
@@ -75,7 +75,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const [_, body] = await Promise.all([connectDB(), request.json()]);
+    const body = await request.json();
     const {
       slug,
       titleEn,
@@ -97,11 +97,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'slug and titleEn are required' }, { status: 400 });
     }
     const normalizedSlug = slug.trim().toLowerCase().replace(/\s+/g, '-');
-    const existing = await Blog.findOne({ slug: normalizedSlug });
-    if (existing) {
-      return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 });
-    }
-    
+
     // Validate base64 images if provided
     if (image && image.startsWith('data:image/')) {
       const validation = validateBase64ImageSize(image);
@@ -115,27 +111,34 @@ export async function POST(request) {
         return NextResponse.json({ error: validationAr.error }, { status: 400 });
       }
     }
-    
-    const doc = {
-      slug: normalizedSlug,
-      titleEn: titleEn || '',
-      titleAr: titleAr || '',
-      descriptionEn: descriptionEn || '',
-      descriptionAr: descriptionAr || '',
-      metaTitleEn: metaTitleEn || '',
-      metaTitleAr: metaTitleAr || '',
-      metaDescriptionEn: metaDescriptionEn || '',
-      metaDescriptionAr: metaDescriptionAr || '',
-      image: image || '', // Default/English thumbnail
-      imageAr: imageAr || '', // Arabic thumbnail (optional)
-      contentEn: contentEn || '',
-      contentAr: contentAr || '',
-      status: normalizeStatus(status),
-      sortOrder: normalizeSortOrder(sortOrder),
-    };
-    
-    const blog = await Blog.create(doc);
-    return NextResponse.json(blogForResponse(blog.toObject ? blog.toObject() : blog));
+
+    return await withDB(async () => {
+      const existing = await Blog.findOne({ slug: normalizedSlug });
+      if (existing) {
+        return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 });
+      }
+
+      const doc = {
+        slug: normalizedSlug,
+        titleEn: titleEn || '',
+        titleAr: titleAr || '',
+        descriptionEn: descriptionEn || '',
+        descriptionAr: descriptionAr || '',
+        metaTitleEn: metaTitleEn || '',
+        metaTitleAr: metaTitleAr || '',
+        metaDescriptionEn: metaDescriptionEn || '',
+        metaDescriptionAr: metaDescriptionAr || '',
+        image: image || '', // Default/English thumbnail
+        imageAr: imageAr || '', // Arabic thumbnail (optional)
+        contentEn: contentEn || '',
+        contentAr: contentAr || '',
+        status: normalizeStatus(status),
+        sortOrder: normalizeSortOrder(sortOrder),
+      };
+
+      const blog = await Blog.create(doc);
+      return NextResponse.json(blogForResponse(blog.toObject ? blog.toObject() : blog));
+    });
   } catch (e) {
     console.error('POST /api/blogs', e);
     return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 });

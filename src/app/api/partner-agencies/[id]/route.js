@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import { connectDB } from '../../../../lib/db';
+import { withDB } from '../../../../lib/db';
 import PartnerAgency from '../../../../models/PartnerAgency';
 import { getAdminSession } from '../../../../lib/adminAuth';
 import { partnerAgencyForResponse } from '../../../../lib/partnerAgencyResponse';
@@ -33,10 +33,11 @@ export async function GET(request, { params }) {
     if (!isValidObjectId(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
-    await connectDB();
-    const agency = await PartnerAgency.findById(id).lean();
-    if (!agency) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
-    return NextResponse.json(partnerAgencyForResponse(agency));
+    return await withDB(async () => {
+      const agency = await PartnerAgency.findById(id).lean();
+      if (!agency) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
+      return NextResponse.json(partnerAgencyForResponse(agency));
+    });
   } catch (e) {
     console.error('GET /api/partner-agencies/[id]', e);
     return NextResponse.json({ error: 'Failed to fetch partner agency' }, { status: 500 });
@@ -48,7 +49,7 @@ export async function PUT(request, { params }) {
   if (!isValidObjectId(id)) {
     return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
   }
-  const [isAdmin, , body] = await Promise.all([getAdminSession(), connectDB(), request.json()]);
+  const [isAdmin, body] = await Promise.all([getAdminSession(), request.json()]);
   if (!isAdmin) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -81,24 +82,6 @@ export async function PUT(request, { params }) {
 
     const $set = {};
     if (tier != null) $set.tier = tier;
-
-    // If setting order and another agency in same tier has that order, swap their orders
-    const requestedOrder = order != null ? Number(order) : null;
-    if (requestedOrder !== null) {
-      const current = await PartnerAgency.findById(id).select('order tier').lean();
-      const targetTier = tier != null ? tier : current?.tier;
-      if (targetTier) {
-        const other = await PartnerAgency.findOne({
-          tier: targetTier,
-          order: requestedOrder,
-          _id: { $ne: id },
-        }).lean();
-        if (other && current) {
-          await PartnerAgency.findByIdAndUpdate(other._id, { $set: { order: current.order } });
-        }
-      }
-      $set.order = requestedOrder;
-    }
     if (nameEn != null) $set.nameEn = nameEn;
     if (nameAr != null) $set.nameAr = nameAr;
     if (countryEn != null) $set.countryEn = countryEn;
@@ -110,15 +93,36 @@ export async function PUT(request, { params }) {
     if (website != null) $set.website = website;
     if (logo !== undefined) $set.logo = logo || '';
 
-    const agency = await PartnerAgency.findByIdAndUpdate(
-      id,
-      { $set },
-      { new: true, runValidators: true }
-    ).lean();
+    const requestedOrder = order != null ? Number(order) : null;
 
-    if (!agency) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
-    invalidatePartnerAgenciesCache();
-    return NextResponse.json(partnerAgencyForResponse(agency));
+    return await withDB(async () => {
+      // If setting order and another agency in same tier has that order, swap their orders
+      if (requestedOrder !== null) {
+        const current = await PartnerAgency.findById(id).select('order tier').lean();
+        const targetTier = tier != null ? tier : current?.tier;
+        if (targetTier) {
+          const other = await PartnerAgency.findOne({
+            tier: targetTier,
+            order: requestedOrder,
+            _id: { $ne: id },
+          }).lean();
+          if (other && current) {
+            await PartnerAgency.findByIdAndUpdate(other._id, { $set: { order: current.order } });
+          }
+        }
+        $set.order = requestedOrder;
+      }
+
+      const agency = await PartnerAgency.findByIdAndUpdate(
+        id,
+        { $set },
+        { new: true, runValidators: true }
+      ).lean();
+
+      if (!agency) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
+      invalidatePartnerAgenciesCache();
+      return NextResponse.json(partnerAgencyForResponse(agency));
+    });
   } catch (e) {
     console.error('PUT /api/partner-agencies/[id]', e);
     return NextResponse.json({ error: 'Failed to update partner agency' }, { status: 500 });
@@ -130,15 +134,17 @@ export async function DELETE(request, { params }) {
   if (!isValidObjectId(id)) {
     return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
   }
-  const [isAdmin] = await Promise.all([getAdminSession(), connectDB()]);
+  const isAdmin = await getAdminSession();
   if (!isAdmin) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const agency = await PartnerAgency.findByIdAndDelete(id).lean();
-    if (!agency) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
-    invalidatePartnerAgenciesCache();
-    return NextResponse.json({ deleted: true });
+    return await withDB(async () => {
+      const agency = await PartnerAgency.findByIdAndDelete(id).lean();
+      if (!agency) return NextResponse.json({ error: 'Partner agency not found' }, { status: 404 });
+      invalidatePartnerAgenciesCache();
+      return NextResponse.json({ deleted: true });
+    });
   } catch (e) {
     console.error('DELETE /api/partner-agencies/[id]', e);
     return NextResponse.json({ error: 'Failed to delete partner agency' }, { status: 500 });
