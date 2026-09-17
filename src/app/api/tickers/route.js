@@ -3,6 +3,7 @@ import { TICKER_PAGES } from '../../../lib/tickerPages';
 import { PUBLIC_JSON_CACHE_HEADERS } from '../../../lib/contentCache';
 import { getCachedAllTickers, getCachedTickerByPageId } from '../../../lib/tickerServer';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
 export async function GET(request) {
