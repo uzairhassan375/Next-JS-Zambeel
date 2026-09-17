@@ -14,9 +14,26 @@ if (!cached) {
 
 export async function connectDB() {
   if (cached.conn) return cached.conn;
+
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+    cached.promise = mongoose
+      .connect(MONGODB_URI, {
+        serverSelectionTimeoutMS: 8000,
+      })
+      .then((mongooseInstance) => mongooseInstance)
+      .catch((error) => {
+        // Clear so the next request can retry instead of reusing a rejected promise
+        cached.promise = null;
+        throw error;
+      });
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
+  } catch (error) {
+    cached.promise = null;
+    cached.conn = null;
+    throw error;
+  }
 }
