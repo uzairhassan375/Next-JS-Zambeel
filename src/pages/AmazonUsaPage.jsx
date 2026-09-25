@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Ticker from '../components/Ticker';
 import AmazonUsaPlatforms from '../components/amazon/AmazonUsaPlatforms';
 import AmazonUsaHowItWorks from '../components/amazon/AmazonUsaHowItWorks';
-import AmazonUsaGoldPlan from '../components/amazon/AmazonUsaGoldPlan';
+// Temporarily hidden — restore when Gold Plan is offered again
+// import AmazonUsaGoldPlan from '../components/amazon/AmazonUsaGoldPlan';
 import AmazonUsaWhyItMatters from '../components/amazon/AmazonUsaWhyItMatters';
 import { trackButtonClick } from '../lib/analytics';
 
@@ -149,7 +150,9 @@ const AmazonUsaPage = () => {
 
       <AmazonUsaHowItWorks />
 
+      {/* Temporarily hidden — restore when Gold Plan is offered again
       <AmazonUsaGoldPlan ctaHref={AMAZON_USA_WHATSAPP} />
+      */}
       <AmazonUsaWhyItMatters ctaHref={AMAZON_USA_WHATSAPP} />
     </div>
   );

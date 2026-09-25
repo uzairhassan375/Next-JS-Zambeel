@@ -618,7 +618,7 @@ const Zambeel3PLPage = () => {
             }
           },
           {
-            label: t('deliveryCharges.deliveryTime'),
+            label: `${t('deliveryCharges.deliveryTime')} / (${t('deliveryCharges.upTo3Kgs')})`,
             icon: "⚡",
             values: {
               UAE: "1-2 Days",
@@ -633,6 +633,7 @@ const Zambeel3PLPage = () => {
           }
         ]}
         importantInfo={[
+          t('deliveryCharges.after3KgCharge'),
           t('deliveryCharges.pakistanParcelRatesNote'),
           t('deliveryCharges.warehousingFree'),
           t('zambeel3PL.deliveryCharges.stockMovementNote'),

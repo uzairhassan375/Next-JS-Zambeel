@@ -406,6 +406,7 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.usaPlan')}
                   </Link>
+                  {/* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
                   <Link
                     href={`${getLocalePath('/pages/amazon-usa', pathname)}#pricing`}
                     className={`block px-4 py-3 text-[#2E3B78] ${dropdownHoverColor} transition text-sm font-medium`}
@@ -413,6 +414,7 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.amazonUsaPlan')}
                   </Link>
+                  */}
                 </div>
               </div>
             )}
@@ -852,6 +854,7 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.usaPlan')}
                   </Link>
+                  {/* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
                   <Link
                     href={`${getLocalePath('/pages/amazon-usa', pathname)}#pricing`}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
@@ -862,6 +865,7 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.amazonUsaPlan')}
                   </Link>
+                  */}
                 </div>
               )}
             </div>
