@@ -523,6 +523,7 @@
     "return": "Return",
     "codTax": "COD Tax",
     "deliveryTime": "Delivery Time",
+    "upTo3Kgs": "up to 3 kgs",
     "days": "Days",
     "currencyAED": "AED",
     "currencySAR": "SAR",
@@ -531,7 +532,8 @@
     "pakistanParcelRatesNote": "Call confirmation is free. However, if your weekly confirmation rate falls below 50%, a charge of $1 per order/lead will apply.",
     "failedDelivery": "In case of failed delivery, only 'Return' will be charged",
     "outskirtAreas": "In case of Remote areas, delivery charges will be greater than normal charges.",
-    "warehousingFree": "Warehousing is free for first 2 months. After that, 1 AED per month per item will be charged"
+    "warehousingFree": "Warehousing is free for first 2 months. After that, 1 AED per month per item will be charged",
+    "after3KgCharge": "After 3 kgs, 2 AED per kg will be charged."
   },
   "whereToStart": {
     "title": "How to Start?",

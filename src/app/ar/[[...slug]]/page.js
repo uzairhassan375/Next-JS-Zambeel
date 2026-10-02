@@ -12,7 +12,8 @@ import DropshippingPage from '../../../pages/DropshippingPage';
 import USDropshippingPage from '../../../pages/USDropshippingPage';
 import Zambeel360Page from '../../../pages/Zambeel360Page';
 import Zambeel3PLPage from '../../../pages/Zambeel3PLPage';
-import AmazonUsaPage from '../../../pages/AmazonUsaPage';
+// Temporarily hidden — restore when Amazon USA Gold Plan is offered again
+// import AmazonUsaPage from '../../../pages/AmazonUsaPage';
 import RefundReplacementPolicyPage from '../../../pages/RefundReplacementPolicyPage';
 import TermsOfServicePage from '../../../pages/TermsOfServicePage';
 import { getBlogBySlug, getBlogs, getCachedHomepageBlogSelection } from '../../../lib/blog';
@@ -50,7 +51,8 @@ const routeMap = {
   'pages/usa-dropshipping': USDropshippingPage,
   'pages/zambeel-360': Zambeel360Page,
   'pages/warehousing-3pl': Zambeel3PLPage,
-  'pages/amazon-usa': AmazonUsaPage,
+  // Temporarily hidden — Amazon USA
+  // 'pages/amazon-usa': AmazonUsaPage,
   'pages/refund-replacement-policy': RefundReplacementPolicyPage,
   'pages/terms-of-service': TermsOfServicePage,
   'pages/partner-agencies': PartnerAgenciesPage,
@@ -105,11 +107,13 @@ export async function generateMetadata({ params }) {
         title: translations.zambeel3PL?.metaTitle || 'زمبيل 3PL | زمبيل',
         description: translations.zambeel3PL.whyZambeel.description || 'احصل على خدمات التخزين وإدارة المخزون والتنفيذ الفعال مع خدمة زمبيل 3PL',
       });
+    /* Temporarily hidden — Amazon USA
     case 'pages/amazon-usa':
       return buildMetadataForPage('pages/amazon-usa', 'ar', {
         title: translations.amazon.metaTitle || 'خطة أمازون USA | زمبيل',
         description: translations.amazon.metaDescription || translations.amazon.goldPlan.description,
       });
+    */
     case 'learn-ecommerce': {
       return buildMetadataForPage('learn-ecommerce', 'ar', {
         title: translations.learnEcommerce?.metaTitle || 'تعلم التجارة الإلكترونية | زمبيل',

@@ -275,7 +275,7 @@ const SuperClassPage = () => {
         <div className="flex justify-center mb-8">
           <a href={registerLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg">
             <span>{t('superClass.cta.join', { defaultValue: 'Join the Super Class' })}</span>
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 ml-2 rtl-flip-arrow rtl:mr-2 rtl:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
@@ -678,7 +678,7 @@ const SuperClassPage = () => {
               className="inline-flex items-center gap-2 bg-[#2E3B78] hover:bg-[#1a234d] text-white font-bold px-8 md:px-12 py-3 md:py-4 rounded-lg text-base md:text-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] transform"
             >
               <span>{t('superClass.cta.joinZambeel', { defaultValue: 'Join the Zambeel Super Class' })}</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 rtl-flip-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
@@ -913,7 +913,7 @@ const SuperClassPage = () => {
               className="inline-flex items-center gap-3 bg-gradient-to-r from-[#2E3B78] to-[#4A61C4] hover:from-[#1a234d] hover:to-[#2E3B78] text-white font-bold px-8 md:px-12 py-4 md:py-5 rounded-xl text-lg md:text-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform"
             >
               <span>{t('superClass.cta.joinZambeel', { defaultValue: 'Join the Zambeel Super Class' })}</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 rtl-flip-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>

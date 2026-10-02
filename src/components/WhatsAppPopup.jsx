@@ -126,13 +126,15 @@ export default function WhatsAppPopup() {
 
             {/* Logo */}
             <div className="my-2">
-              <Image
-                src={blue_logoImage}
-                alt="Zambeel Logo"
-                width={200}
-                height={56}
-                className="h-14 w-auto object-contain"
-              />
+              <div className="relative h-14 w-[160px]">
+                <Image
+                  src={blue_logoImage}
+                  alt="Zambeel Logo"
+                  fill
+                  sizes="160px"
+                  className="object-contain"
+                />
+              </div>
             </div>
 
             {/* Join text */}

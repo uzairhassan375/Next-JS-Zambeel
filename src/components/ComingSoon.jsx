@@ -104,13 +104,16 @@ const ComingSoon = ({ title, description, seoIntro, cookieName = 'supplier_count
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center pt-24 md:pt-32">
         {/* Logo */}
         <div className="mb-8 flex justify-center">
-          <Image
-            src="/white_logo.png"
-            alt="Zambeel Logo"
-            width={200}
-            height={60}
-            className="h-12 md:h-16 object-contain"
-          />
+          <div className="relative h-12 md:h-16 w-[160px] md:w-[200px] mx-auto">
+            <Image
+              src="/white_logo.png"
+              alt="Zambeel Logo"
+              fill
+              sizes="200px"
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
         {/* Coming Soon Badge */}

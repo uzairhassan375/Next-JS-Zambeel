@@ -114,7 +114,7 @@ const DropshippingPage = () => {
         <div className="flex justify-center mb-8">
           <a href="https://portal.myzambeel.com/login" target="_blank" rel="noopener noreferrer" onClick={() => trackButtonClick({ name: 'get_started', href: 'https://portal.myzambeel.com/login', page: 'dropshipping', location: 'hero' })} className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg">
             <span>{t('common.getStarted')}</span>
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 ml-2 rtl-flip-arrow rtl:mr-2 rtl:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
@@ -421,7 +421,7 @@ const DropshippingPage = () => {
             }
           },
           {
-            label: t('deliveryCharges.deliveryTime'),
+            label: `${t('deliveryCharges.deliveryTime')} / (${t('deliveryCharges.upTo3Kgs')})`,
             icon: "⚡",
             values: {
               UAE: "1-2 Days",
@@ -436,6 +436,7 @@ const DropshippingPage = () => {
           }
         ]}
         importantInfo={[
+          t('deliveryCharges.after3KgCharge'),
           t('deliveryCharges.pakistanParcelRatesNote'),
           t('deliveryCharges.outskirtAreas')
         ]}

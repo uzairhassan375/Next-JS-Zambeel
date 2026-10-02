@@ -162,7 +162,7 @@ const Card = ({ title, description, index, totalCards, cta, link }) => {
                                 onMouseLeave={(e) => e.target.style.opacity = '1'}
                             >
                                 {cta || title}
-                                <span style={{ fontSize: '1rem', color: '#FCD64C' }}>→</span>
+                                <span className="inline-block text-[#FCD64C] text-base rtl-flip-arrow" aria-hidden="true">→</span>
                             </Link>
                         ) : (
                             <button style={{
@@ -184,7 +184,7 @@ const Card = ({ title, description, index, totalCards, cta, link }) => {
                                 onMouseLeave={(e) => e.target.style.opacity = '1'}
                             >
                                 {cta || title}
-                                <span style={{ fontSize: '1rem', color: '#FCD64C' }}>→</span>
+                                <span className="inline-block text-[#FCD64C] text-base rtl-flip-arrow" aria-hidden="true">→</span>
                             </button>
                         )}
                     </div>
@@ -201,19 +201,19 @@ export const StackedCards = () => {
     const cardData = [
         {
             id: 1,
-            title: t('homepage.featureCards.usaDropshipping.title'),
-            description: t('homepage.featureCards.usaDropshipping.desc'),
-            color: "rgba(59, 130, 246, 0.8)",
-            cta: t('homepage.featureCards.usaDropshipping.cta'),
-            link: "/pages/usa-dropshipping"
-        },
-        {
-            id: 2,
             title: t('homepage.featureCards.dropshipping.title'),
             description: t('homepage.featureCards.dropshipping.desc'),
             color: "rgba(236, 72, 153, 0.8)",
             cta: t('homepage.featureCards.dropshipping.cta'),
             link: "/pages/dropshipping-uae-and-ksa"
+        },
+        {
+            id: 2,
+            title: t('homepage.featureCards.usaDropshipping.title'),
+            description: t('homepage.featureCards.usaDropshipping.desc'),
+            color: "rgba(59, 130, 246, 0.8)",
+            cta: t('homepage.featureCards.usaDropshipping.cta'),
+            link: "/pages/usa-dropshipping"
         },
         {
             id: 3,
@@ -225,6 +225,14 @@ export const StackedCards = () => {
         },
         {
             id: 4,
+            title: t('homepage.featureCards.zambeel360.title'),
+            description: t('homepage.featureCards.zambeel360.desc'),
+            color: "rgba(34, 197, 94, 0.8)",
+            cta: t('homepage.featureCards.zambeel360.cta'),
+            link: "/pages/zambeel-360"
+        },
+        {
+            id: 5,
             title: t('homepage.featureCards.zambeel3PL.mobileTitle', {
                 defaultValue: t('homepage.featureCards.zambeel3PL.title'),
             }),
@@ -233,14 +241,7 @@ export const StackedCards = () => {
             cta: t('homepage.featureCards.zambeel3PL.cta'),
             link: "/pages/warehousing-3pl"
         },
-        {
-            id: 5,
-            title: t('homepage.featureCards.zambeel360.title'),
-            description: t('homepage.featureCards.zambeel360.desc'),
-            color: "rgba(34, 197, 94, 0.8)",
-            cta: t('homepage.featureCards.zambeel360.cta'),
-            link: "/pages/zambeel-360"
-        },
+        /* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
         {
             id: 6,
             title: t('homepage.featureCards.amazon.title'),
@@ -249,6 +250,7 @@ export const StackedCards = () => {
             cta: t('homepage.featureCards.amazon.cta'),
             link: "/pages/amazon-usa"
         }
+        */
     ];
 
     useEffect(() => {

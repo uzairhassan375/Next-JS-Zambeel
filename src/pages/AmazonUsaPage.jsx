@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Ticker from '../components/Ticker';
 import AmazonUsaPlatforms from '../components/amazon/AmazonUsaPlatforms';
 import AmazonUsaHowItWorks from '../components/amazon/AmazonUsaHowItWorks';
-import AmazonUsaGoldPlan from '../components/amazon/AmazonUsaGoldPlan';
+// Temporarily hidden — restore when Gold Plan is offered again
+// import AmazonUsaGoldPlan from '../components/amazon/AmazonUsaGoldPlan';
 import AmazonUsaWhyItMatters from '../components/amazon/AmazonUsaWhyItMatters';
 import { trackButtonClick } from '../lib/analytics';
 
@@ -135,7 +136,7 @@ const AmazonUsaPage = () => {
               className="inline-flex items-center bg-[#ffd24c] text-[#243a86] font-bold px-8 py-3.5 rounded-full hover:bg-[#ffc933] transition-all duration-300 shadow-lg text-base md:text-lg"
             >
               {t('common.talkToAgent')}
-              <svg className="w-5 h-5 ml-2 rtl:rotate-180 rtl:mr-2 rtl:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 ml-2 rtl-flip-arrow rtl:mr-2 rtl:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
@@ -149,7 +150,9 @@ const AmazonUsaPage = () => {
 
       <AmazonUsaHowItWorks />
 
+      {/* Temporarily hidden — restore when Gold Plan is offered again
       <AmazonUsaGoldPlan ctaHref={AMAZON_USA_WHATSAPP} />
+      */}
       <AmazonUsaWhyItMatters ctaHref={AMAZON_USA_WHATSAPP} />
     </div>
   );
