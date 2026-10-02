@@ -38,12 +38,14 @@ export const TICKER_PAGES = [
     path: '/pages/warehousing-3pl',
     pageGroup: 'Warehousing 3PL',
   },
+  /* Temporarily hidden — Amazon USA
   {
     id: 'amazon-usa',
     label: 'Main Ticker',
     path: '/pages/amazon-usa',
     pageGroup: 'Amazon USA',
   },
+  */
 ];
 
 /** Unique page groups for admin page picker */

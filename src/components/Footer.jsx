@@ -26,13 +26,15 @@ export default function Footer() {
     <footer onClick={handleFooterClick} className="max-w-6xl mx-auto text-white pb-8 md:pb-12 pt-8 md:pt-12 px-6 md:px-16">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-6 text-sm items-start">
         <div className="space-y-5 flex flex-col">
-          <Image
-            src={white_logoImage}
-            alt="Zambeel Logo"
-            width={200}
-            height={56}
-            className="h-12 md:h-14 object-contain"
-          />
+          <div className="relative h-12 md:h-14 w-[160px] md:w-[180px]">
+            <Image
+              src={white_logoImage}
+              alt="Zambeel Logo"
+              fill
+              sizes="180px"
+              className="object-contain object-left"
+            />
+          </div>
           <p className="text-sm leading-relaxed text-blue-50 opacity-90 pr-2">
           {t('footer.tagline')}
           </p>
@@ -80,11 +82,13 @@ export default function Footer() {
                 {t('header.zambeel360')}
               </Link>
             </li>
+            {/* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
             <li>
               <Link href={getLocalePath('/pages/amazon-usa', pathname)} className="hover:text-white hover:underline">
                 {t('header.amazonServices')}
               </Link>
             </li>
+            */}
             <li>
               <a href={pathname?.startsWith('/ar') ? 'https://products.myzambeel.com/ar' : 'https://products.myzambeel.com'} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
                 {t('header.dropshippingProducts')}

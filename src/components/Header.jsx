@@ -141,14 +141,17 @@ export default function Header({ theme = "dark" }) {
         <div className="flex items-center gap-3 pl-4">
           <Link
             href={getLocalePath('/', pathname)}
-            className="mt-1"
+            className="mt-1 relative block h-10 md:h-12 w-[140px] md:w-[168px]"
           >
             <Image
               src={logoImage}
               alt="Zambeel Logo"
-              width={200}
-              height={48}
-              className="h-10 md:h-12 object-contain"
+              fill
+              sizes="168px"
+              className="object-contain object-left"
+              priority
+              loading="eager"
+              fetchPriority="high"
             />
           </Link>
         </div>
@@ -218,12 +221,14 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.zambeel3PL')}
                   </Link>
+                  {/* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
                   <Link
                     href={getLocalePath('/pages/amazon-usa', pathname)}
                     className={`block px-4 py-3 ${isLightTheme ? 'text-[#2E3B78]' : 'text-[#2E3B78]'} ${dropdownHoverColor} transition text-sm font-medium w-full`}
                   >
                     {t('header.amazonServices')}
                   </Link>
+                  */}
                 </div>
               </div>
             )}
@@ -643,6 +648,7 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.zambeel3PL')}
                   </Link>
+                  {/* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
                   <Link
                     href={getLocalePath('/pages/amazon-usa', pathname)}
                     className={`block ${isLightTheme ? 'text-[#2E3B78]/80' : 'text-white/80'} ${isLightTheme ? 'hover:text-[#2E3B78]' : 'hover:text-[#FCD64C]'} transition py-2 text-sm`}
@@ -650,6 +656,7 @@ export default function Header({ theme = "dark" }) {
                   >
                     {t('header.amazonServices')}
                   </Link>
+                  */}
                 </div>
               )}
             </div>

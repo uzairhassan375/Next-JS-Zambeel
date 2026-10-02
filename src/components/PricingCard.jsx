@@ -229,7 +229,8 @@ const PricingCard = ({ plan, isMonthly = true, isActive, onClick, isLast = false
                   : '0 4px 15px rgba(36, 58, 134, 0.4)',
               }}
             >
-              {buttonLabel} →
+              {buttonLabel}{' '}
+              <span className="inline-block rtl-flip-arrow" aria-hidden="true">→</span>
             </a>
           </div>
         </div>

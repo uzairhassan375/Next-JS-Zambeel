@@ -12,6 +12,11 @@ export default function ClientLayout({ children, initialLocale }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
 
+  // Prefer URL locale so /ar stays Arabic on client navigations too
+  const localeFromPath =
+    pathname === '/ar' || pathname?.startsWith('/ar/') ? 'ar' : 'en';
+  const locale = localeFromPath || initialLocale || 'en';
+
   // Admin dashboard: no site header/footer or WhatsApp
   if (isAdmin) {
     return <>{children}</>;
@@ -27,7 +32,8 @@ export default function ClientLayout({ children, initialLocale }) {
     pathname === "/pages/dropshipping-uae-and-ksa" || pathname === "/ar/pages/dropshipping-uae-and-ksa" ||
     pathname === "/pages/usa-dropshipping" || pathname === "/ar/pages/usa-dropshipping" ||
     pathname === "/pages/warehousing-3pl" || pathname === "/ar/pages/warehousing-3pl" ||
-    pathname === "/pages/amazon-usa" || pathname === "/ar/pages/amazon-usa" ||
+    // Temporarily hidden — Amazon USA
+    // pathname === "/pages/amazon-usa" || pathname === "/ar/pages/amazon-usa" ||
     pathname === "/pages/partner-agencies" || pathname === "/ar/pages/partner-agencies" ||
     pathname === "/learn-ecommerce" || pathname === "/ar/learn-ecommerce";
 
@@ -41,7 +47,7 @@ export default function ClientLayout({ children, initialLocale }) {
   }, [pathname]);
 
   return (
-    <I18nProvider initialLocale={initialLocale}>
+    <I18nProvider initialLocale={locale}>
       <WhatsAppPopup />
       {!shouldHideWhatsAppFloat && <WhatsAppFloat />}
       <Header theme={theme} />

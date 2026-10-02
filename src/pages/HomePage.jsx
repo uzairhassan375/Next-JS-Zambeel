@@ -228,8 +228,8 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
 
 
   const countries = [
-    { name: "UAE", code: "ae", services: ["Dropshipping", "3PL", "360", "Amazon"] },
-    { name: "KSA", code: "sa", services: ["Dropshipping", "3PL", "360", "Amazon"] },
+    { name: "UAE", code: "ae", services: ["Dropshipping", "3PL", "360" /* , "Amazon" */] },
+    { name: "KSA", code: "sa", services: ["Dropshipping", "3PL", "360" /* , "Amazon" */] },
     { name: "Qatar", code: "qa", services: ["Dropshipping", "3PL", "360"] },
     { name: "Kuwait", code: "kw", services: ["Dropshipping", "3PL", "360"] },
     { name: "Oman", code: "om", services: ["Dropshipping", "3PL", "360"] },
@@ -295,22 +295,20 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
       link: "/learn-ecommerce",
     },
     {
-      title: t('homepage.featureCards.zambeel3PL.title'),
+      title: t('homepage.featureCards.dropshipping.title'),
       desc: [
-        t('homepage.featureCards.zambeel3PL.desc')
+        t('homepage.featureCards.dropshipping.desc')
       ],
-      cta: t('homepage.featureCards.zambeel3PL.cta'),
-      link: "/pages/warehousing-3pl",
+      cta: t('homepage.featureCards.dropshipping.cta'),
+      link: "/pages/dropshipping-uae-and-ksa",
     },
     {
-      title: t('homepage.featureCards.dropshippingCombined.title'),
+      title: t('homepage.featureCards.usaDropshipping.title'),
       desc: [
-        t('homepage.featureCards.dropshippingCombined.desc')
+        t('homepage.featureCards.usaDropshipping.desc')
       ],
-      links: [
-        { cta: t('homepage.featureCards.dropshipping.cta'), link: "/pages/dropshipping-uae-and-ksa" },
-        { cta: t('homepage.featureCards.usaDropshipping.cta'), link: "/pages/usa-dropshipping" },
-      ],
+      cta: t('homepage.featureCards.usaDropshipping.cta'),
+      link: "/pages/usa-dropshipping",
     },
     {
       title: t('homepage.featureCards.zambeel360.title'),
@@ -323,6 +321,15 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
       link: "/pages/zambeel-360",
     },
     {
+      title: t('homepage.featureCards.zambeel3PL.title'),
+      desc: [
+        t('homepage.featureCards.zambeel3PL.desc')
+      ],
+      cta: t('homepage.featureCards.zambeel3PL.cta'),
+      link: "/pages/warehousing-3pl",
+    },
+    /* Temporarily hidden — restore when Amazon USA Gold Plan is offered again
+    {
       title: t('homepage.featureCards.amazon.title'),
       desc: [
         t('homepage.featureCards.amazon.desc')
@@ -330,6 +337,7 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
       cta: t('homepage.featureCards.amazon.cta'),
       link: "/pages/amazon-usa",
     },
+    */
   ];
 
 
@@ -348,8 +356,10 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         return "/pages/zambeel-360";
       case "3PL":
         return "/pages/warehousing-3pl";
+      /* Temporarily hidden — Amazon USA
       case "Amazon":
         return "/pages/amazon-usa";
+      */
       default:
         return "#";
     }
@@ -365,8 +375,10 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
         return t('header.zambeel360');
       case "3PL":
         return t('header.zambeel3PL');
+      /* Temporarily hidden — Amazon USA
       case "Amazon":
         return t('header.amazonServices');
+      */
       default:
         return service;
     }
@@ -400,14 +412,16 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
 
         <div className="text-center mb-16 md:mb-8 relative">
           <div className="mb-8 hidden md:flex justify-center relative items-center">
-            <Image
-              src={blue_logoImage}
-              alt="Zambeel Logo"
-              width={200}
-              height={80}
-              className="h-16 md:h-20 object-contain relative"
-              style={{ zIndex: 2 }}
-            />
+            <div className="relative h-16 md:h-20 w-[200px] md:w-[240px]">
+              <Image
+                src={blue_logoImage}
+                alt="Zambeel Logo"
+                fill
+                sizes="240px"
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
           <div className="relative inline-block px-4 w-full max-w-full">
             <h1 className="text-[#2E3B78] text-xl md:text-3xl font-bold leading-normal relative flex flex-wrap items-center justify-center gap-x-1.5 gap-y-2 text-balance">
@@ -430,70 +444,32 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
           <StackedCards />
         </div>
 
-        {/* Desktop Grid — all services in one row */}
+        {/* Desktop Grid — 5 equal service cards (no featured/master card) */}
         {/* Breaks out past the page container so the cards get width instead of height */}
         <div className="hidden md:block self-center w-[min(92vw,1520px)] max-w-[calc(100vw-1.5rem)]">
-          <div
-            className="grid gap-2 lg:gap-3 items-stretch"
-            style={{
-              gridTemplateColumns: featureCards
-                .map((card) => (card.links ? '1.62fr' : '0.98fr'))
-                .join(' '),
-            }}
-          >
+          <div className="grid grid-cols-5 gap-2 lg:gap-3 items-stretch">
           {featureCards.map((card) => {
             const titleWords = card.title.split(' ');
             const firstWord = titleWords[0];
             const restOfTitle = titleWords.slice(1).join(' ');
-            const isFeatured = Boolean(card.links);
 
             return (
               <div
                 key={card.link || card.title}
-                className={
-                  isFeatured
-                    ? "group card-hover relative bg-gradient-to-br from-[#2E3B78] to-[#1F2B5C] rounded-[28px] px-5 lg:px-7 py-6 flex flex-col h-full min-h-[210px] lg:min-h-[230px] min-w-0 transition-all duration-300 hover:scale-[1.03] shadow-[0_8px_24px_rgba(46,59,120,0.35)] ring-2 ring-[#FCD64C] z-10 scale-[1.03]"
-                    : "group card-hover bg-[#E7EFFC] rounded-[28px] px-4 lg:px-5 py-4 flex flex-col h-full min-h-[189px] lg:min-h-[200px] min-w-0 transition-all duration-300 hover:scale-[1.02]"
-                }
+                className="group card-hover bg-[#E7EFFC] rounded-[28px] px-4 lg:px-5 py-4 flex flex-col h-full min-h-[189px] lg:min-h-[200px] min-w-0 transition-all duration-300 hover:scale-[1.02]"
               >
-                {isFeatured && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FCD64C] text-[#2E3B78] text-[11px] font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
-                    {t('homepage.featureCards.dropshippingCombined.badge')}
-                  </span>
-                )}
                 <div className="flex-grow">
-                  <h2 className={`text-base lg:text-xl font-semibold mb-2 leading-tight ${isFeatured ? 'text-white text-center' : 'text-[#2E3B78]'}`}>
+                  <h2 className="text-base lg:text-xl font-semibold mb-2 leading-tight text-[#2E3B78] text-center">
                     <span className="font-bold">
                       {firstWord}
                     </span>
                     {restOfTitle && ` ${restOfTitle}`}
                   </h2>
-                  <p className={`text-xs lg:text-sm leading-relaxed mb-3 ${isFeatured ? 'text-white/85 text-center' : 'text-[#4A5568] group-hover:text-[#2E3B78] text-justify'}`}>
+                  <p className="text-xs lg:text-sm leading-relaxed mb-3 text-[#4A5568] group-hover:text-[#2E3B78] text-justify">
                     {card.desc}
                   </p>
                 </div>
-                {card.links ? (
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    {card.links.map((item) => (
-                      <Link
-                        key={item.link}
-                        href={item.link}
-                        onClick={() =>
-                          trackButtonClick({
-                            name: 'homepage_service_cta',
-                            href: item.link,
-                            page: 'home',
-                            location: 'feature_cards',
-                          })
-                        }
-                        className="group/drop-btn flex-1 min-w-0 bg-[#FCD64C] hover:bg-white text-[#2E3B78] font-bold py-3 text-xs lg:text-sm rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg px-3 whitespace-nowrap"
-                      >
-                        <span>{item.cta}</span>
-                        <i className="fa-solid fa-arrow-right text-[#2E3B78] shrink-0 transition-colors" />
-                      </Link>
-                    ))}
-                  </div>
-                ) : card.link ? (
+                {card.link ? (
                   <Link
                     href={card.link}
                     onClick={() =>
@@ -611,7 +587,9 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                         {service === "3PL" && t('homepage.whereToSell.serviceDescriptions.3PL')}
                         {service === "360" && t('homepage.whereToSell.serviceDescriptions.360')}
                         {service === "Dropshipping" && t('homepage.whereToSell.serviceDescriptions.dropshipping')}
+                        {/* Temporarily hidden — Amazon USA
                         {service === "Amazon" && t('homepage.whereToSell.serviceDescriptions.amazon')}
+                        */}
                       </div>
                     </div>
                     <i className="fa-solid fa-arrow-right text-white text-xs"></i>
@@ -722,10 +700,12 @@ export default function HomePage({ initialBlogs = [], initialMobileBlogs = [] })
                         {service === "3PL" && t('homepage.whereToSell.serviceDescriptions.3PL')}
                         {service === "360" && t('homepage.whereToSell.serviceDescriptions.360')}
                         {service === "Dropshipping" && t('homepage.whereToSell.serviceDescriptions.dropshipping')}
+                        {/* Temporarily hidden — Amazon USA
                         {service === "Amazon" && t('homepage.whereToSell.serviceDescriptions.amazon')}
+                        */}
                       </div>
                     </div>
-                    <i className="fa-solid fa-arrow-right text-white text-sm transform group-hover:translate-x-1 transition"></i>
+                    <i className="fa-solid fa-arrow-right text-white text-sm transform transition group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i>
                   </Link>
                 ))}
               </div>

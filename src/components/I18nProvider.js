@@ -28,7 +28,7 @@ if (!i18n.isInitialized) {
           translation: arTranslations,
         },
       },
-      lng: 'en', // Default, will be synced in useEffect
+      lng: 'en', // Default; I18nProvider syncs to initialLocale before children render
       fallbackLng: 'en',
       interpolation: {
         escapeValue: false,
@@ -60,20 +60,36 @@ export const changeLanguage = (lang) => {
   }
 };
 
-// Client component - only syncs i18n in useEffect
-// No rendering logic, no state updates in render
+function syncI18nLanguage(locale, { emit = false } = {}) {
+  if (!i18n.isInitialized) return;
+  const current = (i18n.resolvedLanguage || i18n.language || '').split('-')[0];
+  if (current === locale) return;
+
+  if (emit) {
+    i18n.changeLanguage(locale);
+    return;
+  }
+
+  // Sync immediately for this render (SSR + hydration) without waiting on effects.
+  // Resources are already bundled for en/ar.
+  i18n.language = locale;
+  i18n.resolvedLanguage = locale;
+}
+
+// Sync language from the server (middleware x-locale / /ar path) BEFORE children call t(),
+// so SSR HTML and the first client render match (avoids hydration mismatch).
 export default function I18nProvider({ children, initialLocale = 'en' }) {
-  // Validate locale from server (set by middleware)
   const locale = (initialLocale === 'en' || initialLocale === 'ar') ? initialLocale : 'en';
-  
-  // Only sync i18n in useEffect - no rendering logic, no state updates in render
+
+  syncI18nLanguage(locale);
+
   useEffect(() => {
-    // Sync i18n language with server-provided locale
-    if (i18n.isInitialized && i18n.language !== locale) {
-      i18n.changeLanguage(locale);
+    syncI18nLanguage(locale, { emit: true });
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = locale;
+      document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
     }
   }, [locale]);
 
   return <>{children}</>;
 }
-
