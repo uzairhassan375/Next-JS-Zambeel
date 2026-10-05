@@ -41,7 +41,10 @@ function attachListenersOnce() {
   mongoose.connection.on('disconnected', () => {
     console.warn('[db] disconnected');
     cached.conn = null;
-    cached.promise = null;
+    // Do not clear an in-flight connect promise (readyState 2 = connecting)
+    if (mongoose.connection.readyState !== 2) {
+      cached.promise = null;
+    }
   });
 
   mongoose.connection.on('reconnected', () => {
@@ -62,6 +65,18 @@ async function hardReset() {
     await mongoose.disconnect();
   } catch {
     // ignore disconnect errors during reset
+  }
+}
+
+/** Disconnect without clearing an in-flight connect promise. */
+async function disconnectBroken() {
+  cached.conn = null;
+  try {
+    if (mongoose.connection.readyState !== 0) {
+      await mongoose.disconnect();
+    }
+  } catch {
+    // ignore
   }
 }
 
@@ -109,10 +124,8 @@ async function connectWithRetry() {
   let lastError;
 
   for (let attempt = 0; attempt < 3; attempt++) {
-    // Drop any broken handle before (re)connect; keep this in-flight promise
-    const inFlight = cached.promise;
-    await hardReset();
-    cached.promise = inFlight;
+    // Always tear down broken sockets before (re)connect
+    await disconnectBroken();
 
     try {
       const conn = await mongoose.connect(MONGODB_URI, CONNECT_OPTIONS);
@@ -131,26 +144,28 @@ async function connectWithRetry() {
 }
 
 export async function connectDB() {
-  if (mongoose.connection.readyState === 1 && cached.conn) {
-    return cached.conn;
-  }
-
+  // Only reuse a live connection
   if (mongoose.connection.readyState === 1) {
-    cached.conn = mongoose;
+    cached.conn = cached.conn || mongoose;
     return cached.conn;
   }
 
-  if (cached.promise) {
-    return cached.promise;
+  // Join in-flight connect, or start a new one.
+  // Clear promise after it settles so a later drop never reuses a resolved promise.
+  if (!cached.promise) {
+    cached.promise = connectWithRetry().finally(() => {
+      cached.promise = null;
+    });
   }
-
-  cached.promise = connectWithRetry();
 
   try {
     cached.conn = await cached.promise;
+    if (mongoose.connection.readyState !== 1) {
+      cached.conn = null;
+      throw new Error('[db] connect finished but readyState is not connected');
+    }
     return cached.conn;
   } catch (error) {
-    cached.promise = null;
     cached.conn = null;
     throw error;
   }
@@ -178,7 +193,10 @@ export async function withDB(queryFn) {
         throw error;
       }
 
-      console.warn(`[db] transient error on attempt ${attempt + 1}/3, hard reset + retry`, error?.name || error);
+      console.warn(
+        `[db] transient error on attempt ${attempt + 1}/3, hard reset + retry`,
+        error?.name || error,
+      );
       await hardReset();
       await sleep(CONNECT_BACKOFF_MS[attempt]);
     }
