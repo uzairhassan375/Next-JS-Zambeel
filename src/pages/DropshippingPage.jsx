@@ -390,7 +390,7 @@ const DropshippingPage = () => {
               Qatar: "25 AED",
               Oman: "26 AED",
               Bahrain: "20 AED",
-              Iraq: "25 AED",
+              Iraq: "20 AED",
               Pakistan: "220 PKR"
             }
           },
@@ -403,7 +403,7 @@ const DropshippingPage = () => {
               Qatar: "5 AED",
               Oman: "12 AED",
               Bahrain: "15 AED",
-              Iraq: "8 AED",
+              Iraq: "5 AED",
               Pakistan: "220 PKR"
             }
           },
@@ -430,7 +430,7 @@ const DropshippingPage = () => {
               Qatar: "1-2 Days",
               Oman: "1-2 Days",
               Bahrain: "1-2 Days",
-              Iraq: "1-3 Days",
+              Iraq: "2-3 Days",
               Pakistan: "1-3 Days"
             }
           }
