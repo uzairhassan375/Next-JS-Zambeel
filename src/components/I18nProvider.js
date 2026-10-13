@@ -81,10 +81,14 @@ function syncI18nLanguage(locale, { emit = false } = {}) {
 export default function I18nProvider({ children, initialLocale = 'en' }) {
   const locale = (initialLocale === 'en' || initialLocale === 'ar') ? initialLocale : 'en';
 
+  // Silent sync during render (no event emit) so t() matches SSR without setState storms.
   syncI18nLanguage(locale);
 
   useEffect(() => {
-    syncI18nLanguage(locale, { emit: true });
+    // Do NOT call i18n.changeLanguage() here — on Next 16 it notifies useTranslation
+    // subscribers that may still be inside a pending Suspense boundary and triggers:
+    // "Can't perform a React state update on a component that hasn't mounted yet".
+    syncI18nLanguage(locale);
     if (typeof document !== 'undefined') {
       document.documentElement.lang = locale;
       document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
