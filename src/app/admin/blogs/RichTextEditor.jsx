@@ -3,12 +3,86 @@
 import { useRef, useEffect, useState, useCallback, useLayoutEffect } from 'react';
 import { FONT_FAMILIES } from '../../../lib/editorFonts';
 
-const TEXT_SIZES = [
-  { label: 'Small', value: '2' },
-  { label: 'Normal', value: '3' },
-  { label: 'Large', value: '4' },
-  { label: 'Extra large', value: '5' },
+const HEADING_SIZES = [
+  { label: 'Paragraph', value: 'p' },
+  { label: 'H1', value: 'h1' },
+  { label: 'H2', value: 'h2' },
+  { label: 'H3', value: 'h3' },
+  { label: 'H4', value: 'h4' },
+  { label: 'H5', value: 'h5' },
+  { label: 'H6', value: 'h6' },
 ];
+
+/** Inline heading look — size only (not weight).
+ *  Bold is controlled separately with the B button so it still works on headings.
+ */
+const HEADING_INLINE_STYLES = {
+  p: { fontSize: '1rem', lineHeight: '1.5' },
+  h1: { fontSize: '2rem', lineHeight: '1.2' },
+  h2: { fontSize: '1.5rem', lineHeight: '1.25' },
+  h3: { fontSize: '1.25rem', lineHeight: '1.35' },
+  h4: { fontSize: '1.125rem', lineHeight: '1.4' },
+  h5: { fontSize: '1rem', lineHeight: '1.5' },
+  h6: { fontSize: '0.875rem', lineHeight: '1.5' },
+};
+
+const TRAILING_PUNCTUATION = /[.,!?;:…'"”’)\]»]/u;
+
+function expandRangePastPunctuation(range) {
+  const end = range.endContainer;
+  if (end?.nodeType !== Node.TEXT_NODE) return range;
+  const text = end.nodeValue || '';
+  let offset = range.endOffset;
+  while (offset < text.length && TRAILING_PUNCTUATION.test(text[offset])) {
+    offset += 1;
+  }
+  if (offset !== range.endOffset) {
+    range.setEnd(end, offset);
+  }
+  return range;
+}
+
+function unwrapBlogTextSpans(root) {
+  if (!root?.querySelectorAll) return;
+  root.querySelectorAll('span[class*="blog-text-"]').forEach((span) => {
+    const parent = span.parentNode;
+    if (!parent) return;
+    while (span.firstChild) parent.insertBefore(span.firstChild, span);
+    parent.removeChild(span);
+  });
+}
+
+/** Drop empty paragraphs/divs that only create large white gaps. */
+function normalizeEditorHtml(html) {
+  if (!html || typeof document === 'undefined') return html || '';
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+
+  const isEmptyBlock = (node) => {
+    if (!node || node.nodeType !== 1) return false;
+    const tag = node.tagName;
+    if (tag !== 'P' && tag !== 'DIV') return false;
+    if (node.classList?.contains('blog-cta-wrap')) return false;
+    if (node.querySelector?.('img, table, iframe, video, a.blog-cta-btn')) return false;
+    const text = (node.textContent || '').replace(/\u00a0/g, ' ').trim();
+    if (text) return false;
+    const kids = [...(node.children || [])];
+    return kids.length === 0 || kids.every((c) => c.tagName === 'BR');
+  };
+
+  // Remove consecutive empty blocks (keep none — they only add huge gaps)
+  temp.querySelectorAll('p, div').forEach((node) => {
+    if (isEmptyBlock(node)) node.remove();
+  });
+
+  // Collapse 3+ <br> into a single line break
+  temp.innerHTML = temp.innerHTML
+    .replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br>')
+    .replace(/(<p><br\s*\/?><\/p>\s*)+/gi, '')
+    .replace(/(<div><br\s*\/?><\/div>\s*)+/gi, '');
+
+  return temp.innerHTML;
+}
 
 const TEXT_COLORS = [
   { label: 'Black', value: '#000000' },
@@ -70,9 +144,79 @@ function findBlogCtaButton(target) {
   return target.closest('a.blog-cta-btn') || target.closest('.blog-cta-wrap')?.querySelector('a.blog-cta-btn');
 }
 
+function closestHeadingKeyByRem(rem) {
+  let best = 'p';
+  let bestDiff = Infinity;
+  Object.entries(HEADING_INLINE_STYLES).forEach(([key, style]) => {
+    const size = parseFloat(style.fontSize);
+    const diff = Math.abs(size - rem);
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      best = key;
+    }
+  });
+  return best;
+}
+
+/**
+ * Detect heading from what the text actually looks like (computed size / our span class),
+ * not only from a leftover <h1> tag — those can look smaller than our real H1.
+ */
+function detectHeadingFromNode(node) {
+  let el = node;
+  if (!el) return 'p';
+  if (el.nodeType === Node.TEXT_NODE) el = el.parentElement;
+
+  // 1) Explicit blog-text-* class is authoritative
+  let cur = el;
+  while (cur && cur.nodeType === 1) {
+    const cls = typeof cur.className === 'string' ? cur.className : '';
+    const match = cls.match(/\bblog-text-(p|h[1-6])\b/);
+    if (match) return match[1];
+    if (
+      cur.getAttribute?.('contenteditable') === 'true' ||
+      cur.classList?.contains('rich-editor-placeholder')
+    ) {
+      break;
+    }
+    cur = cur.parentElement;
+  }
+
+  // 2) Match the visible computed font-size to our scale
+  if (el && typeof window !== 'undefined') {
+    try {
+      const rootPx = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
+      const px = parseFloat(window.getComputedStyle(el).fontSize);
+      if (Number.isFinite(px) && px > 0) {
+        return closestHeadingKeyByRem(px / rootPx);
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  return 'p';
+}
+
+/** After wrapping, don't leave the new size nested inside an old <h1>–<h6> (sizes compound). */
+function flattenHeadingAncestors(span, editorRoot) {
+  if (!span || !editorRoot) return;
+  let parent = span.parentElement;
+  while (parent && parent !== editorRoot) {
+    const tag = parent.tagName?.toLowerCase?.() || '';
+    if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag)) {
+      const replacement = document.createElement('p');
+      while (parent.firstChild) replacement.appendChild(parent.firstChild);
+      parent.replaceWith(replacement);
+      parent = replacement.parentElement;
+      continue;
+    }
+    parent = parent.parentElement;
+  }
+}
+
 export default function RichTextEditor({ value = '', onChange, placeholder, dir, className = '' }) {
   const editorRef = useRef(null);
-  const fileInputRef = useRef(null);
   const lastEmittedRef = useRef(null);
   const savedRangeRef = useRef(null);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
@@ -93,6 +237,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
   const [hasTextSelection, setHasTextSelection] = useState(false);
   const [showAlignDropdown, setShowAlignDropdown] = useState(false);
   const [currentAlign, setCurrentAlign] = useState('justifyLeft');
+  const [currentHeading, setCurrentHeading] = useState('p');
   const [isImageSelected, setIsImageSelected] = useState(false);
   const selectedImageRef = useRef(null);
   const selectedButtonRef = useRef(null);
@@ -269,8 +414,9 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
   useEffect(() => {
     const el = editorRef.current;
     if (!el) return;
-    if (value !== lastEmittedRef.current && el.innerHTML !== value) {
-      el.innerHTML = value || '';
+    const nextHtml = normalizeEditorHtml(value || '');
+    if (value !== lastEmittedRef.current && el.innerHTML !== nextHtml) {
+      el.innerHTML = nextHtml;
       // Deselect any selected image when content is reset
       setTimeout(() => {
         deselectImageRef.current?.();
@@ -323,8 +469,10 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
                      range.commonAncestorContainer.closest('a') !== null;
         }
         setHasTextSelection(selectedText.length > 0 || isOnLink);
+        setCurrentHeading(detectHeadingFromNode(sel.focusNode || sel.anchorNode || range.commonAncestorContainer));
       } else {
         setHasTextSelection(false);
+        setCurrentHeading('p');
       }
     };
 
@@ -346,9 +494,19 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
     };
   }, []);
 
+  function cleanupEmptyGapsInEditor() {
+    const el = editorRef.current;
+    if (!el) return;
+    const normalized = normalizeEditorHtml(el.innerHTML);
+    if (el.innerHTML !== normalized) {
+      el.innerHTML = normalized;
+    }
+  }
+
   function emitChange() {
     if (editorRef.current) {
-      const html = editorRef.current.innerHTML;
+      // Normalize saved HTML (empty gap cleanup) without rewriting the live DOM on every keystroke
+      const html = normalizeEditorHtml(editorRef.current.innerHTML);
       lastEmittedRef.current = html;
       onChange(html);
       // Check if selected image still exists
@@ -373,6 +531,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
   }
 
   function exec(cmd, valueArg = null) {
+    restoreSelection();
     editorRef.current?.focus();
     
     // If an image is selected and applying alignment, wrap it in a div with alignment
@@ -409,15 +568,177 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
       return;
     }
     
-    document.execCommand(cmd, false, valueArg);
+    // Heading spans used to set font-weight inline, which blocked Bold visually.
+    // Clear inherited heading weight on the selection wrapper so Bold can take effect.
+    if (cmd === 'bold') {
+      const sel = window.getSelection();
+      if (sel?.rangeCount) {
+        let node = sel.anchorNode;
+        if (node?.nodeType === Node.TEXT_NODE) node = node.parentElement;
+        const blogSpan = node?.closest?.('[class*="blog-text-"]');
+        if (blogSpan?.style) {
+          blogSpan.style.removeProperty('font-weight');
+        }
+      }
+    }
+
+    const ok = document.execCommand(cmd, false, valueArg);
+
+    // Fallback for Bold when execCommand fails (common inside nested spans)
+    if (cmd === 'bold' && !ok) {
+      const sel = window.getSelection();
+      if (sel?.rangeCount) {
+        const range = sel.getRangeAt(0);
+        if (!range.collapsed) {
+          const strong = document.createElement('strong');
+          try {
+            strong.appendChild(range.extractContents());
+            range.insertNode(strong);
+          } catch {
+            // ignore
+          }
+        }
+      }
+    }
+
     emitChange();
   }
 
-  function applyTextSize(sizeValue) {
+  function applyHeading(tagName) {
+    const el = editorRef.current;
+    const tag = String(tagName || '').toLowerCase();
+    const styles = HEADING_INLINE_STYLES[tag];
+    if (!el || !styles) return;
+
     restoreSelection();
-    editorRef.current?.focus();
-    document.execCommand('fontSize', false, sizeValue);
-    emitChange();
+    el.focus();
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    let range = selection.getRangeAt(0).cloneRange();
+    if (range.collapsed || !el.contains(range.commonAncestorContainer)) {
+      alert('Select the text you want to resize first.');
+      return;
+    }
+
+    // Include trailing . ? ! etc. so size applies to the full sentence, not stopping before the dot
+    expandRangePastPunctuation(range);
+
+    const makeSpan = () => {
+      const span = document.createElement('span');
+      span.className = `blog-text-${tag}`;
+      span.style.fontSize = styles.fontSize;
+      span.style.lineHeight = styles.lineHeight;
+      span.style.fontWeight = '';
+      span.style.removeProperty('font-weight');
+      return span;
+    };
+
+    const finish = (span) => {
+      selection.removeAllRanges();
+      const newRange = document.createRange();
+      newRange.selectNodeContents(span);
+      selection.addRange(newRange);
+      savedRangeRef.current = newRange.cloneRange();
+      emitChange();
+    };
+
+    try {
+      const fragment = range.extractContents();
+      unwrapBlogTextSpans(fragment);
+      const span = makeSpan();
+      span.appendChild(fragment);
+      // Drop empty leftover wrappers created by extractContents
+      range.insertNode(span);
+      // Prevent <h1><span class="blog-text-h1">… which looks like H1 in the dropdown but grows on re-apply
+      flattenHeadingAncestors(span, el);
+      // Merge adjacent empty text artifacts
+      if (span.previousSibling?.nodeType === Node.TEXT_NODE && !span.previousSibling.nodeValue) {
+        span.previousSibling.remove();
+      }
+      finish(span);
+      setCurrentHeading(tag);
+      return;
+    } catch {
+      // Fall through to per-text-node wrap (handles awkward selections around punctuation)
+    }
+
+    try {
+      const textNodes = [];
+      const root = range.commonAncestorContainer;
+      const scope = root.nodeType === Node.TEXT_NODE ? root.parentNode : root;
+      if (!scope || !el.contains(scope)) return;
+
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!el.contains(node)) return NodeFilter.FILTER_REJECT;
+          if (!node.nodeValue) return NodeFilter.FILTER_REJECT;
+          const nodeRange = document.createRange();
+          nodeRange.selectNodeContents(node);
+          if (range.compareBoundaryPoints(Range.END_TO_START, nodeRange) <= 0) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (range.compareBoundaryPoints(Range.START_TO_END, nodeRange) >= 0) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        },
+      });
+
+      let current = walker.nextNode();
+      while (current) {
+        textNodes.push(current);
+        current = walker.nextNode();
+      }
+
+      if (!textNodes.length) {
+        alert('Could not apply size to that selection. Try selecting the text again.');
+        return;
+      }
+
+      let firstSpan = null;
+      let lastSpan = null;
+      textNodes.forEach((textNode) => {
+        let start = 0;
+        let end = textNode.nodeValue.length;
+        if (textNode === range.startContainer) start = range.startOffset;
+        if (textNode === range.endContainer) end = range.endOffset;
+        if (start >= end) return;
+
+        const selected = textNode.splitText(start);
+        selected.splitText(end - start);
+        // Unwrap if already inside a blog-text span
+        const parent = selected.parentElement;
+        if (parent?.className?.includes?.('blog-text-') && parent.childNodes.length === 1) {
+          parent.className = `blog-text-${tag}`;
+          parent.style.fontSize = styles.fontSize;
+          parent.style.lineHeight = styles.lineHeight;
+          parent.style.removeProperty('font-weight');
+          firstSpan = firstSpan || parent;
+          lastSpan = parent;
+          return;
+        }
+
+        const span = makeSpan();
+        selected.parentNode.insertBefore(span, selected);
+        span.appendChild(selected);
+        firstSpan = firstSpan || span;
+        lastSpan = span;
+      });
+
+      if (firstSpan && lastSpan) {
+        flattenHeadingAncestors(firstSpan, el);
+        selection.removeAllRanges();
+        const newRange = document.createRange();
+        newRange.setStartBefore(firstSpan);
+        newRange.setEndAfter(lastSpan);
+        selection.addRange(newRange);
+        savedRangeRef.current = newRange.cloneRange();
+        setCurrentHeading(tag);
+        emitChange();
+      }
+    } catch {
+      alert('Could not apply size to that selection. Try selecting the text again.');
+    }
   }
 
   function applyFontFamily(fontFamily) {
@@ -464,15 +785,6 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
         selectImage(lastImg);
       }
     }, 100);
-  }
-
-  function handleImageFile(e) {
-    const file = e.target.files?.[0];
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = () => insertImageAtCursor(reader.result);
-    reader.readAsDataURL(file);
-    e.target.value = '';
   }
 
   function handleImageUrlClick() {
@@ -875,7 +1187,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
       {/* Toolbar */}
       <div
         ref={toolbarRef}
-        className="toolbar-container flex flex-wrap items-center gap-1 p-2 bg-gray-100 border-b border-gray-300"
+        className="toolbar-container flex flex-wrap items-center gap-0.5 p-2 pl-1.5 bg-gray-100 border-b border-gray-300"
         onMouseDown={(e) => {
           // Prevent image deselection when clicking toolbar
           e.stopPropagation();
@@ -888,6 +1200,10 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
       >
         <button
           type="button"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            saveSelection();
+          }}
           onClick={() => exec('bold')}
           className="p-2 rounded hover:bg-gray-200 font-bold text-gray-700"
           title="Bold"
@@ -896,6 +1212,10 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
         </button>
         <button
           type="button"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            saveSelection();
+          }}
           onClick={() => exec('italic')}
           className="p-2 rounded hover:bg-gray-200 italic text-gray-700"
           title="Italic"
@@ -904,13 +1224,17 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
         </button>
         <button
           type="button"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            saveSelection();
+          }}
           onClick={() => exec('underline')}
           className="p-2 rounded hover:bg-gray-200 text-gray-700 underline"
           title="Underline"
         >
           U
         </button>
-        <span className="w-px h-6 bg-gray-300 mx-1" />
+        <span className="w-px h-6 bg-gray-300 mx-0.5" />
         <select
           defaultValue=""
           onMouseDown={(e) => {
@@ -925,7 +1249,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
             }
             e.target.value = '';
           }}
-          className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white text-gray-700 min-w-[110px]"
+          className="text-sm border border-gray-300 rounded pl-1 pr-6 py-1.5 bg-white text-gray-700 min-w-[100px]"
           title="Text color (select text first)"
         >
           <option value="">Text color</option>
@@ -948,7 +1272,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
             }
             e.target.value = '';
           }}
-          className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white text-gray-700 min-w-[140px]"
+          className="text-sm border border-gray-300 rounded pl-1 pr-6 py-1.5 bg-white text-gray-700 min-w-[120px]"
           title="Font family (select text first)"
         >
           <option value="">Font</option>
@@ -958,21 +1282,59 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
             </option>
           ))}
         </select>
-        <span className="w-px h-6 bg-gray-300 mx-1" />
-        <span className="text-xs text-gray-500 mr-1">Size:</span>
+        <span className="w-px h-6 bg-gray-300 mx-0.5" />
         <select
-          onChange={(e) => { const v = e.target.value; if (v) applyTextSize(v); e.target.value = ''; }}
-          className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white text-gray-700"
-          title="Text size (select text first)"
+          value={currentHeading || 'p'}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            saveSelection();
+          }}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v) {
+              applyHeading(v);
+              setCurrentHeading(v);
+            }
+          }}
+          className="text-sm border border-gray-300 rounded pl-1 pr-6 py-1.5 bg-white text-gray-700 min-w-[96px]"
+          title="Heading size (select text first)"
         >
-          <option value="">Text size</option>
-          {TEXT_SIZES.map((s) => (
+          {HEADING_SIZES.map((s) => (
             <option key={s.value} value={s.value}>
               {s.label}
             </option>
           ))}
         </select>
-        <span className="w-px h-6 bg-gray-300 mx-1" />
+        <span className="w-px h-6 bg-gray-300 mx-0.5" />
+        <button
+          type="button"
+          onClick={() => exec('insertUnorderedList')}
+          className="p-2 rounded hover:bg-gray-200 text-gray-700"
+          title="Bullet list (select text first)"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="4" cy="6" r="1.5" />
+            <circle cx="4" cy="12" r="1.5" />
+            <circle cx="4" cy="18" r="1.5" />
+            <rect x="8" y="5" width="12" height="2" rx="1" />
+            <rect x="8" y="11" width="12" height="2" rx="1" />
+            <rect x="8" y="17" width="12" height="2" rx="1" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onClick={() => exec('insertOrderedList')}
+          className="p-2 rounded hover:bg-gray-200 text-gray-700"
+          title="Numbered list (select text first)"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 4h1.5v3.5H3V4zm0 6.5h1.2c.7 0 1.3.3 1.3 1s-.5 1-1.1 1H3.8v.7H5.5V15H3v-4.5zM3 17h2.2v1H4.1c.5.4.9.7.9 1.3 0 .9-.7 1.4-1.7 1.4H3v-1h.9c.4 0 .7-.2.7-.5s-.3-.5-.8-.5H3V17z" />
+            <rect x="9" y="5" width="12" height="2" rx="1" />
+            <rect x="9" y="11" width="12" height="2" rx="1" />
+            <rect x="9" y="17" width="12" height="2" rx="1" />
+          </svg>
+        </button>
+        <span className="w-px h-6 bg-gray-300 mx-0.5" />
         {/* Text Alignment Dropdown with Icons */}
         <div ref={alignDropdownRef} className="relative inline-block">
           <button
@@ -1070,7 +1432,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
             </div>
           )}
         </div>
-        <span className="w-px h-6 bg-gray-300 mx-1" />
+        <span className="w-px h-6 bg-gray-300 mx-0.5" />
         {/* Link - Icon only */}
         <button
           type="button"
@@ -1104,22 +1466,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
           </svg>
           Button
         </button>
-        <span className="w-px h-6 bg-gray-300 mx-1" />
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleImageFile}
-        />
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="p-2 rounded hover:bg-gray-200 text-gray-700 flex items-center gap-1"
-          title="Upload image from computer"
-        >
-          🖼️ Image
-        </button>
+        <span className="w-px h-6 bg-gray-300 mx-0.5" />
         <button
           type="button"
           onClick={(e) => {
@@ -1134,7 +1481,7 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
         {/* Image resize controls - only show when image is selected */}
         {isImageSelected && (
           <>
-            <span className="w-px h-6 bg-gray-300 mx-1" />
+            <span className="w-px h-6 bg-gray-300 mx-0.5" />
             <span className="text-xs text-gray-500 mr-1">Image:</span>
             <button
               type="button"
@@ -1192,7 +1539,10 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
           className="rich-editor-placeholder min-h-[200px] p-4 text-gray-800 prose prose-sm max-w-none focus:outline-none"
           data-placeholder={placeholder}
           onInput={emitChange}
-          onBlur={emitChange}
+          onBlur={() => {
+            cleanupEmptyGapsInEditor();
+            emitChange();
+          }}
           onClick={handleEditorClick}
           onMouseDown={(e) => {
             // Don't interfere with image clicks
@@ -1213,6 +1563,35 @@ export default function RichTextEditor({ value = '', onChange, placeholder, dir,
         .rich-editor-placeholder font[size="3"] { font-size: 1rem; }
         .rich-editor-placeholder font[size="4"] { font-size: 1.125rem; }
         .rich-editor-placeholder font[size="5"] { font-size: 1.35rem; }
+        .rich-editor-placeholder .blog-text-p { font-size: 1rem; line-height: 1.5; }
+        .rich-editor-placeholder .blog-text-h1 { font-size: 2rem; line-height: 1.2; }
+        .rich-editor-placeholder .blog-text-h2 { font-size: 1.5rem; line-height: 1.25; }
+        .rich-editor-placeholder .blog-text-h3 { font-size: 1.25rem; line-height: 1.35; }
+        .rich-editor-placeholder .blog-text-h4 { font-size: 1.125rem; line-height: 1.4; }
+        .rich-editor-placeholder .blog-text-h5 { font-size: 1rem; line-height: 1.5; }
+        .rich-editor-placeholder .blog-text-h6 { font-size: 0.875rem; line-height: 1.5; }
+        .rich-editor-placeholder strong,
+        .rich-editor-placeholder b { font-weight: 700; }
+        .rich-editor-placeholder ul {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          margin: 0.35em 0;
+        }
+        .rich-editor-placeholder ol {
+          list-style-type: decimal;
+          padding-left: 1.5rem;
+          margin: 0.35em 0;
+        }
+        .rich-editor-placeholder li {
+          margin: 0.15em 0;
+        }
+        .rich-editor-placeholder p {
+          margin: 0.35em 0;
+        }
+        .rich-editor-placeholder > div:empty,
+        .rich-editor-placeholder > p:empty {
+          display: none;
+        }
         .rich-editor-placeholder div[style*="text-align: left"] { text-align: left; }
         .rich-editor-placeholder div[style*="text-align: center"] { text-align: center; }
         .rich-editor-placeholder div[style*="text-align: right"] { text-align: right; }

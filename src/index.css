@@ -184,6 +184,26 @@
 .blog-content font[size="4"] { font-size: 1.125rem; }
 .blog-content font[size="5"] { font-size: 1.35rem; }
 
+/* Inline H1–H6 = size only; Bold (strong/b) controls weight separately */
+.blog-content .blog-text-p,
+.prose .blog-text-p { font-size: 1rem; line-height: 1.5; }
+.blog-content .blog-text-h1,
+.prose .blog-text-h1 { font-size: 2rem; line-height: 1.2; }
+.blog-content .blog-text-h2,
+.prose .blog-text-h2 { font-size: 1.5rem; line-height: 1.25; }
+.blog-content .blog-text-h3,
+.prose .blog-text-h3 { font-size: 1.25rem; line-height: 1.35; }
+.blog-content .blog-text-h4,
+.prose .blog-text-h4 { font-size: 1.125rem; line-height: 1.4; }
+.blog-content .blog-text-h5,
+.prose .blog-text-h5 { font-size: 1rem; line-height: 1.5; }
+.blog-content .blog-text-h6,
+.prose .blog-text-h6 { font-size: 0.875rem; line-height: 1.5; }
+.blog-content strong,
+.blog-content b,
+.prose strong,
+.prose b { font-weight: 700; }
+
 /* Blog content link styling - make links clearly visible */
 .blog-content a,
 .prose a,

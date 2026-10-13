@@ -4,13 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CldUploadWidget } from 'next-cloudinary';
 import RichTextEditor from './RichTextEditor';
-
-const useCloudinary = Boolean(
-  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME && process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-);
-const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || '';
 
 function truncateMiddle(str, maxLen = 60) {
   if (!str) return '';
@@ -48,10 +42,8 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
   const router = useRouter();
   const isEdit = Boolean(existingSlug);
   const [form, setForm] = useState(initialData || defaultBlog);
-  const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [removeImage, setRemoveImage] = useState(false);
-  const [imageFileAr, setImageFileAr] = useState(null);
   const [imagePreviewAr, setImagePreviewAr] = useState(null);
   const [removeImageAr, setRemoveImageAr] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -112,31 +104,8 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         : '/api/blogs';
       const method = isEdit ? 'PUT' : 'POST';
       
-      // Image (EN): Cloudinary URL (fast) or base64 from file fallback
-      let imagePayload = form.image || '';
-      if (removeImage) {
-        imagePayload = '';
-      } else if (imageFile) {
-        const reader = new FileReader();
-        imagePayload = await new Promise((resolve, reject) => {
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(imageFile);
-        });
-      }
-
-      // Image (AR): Cloudinary URL or base64 from file fallback
-      let imageArPayload = form.imageAr || '';
-      if (removeImageAr) {
-        imageArPayload = '';
-      } else if (imageFileAr) {
-        const readerAr = new FileReader();
-        imageArPayload = await new Promise((resolve, reject) => {
-          readerAr.onloadend = () => resolve(readerAr.result);
-          readerAr.onerror = reject;
-          readerAr.readAsDataURL(imageFileAr);
-        });
-      }
+      const imagePayload = removeImage ? '' : (form.image || '');
+      const imageArPayload = removeImageAr ? '' : (form.imageAr || '');
 
       const body = {
         slug: form.slug,
@@ -214,116 +183,34 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           <p className="text-xs text-gray-500 mt-1">Lower number shows first (top).</p>
         </div>
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Cover image (English)</label>
-          <p className="text-xs text-gray-500 mb-2">Upload to Cloudinary for fast loading (URL stored in DB). Or choose a file to embed.</p>
-          <div className="flex flex-wrap items-center gap-3">
-            {useCloudinary && (
-              <CldUploadWidget
-                config={{
-                  cloud: {
-                    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-                    apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-                  },
-                }}
-                uploadPreset={uploadPreset}
-                options={{ folder: 'blogs', maxFileSize: 3145728, maxFiles: 1, sources: ['local', 'url'], multiple: false }}
-                onSuccess={(results, { widget }) => {
-                  widget?.close?.();
-                  const url = results?.info?.secure_url;
-                  if (url) {
-                    setImageFile(null);
-                    setRemoveImage(false);
-                    setImagePreview(url);
-                    update('image', url);
-                  }
-                }}
-              >
-                {({ open }) => (
-                  <button
-                    type="button"
-                    onClick={() => open()}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-lg font-medium hover:bg-[#1e3a8a]/90 transition-colors"
-                  >
-                    ☁️ Upload to Cloudinary
-                  </button>
-                )}
-              </CldUploadWidget>
-            )}
-            <input
-              type="file"
-              id="blog-image-file"
-              accept="image/jpeg,image/png,image/webp,image/gif"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) {
-                  setImageFile(f);
-                  setRemoveImage(false);
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setImagePreview(reader.result);
-                  };
-                  reader.readAsDataURL(f);
-                  update('image', '');
-                }
-              }}
-            />
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Cover image (English) — Shopify Files image URL
+          </label>
+          <input
+            type="url"
+            value={form.image && !form.image.startsWith('data:') ? form.image : ''}
+            onChange={(e) => {
+              const url = e.target.value.trim();
+              setRemoveImage(false);
+              update('image', url);
+              setImagePreview(url || null);
+            }}
+            placeholder="https://cdn.shopify.com/s/files/..."
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-[#1e3a8a] bg-white"
+          />
+          {imagePreview && !removeImage && (
             <button
               type="button"
-              onClick={() => document.getElementById('blog-image-file')?.click()}
-              className="inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-[#1e3a8a] hover:text-[#1e3a8a] transition-colors font-medium"
-            >
-              📁 Choose file
-            </button>
-            {imageFile ? (
-              <span className="text-sm text-green-600 font-medium">
-                {imageFile.name} ({(imageFile.size / 1024).toFixed(1)} KB)
-              </span>
-            ) : imagePreview && !removeImage ? (
-              <span className="text-sm text-blue-600 font-medium">Image selected</span>
-            ) : (
-              <span className="text-sm text-gray-500">JPEG, PNG, WebP or GIF — max 3MB</span>
-            )}
-            {(imageFile || (imagePreview && !removeImage)) && (
-              <button
-                type="button"
-                onClick={() => {
-                  setImageFile(null);
-                  setRemoveImage(true);
-                  setImagePreview(null);
-                  document.getElementById('blog-image-file').value = '';
-                }}
-                className="text-sm text-red-600 hover:underline"
-              >
-                Remove image
-              </button>
-            )}
-          </div>
-
-          {/* Paste image URL (Shopify Files / any public URL) */}
-          <div className="mt-2">
-            <label className="block text-xs font-medium text-gray-600 mb-1">
-              Or paste image URL (Shopify Files or any public URL)
-            </label>
-            <input
-              type="url"
-              value={form.image && !form.image.startsWith('data:') ? form.image : ''}
-              onChange={(e) => {
-                const url = e.target.value.trim();
-                setImageFile(null);
-                setRemoveImage(false);
-                update('image', url);
-                setImagePreview(url || null);
-                const fileInput = document.getElementById('blog-image-file');
-                if (fileInput) fileInput.value = '';
+              onClick={() => {
+                setRemoveImage(true);
+                setImagePreview(null);
+                update('image', '');
               }}
-              placeholder="https://cdn.shopify.com/s/files/..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-[#1e3a8a] bg-white"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Tip: Upload your image in Shopify Admin → Settings → Files, click &quot;Copy URL&quot;, then paste it here.
-            </p>
-          </div>
+              className="text-sm text-red-600 hover:underline"
+            >
+              Remove image
+            </button>
+          )}
 
           {/* Image Preview (EN) */}
           {imagePreview && !removeImage && (
@@ -371,121 +258,42 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
         </div>
       </div>
 
-      {/* Arabic thumbnail upload */}
+      {/* Arabic thumbnail */}
       <div className="border-t border-gray-200 pt-4">
         <h3 className="font-semibold text-gray-800 mb-3">Arabic Thumbnail (اختياري)</h3>
         <p className="text-xs text-gray-500 mb-2">
-          Upload a separate thumbnail for Arabic. If not set, the English thumbnail will be used.
+          Optional separate Shopify Files link for Arabic. If empty, the English thumbnail is used.
         </p>
-        <div className="flex flex-wrap items-center gap-3">
-          {useCloudinary && (
-            <CldUploadWidget
-              config={{
-                cloud: {
-                  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-                  apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-                },
-              }}
-              uploadPreset={uploadPreset}
-              options={{ folder: 'blogs/ar', maxFileSize: 3145728, maxFiles: 1, sources: ['local', 'url'], multiple: false }}
-              onSuccess={(results, { widget }) => {
-                widget?.close?.();
-                const url = results?.info?.secure_url;
-                if (url) {
-                  setImageFileAr(null);
-                  setRemoveImageAr(false);
-                  setImagePreviewAr(url);
-                  update('imageAr', url);
-                }
-              }}
-            >
-              {({ open }) => (
-                <button
-                  type="button"
-                  onClick={() => open()}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] text-white rounded-lg font-medium hover:bg-[#1e3a8a]/90 transition-colors"
-                >
-                  ☁️ Upload Arabic thumbnail
-                </button>
-              )}
-            </CldUploadWidget>
-          )}
-          <input
-            type="file"
-            id="blog-image-ar-file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            className="hidden"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) {
-                setImageFileAr(f);
-                setRemoveImageAr(false);
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  setImagePreviewAr(reader.result);
-                };
-                reader.readAsDataURL(f);
-                update('imageAr', '');
-              }
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => document.getElementById('blog-image-ar-file')?.click()}
-            className="inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-[#1e3a8a] hover:text-[#1e3a8a] transition-colors font-medium"
-          >
-            📁 Choose Arabic file
-          </button>
-          {imageFileAr ? (
-            <span className="text-sm text-green-600 font-medium">
-              {imageFileAr.name} ({(imageFileAr.size / 1024).toFixed(1)} KB)
-            </span>
-          ) : imagePreviewAr && !removeImageAr ? (
-            <span className="text-sm text-blue-600 font-medium">Arabic image selected</span>
-          ) : (
-            <span className="text-sm text-gray-500">JPEG, PNG, WebP or GIF — max 3MB</span>
-          )}
-          {(imageFileAr || (imagePreviewAr && !removeImageAr)) && (
-            <button
-              type="button"
-              onClick={() => {
-                setImageFileAr(null);
-                setRemoveImageAr(true);
-                setImagePreviewAr(null);
-                const input = document.getElementById('blog-image-ar-file');
-                if (input) input.value = '';
-              }}
-              className="text-sm text-red-600 hover:underline"
-            >
-              Remove Arabic image
-            </button>
-          )}
-        </div>
-
-        {/* Paste Arabic image URL (Shopify Files / any public URL) */}
-        <div className="mt-2">
+        <div>
           <label className="block text-xs font-medium text-gray-600 mb-1">
-            Or paste Arabic image URL (Shopify Files or any public URL)
+            Shopify Files image URL (Arabic)
           </label>
           <input
             type="url"
             value={form.imageAr && !form.imageAr.startsWith('data:') ? form.imageAr : ''}
             onChange={(e) => {
               const url = e.target.value.trim();
-              setImageFileAr(null);
               setRemoveImageAr(false);
               update('imageAr', url);
               setImagePreviewAr(url || null);
-              const fileInput = document.getElementById('blog-image-ar-file');
-              if (fileInput) fileInput.value = '';
             }}
             placeholder="https://cdn.shopify.com/s/files/..."
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-[#1e3a8a] bg-white"
           />
-          <p className="text-xs text-gray-500 mt-1">
-            Tip: Upload your image in Shopify Admin → Settings → Files, click &quot;Copy URL&quot;, then paste it here.
-          </p>
         </div>
+        {imagePreviewAr && !removeImageAr && (
+          <button
+            type="button"
+            onClick={() => {
+              setRemoveImageAr(true);
+              setImagePreviewAr(null);
+              update('imageAr', '');
+            }}
+            className="mt-2 text-sm text-red-600 hover:underline"
+          >
+            Remove Arabic image
+          </button>
+        )}
 
         {imagePreviewAr && !removeImageAr && (
           <div className="mt-3 border border-gray-200 rounded-lg p-3 bg-gray-50">
@@ -580,7 +388,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content (EN)</label>
             <p className="text-xs text-gray-500 mb-2">
-              Use the toolbar for formatting, fonts, and colors. Insert images via upload, or use Image URL to paste a Shopify Files link (same as cover image).
+              Use the toolbar for formatting, fonts, and colors. Use Image URL to paste a Shopify Files link.
             </p>
             <RichTextEditor
               value={form.contentEn}
@@ -643,7 +451,7 @@ export default function AdminBlogForm({ slug: existingSlug, initialData }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content (AR)</label>
             <p className="text-xs text-gray-500 mb-2">
-              Use the toolbar for formatting, fonts, and colors. Insert images via upload, or use Image URL to paste a Shopify Files link (same as cover image).
+              Use the toolbar for formatting, fonts, and colors. Use Image URL to paste a Shopify Files link.
             </p>
             <RichTextEditor
               value={form.contentAr}
