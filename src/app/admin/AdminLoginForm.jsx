@@ -3,13 +3,24 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+function formatRetryWait(seconds) {
+  const s = Math.max(0, Math.ceil(seconds));
+  if (s < 60) return `${s} second${s === 1 ? '' : 's'}`;
+  const minutes = Math.floor(s / 60);
+  const rem = s % 60;
+  if (rem === 0) return `${minutes} minute${minutes === 1 ? '' : 's'}`;
+  return `${minutes}m ${rem}s`;
+}
+
 export default function AdminLoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [alreadyLoggedIn, setAlreadyLoggedIn] = useState(false);
+  const [lockedUntil, setLockedUntil] = useState(0);
   const router = useRouter();
+  const isLocked = lockedUntil > Date.now();
 
   useEffect(() => {
     fetch('/api/admin/me')
@@ -19,9 +30,29 @@ export default function AdminLoginForm() {
       .finally(() => setChecking(false));
   }, []);
 
+  useEffect(() => {
+    if (!lockedUntil) return undefined;
+
+    const tick = () => {
+      const remaining = Math.ceil((lockedUntil - Date.now()) / 1000);
+      if (remaining <= 0) {
+        setLockedUntil(0);
+        setError('');
+        return;
+      }
+      setError(`Too many login attempts. Try again in ${formatRetryWait(remaining)}.`);
+    };
+
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [lockedUntil]);
+
   async function handleSubmit(e) {
     e.preventDefault();
+    if (isLocked) return;
     setError('');
+    setLockedUntil(0);
     setLoading(true);
     try {
       const res = await fetch('/api/admin/auth', {
@@ -31,7 +62,14 @@ export default function AdminLoginForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error || 'Invalid password');
+        const retryHeader = Number(res.headers.get('Retry-After'));
+        const retryAfter = Number(data.retryAfter) || (Number.isFinite(retryHeader) ? retryHeader : 0);
+        if (res.status === 429 && retryAfter > 0) {
+          setLockedUntil(Date.now() + retryAfter * 1000);
+          setError(`Too many login attempts. Try again in ${formatRetryWait(retryAfter)}.`);
+        } else {
+          setError(data.error || 'Invalid password');
+        }
         return;
       }
       // Use replace so back button doesn't return to login; then refresh to load dashboard
@@ -103,10 +141,10 @@ export default function AdminLoginForm() {
       {error && <p className="text-sm text-red-600">{error}</p>}
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || isLocked}
         className="w-full bg-[#1e3a8a] text-white py-2 rounded-lg font-medium hover:bg-[#1e3a8a]/90 disabled:opacity-50"
       >
-        {loading ? 'Signing in...' : 'Sign in'}
+        {loading ? 'Signing in...' : isLocked ? 'Try again later' : 'Sign in'}
       </button>
     </form>
   );

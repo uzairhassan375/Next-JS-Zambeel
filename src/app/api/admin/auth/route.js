@@ -39,12 +39,21 @@ export async function POST(request) {
       );
     }
     if (rateLimit.limited) {
+      const retryAfter = rateLimit.retryAfter;
+      const minutes = Math.ceil(retryAfter / 60);
+      const waitLabel =
+        retryAfter < 60
+          ? `${retryAfter} second${retryAfter === 1 ? '' : 's'}`
+          : `${minutes} minute${minutes === 1 ? '' : 's'}`;
       return NextResponse.json(
-        { error: 'Too many login attempts. Try again later.' },
+        {
+          error: `Too many login attempts. Try again in ${waitLabel}.`,
+          retryAfter,
+        },
         {
           status: 429,
           headers: {
-            'Retry-After': String(rateLimit.retryAfter),
+            'Retry-After': String(retryAfter),
             'Cache-Control': 'no-store',
           },
         },
