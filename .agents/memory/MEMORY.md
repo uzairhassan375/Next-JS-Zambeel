@@ -1,0 +1,1 @@
+- [Portable npm lockfiles](portable-npm-lockfiles.md) — package installation can write internal registry URLs; preserve public download URLs for external builds.
