@@ -3,6 +3,7 @@ import { withDB } from '../../../../lib/db';
 import Blog from '../../../../models/Blog';
 import { getAdminSession } from '../../../../lib/adminAuth';
 import { blogForResponse } from '../../../../lib/blogResponse';
+import { sanitizeBlogHtml } from '../../../../lib/blogHtml';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,7 +58,13 @@ export async function GET(request, { params }) {
         metaDescriptionAr: blog.metaDescriptionAr || '',
       };
 
-      return NextResponse.json(blogForResponse(blogWithMeta), {
+      const responseBlog = blogForResponse(blogWithMeta);
+      if (!isAdmin) {
+        responseBlog.contentEn = sanitizeBlogHtml(responseBlog.contentEn);
+        responseBlog.contentAr = sanitizeBlogHtml(responseBlog.contentAr);
+      }
+
+      return NextResponse.json(responseBlog, {
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
           Pragma: 'no-cache',
@@ -107,8 +114,8 @@ export async function PUT(request, { params }) {
     if (titleAr != null) $set.titleAr = titleAr;
     if (descriptionEn != null) $set.descriptionEn = descriptionEn;
     if (descriptionAr != null) $set.descriptionAr = descriptionAr;
-    if (contentEn != null) $set.contentEn = contentEn;
-    if (contentAr != null) $set.contentAr = contentAr;
+    if (contentEn != null) $set.contentEn = sanitizeBlogHtml(contentEn);
+    if (contentAr != null) $set.contentAr = sanitizeBlogHtml(contentAr);
     if (status != null) $set.status = normalizeStatus(status);
     if (sortOrder != null) $set.sortOrder = normalizeSortOrder(sortOrder);
 

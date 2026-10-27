@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { setAdminCookie, clearAdminCookie } from '../../../../lib/adminAuth';
+import { consumeAdminLoginAttempt } from '../../../../lib/adminLoginRateLimit';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,11 +27,41 @@ export async function POST(request) {
     if (!secret) {
       return NextResponse.json({ error: 'Admin not configured' }, { status: 500 });
     }
+
+    let rateLimit;
+    try {
+      rateLimit = await consumeAdminLoginAttempt(request);
+    } catch (error) {
+      console.error('Admin login rate limit unavailable', error);
+      return NextResponse.json(
+        { error: 'Authentication temporarily unavailable' },
+        { status: 503 },
+      );
+    }
+    if (rateLimit.limited) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Try again later.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimit.retryAfter),
+            'Cache-Control': 'no-store',
+          },
+        },
+      );
+    }
+
     if (!secureCompare(password, secret)) {
-      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Invalid password' },
+        { status: 401, headers: { 'Cache-Control': 'no-store' } },
+      );
     }
     await setAdminCookie();
-    return NextResponse.json({ ok: true, message: 'Logged in' });
+    return NextResponse.json(
+      { ok: true, message: 'Logged in' },
+      { headers: { 'Cache-Control': 'no-store' } },
+    );
   } catch (e) {
     console.error('POST /api/admin/auth', e);
     return NextResponse.json({ error: 'Failed to authenticate' }, { status: 500 });

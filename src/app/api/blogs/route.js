@@ -3,6 +3,7 @@ import { withDB } from '../../../lib/db';
 import Blog from '../../../models/Blog';
 import { getAdminSession } from '../../../lib/adminAuth';
 import { blogsForResponse, blogForResponse } from '../../../lib/blogResponse';
+import { sanitizeBlogHtml } from '../../../lib/blogHtml';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,6 +36,10 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const isAdminList = searchParams.get('admin') === 'true';
+
+    if (isAdminList && !(await getAdminSession())) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     return await withDB(async () => {
       if (isAdminList) {
@@ -130,8 +135,8 @@ export async function POST(request) {
         metaDescriptionAr: metaDescriptionAr || '',
         image: image || '', // Default/English thumbnail
         imageAr: imageAr || '', // Arabic thumbnail (optional)
-        contentEn: contentEn || '',
-        contentAr: contentAr || '',
+        contentEn: sanitizeBlogHtml(contentEn),
+        contentAr: sanitizeBlogHtml(contentAr),
         status: normalizeStatus(status),
         sortOrder: normalizeSortOrder(sortOrder),
       };

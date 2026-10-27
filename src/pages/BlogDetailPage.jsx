@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { getLocalePath } from '../lib/localeUtils';
+import { sanitizeBlogHtml } from '../lib/blogHtml';
 
 function renderWithBold(text) {
   if (!text || typeof text !== 'string') return text;
@@ -30,7 +31,7 @@ function renderContent(blogContent) {
     return (
       <div
         className="prose prose-lg max-w-none blog-content"
-        dangerouslySetInnerHTML={{ __html: blogContent }}
+        dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(blogContent) }}
       />
     );
   }
