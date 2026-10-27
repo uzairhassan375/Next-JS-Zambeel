@@ -753,7 +753,7 @@
         "diamond": {
           "tag": "ماسي",
           "name": "ماسي",
-          "period": "/6 أشهر"
+          "period": "/4 أشهر"
         }
       },
       "features": {
@@ -766,6 +766,7 @@
         "prioritySupport": "دعم ذو أولوية",
         "socialMediaPromotion": "ترويج على وسائل التواصل",
         "validity1Month": "الصلاحية: شهر واحد",
+        "validity4Months": "الصلاحية: 4 أشهر",
         "validity6Months": "الصلاحية: 6 أشهر",
         "validity": "الصلاحية"
       }

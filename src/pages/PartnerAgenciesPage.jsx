@@ -66,8 +66,17 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
 
   const companies = useMemo(() => buildCompaniesByTier(agencies, currentLanguage), [agencies, currentLanguage]);
 
-  const agencyPricingPlans = useMemo(
-    () => [
+  // Periods come from server-passed initialCopy so SSR and hydration match
+  // (i18n singleton can keep stale strings after translation.json HMR).
+  const agencyPricingPlans = useMemo(() => {
+    const periodOf = (planKey, fallback) => {
+      const raw = initialCopy?.pricing?.plans?.[planKey]?.period ?? fallback;
+      return raw.startsWith(' ') ? raw : ` ${raw}`;
+    };
+    const featureText = (key, fallback) =>
+      initialCopy?.pricing?.features?.[key] ?? t(`partnerAgencies.pricing.features.${key}`, fallback);
+
+    return [
       {
         tag: 'FREE',
         tagTranslationKey: 'partnerAgencies.pricing.plans.free.tag',
@@ -75,16 +84,16 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
         nameTranslationKey: 'partnerAgencies.pricing.plans.free.name',
         monthlyPrice: '$0',
         yearlyPrice: '$0',
-        pricePeriodTranslationKey: 'partnerAgencies.pricing.plans.free.period',
+        pricePeriod: periodOf('free', 'No fee'),
         description: '',
         features: [
-          { translationKey: 'partnerAgencies.pricing.features.affiliateEarningLimited', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.dropshippingMarkets3', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.clientReferral', included: false },
-          { translationKey: 'partnerAgencies.pricing.features.winningProducts', included: false },
-          { translationKey: 'partnerAgencies.pricing.features.prioritySupport', included: false },
-          { translationKey: 'partnerAgencies.pricing.features.socialMediaPromotion', included: false },
-          { translationKey: 'partnerAgencies.pricing.features.validity', included: false },
+          { text: featureText('affiliateEarningLimited', 'Affiliate earning: Limited'), included: true },
+          { text: featureText('dropshippingMarkets3', 'Dropshipping markets: 3 markets'), included: true },
+          { text: featureText('clientReferral', 'Client referral from Zambeel'), included: false },
+          { text: featureText('winningProducts', 'Winning products & creatives'), included: false },
+          { text: featureText('prioritySupport', 'Priority support'), included: false },
+          { text: featureText('socialMediaPromotion', 'Social media promotion'), included: false },
+          { text: featureText('validity', 'Validity'), included: false },
         ],
       },
       {
@@ -94,16 +103,16 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
         nameTranslationKey: 'partnerAgencies.pricing.plans.gold.name',
         monthlyPrice: '$120',
         yearlyPrice: '$120',
-        pricePeriodTranslationKey: 'partnerAgencies.pricing.plans.gold.period',
+        pricePeriod: periodOf('gold', '/month'),
         description: '',
         features: [
-          { translationKey: 'partnerAgencies.pricing.features.affiliateEarningUnlimited', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.dropshippingMarketsAll', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.clientReferral', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.winningProducts', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.prioritySupport', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.socialMediaPromotion', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.validity1Month', included: true },
+          { text: featureText('affiliateEarningUnlimited', 'Affiliate earning: Unlimited'), included: true },
+          { text: featureText('dropshippingMarketsAll', 'Dropshipping markets: All'), included: true },
+          { text: featureText('clientReferral', 'Client referral from Zambeel'), included: true },
+          { text: featureText('winningProducts', 'Winning products & creatives'), included: true },
+          { text: featureText('prioritySupport', 'Priority support'), included: true },
+          { text: featureText('socialMediaPromotion', 'Social media promotion'), included: true },
+          { text: featureText('validity1Month', 'Validity: 1 month'), included: true },
         ],
       },
       {
@@ -111,23 +120,22 @@ function PartnerAgenciesPage({ initialAgencies, initialCopy }) {
         tagTranslationKey: 'partnerAgencies.pricing.plans.diamond.tag',
         name: 'Diamond',
         nameTranslationKey: 'partnerAgencies.pricing.plans.diamond.name',
-        monthlyPrice: '$499',
-        yearlyPrice: '$499',
-        pricePeriodTranslationKey: 'partnerAgencies.pricing.plans.diamond.period',
+        monthlyPrice: '$449',
+        yearlyPrice: '$449',
+        pricePeriod: periodOf('diamond', '/4 months'),
         description: '',
         features: [
-          { translationKey: 'partnerAgencies.pricing.features.affiliateEarningUnlimited', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.dropshippingMarketsAll', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.clientReferral', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.winningProducts', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.prioritySupport', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.socialMediaPromotion', included: true },
-          { translationKey: 'partnerAgencies.pricing.features.validity6Months', included: true },
+          { text: featureText('affiliateEarningUnlimited', 'Affiliate earning: Unlimited'), included: true },
+          { text: featureText('dropshippingMarketsAll', 'Dropshipping markets: All'), included: true },
+          { text: featureText('clientReferral', 'Client referral from Zambeel'), included: true },
+          { text: featureText('winningProducts', 'Winning products & creatives'), included: true },
+          { text: featureText('prioritySupport', 'Priority support'), included: true },
+          { text: featureText('socialMediaPromotion', 'Social media promotion'), included: true },
+          { text: featureText('validity4Months', 'Validity: 4 months'), included: true },
         ],
       },
-    ],
-    []
-  );
+    ];
+  }, [initialCopy, t]);
 
   useEffect(() => {
     if (initialAgencies !== undefined) return; // already have server data

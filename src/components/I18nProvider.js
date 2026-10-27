@@ -37,6 +37,11 @@ if (!i18n.isInitialized) {
         useSuspense: false,
       },
     });
+} else {
+  // Keep SSR/HMR in sync when translation.json changes — the singleton
+  // otherwise keeps stale strings and causes hydration mismatches.
+  i18n.addResourceBundle('en', 'translation', enTranslations, true, true);
+  i18n.addResourceBundle('ar', 'translation', arTranslations, true, true);
 }
 
 export const changeLanguage = (lang) => {
