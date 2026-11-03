@@ -570,11 +570,11 @@ const Zambeel3PLPage = () => {
         countries={[
           { code: "UAE", name: t('countries.UAE'), currency: "AED" },
           { code: "KSA", name: t('countries.KSA'), currency: "SAR" },
-          { code: "Kuwait", name: t('countries.Kuwait'), currency: "AED" },
+          { code: "Kuwait", name: t('countries.Kuwait'), currency: "KWD" },
           { code: "Qatar", name: t('countries.Qatar'), currency: "AED" },
           { code: "Oman", name: t('countries.Oman'), currency: "AED" },
           { code: "Bahrain", name: t('countries.Bahrain'), currency: "AED" },
-          { code: "Iraq", name: t('countries.Iraq'), currency: "AED" },
+          { code: "Iraq", name: t('countries.Iraq'), currency: "IQD" },
           { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" }
         ]}
         charges={[
@@ -583,11 +583,11 @@ const Zambeel3PLPage = () => {
             values: {
               UAE: "20 AED",
               KSA: "28 SAR",
-              Kuwait: "30 AED",
+              Kuwait: "2.6 KWD",
               Qatar: "25 AED",
               Oman: "26 AED",
               Bahrain: "20 AED",
-              Iraq: "25 AED",
+              Iraq: "8500 IQD",
               Pakistan: "350 PKR"
             }
           },
@@ -596,11 +596,11 @@ const Zambeel3PLPage = () => {
             values: {
               UAE: "5 AED",
               KSA: "7.5 SAR",
-              Kuwait: "15 AED",
+              Kuwait: "1.26 KWD",
               Qatar: "5 AED",
               Oman: "12 AED",
               Bahrain: "15 AED",
-              Iraq: "8 AED",
+              Iraq: "2100 IQD",
               Pakistan: "350 PKR"
             }
           },
@@ -627,7 +627,7 @@ const Zambeel3PLPage = () => {
               Qatar: "1-2 Days",
               Oman: "1-2 Days",
               Bahrain: "1-2 Days",
-              Iraq: "1-3 Days",
+              Iraq: "2-3 Days",
               Pakistan: "1-3 Days"
             }
           }

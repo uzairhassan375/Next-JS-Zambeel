@@ -45,7 +45,7 @@ const DeliveryCharges = ({
     }
   }, [selectedCountryIndex]);
 
-  // Helper function to translate currency symbols and "Days" in values
+  // Helper function to translate currency symbols and "Days" in values (digits stay English)
   const translateValue = (value) => {
     if (!value || typeof value !== 'string') return value;
     
@@ -54,6 +54,8 @@ const DeliveryCharges = ({
       value = value.replace(/\bAED\b/g, t('deliveryCharges.currencyAED'));
       value = value.replace(/\bSAR\b/g, t('deliveryCharges.currencySAR'));
       value = value.replace(/\bPKR\b/g, t('deliveryCharges.currencyPKR'));
+      value = value.replace(/\bKWD\b/g, t('deliveryCharges.currencyKWD'));
+      value = value.replace(/\bIQD\b/g, t('deliveryCharges.currencyIQD'));
       // Replace "Days"
       value = value.replace(/\bDays\b/g, t('deliveryCharges.days'));
     }
@@ -67,7 +69,9 @@ const DeliveryCharges = ({
       const currencyMap = {
         'AED': t('deliveryCharges.currencyAED'),
         'SAR': t('deliveryCharges.currencySAR'),
-        'PKR': t('deliveryCharges.currencyPKR')
+        'PKR': t('deliveryCharges.currencyPKR'),
+        'KWD': t('deliveryCharges.currencyKWD'),
+        'IQD': t('deliveryCharges.currencyIQD'),
       };
       return currencyMap[currencyCode] || currencyCode;
     }
