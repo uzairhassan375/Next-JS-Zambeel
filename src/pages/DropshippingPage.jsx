@@ -376,7 +376,7 @@ const DropshippingPage = () => {
           { code: "Kuwait", name: t('countries.Kuwait'), currency: "KWD" },
           { code: "Qatar", name: t('countries.Qatar'), currency: "AED" },
           { code: "Oman", name: t('countries.Oman'), currency: "AED" },
-          { code: "Bahrain", name: t('countries.Bahrain'), currency: "AED" },
+          { code: "Bahrain", name: t('countries.Bahrain'), currency: "BHD" },
           { code: "Iraq", name: t('countries.Iraq'), currency: "IQD" },
           { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" }
         ]}
@@ -389,7 +389,7 @@ const DropshippingPage = () => {
               Kuwait: "2.6 KWD",
               Qatar: "25 AED",
               Oman: "26 AED",
-              Bahrain: "20 AED",
+              Bahrain: "2.1 BHD",
               Iraq: "8500 IQD",
               Pakistan: "220 PKR"
             }
@@ -402,7 +402,7 @@ const DropshippingPage = () => {
               Kuwait: "1.26 KWD",
               Qatar: "5 AED",
               Oman: "12 AED",
-              Bahrain: "15 AED",
+              Bahrain: "1.58 BHD",
               Iraq: "2100 IQD",
               Pakistan: "220 PKR"
             }
