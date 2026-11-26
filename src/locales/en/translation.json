@@ -531,6 +531,7 @@
     "currencyKWD": "KWD",
     "currencyIQD": "IQD",
     "currencyBHD": "BHD",
+    "currencyOMR": "OMR",
     "importantInfo": "Important Info",
     "pakistanParcelRatesNote": "Call confirmation is free. However, if your weekly confirmation rate falls below 50%, a charge of $1 per order/lead will apply.",
     "failedDelivery": "In case of failed delivery, only 'Return' will be charged",

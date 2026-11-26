@@ -57,6 +57,7 @@ const DeliveryCharges = ({
       value = value.replace(/\bKWD\b/g, t('deliveryCharges.currencyKWD'));
       value = value.replace(/\bIQD\b/g, t('deliveryCharges.currencyIQD'));
       value = value.replace(/\bBHD\b/g, t('deliveryCharges.currencyBHD'));
+      value = value.replace(/\bOMR\b/g, t('deliveryCharges.currencyOMR'));
       // Replace "Days"
       value = value.replace(/\bDays\b/g, t('deliveryCharges.days'));
     }
@@ -74,6 +75,7 @@ const DeliveryCharges = ({
         'KWD': t('deliveryCharges.currencyKWD'),
         'IQD': t('deliveryCharges.currencyIQD'),
         'BHD': t('deliveryCharges.currencyBHD'),
+        'OMR': t('deliveryCharges.currencyOMR'),
       };
       return currencyMap[currencyCode] || currencyCode;
     }

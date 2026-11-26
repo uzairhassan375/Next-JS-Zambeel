@@ -572,7 +572,7 @@ const Zambeel3PLPage = () => {
           { code: "KSA", name: t('countries.KSA'), currency: "SAR" },
           { code: "Kuwait", name: t('countries.Kuwait'), currency: "KWD" },
           { code: "Qatar", name: t('countries.Qatar'), currency: "AED" },
-          { code: "Oman", name: t('countries.Oman'), currency: "AED" },
+          { code: "Oman", name: t('countries.Oman'), currency: "OMR" },
           { code: "Bahrain", name: t('countries.Bahrain'), currency: "BHD" },
           { code: "Iraq", name: t('countries.Iraq'), currency: "IQD" },
           { code: "Pakistan", name: t('countries.Pakistan'), currency: "PKR" }
@@ -585,7 +585,7 @@ const Zambeel3PLPage = () => {
               KSA: "28 SAR",
               Kuwait: "2.6 KWD",
               Qatar: "25 AED",
-              Oman: "26 AED",
+              Oman: "2.75 OMR",
               Bahrain: "2.1 BHD",
               Iraq: "8500 IQD",
               Pakistan: "350 PKR"
@@ -598,7 +598,7 @@ const Zambeel3PLPage = () => {
               KSA: "7.5 SAR",
               Kuwait: "1.26 KWD",
               Qatar: "5 AED",
-              Oman: "12 AED",
+              Oman: "1.27 OMR",
               Bahrain: "1.58 BHD",
               Iraq: "2100 IQD",
               Pakistan: "350 PKR"
